@@ -52,21 +52,19 @@ vcr_configure(
 )
 ```
 
-## Re-set to defaults
+## Re-set to defaults {#config-reset}
 
 ```{r}
 vcr_configure_reset()
 ```
 
-## Individual config options
-
-### dir - directory of where cassettes are stored
+## dir - directory of where cassettes are stored {#config-dir}
 
 ```{r}
 vcr_configure(dir = "new/path")
 ```
 
-### record - record mode
+## record - record mode {#config-record-mode}
 
 One of: 'all', 'none', 'new_episodes', 'once'. See `?recording` for info on the options
 
@@ -74,13 +72,13 @@ One of: 'all', 'none', 'new_episodes', 'once'. See `?recording` for info on the 
 vcr_configure(record = "new_episodes")
 ```
 
-### match_requests_on - customize how vcr matches requests
+## match_requests_on - customize how vcr matches requests {#config-match-on}
 
 ```{r}
 vcr_configure(match_requests_on = c('query', 'headers'))
 ```
 
-### allow_unused_http_interactions - Allow HTTP connections when no cassette
+## allow_unused_http_interactions - Allow HTTP connections when no cassette {#config-allow-unused}
 
 Default is `TRUE`, and thus does not error when http interactions are unused. You 
 can set to `FALSE` in which case vcr errors when a cassette is ejected and 
@@ -90,7 +88,7 @@ not all http interactions have been used.
 vcr_configure(allow_unused_http_interactions = FALSE)
 ```
 
-### serialize_with - which serializer to use
+## serialize_with - which serializer to use {#config-serialize-with}
 
 Right now only option is "yaml"
 
@@ -98,13 +96,15 @@ Right now only option is "yaml"
 vcr_configure(serialize_with = "yaml")
 ```
 
-### persist_with - which persister to use
+## persist_with - which persister to use {#config-persist-with}
 
 Right now only option is "FileSystem"
 
 ```{r}
 vcr_configure(persist_with = "FileSystem")
 ```
+
+## ignore requests  {#config-ignore-requests}
 
 ### ignore_hosts - specify particular hosts to ignore
 
@@ -124,7 +124,7 @@ vcr_configure(ignore_localhost = TRUE)
 vcr_configure(ignore_request = function(x) x == 5)
 ```
 
-### uri_parser - which uri parser to use
+## uri_parser - which uri parser to use {#config-uri-parser}
 
 By default we use `httr::parse_url`, but you can use a different one. Remember 
 to pass in the function quoted, and namespaced.
@@ -133,7 +133,7 @@ to pass in the function quoted, and namespaced.
 vcr_configure(uri_parser = "urltools::url_parse")
 ```
 
-### preserve_exact_body_bytes
+## preserve_exact_body_bytes {#config-preserve-exact-body-bytes}
 
 Some HTTP servers are not well-behaved and respond with invalid data. Set 
 `preserve_exact_body_bytes` to `TRUE` to base64 encode the result body in 
