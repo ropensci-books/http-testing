@@ -1,0 +1,39 @@
+--- 
+title: "http testing book"
+date: "`r paste0('built on ', Sys.Date(), ' - for vcr v', packageVersion('vcr'))`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: ropensci/http-testing-book
+description: "http testing book"
+---
+
+# http testing book
+
+write some stuff ...
+
+## Info
+
+* Code: <https://github.com/ropensci/http-testing-book/>
+* Issues/Bug reports: <https://github.com/ropensci/http-testing-book/issues>
+
+Packages
+
+* `crul`: <https://cran.rstudio.com/web/packages/crul/>
+* `webmockr`: <https://cran.rstudio.com/web/packages/webmockr/>
+* `vcr`: <https://github.com/ropensci/vcr/>
+
+## Citing the packages
+
+xxxx
+
+## Installation
+
+Stable version from CRAN
+
+```{r eval=FALSE}
+install.packages(c("crul", "webmockr"))
+remotes::install_github("ropensci/vcr")
+```

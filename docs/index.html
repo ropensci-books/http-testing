@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="record-modes.html">
-<link rel="next" href="logging.html">
+
+<link rel="next" href="intro.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -191,50 +191,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="request-matching" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> request matching</h1>
-<p>There are a number of options, some of which are on by default, some of
-which can be used together, and some alone.</p>
-<div id="matching-on-method" class="section level2">
-<h2><span class="header-section-number">5.1</span> matching on method</h2>
-<p>Use the <strong>method</strong> request matcher to match requests on the HTTP method
-(i.e. GET, POST, PUT, DELETE, etc). You will generally want to use
-this matcher. The <strong>method</strong> matcher is used (along with the <strong>uri</strong> matcher)
-by default if you do not specify how requests should match.</p>
+<div id="header">
+<h1 class="title">http testing book</h1>
+<h4 class="date"><em>built on 2018-04-23 - for vcr v0.0.7.9325</em></h4>
 </div>
-<div id="matching-on-uri" class="section level2">
-<h2><span class="header-section-number">5.2</span> matching on uri</h2>
-<p>Use the <strong>uri</strong> request matcher to match requests on the request URI. The
-<strong>uri</strong> matcher is used (along with the <strong>method</strong> matcher) by default
-if you do not specify how requests should match.</p>
+<div id="http-testing-book" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> http testing book</h1>
+<p>write some stuff …</p>
+<div id="info" class="section level2">
+<h2><span class="header-section-number">1.1</span> Info</h2>
+<ul>
+<li>Code: <a href="https://github.com/ropensci/http-testing-book/" class="uri">https://github.com/ropensci/http-testing-book/</a></li>
+<li>Issues/Bug reports: <a href="https://github.com/ropensci/http-testing-book/issues" class="uri">https://github.com/ropensci/http-testing-book/issues</a></li>
+</ul>
+<p>Packages</p>
+<ul>
+<li><code>crul</code>: <a href="https://cran.rstudio.com/web/packages/crul/" class="uri">https://cran.rstudio.com/web/packages/crul/</a></li>
+<li><code>webmockr</code>: <a href="https://cran.rstudio.com/web/packages/webmockr/" class="uri">https://cran.rstudio.com/web/packages/webmockr/</a></li>
+<li><code>vcr</code>: <a href="https://github.com/ropensci/vcr/" class="uri">https://github.com/ropensci/vcr/</a></li>
+</ul>
 </div>
-<div id="matching-on-host" class="section level2">
-<h2><span class="header-section-number">5.3</span> matching on host</h2>
-<p>Use the <strong>host</strong> request matcher to match requests on the request host.
-You can use this (alone, or in combination with <strong>path</strong>) as an
-alternative to <strong>uri</strong> so that non-deterministic portions of the URI
-are not considered as part of the request matching.</p>
+<div id="citing-the-packages" class="section level2">
+<h2><span class="header-section-number">1.2</span> Citing the packages</h2>
+<p>xxxx</p>
 </div>
-<div id="matching-on-path" class="section level2">
-<h2><span class="header-section-number">5.4</span> matching on path</h2>
-<p>Use the <strong>path</strong> request matcher to match requests on the path portion
-of the request URI. You can use this (alone, or in combination with <strong>host</strong>)
-as an alternative to <strong>uri</strong> so that non-deterministic portions of the URI</p>
-</div>
-<div id="matching-on-query-string" class="section level2">
-<h2><span class="header-section-number">5.5</span> matching on query string</h2>
-<p>Use the <strong>query</strong> request matcher to match requests on the query string
-portion of the request URI. You can use this (alone, or in combination with
-others) as an alternative to <strong>uri</strong> so that non-deterministic portions of
-the URI are not considered as part of the request matching.</p>
-</div>
-<div id="matching-on-body" class="section level2">
-<h2><span class="header-section-number">5.6</span> matching on body</h2>
-<p>Use the <strong>body</strong> request matcher to match requests on the request body.</p>
-</div>
-<div id="matching-on-headers" class="section level2">
-<h2><span class="header-section-number">5.7</span> matching on headers</h2>
-<p>Use the <strong>headers</strong> request matcher to match requests on the request headers.</p>
+<div id="installation" class="section level2">
+<h2><span class="header-section-number">1.3</span> Installation</h2>
+<p>Stable version from CRAN</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;crul&quot;</span>, <span class="st">&quot;webmockr&quot;</span>))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ropensci/vcr&quot;</span>)</a></code></pre></div>
 
 </div>
 </div>
@@ -243,8 +228,8 @@ the URI are not considered as part of the request matching.</p>
           </div>
         </div>
       </div>
-<a href="record-modes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="logging.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -274,7 +259,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/04-request-matching.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/index.Rmd",
 "text": "Edit"
 },
 "download": ["_main.pdf", "_main.epub"],
