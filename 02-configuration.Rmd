@@ -2,7 +2,8 @@
 knitr::opts_chunk$set(
   comment = "#>",
   warning = FALSE,
-  message = FALSE
+  message = FALSE,
+  eval = FALSE
 )
 ```
 
@@ -143,4 +144,15 @@ of the cassette.
 
 ```{r}
 vcr_configure(preserve_exact_body_bytes = TRUE)
+```
+
+## allow_http_connections_when_no_cassette {#allow-http-connections-when-no-cassette}
+
+Determines how `vcr` treats HTTP requests that are made when no vcr cassette is in use. 
+When `TRUE`, requests made when there is no vcr cassette in use will be allowed.
+When `FALSE` (default), an [UnhandledHTTPRequestError] error will be raised for 
+any HTTP request made when there is no cassette in use
+
+```{r}
+vcr_configure(allow_http_connections_when_no_cassette = TRUE)
 ```
