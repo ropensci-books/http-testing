@@ -1,0 +1,15 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
+# logging {#logging}
+
+Use logging to set an IO-like object that `vcr` will log output to. This is a 
+useful way to troubleshoot what `vcr` is doing.
+
+asdfasdfadsa

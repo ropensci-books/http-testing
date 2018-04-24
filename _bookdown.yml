@@ -1,0 +1,6 @@
+output_dir: "docs"
+language:
+  ui:
+    chapter_name: "Chapter "
+delete_merged_file: true
+rmd_files: ["01-intro.Rmd", "02-configuration.Rmd", "03-record-modes.Rmd", "04-request-matching.Rmd", "05-logging.Rmd"]

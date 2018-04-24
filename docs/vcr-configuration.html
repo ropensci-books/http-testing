@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>_main.utf8</title>
+  <meta name="description" content="">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="_main.utf8" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="_main.utf8" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="intro.html">
+<link rel="next" href="record-modes.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">HTTP testing with R packages</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#user-interface"><i class="fa fa-check"></i><b>1.1</b> User interface</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>2</b> vcr configuration</a><ul>
+<li class="chapter" data-level="2.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-configuration"><i class="fa fa-check"></i><b>2.1</b> Get configuration</a></li>
+<li class="chapter" data-level="2.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>2.2</b> Set configuration variables</a></li>
+<li class="chapter" data-level="2.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#re-set-to-defaults"><i class="fa fa-check"></i><b>2.3</b> Re-set to defaults</a></li>
+<li class="chapter" data-level="2.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#individual-config-options"><i class="fa fa-check"></i><b>2.4</b> Individual config options</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#dir---directory-of-where-cassettes-are-stored"><i class="fa fa-check"></i><b>2.4.1</b> dir - directory of where cassettes are stored</a></li>
+<li class="chapter" data-level="2.4.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#record---record-mode"><i class="fa fa-check"></i><b>2.4.2</b> record - record mode</a></li>
+<li class="chapter" data-level="2.4.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#match_requests_on---customize-how-vcr-matches-requests"><i class="fa fa-check"></i><b>2.4.3</b> match_requests_on - customize how vcr matches requests</a></li>
+<li class="chapter" data-level="2.4.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow_unused_http_interactions---allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>2.4.4</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
+<li class="chapter" data-level="2.4.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#serialize_with---which-serializer-to-use"><i class="fa fa-check"></i><b>2.4.5</b> serialize_with - which serializer to use</a></li>
+<li class="chapter" data-level="2.4.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#persist_with---which-persister-to-use"><i class="fa fa-check"></i><b>2.4.6</b> persist_with - which persister to use</a></li>
+<li class="chapter" data-level="2.4.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>2.4.7</b> ignore_hosts - specify particular hosts to ignore</a></li>
+<li class="chapter" data-level="2.4.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>2.4.8</b> ignore_localhost - ignore all localhost flavors</a></li>
+<li class="chapter" data-level="2.4.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>2.4.9</b> ignore_request - ignore any request for which function is true</a></li>
+<li class="chapter" data-level="2.4.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#uri_parser---which-uri-parser-to-use"><i class="fa fa-check"></i><b>2.4.10</b> uri_parser - which uri parser to use</a></li>
+<li class="chapter" data-level="2.4.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#preserve_exact_body_bytes"><i class="fa fa-check"></i><b>2.4.11</b> preserve_exact_body_bytes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>3</b> record modes</a><ul>
+<li class="chapter" data-level="3.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>3.1</b> once</a></li>
+<li class="chapter" data-level="3.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>3.2</b> none</a></li>
+<li class="chapter" data-level="3.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>3.3</b> new_episodes</a></li>
+<li class="chapter" data-level="3.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>3.4</b> all</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>4</b> request matching</a><ul>
+<li class="chapter" data-level="4.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>4.1</b> matching on method</a></li>
+<li class="chapter" data-level="4.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>4.2</b> matching on uri</a></li>
+<li class="chapter" data-level="4.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>4.3</b> matching on host</a></li>
+<li class="chapter" data-level="4.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>4.4</b> matching on path</a></li>
+<li class="chapter" data-level="4.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>4.5</b> matching on query string</a></li>
+<li class="chapter" data-level="4.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>4.6</b> matching on body</a></li>
+<li class="chapter" data-level="4.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>4.7</b> matching on headers</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>5</b> logging</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="vcr-configuration" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> vcr configuration</h1>
+<p><code>vcr</code> configuration</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;vcr&quot;</span>)</a></code></pre></div>
+<div id="get-configuration" class="section level2">
+<h2><span class="header-section-number">2.1</span> Get configuration</h2>
+<p>Use <code>vcr_configuration()</code> to get the current configuration</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">vcr_configuration</span>()</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: TRUE
+#&gt;   Logging?: FALSE</code></pre>
+<p>You can get the default configuration variables via <code>vcr_config_defaults()</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">vcr_config_defaults</span>()</a></code></pre></div>
+<pre><code>#&gt; $dir
+#&gt; [1] &quot;.&quot;
+#&gt; 
+#&gt; $record
+#&gt; [1] &quot;once&quot;
+#&gt; 
+#&gt; $match_requests_on
+#&gt; [1] &quot;method&quot; &quot;uri&quot;   
+#&gt; 
+#&gt; $allow_unused_http_interactions
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $serialize_with
+#&gt; [1] &quot;yaml&quot;
+#&gt; 
+#&gt; $persist_with
+#&gt; [1] &quot;FileSystem&quot;
+#&gt; 
+#&gt; $ignore_hosts
+#&gt; NULL
+#&gt; 
+#&gt; $ignore_localhost
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $ignore_request
+#&gt; NULL
+#&gt; 
+#&gt; $uri_parser
+#&gt; [1] &quot;crul::url_parse&quot;
+#&gt; 
+#&gt; $preserve_exact_body_bytes
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $turned_off
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $ignore_cassettes
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $re_record_interval
+#&gt; NULL
+#&gt; 
+#&gt; $clean_outdated_http_interactions
+#&gt; NULL
+#&gt; 
+#&gt; $allow_http_connections_when_no_cassette
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $cassettes
+#&gt; list()
+#&gt; 
+#&gt; $linked_context
+#&gt; NULL
+#&gt; 
+#&gt; $log
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $log_opts
+#&gt; $log_opts$file
+#&gt; [1] &quot;vcr.log&quot;
+#&gt; 
+#&gt; $log_opts$log_prefix
+#&gt; [1] &quot;Cassette&quot;</code></pre>
+<p>These defaults are set when you load <code>vcr</code> - you can override any of them as described below.</p>
+</div>
+<div id="set-configuration-variables" class="section level2">
+<h2><span class="header-section-number">2.2</span> Set configuration variables</h2>
+<p>Use <code>vcr_configure()</code> to set configuration variables.</p>
+<p>For example, set a single variable:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: foobar/vcr_cassettes
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+<p>Or many at once:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span>,</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="dt">record =</span> <span class="st">&quot;all&quot;</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: foobar/vcr_cassettes
+#&gt;   Record: all
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="re-set-to-defaults" class="section level2">
+<h2><span class="header-section-number">2.3</span> Re-set to defaults</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">vcr_configure_reset</span>()</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="individual-config-options" class="section level2">
+<h2><span class="header-section-number">2.4</span> Individual config options</h2>
+<div id="dir---directory-of-where-cassettes-are-stored" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> dir - directory of where cassettes are stored</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">dir =</span> <span class="st">&quot;new/path&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: new/path
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="record---record-mode" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> record - record mode</h3>
+<p>One of: ‘all’, ‘none’, ‘new_episodes’, ‘once’. See <code>?recording</code> for info on the options</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">record =</span> <span class="st">&quot;new_episodes&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: new_episodes
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="match_requests_on---customize-how-vcr-matches-requests" class="section level3">
+<h3><span class="header-section-number">2.4.3</span> match_requests_on - customize how vcr matches requests</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">match_requests_on =</span> <span class="kw">c</span>(<span class="st">&#39;query&#39;</span>, <span class="st">&#39;headers&#39;</span>))</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: query, headers
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="allow_unused_http_interactions---allow-http-connections-when-no-cassette" class="section level3">
+<h3><span class="header-section-number">2.4.4</span> allow_unused_http_interactions - Allow HTTP connections when no cassette</h3>
+<p>Default is <code>TRUE</code>, and thus does not error when http interactions are unused. You
+can set to <code>FALSE</code> in which case vcr errors when a cassette is ejected and
+not all http interactions have been used.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">allow_unused_http_interactions =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="serialize_with---which-serializer-to-use" class="section level3">
+<h3><span class="header-section-number">2.4.5</span> serialize_with - which serializer to use</h3>
+<p>Right now only option is “yaml”</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">serialize_with =</span> <span class="st">&quot;yaml&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="persist_with---which-persister-to-use" class="section level3">
+<h3><span class="header-section-number">2.4.6</span> persist_with - which persister to use</h3>
+<p>Right now only option is “FileSystem”</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">persist_with =</span> <span class="st">&quot;FileSystem&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="ignore_hosts---specify-particular-hosts-to-ignore" class="section level3">
+<h3><span class="header-section-number">2.4.7</span> ignore_hosts - specify particular hosts to ignore</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">ignore_hosts =</span> <span class="st">&quot;google.com&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="ignore_localhost---ignore-all-localhost-flavors" class="section level3">
+<h3><span class="header-section-number">2.4.8</span> ignore_localhost - ignore all localhost flavors</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">ignore_localhost =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="ignore_request---ignore-any-request-for-which-function-is-true" class="section level3">
+<h3><span class="header-section-number">2.4.9</span> ignore_request - ignore any request for which function is true</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">ignore_request =</span> <span class="cf">function</span>(x) x <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="uri_parser---which-uri-parser-to-use" class="section level3">
+<h3><span class="header-section-number">2.4.10</span> uri_parser - which uri parser to use</h3>
+<p>By default we use <code>httr::parse_url</code>, but you can use a different one. Remember
+to pass in the function quoted, and namespaced.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">uri_parser =</span> <span class="st">&quot;urltools::url_parse&quot;</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: urltools::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE</code></pre>
+</div>
+<div id="preserve_exact_body_bytes" class="section level3">
+<h3><span class="header-section-number">2.4.11</span> preserve_exact_body_bytes</h3>
+<p>Some HTTP servers are not well-behaved and respond with invalid data. Set
+<code>preserve_exact_body_bytes</code> to <code>TRUE</code> to base64 encode the result body in
+order to preserve the bytes exactly as-is. <code>vcr</code> does not do this by
+default, since base64-encoding the string removes the human readibility
+of the cassette.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">preserve_exact_body_bytes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: .
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: TRUE
+#&gt;   Logging?: FALSE</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="record-modes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ropensci/http-testing-book/edit/master/02-configuration.Rmd",
+"text": "Edit"
+},
+"download": ["_main.pdf", "_main.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
