@@ -136,7 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#user-interface"><i class="fa fa-check"></i><b>2.1</b> User interface</a></li>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#what-webmockr"><i class="fa fa-check"></i><b>2.1</b> What is webmockr?</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#what-vcr"><i class="fa fa-check"></i><b>2.2</b> What is vcr?</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#why-crul"><i class="fa fa-check"></i><b>2.3</b> Why crul?</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#terminology"><i class="fa fa-check"></i><b>2.4</b> Terminology</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#basic-usage"><i class="fa fa-check"></i><b>2.5</b> Basic usage</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>3</b> vcr configuration</a><ul>
 <li class="chapter" data-level="3.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>3.1</b> Get your configuration</a></li>
@@ -214,10 +218,10 @@ useful way to troubleshoot what <code>vcr</code> is doing.</p>
 <div id="logging-setup" class="section level2">
 <h2><span class="header-section-number">6.1</span> Setup logging</h2>
 <p>To set up logging, see <code>?vcr_logging</code> use <code>vcr_configure()</code></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb38-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb41-4" data-line-number="4">)</a></code></pre></div>
 <ul>
 <li>The <code>log</code> parameter is a boolean to indicate whether <code>vcr</code> should log or not</li>
 <li>The <code>log_opts</code> parameter is a named list with various options:
@@ -252,16 +256,16 @@ useful way to troubleshoot what <code>vcr</code> is doing.</p>
 <li>when an interaction is recorded, or pulled from a stub, etc.</li>
 </ul>
 <p>If you turn off the date, you won’t get date entries:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb40-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb40-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb43-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4">)</a></code></pre></div>
 <pre><code>[Cassette: &#39;foobar&#39;] - {{message}}</code></pre>
 <p>And you can change the prefix from <code>Cassette</code> to something else:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb42-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Unicorn&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb42-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb45-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Unicorn&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb45-4" data-line-number="4">)</a></code></pre></div>
 <pre><code>[Unicorn: &#39;foobar&#39;] - {{message}}</code></pre>
 
 </div>

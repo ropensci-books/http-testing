@@ -136,7 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#user-interface"><i class="fa fa-check"></i><b>2.1</b> User interface</a></li>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#what-webmockr"><i class="fa fa-check"></i><b>2.1</b> What is webmockr?</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#what-vcr"><i class="fa fa-check"></i><b>2.2</b> What is vcr?</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#why-crul"><i class="fa fa-check"></i><b>2.3</b> Why crul?</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#terminology"><i class="fa fa-check"></i><b>2.4</b> Terminology</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#basic-usage"><i class="fa fa-check"></i><b>2.5</b> Basic usage</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>3</b> vcr configuration</a><ul>
 <li class="chapter" data-level="3.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>3.1</b> Get your configuration</a></li>
@@ -221,9 +225,9 @@ to the real data.</p>
 <p>The before record replacement happens in an internal
 function <code>write_interactions()</code>, while before playback replacement
 happens in internal function <code>YAML$deserialize_path()</code></p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">)</a></code></pre></div>
 <p>You want to make the string that replaces your sensitive string something that
 won’t be easily found elsewhere in the response body/headers/etc.</p>
 <p>It’s a good idea to not in place of <code>thing_to_replace</code> put your actual sensitive

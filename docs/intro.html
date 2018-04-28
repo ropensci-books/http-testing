@@ -136,7 +136,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.3</b> Installation</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#user-interface"><i class="fa fa-check"></i><b>2.1</b> User interface</a></li>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#what-webmockr"><i class="fa fa-check"></i><b>2.1</b> What is webmockr?</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#what-vcr"><i class="fa fa-check"></i><b>2.2</b> What is vcr?</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#why-crul"><i class="fa fa-check"></i><b>2.3</b> Why crul?</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#terminology"><i class="fa fa-check"></i><b>2.4</b> Terminology</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#basic-usage"><i class="fa fa-check"></i><b>2.5</b> Basic usage</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>3</b> vcr configuration</a><ul>
 <li class="chapter" data-level="3.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>3.1</b> Get your configuration</a></li>
@@ -209,11 +213,124 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="intro" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Introduction</h1>
-<div id="user-interface" class="section level2">
-<h2><span class="header-section-number">2.1</span> User interface</h2>
-<p>write some stuff.
-adfafds</p>
-<p>asdfadf</p>
+<div id="what-webmockr" class="section level2">
+<h2><span class="header-section-number">2.1</span> What is webmockr?</h2>
+<p><code>webmockr</code> is an R package to help you “mock” HTTTP requests. What does mock mean? Mock refers to the fact that we’re faking the response. Here’w how it works:</p>
+<ul>
+<li>You “stub” a request. That is, you set rules for what HTTP request you’d like to match on</li>
+<li>You also can set rules for what you’d like to respond with, if anything (if nothing, then we give you <code>NULL</code>)</li>
+<li>Then you make HTTP requests, and those that match your stub will return what you requested be returned</li>
+<li>While <code>webmockr</code> is in use, real HTTP interactions are not allowed</li>
+<li>There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session</li>
+</ul>
+</div>
+<div id="what-vcr" class="section level2">
+<h2><span class="header-section-number">2.2</span> What is vcr?</h2>
+<p>The short version is: <code>vcr</code> helps you stub HTTP requests so you don’t have to repeat HTTP requests.</p>
+<p>The main use case is for unit tests for R packages.</p>
+<p><code>vcr</code> currently only works with the <code>crul</code> package, but we plan to make it work with <code>httr</code>.</p>
+<p><code>vcr</code> works by hooking into <code>webmockr</code>. However, when <code>webmockr</code> finds a match, we then look for a recorded interaction on disk. If one is not found, we record the request and response. If one is found, we use that recorded interaction to construct a real response as the R client expects.</p>
+</div>
+<div id="why-crul" class="section level2">
+<h2><span class="header-section-number">2.3</span> Why crul?</h2>
+<p><code>crul</code> is just one of the HTTP clients in R. It’s the one that I maintain though, so was easiest to get started with adding mocking integration.</p>
+<p>We do plan to add integration for <code>httr</code> in the future to both <code>webmockr</code> and <code>vcr</code>.</p>
+</div>
+<div id="terminology" class="section level2">
+<h2><span class="header-section-number">2.4</span> Terminology</h2>
+<ul>
+<li><strong>http</strong>: <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">hyptertext transfer protocol</a></li>
+<li><strong>vcr</strong>: the name comes from the idea that we want to record something and play it back later, like a <a href="https://en.wikipedia.org/wiki/Videocassette_recorder">VCR</a></li>
+<li><strong>cassette</strong>: A <em>thing</em> to record HTTP interactions to. Right now the only option is file system, but in the future could be other things, e.g. a key-value store like <a href="https://redis.io/">Redis</a></li>
+<li><strong>Persister</strong>: defines how to save requests - currently only option is the file system</li>
+<li><strong>Serializers</strong>: defines how to serialize the HTTP response; that is, how the data is stored on whatever the persister is (right now only file system). Currently only option is YAML; other options in the future could include e.g. JSON</li>
+<li><strong>insert cassette</strong>: create a cassette (all HTTP interactions will be recorded to this cassette). once a cassette is inserted, we don’t allow insertion of additional cassettes</li>
+<li><strong>eject cassette</strong>: eject the cassette (no longer recording to that cassette). however, if any interactions were written to disk, those are still stored there</li>
+<li><strong>replay</strong>: refers to using a cached result of an http request that was recorded earlier</li>
+<li><strong>recording</strong>: this means you’ve set vcr in a mode in which we can record HTTP interactions. sometimes recording can be not possible given user configuration or otherwise</li>
+</ul>
+</div>
+<div id="basic-usage" class="section level2">
+<h2><span class="header-section-number">2.5</span> Basic usage</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(vcr)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(crul)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://api.crossref.org&quot;</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">system.time</span>(</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    cli<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;works&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">  })</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">## CrulAdapter enabled!</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">## net connect allowed</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">## net connect disabled</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">## encoding couldn&#39;t be detected; assuming UTF-8</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">## ejecting cassette: helloworld</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">## CrulAdapter disabled!</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">##    user  system elapsed </a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">##   0.062   0.005   6.317</a></code></pre></div>
+<p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">system.time</span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    cli<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;works&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  })</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">## CrulAdapter enabled!</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">## net connect allowed</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">## net connect disabled</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">## ejecting cassette: helloworld</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">## CrulAdapter disabled!</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">##    user  system elapsed </a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">##   0.029   0.001   0.031</a></code></pre></div>
+<p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
+<p>The cached response looks something like (condensed for brevity):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="fu">http_interactions:</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">-</span> <span class="fu">request:</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="fu">method:</span><span class="at"> get</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="fu">uri:</span><span class="at"> https://api.crossref.org/works?rows=3</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="fu">body:</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">      <span class="fu">encoding:</span><span class="at"> </span><span class="st">&#39;&#39;</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">      <span class="fu">string:</span><span class="at"> </span><span class="st">&#39;&#39;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">    <span class="fu">headers:</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">      <span class="fu">User-Agent:</span><span class="at"> libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">      <span class="fu">Accept-Encoding:</span><span class="at"> gzip, deflate</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">      <span class="fu">Accept:</span><span class="at"> application/json, text/xml, application/xml, */*</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="fu">response:</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">    <span class="fu">status:</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">      <span class="fu">status_code:</span><span class="at"> </span><span class="st">&#39;200&#39;</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">      <span class="fu">message:</span><span class="at"> OK</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">      <span class="fu">explanation:</span><span class="at"> Request fulfilled, document follows</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">    <span class="fu">headers:</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">      <span class="fu">status:</span><span class="at"> HTTP/1.1 200 OK</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">      <span class="fu">content-type:</span><span class="at"> application/json;charset=UTF-8</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">      <span class="fu">vary:</span><span class="at"> Accept</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21">      <span class="fu">access-control-allow-origin:</span><span class="at"> </span><span class="st">&#39;*&#39;</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22">      <span class="fu">access-control-allow-headers:</span><span class="at"> X-Requested-With</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23">      <span class="fu">content-length:</span><span class="at"> </span><span class="st">&#39;5360&#39;</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24">      <span class="fu">server:</span><span class="at"> http-kit</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25">      <span class="fu">date:</span><span class="at"> Sat, 28 Apr 2018 15:12:29 GMT</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26">      <span class="fu">x-rate-limit-limit:</span><span class="at"> </span><span class="st">&#39;50&#39;</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27">      <span class="fu">x-rate-limit-interval:</span><span class="at"> 1s</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">      <span class="fu">connection:</span><span class="at"> close</span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29">    <span class="fu">body:</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">      <span class="fu">encoding:</span><span class="at"> UTF-8</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31">      <span class="fu">string:</span><span class="at"> </span><span class="st">&#39;{&quot;status&quot;:&quot;ok&quot;,&quot;message-type&quot;:&quot;work-list&quot;,&quot;message-version&quot;:&quot;1.0.0&quot;,&quot;message&quot;:{&quot;facets&quot;:{},&quot;total-results&quot;:96454147,&quot;items&quot;:[{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845330},&quot;reference-count&quot;:0,&quot;publisher&quot;:&quot;Elsevier</span></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="st">        BV&quot;,&quot;issue&quot;:&quot;3&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1999,10,1]],&quot;date-time&quot;:&quot;1999-10-01T00:00:00Z&quot;,&quot;timestamp&quot;:938736000000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Progress</span></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="st">        in Planning&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1999,10]]},&quot;DOI&quot;:&quot;10.1016\/s0305-9006(99)00007-0&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:38Z&quot;,&quot;timestamp&quot;:1027642298000},&quot;page&quot;:&quot;vii&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Editorial&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;52&quot;,&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Progress</span></a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="st">        in Planning&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900699000070?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900699000070?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2015,9,9]],&quot;date-time&quot;:&quot;2015-09-09T06:07:58Z&quot;,&quot;timestamp&quot;:1441778878000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1999,10]]},&quot;references-count&quot;:0,&quot;alternative-id&quot;:[&quot;S0305900699000070&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0305-9006(99)00007-0&quot;,&quot;ISSN&quot;:[&quot;0305-9006&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0305-9006&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;Geography,</span></a>
+<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="st">        Planning and Development&quot;]},{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845347},&quot;reference-count&quot;:0,&quot;publisher&quot;:&quot;Elsevier</span></a>
+<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="st">        BV&quot;,&quot;issue&quot;:&quot;4&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1998,12,1]],&quot;date-time&quot;:&quot;1998-12-01T00:00:00Z&quot;,&quot;timestamp&quot;:912470400000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Progress</span></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="st">        in Planning&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1998,12]]},&quot;DOI&quot;:&quot;10.1016\/s0305-9006(98)00020-8&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:38Z&quot;,&quot;timestamp&quot;:1027642298000},&quot;page&quot;:&quot;VI&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Preface&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;50&quot;,&quot;author&quot;:[{&quot;given&quot;:&quot;Maurice&quot;,&quot;family&quot;:&quot;Yeats&quot;,&quot;affiliation&quot;:[]}],&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Progress</span></a>
+<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="st">        in Planning&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900698000208?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900698000208?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2015,9,9]],&quot;date-time&quot;:&quot;2015-09-09T06:07:58Z&quot;,&quot;timestamp&quot;:1441778878000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1998,12]]},&quot;references-count&quot;:0,&quot;alternative-id&quot;:[&quot;S0305900698000208&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0305-9006(98)00020-8&quot;,&quot;ISSN&quot;:[&quot;0305-9006&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0305-9006&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;Geography,</span></a>
+<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="st">        Planning and Development&quot;]},{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845389},&quot;reference-count&quot;:24,&quot;publisher&quot;:&quot;Elsevier</span></a>
+<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="st">        BV&quot;,&quot;issue&quot;:&quot;1&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1999,1,1]],&quot;date-time&quot;:&quot;1999-01-01T00:00:00Z&quot;,&quot;timestamp&quot;:915148800000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Powder</span></a>
+<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="st">        Technology&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1999,1]]},&quot;DOI&quot;:&quot;10.1016\/s0032-5910(98)00119-3&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:20Z&quot;,&quot;timestamp&quot;:1027642280000},&quot;page&quot;:&quot;17-30&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Load</span></a>
+<a class="sourceLine" id="cb4-42" data-line-number="42"><span class="st">        diversion by embedding in crushed salt&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;101&quot;,&quot;author&quot;:[{&quot;given&quot;:&quot;W.&quot;,&quot;family&quot;:&quot;Feuser&quot;,&quot;affiliation&quot;:[]},{&quot;given&quot;:&quot;H.&quot;,&quot;family&quot;:&quot;Vijgen&quot;,&quot;affiliation&quot;:[]},{&quot;given&quot;:&quot;E.&quot;,&quot;family&quot;:&quot;Barnert&quot;,&quot;affiliation&quot;:[]}],&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Powder</span></a>
+<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="st">        Technology&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0032591098001193?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0032591098001193?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2017,6,15]],&quot;date-time&quot;:&quot;2017-06-15T02:22:06Z&quot;,&quot;timestamp&quot;:1497493326000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1999,1]]},&quot;references-count&quot;:24,&quot;alternative-id&quot;:[&quot;S0032591098001193&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0032-5910(98)00119-3&quot;,&quot;ISSN&quot;:[&quot;0032-5910&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0032-5910&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;General</span></a>
+<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="st">        Chemical Engineering&quot;]}],&quot;items-per-page&quot;:3,&quot;query&quot;:{&quot;start-index&quot;:0,&quot;search-terms&quot;:null}}}&#39;</span></a>
+<a class="sourceLine" id="cb4-45" data-line-number="45">  <span class="fu">recorded_at:</span><span class="at"> 2018-04-28 15:12:29 GMT</span></a>
+<a class="sourceLine" id="cb4-46" data-line-number="46">  <span class="fu">recorded_with:</span><span class="at"> vcr/0.0.8.9521, webmockr/0.2.2.9119, crul/0.5.2</span></a></code></pre></div>
+<p>All components of both the request and response are preserved, so that the HTTP client (in this case <code>crul</code>) can reconstruct its own response just as it would if it wasn’t using <code>vcr</code>.</p>
 
 </div>
 </div>
