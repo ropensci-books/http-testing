@@ -186,6 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>8.2</b> turned_off</a></li>
 <li class="chapter" data-level="8.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>8.3</b> turn_off</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>9</b> session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
 
@@ -220,9 +221,9 @@ to the real data.</p>
 <p>The before record replacement happens in an internal
 function <code>write_interactions()</code>, while before playback replacement
 happens in internal function <code>YAML$deserialize_path()</code></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2">  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))</a>
+<a class="sourceLine" id="cb44-3" data-line-number="3">)</a></code></pre></div>
 <p>You want to make the string that replaces your sensitive string something that
 won’t be easily found elsewhere in the response body/headers/etc.</p>
 <p>It’s a good idea to not in place of <code>thing_to_replace</code> put your actual sensitive

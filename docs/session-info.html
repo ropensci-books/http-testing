@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="vcr-configuration.html">
-<link rel="next" href="request-matching.html">
+<link rel="prev" href="escape-hatches.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -207,63 +207,119 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="record-modes" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> record modes</h1>
-<div id="once" class="section level2">
-<h2><span class="header-section-number">4.1</span> once</h2>
-<p>The <code>once</code> record mode will:</p>
-<ul>
-<li>Replay previously recorded interactions.</li>
-<li>Record new interactions if there is no cassette file.</li>
-<li>Cause an error to be raised for new requests if there is a cassette file.</li>
-</ul>
-<p>It is similar to the <code>new_episodes</code> record mode, but will prevent new,
-unexpected requests from being made (i.e. because the request URI changed
-or whatever).</p>
-<p><code>once</code> is the default record mode, used when you do not set one.</p>
-</div>
-<div id="none" class="section level2">
-<h2><span class="header-section-number">4.2</span> none</h2>
-<p>The <code>none</code> record mode will:</p>
-<ul>
-<li>Replay previously recorded interactions.</li>
-<li>Cause an error to be raised for any new requests.</li>
-</ul>
-<p>This is useful when your code makes potentially dangerous
-HTTP requests. The <code>none</code> record mode guarantees that no
-new HTTP requests will be made.</p>
-</div>
-<div id="new_episodes" class="section level2">
-<h2><span class="header-section-number">4.3</span> new_episodes</h2>
-<p>The <code>new_episodes</code> record mode will:</p>
-<ul>
-<li>Record new interactions.</li>
-<li>Replay previously recorded interactions.</li>
-</ul>
-<p>It is similar to the <code>once</code> record mode, but will <strong>always</strong> record new
-interactions, even if you have an existing recorded one that is similar
-(but not identical, based on the <code>match_request_on</code> option).</p>
-</div>
-<div id="all" class="section level2">
-<h2><span class="header-section-number">4.4</span> all</h2>
-<p>The <code>all</code> record mode will:</p>
-<ul>
-<li>Record new interactions.</li>
-<li>Never replay previously recorded interactions.</li>
-</ul>
-<p>This can be temporarily used to force VCR to re-record
-a cassette (i.e. to ensure the responses are not out of date)
-or can be used when you simply want to log all HTTP requests.</p>
+<div id="session-info" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> session info</h1>
+<p>Session info for this book</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">sessioninfo<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
+<pre><code>#&gt;  setting  value                       
+#&gt;  version  R version 3.5.0 (2018-04-23)
+#&gt;  os       macOS High Sierra 10.13.4   
+#&gt;  system   x86_64, darwin15.6.0        
+#&gt;  ui       X11                         
+#&gt;  language (EN)                        
+#&gt;  collate  en_US.UTF-8                 
+#&gt;  tz       US/Pacific                  
+#&gt;  date     2018-04-28                  
+#&gt; 
+#&gt;  package     ondiskversion loadedversion
+#&gt;  backports   1.1.2         1.1.2        
+#&gt;  base64enc   0.1.3         0.1-3        
+#&gt;  bookdown    0.7           0.7          
+#&gt;  clisymbols  1.2.0         1.2.0        
+#&gt;  devtools    1.13.5        1.13.5       
+#&gt;  digest      0.6.15        0.6.15       
+#&gt;  evaluate    0.10.1        0.10.1       
+#&gt;  htmltools   0.3.6         0.3.6        
+#&gt;  jsonlite    1.5           1.5          
+#&gt;  knitr       1.20          1.20         
+#&gt;  lazyeval    0.2.1         0.2.1        
+#&gt;  magrittr    1.5           1.5          
+#&gt;  memoise     1.1.0         1.1.0        
+#&gt;  R6          2.2.2         2.2.2        
+#&gt;  Rcpp        0.12.16       0.12.16      
+#&gt;  rlang       0.2.0         0.2.0        
+#&gt;  rmarkdown   1.9           1.9          
+#&gt;  rprojroot   1.3.2         1.3-2        
+#&gt;  rstudioapi  0.7           0.7          
+#&gt;  sessioninfo 1.0.1.9000    1.0.1.9000   
+#&gt;  stringi     1.1.7         1.1.7        
+#&gt;  stringr     1.3.0         1.3.0        
+#&gt;  testthat    2.0.0         2.0.0        
+#&gt;  triebeard   0.3.0         0.3.0        
+#&gt;  urltools    1.7.0         1.7.0        
+#&gt;  vcr         0.0.8.9521    0.0.8.9521   
+#&gt;  withr       2.1.2         2.1.2        
+#&gt;  xfun        0.1           0.1          
+#&gt;  yaml        2.1.18        2.1.18       
+#&gt;  path                                                                      
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/backports  
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/base64enc  
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/bookdown   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clisymbols 
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/devtools   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/digest     
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/evaluate   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/htmltools  
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/jsonlite   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/knitr      
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/lazyeval   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/magrittr   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/memoise    
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/R6         
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/Rcpp       
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rlang      
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown  
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rprojroot  
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rstudioapi 
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/sessioninfo
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/stringi    
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/stringr    
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/testthat   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/triebeard  
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/urltools   
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/vcr        
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/withr      
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/xfun       
+#&gt;  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/yaml       
+#&gt;  attached is_base date       source                            
+#&gt;  FALSE    FALSE   2017-12-13 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2015-07-28 CRAN (R 3.5.0)                    
+#&gt;   TRUE    FALSE   2018-02-18 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-05-21 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-02-18 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-01-28 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-06-24 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-04-28 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-06-01 CRAN (R 3.5.0)                    
+#&gt;   TRUE    FALSE   2018-02-20 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-10-29 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2014-11-22 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-04-21 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-06-17 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-03-13 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-02-20 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-03-01 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-01-03 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2017-09-07 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-04-28 Github (r-lib/sessioninfo@c871d01)
+#&gt;  FALSE    FALSE   2018-03-12 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-02-19 CRAN (R 3.5.0)                    
+#&gt;   TRUE    FALSE   2017-12-13 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2016-08-04 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-01-20 CRAN (R 3.5.0)                    
+#&gt;   TRUE    FALSE   2018-04-28 local (ropensci/vcr@NA)           
+#&gt;  FALSE    FALSE   2018-03-15 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-01-22 CRAN (R 3.5.0)                    
+#&gt;  FALSE    FALSE   2018-03-08 CRAN (R 3.5.0)</code></pre>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="vcr-configuration.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="request-matching.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="escape-hatches.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -293,7 +349,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/03-record-modes.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/08-session-info.Rmd",
 "text": "Edit"
 },
 "download": ["_main.pdf", "_main.epub"],

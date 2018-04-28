@@ -2,8 +2,7 @@
 knitr::opts_chunk$set(
   comment = "#>",
   warning = FALSE,
-  message = FALSE,
-  eval = FALSE
+  message = FALSE
 )
 ```
 
@@ -20,7 +19,7 @@ library("vcr")
 
 Use `vcr_configuration()` to get the current configuration
 
-```{r}
+```{r }
 vcr_configuration()
 ```
 
@@ -155,4 +154,9 @@ any HTTP request made when there is no cassette in use
 
 ```{r}
 vcr_configure(allow_http_connections_when_no_cassette = TRUE)
+```
+
+
+```{r echo=FALSE}
+vcr_configure_reset()
 ```

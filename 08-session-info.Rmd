@@ -1,0 +1,13 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>"
+)
+```
+
+# session info
+
+Session info for this book
+
+```{r}
+sessioninfo::session_info()
+```
