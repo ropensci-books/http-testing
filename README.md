@@ -10,3 +10,7 @@ Manual for HTTP testing in R packages, covers the packages:
 ## contributions
 
 see [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+
+## Code of Conduct
+
+see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
