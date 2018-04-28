@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="request-matching.html">
-<link rel="next" href="security.html">
+<link rel="prev" href="security.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -205,62 +205,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="logging" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> logging</h1>
-<p>Use logging to set an IO-like object that <code>vcr</code> will log output to. This is a
-useful way to troubleshoot what <code>vcr</code> is doing.</p>
-<div id="logging-setup" class="section level2">
-<h2><span class="header-section-number">6.1</span> Setup logging</h2>
-<p>To set up logging, see <code>?vcr_logging</code> use <code>vcr_configure()</code></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4">)</a></code></pre></div>
-<ul>
-<li>The <code>log</code> parameter is a boolean to indicate whether <code>vcr</code> should log or not</li>
-<li>The <code>log_opts</code> parameter is a named list with various options:
-<ul>
-<li><code>file</code>: the log file path (it does not get put in the cassette directory, but is at whatever this path is)</li>
-<li><code>log_prefix</code>: prefix to put in each log entry. the default is <code>Cassette</code></li>
-<li><code>date</code>: whether to include a time stamp in each log entry or not. format is <code>YYYY-MM-DD HH:MM:SS</code></li>
-</ul></li>
-</ul>
+<div id="escape-hatches" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> escape hatches</h1>
+<p>There’s many different scenarios for using <code>vcr</code>, some of which are that you
+have <code>vcr</code> loaded but you want to still make real HTTP requests.</p>
+<p>The following are different ways to allow real HTTP requests.</p>
+<div id="lightswitch-vcr-webmockr-and-their-onoff-states" class="section level2">
+<h2><span class="header-section-number">8.1</span> lightswitch: vcr, webmockr and their on/off states</h2>
+<p>After loading <code>vcr</code>, <code>webmockr</code> is not loaded, thus real HTTP requests are allowed.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">library</span>(vcr)</a></code></pre></div>
+<p>After loading <code>webmockr</code> you can still make real HTTP requests.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">library</span>(webmockr)</a></code></pre></div>
+<p>But after turning mocking on you can’t make real requests</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">crul<span class="op">::</span><span class="kw">mock</span>()</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="co"># OR</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">webmockr<span class="op">::</span><span class="kw">enable</span>()</a></code></pre></div>
+<p>And you’ll get errors that come from <code>webmockr</code> when attempting real HTTP requests</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="co">#&gt; Error: Real HTTP connections are disabled.</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="co">#&gt; Unregistered request: GET https://httpbin.org/get with headers {Accept-Encoding: gzip, deflate}</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="co">#&gt; You can stub this request with the following snippet:</span></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb30-7" data-line-number="7"><span class="co">#&gt;    stub_request(&#39;get&#39;, uri = &#39;https://httpbin.org/get&#39;) %&gt;%</span></a>
+<a class="sourceLine" id="cb30-8" data-line-number="8"><span class="co">#&gt;     wi_th(headers = list(&#39;Accept-Encoding&#39; = &#39;gzip, deflate&#39;))</span></a></code></pre></div>
+<p>You can have <code>vcr</code> loaded but if you’re not using <code>use_casette</code></p>
 </div>
-<div id="the-log-file" class="section level2">
-<h2><span class="header-section-number">6.2</span> The log file</h2>
-<p>The following is an example log file:</p>
-<pre><code>[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Init. HTTPInteractionList w/ request matchers [method, uri] &amp; 1 interaction(s): { get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1 =&gt; ??? [{&quot;AphiaID&quot;:297110,&quot;url&quot;:&quot;http:\/\/www.marinespecies.org\/aphia.php?p=taxdetails }
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Initialized with options: {name: foobar, record: once, serialize_with: yaml, persist_with: FileSystem, match_requests_on: c(&quot;method&quot;, &quot;uri&quot;), update_content_length_header: FALSE, allow_playback_repeats: FALSE, preserve_exact_body_bytes: FALSE}
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Handling request: get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1 (disabled: FALSE)
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Checking if {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} matches {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} using matchers: [method, uri]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   method matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   uri matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Identified request type: (stubbed_by_vcr) for get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Checking if {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} matches {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} using matchers: [method, uri]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   method matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   uri matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Found matching interaction for get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1 at index 1: ??? [{&quot;AphiaID&quot;:297110,&quot;url&quot;:&quot;http:\/\/www.marinespecies.org\/aphia.php?p=taxdetails</code></pre>
-<p>Internally <code>vcr</code> logs certain actions that we think are important steps in the process, including:</p>
-<ul>
-<li>initializing an <code>HTTPInteractionList</code> object that holds HTTP interactions</li>
-<li>initializing a <code>Cassette</code> with whatever options the user passes in</li>
-<li>declaring what request is being handled</li>
-<li>what request is being checked</li>
-<li>whether there is a match found or not</li>
-<li>when an interaction is recorded, or pulled from a stub, etc.</li>
-</ul>
-<p>If you turn off the date, you won’t get date entries:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>[Cassette: &#39;foobar&#39;] - {{message}}</code></pre>
-<p>And you can change the prefix from <code>Cassette</code> to something else:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb24-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Unicorn&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb24-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>[Unicorn: &#39;foobar&#39;] - {{message}}</code></pre>
+<div id="turned-off" class="section level2">
+<h2><span class="header-section-number">8.2</span> turned_off</h2>
+<p><code>turned_off()</code> lets you temporarily make a real HTTP request without completely turning
+<code>vcr</code> off, unloading it, etc.</p>
+<p>What happens internally is we turn off <code>vcr</code>, run your code block, then on exit
+turn <code>vcr</code> back on - such that <code>vcr</code> is onl turned off for the duration of your
+code block running. Even if your code block errors, <code>vcr</code> will be turned back on
+due to use of <code>on.exit(turn_on())</code></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">library</span>(vcr)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">library</span>(crul)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw">turned_off</span>({</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"> res &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()</a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">})</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">res</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="co">#&gt; &lt;crul response&gt; </span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="co">#&gt;   url: https://httpbin.org/get</span></a>
+<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="co">#&gt;   request_headers: </span></a>
+<a class="sourceLine" id="cb32-5" data-line-number="5"><span class="co">#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span></a>
+<a class="sourceLine" id="cb32-6" data-line-number="6"><span class="co">#&gt;     Accept-Encoding: gzip, deflate</span></a>
+<a class="sourceLine" id="cb32-7" data-line-number="7"><span class="co">#&gt;     Accept: application/json, text/xml, application/xml, */*</span></a>
+<a class="sourceLine" id="cb32-8" data-line-number="8"><span class="co">#&gt;   response_headers: </span></a>
+<a class="sourceLine" id="cb32-9" data-line-number="9"><span class="co">#&gt;     status: HTTP/1.1 200 OK</span></a>
+<a class="sourceLine" id="cb32-10" data-line-number="10"><span class="co">#&gt;     server: nginx</span></a>
+<a class="sourceLine" id="cb32-11" data-line-number="11"><span class="co">#&gt;     date: Fri, 27 Apr 2018 23:22:44 GMT</span></a>
+<a class="sourceLine" id="cb32-12" data-line-number="12"><span class="co">#&gt;     content-type: application/json</span></a>
+<a class="sourceLine" id="cb32-13" data-line-number="13"><span class="co">#&gt;     content-length: 330</span></a>
+<a class="sourceLine" id="cb32-14" data-line-number="14"><span class="co">#&gt;     connection: keep-alive</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15"><span class="co">#&gt;     access-control-allow-origin: *</span></a>
+<a class="sourceLine" id="cb32-16" data-line-number="16"><span class="co">#&gt;     access-control-allow-credentials: true</span></a>
+<a class="sourceLine" id="cb32-17" data-line-number="17"><span class="co">#&gt;     x-powered-by: Flask</span></a>
+<a class="sourceLine" id="cb32-18" data-line-number="18"><span class="co">#&gt;     x-processed-time: 0</span></a>
+<a class="sourceLine" id="cb32-19" data-line-number="19"><span class="co">#&gt;   status: 200</span></a></code></pre></div>
+</div>
+<div id="turn-off" class="section level2">
+<h2><span class="header-section-number">8.3</span> turn_off</h2>
 
 </div>
 </div>
@@ -269,8 +274,8 @@ useful way to troubleshoot what <code>vcr</code> is doing.</p>
           </div>
         </div>
       </div>
-<a href="request-matching.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="security.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="security.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -300,7 +305,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/05-logging.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/07-escape-hatches.Rmd",
 "text": "Edit"
 },
 "download": ["_main.pdf", "_main.epub"],

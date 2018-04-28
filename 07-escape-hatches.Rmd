@@ -1,0 +1,95 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
+# escape hatches {#escape-hatches}
+
+There's many different scenarios for using `vcr`, some of which are that you 
+have `vcr` loaded but you want to still make real HTTP requests. 
+
+The following are different ways to allow real HTTP requests.
+
+## lightswitch: vcr, webmockr and their on/off states
+
+After loading `vcr`, `webmockr` is not loaded, thus real HTTP requests are allowed.
+
+```r
+library(vcr)
+```
+
+After loading `webmockr` you can still make real HTTP requests.
+
+```r
+library(webmockr)
+```
+
+But after turning mocking on you can't make real requests
+
+```r
+crul::mock()
+# OR
+webmockr::enable()
+```
+
+And you'll get errors that come from `webmockr` when attempting real HTTP requests
+
+```r
+HttpClient$new(url = "https://httpbin.org/get")$get()
+#> Error: Real HTTP connections are disabled.
+#> Unregistered request: GET https://httpbin.org/get with headers {Accept-Encoding: gzip, deflate}
+#> 
+#> You can stub this request with the following snippet:
+#> 
+#>    stub_request('get', uri = 'https://httpbin.org/get') %>%
+#>     wi_th(headers = list('Accept-Encoding' = 'gzip, deflate'))
+```
+
+You can have `vcr` loaded but if you're not using `use_casette`
+
+
+## turned_off {#turned-off}
+
+`turned_off()` lets you temporarily make a real HTTP request without completely turning 
+`vcr` off, unloading it, etc.
+
+What happens internally is we turn off `vcr`, run your code block, then on exit 
+turn `vcr` back on - such that `vcr` is onl turned off for the duration of your 
+code block running. Even if your code block errors, `vcr` will be turned back on 
+due to use of `on.exit(turn_on())`
+
+```r
+library(vcr)
+library(crul)
+turned_off({
+ res <- HttpClient$new(url = "https://httpbin.org/get")$get()
+})
+```
+
+```r
+res
+#> <crul response> 
+#>   url: https://httpbin.org/get
+#>   request_headers: 
+#>     User-Agent: libcurl/7.54.0 r-curl/3.2 crul/0.5.2
+#>     Accept-Encoding: gzip, deflate
+#>     Accept: application/json, text/xml, application/xml, */*
+#>   response_headers: 
+#>     status: HTTP/1.1 200 OK
+#>     server: nginx
+#>     date: Fri, 27 Apr 2018 23:22:44 GMT
+#>     content-type: application/json
+#>     content-length: 330
+#>     connection: keep-alive
+#>     access-control-allow-origin: *
+#>     access-control-allow-credentials: true
+#>     x-powered-by: Flask
+#>     x-processed-time: 0
+#>   status: 200
+```
+
+## turn_off {#turn-off}

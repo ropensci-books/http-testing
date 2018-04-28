@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#user-interface"><i class="fa fa-check"></i><b>2.1</b> User interface</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>3</b> vcr configuration</a><ul>
-<li class="chapter" data-level="3.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-configuration"><i class="fa fa-check"></i><b>3.1</b> Get configuration</a></li>
+<li class="chapter" data-level="3.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>3.1</b> Get your configuration</a></li>
 <li class="chapter" data-level="3.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>3.2</b> Set configuration variables</a></li>
 <li class="chapter" data-level="3.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>3.3</b> Re-set to defaults</a></li>
 <li class="chapter" data-level="3.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>3.4</b> dir - directory of where cassettes are stored</a></li>
@@ -172,7 +172,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>5.7</b> matching on headers</a></li>
 <li class="chapter" data-level="5.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>5.8</b> Playback repeats</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>6</b> logging</a></li>
+<li class="chapter" data-level="6" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>6</b> logging</a><ul>
+<li class="chapter" data-level="6.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>6.1</b> Setup logging</a></li>
+<li class="chapter" data-level="6.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>6.2</b> The log file</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>7</b> security</a><ul>
+<li class="chapter" data-level="7.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>7.1</b> API keys and such</a></li>
+<li class="chapter" data-level="7.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>7.2</b> Other security</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>8</b> escape hatches</a><ul>
+<li class="chapter" data-level="8.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>8.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
+<li class="chapter" data-level="8.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>8.2</b> turned_off</a></li>
+<li class="chapter" data-level="8.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>8.3</b> turn_off</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
 
@@ -197,8 +209,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> vcr configuration</h1>
 <p><code>vcr</code> configuration</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;vcr&quot;</span>)</a></code></pre></div>
-<div id="get-configuration" class="section level2">
-<h2><span class="header-section-number">3.1</span> Get configuration</h2>
+<div id="get-your-configuration" class="section level2">
+<h2><span class="header-section-number">3.1</span> Get your configuration</h2>
 <p>Use <code>vcr_configuration()</code> to get the current configuration</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">vcr_configuration</span>()</a></code></pre></div>
 <p>You can get the default configuration variables via <code>vcr_config_defaults()</code></p>

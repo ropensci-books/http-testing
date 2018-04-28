@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 library("vcr")
 ```
 
-## Get configuration
+## Get your configuration
 
 Use `vcr_configuration()` to get the current configuration
 

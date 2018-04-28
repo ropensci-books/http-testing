@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="request-matching.html">
-<link rel="next" href="security.html">
+<link rel="prev" href="logging.html">
+<link rel="next" href="escape-hatches.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -205,62 +205,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="logging" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> logging</h1>
-<p>Use logging to set an IO-like object that <code>vcr</code> will log output to. This is a
-useful way to troubleshoot what <code>vcr</code> is doing.</p>
-<div id="logging-setup" class="section level2">
-<h2><span class="header-section-number">6.1</span> Setup logging</h2>
-<p>To set up logging, see <code>?vcr_logging</code> use <code>vcr_configure()</code></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4">)</a></code></pre></div>
-<ul>
-<li>The <code>log</code> parameter is a boolean to indicate whether <code>vcr</code> should log or not</li>
-<li>The <code>log_opts</code> parameter is a named list with various options:
-<ul>
-<li><code>file</code>: the log file path (it does not get put in the cassette directory, but is at whatever this path is)</li>
-<li><code>log_prefix</code>: prefix to put in each log entry. the default is <code>Cassette</code></li>
-<li><code>date</code>: whether to include a time stamp in each log entry or not. format is <code>YYYY-MM-DD HH:MM:SS</code></li>
-</ul></li>
-</ul>
+<div id="security" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> security</h1>
+<div id="api-keys" class="section level2">
+<h2><span class="header-section-number">7.1</span> API keys and such</h2>
+<p>The configuration parameter <code>filter_sensitive_data</code> accepts a named list.</p>
+<p>Each element in the list should be of the following format:</p>
+<p><code>thing_to_replace_it_with = thing_to_replace</code></p>
+<p>We replace all instances of <code>thing_to_replace</code> with <code>thing_to_replace_it_with</code>.</p>
+<p>Before recording (writing to a cassette) we do the replacement and then when
+reading from the cassette we do the reverse replacement to get back
+to the real data.</p>
+<p>The before record replacement happens in an internal
+function <code>write_interactions()</code>, while before playback replacement
+happens in internal function <code>YAML$deserialize_path()</code></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">)</a></code></pre></div>
+<p>You want to make the string that replaces your sensitive string something that
+won’t be easily found elsewhere in the response body/headers/etc.</p>
+<p>It’s a good idea to not in place of <code>thing_to_replace</code> put your actual sensitive
+key thing, because that defeats the purpose of trying to protect your private
+data. This is why we highly recommend setting your API keys as environment
+variables, then you can as seen above just put a call to <code>Sys.getenv()</code>,
+which we’ll use internally to get your key, find it anywhere in the HTTP
+responses, and replace it with your placeholder string.</p>
+<p>The reason you want to do this is because you may on purpose or on accident
+push your cassettes to the public web, and when that happens you don’t want
+your private keys in those cassettes.</p>
+<p>Note that the way this is implemented in <code>vcr</code> is not super elegant and is
+not general with respect to the serializer. We only support YAML serializing
+right now, but when we support other serializers we’ll need to change the implementation.</p>
 </div>
-<div id="the-log-file" class="section level2">
-<h2><span class="header-section-number">6.2</span> The log file</h2>
-<p>The following is an example log file:</p>
-<pre><code>[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Init. HTTPInteractionList w/ request matchers [method, uri] &amp; 1 interaction(s): { get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1 =&gt; ??? [{&quot;AphiaID&quot;:297110,&quot;url&quot;:&quot;http:\/\/www.marinespecies.org\/aphia.php?p=taxdetails }
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Initialized with options: {name: foobar, record: once, serialize_with: yaml, persist_with: FileSystem, match_requests_on: c(&quot;method&quot;, &quot;uri&quot;), update_content_length_header: FALSE, allow_playback_repeats: FALSE, preserve_exact_body_bytes: FALSE}
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Handling request: get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1 (disabled: FALSE)
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Checking if {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} matches {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} using matchers: [method, uri]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   method matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   uri matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Identified request type: (stubbed_by_vcr) for get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Checking if {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} matches {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1} using matchers: [method, uri]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   method matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 -   uri matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1]
-[Cassette: &#39;foobar&#39;] - 2018-04-27 08:36:28 - Found matching interaction for get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&amp;offset=1 at index 1: ??? [{&quot;AphiaID&quot;:297110,&quot;url&quot;:&quot;http:\/\/www.marinespecies.org\/aphia.php?p=taxdetails</code></pre>
-<p>Internally <code>vcr</code> logs certain actions that we think are important steps in the process, including:</p>
-<ul>
-<li>initializing an <code>HTTPInteractionList</code> object that holds HTTP interactions</li>
-<li>initializing a <code>Cassette</code> with whatever options the user passes in</li>
-<li>declaring what request is being handled</li>
-<li>what request is being checked</li>
-<li>whether there is a match found or not</li>
-<li>when an interaction is recorded, or pulled from a stub, etc.</li>
-</ul>
-<p>If you turn off the date, you won’t get date entries:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>[Cassette: &#39;foobar&#39;] - {{message}}</code></pre>
-<p>And you can change the prefix from <code>Cassette</code> to something else:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb24-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Unicorn&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb24-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>[Unicorn: &#39;foobar&#39;] - {{message}}</code></pre>
+<div id="other-security" class="section level2">
+<h2><span class="header-section-number">7.2</span> Other security</h2>
+<p>Let us know about any other security concerns! Surely there’s things we haven’t considered yet.</p>
 
 </div>
 </div>
@@ -269,8 +248,8 @@ useful way to troubleshoot what <code>vcr</code> is doing.</p>
           </div>
         </div>
       </div>
-<a href="request-matching.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="security.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="logging.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="escape-hatches.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -300,7 +279,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/05-logging.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/06-security.Rmd",
 "text": "Edit"
 },
 "download": ["_main.pdf", "_main.epub"],

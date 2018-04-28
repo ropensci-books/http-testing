@@ -1,0 +1,56 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
+# security {#security}
+
+## API keys and such {#api-keys}
+
+The configuration parameter `filter_sensitive_data` accepts a named list. 
+
+Each element in the list should be of the following format:
+
+`thing_to_replace_it_with = thing_to_replace`
+
+We replace all instances of `thing_to_replace` with `thing_to_replace_it_with`. 
+
+Before recording (writing to a cassette) we do the replacement and then when
+reading from the cassette we do the reverse replacement to get back
+to the real data. 
+
+The before record replacement happens in an internal
+function `write_interactions()`, while before playback replacement
+happens in internal function `YAML$deserialize_path()`
+
+```r
+vcr_configure(
+  filter_sensitive_data = list("<<<my_api_key>>>" = Sys.getenv('API_KEY'))
+)
+```
+
+You want to make the string that replaces your sensitive string something that
+won't be easily found elsewhere in the response body/headers/etc.
+
+It's a good idea to not in place of `thing_to_replace` put your actual sensitive
+key thing, because that defeats the purpose of trying to protect your private
+data. This is why we highly recommend setting your API keys as environment
+variables, then you can as seen above just put a call to `Sys.getenv()`, 
+which we'll use internally to get your key, find it anywhere in the HTTP 
+responses, and replace it with your placeholder string.
+
+The reason you want to do this is because you may on purpose or on accident
+push your cassettes to the public web, and when that happens you don't want
+your private keys in those cassettes. 
+
+Note that the way this is implemented in `vcr` is not super elegant and is 
+not general with respect to the serializer. We only support YAML serializing 
+right now, but when we support other serializers we'll need to change the implementation.
+
+## Other security
+
+Let us know about any other security concerns! Surely there's things we haven't considered yet.
