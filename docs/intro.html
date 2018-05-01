@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.0.8.9521 / webmockr v0.2.2.9119 / crul v0.5.2">
+<meta name="author" content="built w/ vcr v0.0.8.9534 / webmockr v0.2.2.9119 / crul v0.5.2">
 
 
 
@@ -190,7 +190,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>8.2</b> turned_off</a></li>
 <li class="chapter" data-level="8.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>8.3</b> turn_off</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>9</b> session info</a></li>
+<li class="chapter" data-level="9" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>9</b> gotchas</a></li>
+<li class="chapter" data-level="10" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>10</b> session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
 
@@ -268,7 +269,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb2-14" data-line-number="14">## ejecting cassette: helloworld</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">## CrulAdapter disabled!</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">##    user  system elapsed </a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">##   0.062   0.005   6.317</a></code></pre></div>
+<a class="sourceLine" id="cb2-17" data-line-number="17">##   0.056   0.003   2.780</a></code></pre></div>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">system.time</span>(</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {</a>
@@ -281,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb3-9" data-line-number="9">## ejecting cassette: helloworld</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">## CrulAdapter disabled!</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11">##    user  system elapsed </a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">##   0.029   0.001   0.031</a></code></pre></div>
+<a class="sourceLine" id="cb3-12" data-line-number="12">##   0.029   0.001   0.030</a></code></pre></div>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="fu">http_interactions:</span></a>

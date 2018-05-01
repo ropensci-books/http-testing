@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="intro.html">
-<link rel="next" href="record-modes.html">
+<link rel="prev" href="escape-hatches.html">
+<link rel="next" href="session-info.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -212,298 +212,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="vcr-configuration" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> vcr configuration</h1>
-<p><code>vcr</code> configuration</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;vcr&quot;</span>)</a></code></pre></div>
-<div id="get-your-configuration" class="section level2">
-<h2><span class="header-section-number">3.1</span> Get your configuration</h2>
-<p>Use <code>vcr_configuration()</code> to get the current configuration</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">vcr_configuration</span>()</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-<p>You can get the default configuration variables via <code>vcr_config_defaults()</code></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">vcr_config_defaults</span>()</a></code></pre></div>
-<pre><code>#&gt; $dir
-#&gt; [1] &quot;.&quot;
-#&gt; 
-#&gt; $record
-#&gt; [1] &quot;once&quot;
-#&gt; 
-#&gt; $match_requests_on
-#&gt; [1] &quot;method&quot; &quot;uri&quot;   
-#&gt; 
-#&gt; $allow_unused_http_interactions
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $serialize_with
-#&gt; [1] &quot;yaml&quot;
-#&gt; 
-#&gt; $persist_with
-#&gt; [1] &quot;FileSystem&quot;
-#&gt; 
-#&gt; $ignore_hosts
-#&gt; NULL
-#&gt; 
-#&gt; $ignore_localhost
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $ignore_request
-#&gt; NULL
-#&gt; 
-#&gt; $uri_parser
-#&gt; [1] &quot;crul::url_parse&quot;
-#&gt; 
-#&gt; $preserve_exact_body_bytes
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $turned_off
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $ignore_cassettes
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $re_record_interval
-#&gt; NULL
-#&gt; 
-#&gt; $clean_outdated_http_interactions
-#&gt; NULL
-#&gt; 
-#&gt; $allow_http_connections_when_no_cassette
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $cassettes
-#&gt; list()
-#&gt; 
-#&gt; $linked_context
-#&gt; NULL
-#&gt; 
-#&gt; $log
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $log_opts
-#&gt; $log_opts$file
-#&gt; [1] &quot;vcr.log&quot;
-#&gt; 
-#&gt; $log_opts$log_prefix
-#&gt; [1] &quot;Cassette&quot;
-#&gt; 
-#&gt; 
-#&gt; $filter_sensitive_data
-#&gt; NULL</code></pre>
-<p>These defaults are set when you load <code>vcr</code> - you can override any of them as described below.</p>
-</div>
-<div id="set-configuration-variables" class="section level2">
-<h2><span class="header-section-number">3.2</span> Set configuration variables</h2>
-<p>Use <code>vcr_configure()</code> to set configuration variables.</p>
-<p>For example, set a single variable:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: foobar/vcr_cassettes
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-<p>Or many at once:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span>,</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">  <span class="dt">record =</span> <span class="st">&quot;all&quot;</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: foobar/vcr_cassettes
-#&gt;   Record: all
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-reset" class="section level2">
-<h2><span class="header-section-number">3.3</span> Re-set to defaults</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">vcr_configure_reset</span>()</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-dir" class="section level2">
-<h2><span class="header-section-number">3.4</span> dir - directory of where cassettes are stored</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">dir =</span> <span class="st">&quot;new/path&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: new/path
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-record-mode" class="section level2">
-<h2><span class="header-section-number">3.5</span> record - record mode</h2>
-<p>One of: ‘all’, ‘none’, ‘new_episodes’, ‘once’. See <code>?recording</code> for info on the options</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">record =</span> <span class="st">&quot;new_episodes&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: new_episodes
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-match-on" class="section level2">
-<h2><span class="header-section-number">3.6</span> match_requests_on - customize how vcr matches requests</h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">match_requests_on =</span> <span class="kw">c</span>(<span class="st">&#39;query&#39;</span>, <span class="st">&#39;headers&#39;</span>))</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: query, headers
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-allow-unused" class="section level2">
-<h2><span class="header-section-number">3.7</span> allow_unused_http_interactions - Allow HTTP connections when no cassette</h2>
-<p>Default is <code>TRUE</code>, and thus does not error when http interactions are unused. You
-can set to <code>FALSE</code> in which case vcr errors when a cassette is ejected and
-not all http interactions have been used.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">allow_unused_http_interactions =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-serialize-with" class="section level2">
-<h2><span class="header-section-number">3.8</span> serialize_with - which serializer to use</h2>
-<p>Right now only option is “yaml”</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">serialize_with =</span> <span class="st">&quot;yaml&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-persist-with" class="section level2">
-<h2><span class="header-section-number">3.9</span> persist_with - which persister to use</h2>
-<p>Right now only option is “FileSystem”</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">persist_with =</span> <span class="st">&quot;FileSystem&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-ignore-requests" class="section level2">
-<h2><span class="header-section-number">3.10</span> ignore requests</h2>
-<div id="ignore_hosts---specify-particular-hosts-to-ignore" class="section level3">
-<h3><span class="header-section-number">3.10.1</span> ignore_hosts - specify particular hosts to ignore</h3>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">ignore_hosts =</span> <span class="st">&quot;google.com&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="ignore_localhost---ignore-all-localhost-flavors" class="section level3">
-<h3><span class="header-section-number">3.10.2</span> ignore_localhost - ignore all localhost flavors</h3>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">ignore_localhost =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="ignore_request---ignore-any-request-for-which-function-is-true" class="section level3">
-<h3><span class="header-section-number">3.10.3</span> ignore_request - ignore any request for which function is true</h3>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">ignore_request =</span> <span class="cf">function</span>(x) x <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-</div>
-<div id="config-uri-parser" class="section level2">
-<h2><span class="header-section-number">3.11</span> uri_parser - which uri parser to use</h2>
-<p>By default we use <code>httr::parse_url</code>, but you can use a different one. Remember
-to pass in the function quoted, and namespaced.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">uri_parser =</span> <span class="st">&quot;urltools::url_parse&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: urltools::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="config-preserve-exact-body-bytes" class="section level2">
-<h2><span class="header-section-number">3.12</span> preserve_exact_body_bytes</h2>
-<p>Some HTTP servers are not well-behaved and respond with invalid data. Set
-<code>preserve_exact_body_bytes</code> to <code>TRUE</code> to base64 encode the result body in
-order to preserve the bytes exactly as-is. <code>vcr</code> does not do this by
-default, since base64-encoding the string removes the human readibility
-of the cassette.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">preserve_exact_body_bytes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: TRUE
-#&gt;   Logging?: FALSE</code></pre>
-</div>
-<div id="allow-http-connections-when-no-cassette" class="section level2">
-<h2><span class="header-section-number">3.13</span> allow_http_connections_when_no_cassette</h2>
-<p>Determines how <code>vcr</code> treats HTTP requests that are made when no vcr cassette is in use.
-When <code>TRUE</code>, requests made when there is no vcr cassette in use will be allowed.
-When <code>FALSE</code> (default), an [UnhandledHTTPRequestError] error will be raised for
-any HTTP request made when there is no cassette in use</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">vcr_configure</span>(<span class="dt">allow_http_connections_when_no_cassette =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
-<pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: .
-#&gt;   Record: once
-#&gt;   URI Parser: crul::url_parse
-#&gt;   Match Requests on: method, uri
-#&gt;   Preserve Bytes?: FALSE
-#&gt;   Logging?: FALSE</code></pre>
+<div id="gotchas" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> gotchas</h1>
+<p>There’s a few things to watch out for when using <code>vcr</code>.</p>
+<ul>
+<li><strong>Security</strong>: Don’t put your secure API keys, tokens, etc. on the public web. See the Security chapter (<a href="security.html#security">7</a>)</li>
+<li><strong>Dates</strong>: Be careful when using dates in tests with <code>vcr</code>. e.g. if you generate todays date, and pass that in to a function in your package that uses that date for an HTTP request, the date will be different from the one in the matching cassette, causing a <code>vcr</code> failure.</li>
+<li><strong>HTTP errors</strong>: It’s a good idea to test failure behavior of a web service in your test suite. Sometimes <code>vcr</code> can handle that and sometimes it cannot. Open any issues about this because ideally i think <code>vcr</code> could handle all cases of HTTP failures.</li>
+<li><strong>Very large response bodies</strong>: A few things about large response bodies. First, <code>vcr</code> may give you trouble with very large response bodies as we’ve see yaml parsing problems already. Second, large response bodies means large cassettes on disk - so just be aware of the file size if that’s something that matters to you. Third, large response bodies will take longer to load into R, so you may still have a multi second test run even though the test is using a cached HTTP response.</li>
+<li><strong>Encoding</strong>: We haven’t dealt with encoding much yet at all, so we’re likely to run into encoding issues. One blunt instrument for this for now is to set <code>preserve_exact_body_bytes = TRUE</code> when running <code>vcr::use_cassette()</code> or <code>vcr::insert_cassette()</code>, which stores the response body as base64.</li>
+</ul>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="record-modes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="escape-hatches.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="session-info.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -533,7 +260,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/02-configuration.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/08-gotchas.Rmd",
 "text": "Edit"
 },
 "download": ["_main.pdf", "_main.epub"],

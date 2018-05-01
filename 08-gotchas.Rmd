@@ -1,0 +1,18 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
+# gotchas {#gotchas}
+
+There's a few things to watch out for when using `vcr`. 
+
+- **Security**: Don't put your secure API keys, tokens, etc. on the public web. See the Security chapter (\@ref(security))
+- **Dates**: Be careful when using dates in tests with `vcr`. e.g. if you generate todays date, and pass that in to a function in your package that uses that date for an HTTP request, the date will be different from the one in the matching cassette, causing a `vcr` failure.
+- **HTTP errors**: It's a good idea to test failure behavior of a web service in your test suite. Sometimes `vcr` can handle that and sometimes it cannot. Open any issues about this because ideally i think `vcr` could handle all cases of HTTP failures.
+- **Very large response bodies**: A few things about large response bodies. First, `vcr` may give you trouble with very large response bodies as we've see yaml parsing problems already. Second, large response bodies means large cassettes on disk - so just be aware of the file size if that's something that matters to you. Third, large response bodies will take longer to load into R, so you may still have a multi second test run even though the test is using a cached HTTP response. 
+- **Encoding**: We haven't dealt with encoding much yet at all, so we're likely to run into encoding issues. One blunt instrument for this for now is to set `preserve_exact_body_bytes = TRUE` when running `vcr::use_cassette()` or `vcr::insert_cassette()`, which stores the response body as base64. 
