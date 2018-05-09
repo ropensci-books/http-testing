@@ -35,6 +35,5 @@ xxxx
 Stable version from CRAN
 
 ```{r eval=FALSE}
-install.packages(c("crul", "webmockr"))
-remotes::install_github("ropensci/vcr")
+install.packages(c("crul", "webmockr", "vcr"))
 ```
