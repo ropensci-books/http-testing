@@ -26,10 +26,6 @@ Packages
 * `webmockr`: <https://cran.rstudio.com/web/packages/webmockr/>
 * `vcr`: <https://github.com/ropensci/vcr/>
 
-## Citing the packages
-
-xxxx
-
 ## Installation
 
 Stable version from CRAN
