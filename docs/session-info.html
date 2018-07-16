@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.1.0 / webmockr v0.2.6 / crul v0.5.2">
+<meta name="author" content="built w/ vcr v0.1.0 / webmockr v0.2.6 / crul v0.6.0">
 
 
 
@@ -51,7 +51,7 @@
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -64,13 +64,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -216,49 +214,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Session info for this book</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">sessioninfo<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
 <pre><code>#&gt; ─ Session info ──────────────────────────────────────────────────────────
-#&gt;  setting  value                       
-#&gt;  version  R version 3.5.0 (2018-04-23)
-#&gt;  os       macOS High Sierra 10.13.4   
-#&gt;  system   x86_64, darwin15.6.0        
-#&gt;  ui       X11                         
-#&gt;  language (EN)                        
-#&gt;  collate  en_US.UTF-8                 
-#&gt;  tz       US/Pacific                  
-#&gt;  date     2018-05-17                  
+#&gt;  setting  value                                 
+#&gt;  version  R version 3.5.1 RC (2018-06-29 r74946)
+#&gt;  os       macOS High Sierra 10.13.6             
+#&gt;  system   x86_64, darwin15.6.0                  
+#&gt;  ui       X11                                   
+#&gt;  language (EN)                                  
+#&gt;  collate  en_US.UTF-8                           
+#&gt;  tz       US/Pacific                            
+#&gt;  date     2018-07-16                            
 #&gt; 
 #&gt; ─ Packages ──────────────────────────────────────────────────────────────
 #&gt;  package     * version    date       source                            
+#&gt;  .py           0.0.16     &lt;NA&gt;       local                             
 #&gt;  backports     1.1.2      2017-12-13 CRAN (R 3.5.0)                    
 #&gt;  base64enc     0.1-3      2015-07-28 CRAN (R 3.5.0)                    
 #&gt;  bookdown    * 0.7        2018-02-18 CRAN (R 3.5.0)                    
 #&gt;  clisymbols    1.2.0      2017-05-21 CRAN (R 3.5.0)                    
-#&gt;  crul        * 0.5.2      2018-02-24 CRAN (R 3.5.0)                    
+#&gt;  crul        * 0.6.0      2018-07-11 Github (ropensci/crul@97a40e6)    
 #&gt;  curl          3.2        2018-03-28 CRAN (R 3.5.0)                    
 #&gt;  digest        0.6.15     2018-01-28 CRAN (R 3.5.0)                    
 #&gt;  evaluate      0.10.1     2017-06-24 CRAN (R 3.5.0)                    
 #&gt;  fauxpas       0.2.0      2018-03-01 CRAN (R 3.5.0)                    
 #&gt;  htmltools     0.3.6      2017-04-28 CRAN (R 3.5.0)                    
-#&gt;  httpcode      0.2.0      2016-11-14 CRAN (R 3.5.0)                    
+#&gt;  httpcode      0.2.0.9000 2018-05-28 local (sckott/httpcode@f6aa4e3)   
+#&gt;  httr          1.3.1      2017-08-20 CRAN (R 3.5.0)                    
 #&gt;  jsonlite      1.5        2017-06-01 CRAN (R 3.5.0)                    
 #&gt;  knitr       * 1.20       2018-02-20 CRAN (R 3.5.0)                    
 #&gt;  lazyeval      0.2.1      2017-10-29 CRAN (R 3.5.0)                    
 #&gt;  magrittr      1.5        2014-11-22 CRAN (R 3.5.0)                    
 #&gt;  R6            2.2.2      2017-06-17 CRAN (R 3.5.0)                    
-#&gt;  Rcpp          0.12.16    2018-03-13 CRAN (R 3.5.0)                    
-#&gt;  rlang         0.2.0      2018-02-20 CRAN (R 3.5.0)                    
-#&gt;  rmarkdown     1.9        2018-03-01 CRAN (R 3.5.0)                    
+#&gt;  Rcpp          0.12.17    2018-05-18 CRAN (R 3.5.0)                    
+#&gt;  rlang         0.2.1      2018-05-30 CRAN (R 3.5.0)                    
+#&gt;  rmarkdown     1.10       2018-06-11 CRAN (R 3.5.0)                    
 #&gt;  rprojroot     1.3-2      2018-01-03 CRAN (R 3.5.0)                    
 #&gt;  rstudioapi    0.7        2017-09-07 CRAN (R 3.5.0)                    
+#&gt;  rtichoke      0.2.1      &lt;NA&gt;       local                             
 #&gt;  sessioninfo   1.0.1.9000 2018-04-28 Github (r-lib/sessioninfo@c871d01)
-#&gt;  stringi       1.2.2      2018-05-02 CRAN (R 3.5.0)                    
+#&gt;  stringi       1.2.3      2018-06-12 CRAN (R 3.5.0)                    
 #&gt;  stringr       1.3.1      2018-05-10 CRAN (R 3.5.0)                    
 #&gt;  testthat    * 2.0.0      2017-12-13 CRAN (R 3.5.0)                    
 #&gt;  triebeard     0.3.0      2016-08-04 CRAN (R 3.5.0)                    
 #&gt;  urltools      1.7.0      2018-01-20 CRAN (R 3.5.0)                    
-#&gt;  vcr         * 0.1.0      2018-05-09 local (ropensci/vcr@NA)           
-#&gt;  webmockr      0.2.6      2018-05-17 local (ropensci/webmockr@9d1426d) 
+#&gt;  vcr         * 0.1.0      2018-05-14 CRAN (R 3.5.0)                    
+#&gt;  webmockr      0.2.6      2018-07-06 Github (ropensci/webmockr@8394261)
 #&gt;  withr         2.1.2      2018-03-15 CRAN (R 3.5.0)                    
-#&gt;  xfun          0.1        2018-01-22 CRAN (R 3.5.0)                    
+#&gt;  xfun          0.3        2018-07-06 CRAN (R 3.5.1)                    
 #&gt;  yaml          2.1.19     2018-05-01 CRAN (R 3.5.0)</code></pre>
 
 </div>
