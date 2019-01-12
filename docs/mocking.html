@@ -5,21 +5,21 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Chapter 9 escape hatches | http testing book</title>
-  <meta name="description" content="Chapter 9 escape hatches | http testing book">
+  <title>Chapter 3 Mocking HTTP Requests | http testing book</title>
+  <meta name="description" content="Chapter 3 Mocking HTTP Requests | http testing book">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Chapter 9 escape hatches | http testing book" />
+  <meta property="og:title" content="Chapter 3 Mocking HTTP Requests | http testing book" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Chapter 9 escape hatches | http testing book" />
+  <meta property="og:description" content="Chapter 3 Mocking HTTP Requests | http testing book" />
   <meta name="github-repo" content="ropensci/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 escape hatches | http testing book" />
+  <meta name="twitter:title" content="Chapter 3 Mocking HTTP Requests | http testing book" />
   
-  <meta name="twitter:description" content="Chapter 9 escape hatches | http testing book" />
+  <meta name="twitter:description" content="Chapter 3 Mocking HTTP Requests | http testing book" />
   
 
 <meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="security.html">
-<link rel="next" href="gotchas.html">
+<link rel="prev" href="intro.html">
+<link rel="next" href="vcr-configuration.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -215,77 +215,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="escape-hatches" class="section level1">
-<h1><span class="header-section-number">Chapter 9</span> escape hatches</h1>
-<p>There’s many different scenarios for using <code>vcr</code>, some of which are that you
-have <code>vcr</code> loaded but you want to still make real HTTP requests.</p>
-<p>The following are different ways to allow real HTTP requests.</p>
-<div id="lightswitch-vcr-webmockr-and-their-onoff-states" class="section level2">
-<h2><span class="header-section-number">9.1</span> lightswitch: vcr, webmockr and their on/off states</h2>
-<p>After loading <code>vcr</code>, <code>webmockr</code> is not loaded, thus real HTTP requests are allowed.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vcr)</code></pre>
-<p>After loading <code>webmockr</code> you can still make real HTTP requests.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(webmockr)</code></pre>
-<p>But after turning mocking on you can’t make real requests</p>
-<pre class="sourceCode r"><code class="sourceCode r">crul<span class="op">::</span><span class="kw">mock</span>()
-<span class="co"># OR</span>
-webmockr<span class="op">::</span><span class="kw">enable</span>()</code></pre>
-<p>And you’ll get errors that come from <code>webmockr</code> when attempting real HTTP requests</p>
-<pre class="sourceCode r"><code class="sourceCode r">HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()
-<span class="co">#&gt; Error: Real HTTP connections are disabled.</span>
-<span class="co">#&gt; Unregistered request: GET https://httpbin.org/get with headers {Accept-Encoding: gzip, deflate}</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; You can stub this request with the following snippet:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    stub_request(&#39;get&#39;, uri = &#39;https://httpbin.org/get&#39;) %&gt;%</span>
-<span class="co">#&gt;     wi_th(headers = list(&#39;Accept-Encoding&#39; = &#39;gzip, deflate&#39;))</span></code></pre>
-<p>You can have <code>vcr</code> loaded but if you’re not using <code>use_casette</code></p>
-</div>
-<div id="turned-off" class="section level2">
-<h2><span class="header-section-number">9.2</span> turned_off</h2>
-<p><code>turned_off()</code> lets you temporarily make a real HTTP request without completely turning
-<code>vcr</code> off, unloading it, etc.</p>
-<p>What happens internally is we turn off <code>vcr</code>, run your code block, then on exit
-turn <code>vcr</code> back on - such that <code>vcr</code> is onl turned off for the duration of your
-code block running. Even if your code block errors, <code>vcr</code> will be turned back on
-due to use of <code>on.exit(turn_on())</code></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vcr)
-<span class="kw">library</span>(crul)
-<span class="kw">turned_off</span>({
- res &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()
-})</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">res
-<span class="co">#&gt; &lt;crul response&gt; </span>
-<span class="co">#&gt;   url: https://httpbin.org/get</span>
-<span class="co">#&gt;   request_headers: </span>
-<span class="co">#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span>
-<span class="co">#&gt;     Accept-Encoding: gzip, deflate</span>
-<span class="co">#&gt;     Accept: application/json, text/xml, application/xml, */*</span>
-<span class="co">#&gt;   response_headers: </span>
-<span class="co">#&gt;     status: HTTP/1.1 200 OK</span>
-<span class="co">#&gt;     server: nginx</span>
-<span class="co">#&gt;     date: Fri, 27 Apr 2018 23:22:44 GMT</span>
-<span class="co">#&gt;     content-type: application/json</span>
-<span class="co">#&gt;     content-length: 330</span>
-<span class="co">#&gt;     connection: keep-alive</span>
-<span class="co">#&gt;     access-control-allow-origin: *</span>
-<span class="co">#&gt;     access-control-allow-credentials: true</span>
-<span class="co">#&gt;     x-powered-by: Flask</span>
-<span class="co">#&gt;     x-processed-time: 0</span>
-<span class="co">#&gt;   status: 200</span></code></pre>
-</div>
-<div id="turn-off" class="section level2">
-<h2><span class="header-section-number">9.3</span> turn_off</h2>
+<div id="mocking" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Mocking HTTP Requests</h1>
+<p><a href="https://github.com/ropensci/webmockr">webmockr</a> helps you mock your HTTP requests.</p>
+<div id="xxx" class="section level2">
+<h2><span class="header-section-number">3.1</span> xxx</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</code></pre>
 
 </div>
 </div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="security.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="gotchas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="vcr-configuration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -315,7 +263,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/08-escape-hatches.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/02-mocking.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -1,0 +1,21 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+#  (PART) webmockr {-}
+
+# Mocking HTTP Requests {#mocking}
+
+[webmockr][] helps you mock your HTTP requests. 
+
+## xxx
+
+```{r}
+library("webmockr")
+```
+
+[webmockr]: https://github.com/ropensci/webmockr

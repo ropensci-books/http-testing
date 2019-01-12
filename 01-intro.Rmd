@@ -10,6 +10,8 @@
 * While `webmockr` is in use, real HTTP interactions are not allowed
 * There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session
 
+Read more about `webmockr` in [Chapter 3](#mocking).
+
 ## What is vcr? {#what-vcr}
 
 The short version is: `vcr` helps you stub HTTP requests so you don't have to repeat HTTP requests.

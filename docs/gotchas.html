@@ -5,24 +5,24 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Chapter 9 gotchas | http testing book</title>
-  <meta name="description" content="Chapter 9 gotchas | http testing book">
+  <title>Chapter 10 gotchas | http testing book</title>
+  <meta name="description" content="Chapter 10 gotchas | http testing book">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Chapter 9 gotchas | http testing book" />
+  <meta property="og:title" content="Chapter 10 gotchas | http testing book" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Chapter 9 gotchas | http testing book" />
+  <meta property="og:description" content="Chapter 10 gotchas | http testing book" />
   <meta name="github-repo" content="ropensci/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 gotchas | http testing book" />
+  <meta name="twitter:title" content="Chapter 10 gotchas | http testing book" />
   
-  <meta name="twitter:description" content="Chapter 9 gotchas | http testing book" />
+  <meta name="twitter:description" content="Chapter 10 gotchas | http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0">
+<meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
 
 
 
@@ -140,56 +140,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#terminology"><i class="fa fa-check"></i><b>2.4</b> Terminology</a></li>
 <li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#basic-usage"><i class="fa fa-check"></i><b>2.5</b> Basic usage</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>3</b> vcr configuration</a><ul>
-<li class="chapter" data-level="3.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>3.1</b> Get your configuration</a></li>
-<li class="chapter" data-level="3.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>3.2</b> Set configuration variables</a></li>
-<li class="chapter" data-level="3.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>3.3</b> Re-set to defaults</a></li>
-<li class="chapter" data-level="3.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>3.4</b> dir - directory of where cassettes are stored</a></li>
-<li class="chapter" data-level="3.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>3.5</b> record - record mode</a></li>
-<li class="chapter" data-level="3.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>3.6</b> match_requests_on - customize how vcr matches requests</a></li>
-<li class="chapter" data-level="3.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>3.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
-<li class="chapter" data-level="3.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>3.8</b> serialize_with - which serializer to use</a></li>
-<li class="chapter" data-level="3.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>3.9</b> persist_with - which persister to use</a></li>
-<li class="chapter" data-level="3.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>3.10</b> ignore requests</a><ul>
-<li class="chapter" data-level="3.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>3.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
-<li class="chapter" data-level="3.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>3.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
-<li class="chapter" data-level="3.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>3.10.3</b> ignore_request - ignore any request for which function is true</a></li>
+<li class="part"><span><b>I webmockr</b></span></li>
+<li class="chapter" data-level="3" data-path="mocking.html"><a href="mocking.html"><i class="fa fa-check"></i><b>3</b> Mocking HTTP Requests</a><ul>
+<li class="chapter" data-level="3.1" data-path="mocking.html"><a href="mocking.html#xxx"><i class="fa fa-check"></i><b>3.1</b> xxx</a></li>
 </ul></li>
-<li class="chapter" data-level="3.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>3.11</b> uri_parser - which uri parser to use</a></li>
-<li class="chapter" data-level="3.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>3.12</b> preserve_exact_body_bytes</a></li>
-<li class="chapter" data-level="3.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>3.13</b> allow_http_connections_when_no_cassette</a></li>
+<li class="part"><span><b>II vcr</b></span></li>
+<li class="chapter" data-level="4" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>4</b> vcr configuration</a><ul>
+<li class="chapter" data-level="4.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>4.1</b> Get your configuration</a></li>
+<li class="chapter" data-level="4.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>4.2</b> Set configuration variables</a></li>
+<li class="chapter" data-level="4.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>4.3</b> Re-set to defaults</a></li>
+<li class="chapter" data-level="4.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>4.4</b> dir - directory of where cassettes are stored</a></li>
+<li class="chapter" data-level="4.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>4.5</b> record - record mode</a></li>
+<li class="chapter" data-level="4.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>4.6</b> match_requests_on - customize how vcr matches requests</a></li>
+<li class="chapter" data-level="4.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>4.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
+<li class="chapter" data-level="4.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>4.8</b> serialize_with - which serializer to use</a></li>
+<li class="chapter" data-level="4.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>4.9</b> persist_with - which persister to use</a></li>
+<li class="chapter" data-level="4.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>4.10</b> ignore requests</a><ul>
+<li class="chapter" data-level="4.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>4.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
+<li class="chapter" data-level="4.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>4.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
+<li class="chapter" data-level="4.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>4.10.3</b> ignore_request - ignore any request for which function is true</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>4</b> record modes</a><ul>
-<li class="chapter" data-level="4.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>4.1</b> once</a></li>
-<li class="chapter" data-level="4.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>4.2</b> none</a></li>
-<li class="chapter" data-level="4.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>4.3</b> new_episodes</a></li>
-<li class="chapter" data-level="4.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>4.4</b> all</a></li>
+<li class="chapter" data-level="4.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>4.11</b> uri_parser - which uri parser to use</a></li>
+<li class="chapter" data-level="4.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>4.12</b> preserve_exact_body_bytes</a></li>
+<li class="chapter" data-level="4.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>4.13</b> allow_http_connections_when_no_cassette</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>5</b> request matching</a><ul>
-<li class="chapter" data-level="5.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>5.1</b> matching on method</a></li>
-<li class="chapter" data-level="5.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>5.2</b> matching on uri</a></li>
-<li class="chapter" data-level="5.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>5.3</b> matching on host</a></li>
-<li class="chapter" data-level="5.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>5.4</b> matching on path</a></li>
-<li class="chapter" data-level="5.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>5.5</b> matching on query string</a></li>
-<li class="chapter" data-level="5.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>5.6</b> matching on body</a></li>
-<li class="chapter" data-level="5.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>5.7</b> matching on headers</a></li>
-<li class="chapter" data-level="5.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>5.8</b> Playback repeats</a></li>
+<li class="chapter" data-level="5" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>5</b> record modes</a><ul>
+<li class="chapter" data-level="5.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>5.1</b> once</a></li>
+<li class="chapter" data-level="5.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>5.2</b> none</a></li>
+<li class="chapter" data-level="5.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>5.3</b> new_episodes</a></li>
+<li class="chapter" data-level="5.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>5.4</b> all</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>6</b> logging</a><ul>
-<li class="chapter" data-level="6.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>6.1</b> Setup logging</a></li>
-<li class="chapter" data-level="6.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>6.2</b> The log file</a></li>
+<li class="chapter" data-level="6" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>6</b> request matching</a><ul>
+<li class="chapter" data-level="6.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>6.1</b> matching on method</a></li>
+<li class="chapter" data-level="6.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>6.2</b> matching on uri</a></li>
+<li class="chapter" data-level="6.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>6.3</b> matching on host</a></li>
+<li class="chapter" data-level="6.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>6.4</b> matching on path</a></li>
+<li class="chapter" data-level="6.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>6.5</b> matching on query string</a></li>
+<li class="chapter" data-level="6.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>6.6</b> matching on body</a></li>
+<li class="chapter" data-level="6.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>6.7</b> matching on headers</a></li>
+<li class="chapter" data-level="6.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>6.8</b> Playback repeats</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>7</b> security</a><ul>
-<li class="chapter" data-level="7.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>7.1</b> API keys and such</a></li>
-<li class="chapter" data-level="7.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>7.2</b> Other security</a></li>
+<li class="chapter" data-level="7" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>7</b> logging</a><ul>
+<li class="chapter" data-level="7.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>7.1</b> Setup logging</a></li>
+<li class="chapter" data-level="7.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>7.2</b> The log file</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>8</b> escape hatches</a><ul>
-<li class="chapter" data-level="8.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>8.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
-<li class="chapter" data-level="8.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>8.2</b> turned_off</a></li>
-<li class="chapter" data-level="8.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>8.3</b> turn_off</a></li>
+<li class="chapter" data-level="8" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>8</b> security</a><ul>
+<li class="chapter" data-level="8.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>8.1</b> API keys and such</a></li>
+<li class="chapter" data-level="8.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>8.2</b> Other security</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>9</b> gotchas</a></li>
-<li class="chapter" data-level="10" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>10</b> session info</a></li>
+<li class="chapter" data-level="9" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>9</b> escape hatches</a><ul>
+<li class="chapter" data-level="9.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>9.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
+<li class="chapter" data-level="9.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>9.2</b> turned_off</a></li>
+<li class="chapter" data-level="9.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>9.3</b> turn_off</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>10</b> gotchas</a></li>
+<li class="chapter" data-level="11" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>11</b> session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
 
@@ -211,10 +216,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="gotchas" class="section level1">
-<h1><span class="header-section-number">Chapter 9</span> gotchas</h1>
+<h1><span class="header-section-number">Chapter 10</span> gotchas</h1>
 <p>There’s a few things to watch out for when using <code>vcr</code>.</p>
 <ul>
-<li><strong>Security</strong>: Don’t put your secure API keys, tokens, etc. on the public web. See the Security chapter (<a href="security.html#security">7</a>)</li>
+<li><strong>Security</strong>: Don’t put your secure API keys, tokens, etc. on the public web. See the Security chapter (<a href="security.html#security">8</a>)</li>
 <li><strong>Dates</strong>: Be careful when using dates in tests with <code>vcr</code>. e.g. if you generate todays date, and pass that in to a function in your package that uses that date for an HTTP request, the date will be different from the one in the matching cassette, causing a <code>vcr</code> failure.</li>
 <li><strong>HTTP errors</strong>: It’s a good idea to test failure behavior of a web service in your test suite. Sometimes <code>vcr</code> can handle that and sometimes it cannot. Open any issues about this because ideally i think <code>vcr</code> could handle all cases of HTTP failures.</li>
 <li><strong>Very large response bodies</strong>: A few things about large response bodies. First, <code>vcr</code> may give you trouble with very large response bodies as we’ve see yaml parsing problems already. Second, large response bodies means large cassettes on disk - so just be aware of the file size if that’s something that matters to you. Third, large response bodies will take longer to load into R, so you may still have a multi second test run even though the test is using a cached HTTP response.</li>
@@ -259,7 +264,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/08-gotchas.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/09-gotchas.Rmd",
 "text": "Edit"
 },
 "history": {

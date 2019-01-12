@@ -1,7 +1,7 @@
 --- 
 title: "http testing book"
 date: "`r paste0('built on ', Sys.Date())`"
-author: "`r paste0('built w/ vcr v', packageVersion('vcr'), ' / webmockr v', packageVersion('webmockr'), ' / crul v', packageVersion('crul'))`"
+author: "`r paste0('built w/ vcr v', packageVersion('vcr'), ' / webmockr v', packageVersion('webmockr'), ' / crul v', packageVersion('crul'), ' / curl v', packageVersion('curl'))`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -13,11 +13,11 @@ description: "http testing book"
 
 # http testing book
 
-write some stuff ...
+This book is intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages.
 
 ## Info
 
-* Code: <https://github.com/ropensci/http-testing-book/>
+* Source: <https://github.com/ropensci/http-testing-book/>
 * Issues/Bug reports: <https://github.com/ropensci/http-testing-book/issues>
 
 Packages
@@ -33,3 +33,5 @@ Stable version from CRAN
 ```{r eval=FALSE}
 install.packages(c("crul", "webmockr", "vcr"))
 ```
+
+none of `crul`, `webmockr` or `vcr` have native code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems.
