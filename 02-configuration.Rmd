@@ -90,7 +90,7 @@ vcr_configure(allow_unused_http_interactions = FALSE)
 
 ## serialize_with - which serializer to use {#config-serialize-with}
 
-Right now only option is "yaml"
+Right now the only option is `yaml`
 
 ```{r}
 vcr_configure(serialize_with = "yaml")
@@ -98,7 +98,7 @@ vcr_configure(serialize_with = "yaml")
 
 ## persist_with - which persister to use {#config-persist-with}
 
-Right now only option is "FileSystem"
+Right now the only option is `FileSystem`
 
 ```{r}
 vcr_configure(persist_with = "FileSystem")
@@ -147,7 +147,7 @@ vcr_configure(preserve_exact_body_bytes = TRUE)
 
 ## allow_http_connections_when_no_cassette {#allow-http-connections-when-no-cassette}
 
-Determines how `vcr` treats HTTP requests that are made when no vcr cassette is in use. 
+Determines how `vcr` treats HTTP requests that are made when no cassette is in use. 
 When `TRUE`, requests made when there is no vcr cassette in use will be allowed.
 When `FALSE` (default), an [UnhandledHTTPRequestError] error will be raised for 
 any HTTP request made when there is no cassette in use

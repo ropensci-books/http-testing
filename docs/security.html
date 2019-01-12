@@ -5,24 +5,24 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>http testing book</title>
-  <meta name="description" content="http testing book">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <title>Chapter 7 security | http testing book</title>
+  <meta name="description" content="Chapter 7 security | http testing book">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="http testing book" />
+  <meta property="og:title" content="Chapter 7 security | http testing book" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="http testing book" />
+  <meta property="og:description" content="Chapter 7 security | http testing book" />
   <meta name="github-repo" content="ropensci/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="http testing book" />
+  <meta name="twitter:title" content="Chapter 7 security | http testing book" />
   
-  <meta name="twitter:description" content="http testing book" />
+  <meta name="twitter:description" content="Chapter 7 security | http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.1.0 / webmockr v0.2.6 / crul v0.6.0">
+<meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0">
 
 
 
@@ -35,6 +35,7 @@
 <link rel="next" href="escape-hatches.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -223,9 +224,9 @@ to the real data.</p>
 <p>The before record replacement happens in an internal
 function <code>write_interactions()</code>, while before playback replacement
 happens in internal function <code>YAML$deserialize_path()</code></p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">vcr_configure</span>(</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))</a>
-<a class="sourceLine" id="cb47-3" data-line-number="3">)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vcr_configure</span>(
+  <span class="dt">filter_sensitive_data =</span> <span class="kw">list</span>(<span class="st">&quot;&lt;&lt;&lt;my_api_key&gt;&gt;&gt;&quot;</span> =<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&#39;API_KEY&#39;</span>))
+)</code></pre>
 <p>You want to make the string that replaces your sensitive string something that
 won’t be easily found elsewhere in the response body/headers/etc.</p>
 <p>It’s a good idea to not in place of <code>thing_to_replace</code> put your actual sensitive
@@ -273,7 +274,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -285,6 +286,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/ropensci/http-testing-book/edit/master/06-security.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["_main.pdf", "_main.epub"],
 "toc": {
