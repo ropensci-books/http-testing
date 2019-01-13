@@ -1,5 +1,5 @@
 --- 
-title: "http testing book"
+title: "HTTP mocking and testing in R"
 date: "`r paste0('built on ', Sys.Date())`"
 author: "`r paste0('built w/ vcr v', packageVersion('vcr'), ' / webmockr v', packageVersion('webmockr'), ' / crul v', packageVersion('crul'), ' / curl v', packageVersion('curl'))`"
 site: bookdown::bookdown_site
@@ -11,11 +11,11 @@ github-repo: ropensci/http-testing-book
 description: "http testing book"
 ---
 
-# http testing book
+# Preamble
 
 This book is intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages.
 
-## Info
+**Info**
 
 * Source: <https://github.com/ropensci/http-testing-book/>
 * Issues/Bug reports: <https://github.com/ropensci/http-testing-book/issues>
@@ -25,8 +25,9 @@ Packages
 * `crul`: <https://cran.rstudio.com/web/packages/crul/>
 * `webmockr`: <https://cran.rstudio.com/web/packages/webmockr/>
 * `vcr`: <https://github.com/ropensci/vcr/>
+* `curl`: <https://github.com/jeroen/curl/>
 
-## Installation
+**Installation**
 
 Stable version from CRAN
 

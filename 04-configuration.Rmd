@@ -6,8 +6,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-#  (PART) vcr {-}
-
 # vcr configuration {#vcr-configuration}
 
 `vcr` configuration

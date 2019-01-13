@@ -5,21 +5,21 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Chapter 2 Introduction | http testing book</title>
-  <meta name="description" content="Chapter 2 Introduction | http testing book">
+  <title>Chapter 2 Introduction | HTTP mocking and testing in R</title>
+  <meta name="description" content="http testing book">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Chapter 2 Introduction | http testing book" />
+  <meta property="og:title" content="Chapter 2 Introduction | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Chapter 2 Introduction | http testing book" />
+  <meta property="og:description" content="http testing book" />
   <meta name="github-repo" content="ropensci/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Introduction | http testing book" />
+  <meta name="twitter:title" content="Chapter 2 Introduction | HTTP mocking and testing in R" />
   
-  <meta name="twitter:description" content="Chapter 2 Introduction | http testing book" />
+  <meta name="twitter:description" content="http testing book" />
   
 
 <meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
@@ -126,75 +126,80 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">HTTP testing with R packages</a></li>
+<li><a href="./">HTTP mocking and testing in R</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> http testing book</a><ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#info"><i class="fa fa-check"></i><b>1.1</b> Info</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
-</ul></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preamble</a></li>
+<li class="part"><span><b>I introduction</b></span></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
 <li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#what-webmockr"><i class="fa fa-check"></i><b>2.1</b> What is webmockr?</a></li>
 <li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#what-vcr"><i class="fa fa-check"></i><b>2.2</b> What is vcr?</a></li>
 <li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#why-crul"><i class="fa fa-check"></i><b>2.3</b> Why crul?</a></li>
-<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#terminology"><i class="fa fa-check"></i><b>2.4</b> Terminology</a></li>
-<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#basic-usage"><i class="fa fa-check"></i><b>2.5</b> Basic usage</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#use-cases"><i class="fa fa-check"></i><b>2.4</b> Use cases</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#use-cases-mocking"><i class="fa fa-check"></i><b>2.4.1</b> mocking use cases</a></li>
+<li class="chapter" data-level="2.4.2" data-path="intro.html"><a href="intro.html#use-cases-caching"><i class="fa fa-check"></i><b>2.4.2</b> caching use cases</a></li>
 </ul></li>
-<li class="part"><span><b>I webmockr</b></span></li>
+</ul></li>
+<li class="part"><span><b>II webmockr</b></span></li>
 <li class="chapter" data-level="3" data-path="mocking.html"><a href="mocking.html"><i class="fa fa-check"></i><b>3</b> Mocking HTTP Requests</a><ul>
 <li class="chapter" data-level="3.1" data-path="mocking.html"><a href="mocking.html#xxx"><i class="fa fa-check"></i><b>3.1</b> xxx</a></li>
 </ul></li>
-<li class="part"><span><b>II vcr</b></span></li>
-<li class="chapter" data-level="4" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>4</b> vcr configuration</a><ul>
-<li class="chapter" data-level="4.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>4.1</b> Get your configuration</a></li>
-<li class="chapter" data-level="4.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>4.2</b> Set configuration variables</a></li>
-<li class="chapter" data-level="4.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>4.3</b> Re-set to defaults</a></li>
-<li class="chapter" data-level="4.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>4.4</b> dir - directory of where cassettes are stored</a></li>
-<li class="chapter" data-level="4.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>4.5</b> record - record mode</a></li>
-<li class="chapter" data-level="4.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>4.6</b> match_requests_on - customize how vcr matches requests</a></li>
-<li class="chapter" data-level="4.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>4.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
-<li class="chapter" data-level="4.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>4.8</b> serialize_with - which serializer to use</a></li>
-<li class="chapter" data-level="4.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>4.9</b> persist_with - which persister to use</a></li>
-<li class="chapter" data-level="4.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>4.10</b> ignore requests</a><ul>
-<li class="chapter" data-level="4.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>4.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
-<li class="chapter" data-level="4.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>4.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
-<li class="chapter" data-level="4.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>4.10.3</b> ignore_request - ignore any request for which function is true</a></li>
+<li class="part"><span><b>III vcr</b></span></li>
+<li class="chapter" data-level="4" data-path="vcr-intro.html"><a href="vcr-intro.html"><i class="fa fa-check"></i><b>4</b> Caching HTTP requests</a><ul>
+<li class="chapter" data-level="4.1" data-path="vcr-intro.html"><a href="vcr-intro.html#terminology"><i class="fa fa-check"></i><b>4.1</b> Terminology</a></li>
+<li class="chapter" data-level="4.2" data-path="vcr-intro.html"><a href="vcr-intro.html#basic-usage"><i class="fa fa-check"></i><b>4.2</b> Basic usage</a></li>
 </ul></li>
-<li class="chapter" data-level="4.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>4.11</b> uri_parser - which uri parser to use</a></li>
-<li class="chapter" data-level="4.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>4.12</b> preserve_exact_body_bytes</a></li>
-<li class="chapter" data-level="4.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>4.13</b> allow_http_connections_when_no_cassette</a></li>
+<li class="chapter" data-level="5" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>5</b> vcr configuration</a><ul>
+<li class="chapter" data-level="5.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>5.1</b> Get your configuration</a></li>
+<li class="chapter" data-level="5.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>5.2</b> Set configuration variables</a></li>
+<li class="chapter" data-level="5.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>5.3</b> Re-set to defaults</a></li>
+<li class="chapter" data-level="5.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>5.4</b> dir - directory of where cassettes are stored</a></li>
+<li class="chapter" data-level="5.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>5.5</b> record - record mode</a></li>
+<li class="chapter" data-level="5.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>5.6</b> match_requests_on - customize how vcr matches requests</a></li>
+<li class="chapter" data-level="5.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>5.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
+<li class="chapter" data-level="5.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>5.8</b> serialize_with - which serializer to use</a></li>
+<li class="chapter" data-level="5.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>5.9</b> persist_with - which persister to use</a></li>
+<li class="chapter" data-level="5.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>5.10</b> ignore requests</a><ul>
+<li class="chapter" data-level="5.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>5.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
+<li class="chapter" data-level="5.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>5.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
+<li class="chapter" data-level="5.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>5.10.3</b> ignore_request - ignore any request for which function is true</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>5</b> record modes</a><ul>
-<li class="chapter" data-level="5.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>5.1</b> once</a></li>
-<li class="chapter" data-level="5.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>5.2</b> none</a></li>
-<li class="chapter" data-level="5.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>5.3</b> new_episodes</a></li>
-<li class="chapter" data-level="5.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>5.4</b> all</a></li>
+<li class="chapter" data-level="5.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>5.11</b> uri_parser - which uri parser to use</a></li>
+<li class="chapter" data-level="5.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>5.12</b> preserve_exact_body_bytes</a></li>
+<li class="chapter" data-level="5.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>5.13</b> allow_http_connections_when_no_cassette</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>6</b> request matching</a><ul>
-<li class="chapter" data-level="6.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>6.1</b> matching on method</a></li>
-<li class="chapter" data-level="6.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>6.2</b> matching on uri</a></li>
-<li class="chapter" data-level="6.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>6.3</b> matching on host</a></li>
-<li class="chapter" data-level="6.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>6.4</b> matching on path</a></li>
-<li class="chapter" data-level="6.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>6.5</b> matching on query string</a></li>
-<li class="chapter" data-level="6.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>6.6</b> matching on body</a></li>
-<li class="chapter" data-level="6.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>6.7</b> matching on headers</a></li>
-<li class="chapter" data-level="6.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>6.8</b> Playback repeats</a></li>
+<li class="chapter" data-level="6" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>6</b> record modes</a><ul>
+<li class="chapter" data-level="6.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>6.1</b> once</a></li>
+<li class="chapter" data-level="6.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>6.2</b> none</a></li>
+<li class="chapter" data-level="6.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>6.3</b> new_episodes</a></li>
+<li class="chapter" data-level="6.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>6.4</b> all</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>7</b> logging</a><ul>
-<li class="chapter" data-level="7.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>7.1</b> Setup logging</a></li>
-<li class="chapter" data-level="7.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>7.2</b> The log file</a></li>
+<li class="chapter" data-level="7" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>7</b> request matching</a><ul>
+<li class="chapter" data-level="7.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>7.1</b> matching on method</a></li>
+<li class="chapter" data-level="7.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>7.2</b> matching on uri</a></li>
+<li class="chapter" data-level="7.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>7.3</b> matching on host</a></li>
+<li class="chapter" data-level="7.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>7.4</b> matching on path</a></li>
+<li class="chapter" data-level="7.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>7.5</b> matching on query string</a></li>
+<li class="chapter" data-level="7.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>7.6</b> matching on body</a></li>
+<li class="chapter" data-level="7.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>7.7</b> matching on headers</a></li>
+<li class="chapter" data-level="7.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>7.8</b> Playback repeats</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>8</b> security</a><ul>
-<li class="chapter" data-level="8.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>8.1</b> API keys and such</a></li>
-<li class="chapter" data-level="8.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>8.2</b> Other security</a></li>
+<li class="chapter" data-level="8" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>8</b> logging</a><ul>
+<li class="chapter" data-level="8.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>8.1</b> Setup logging</a></li>
+<li class="chapter" data-level="8.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>8.2</b> The log file</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>9</b> escape hatches</a><ul>
-<li class="chapter" data-level="9.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>9.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
-<li class="chapter" data-level="9.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>9.2</b> turned_off</a></li>
-<li class="chapter" data-level="9.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>9.3</b> turn_off</a></li>
+<li class="chapter" data-level="9" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>9</b> security</a><ul>
+<li class="chapter" data-level="9.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>9.1</b> API keys and such</a></li>
+<li class="chapter" data-level="9.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>9.2</b> Other security</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>10</b> gotchas</a></li>
-<li class="chapter" data-level="11" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>11</b> session info</a></li>
+<li class="chapter" data-level="10" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>10</b> escape hatches</a><ul>
+<li class="chapter" data-level="10.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>10.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
+<li class="chapter" data-level="10.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>10.2</b> turned_off</a></li>
+<li class="chapter" data-level="10.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>10.3</b> turn_off</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a></li>
+<li class="part"><span><b>IV Appendix</b></span></li>
+<li class="chapter" data-level="12" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>12</b> session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
 
@@ -207,7 +212,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">http testing book</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">HTTP mocking and testing in R</a>
           </h1>
         </div>
 
@@ -227,7 +232,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>While <code>webmockr</code> is in use, real HTTP interactions are not allowed</li>
 <li>There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session</li>
 </ul>
-<p>Read more about <code>webmockr</code> in <a href="mocking.html#mocking">Chapter 3</a>.</p>
+<p>Read more about <code>webmockr</code> in <a href="mocking.html#mocking">Section 2</a>.</p>
 </div>
 <div id="what-vcr" class="section level2">
 <h2><span class="header-section-number">2.2</span> What is vcr?</h2>
@@ -235,112 +240,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The main use case is for unit tests for R packages.</p>
 <p><code>vcr</code> currently only works with the <code>crul</code> package, but we plan to make it work with <code>httr</code>.</p>
 <p><code>vcr</code> works by hooking into <code>webmockr</code>. However, when <code>webmockr</code> finds a match, we then look for a recorded interaction on disk. If one is not found, we record the request and response. If one is found, we use that recorded interaction to construct a real response as the R client expects.</p>
+<p>Read more about <code>webmockr</code> in <a href="vcr-intro.html#vcr-intro">Section 3</a>.</p>
 </div>
 <div id="why-crul" class="section level2">
 <h2><span class="header-section-number">2.3</span> Why crul?</h2>
 <p><code>crul</code> is just one of the HTTP clients in R. It’s the one that I maintain though, so was easiest to get started with adding mocking integration.</p>
 <p>We do plan to add integration for <code>httr</code> in the future to both <code>webmockr</code> and <code>vcr</code>.</p>
 </div>
-<div id="terminology" class="section level2">
-<h2><span class="header-section-number">2.4</span> Terminology</h2>
+<div id="use-cases" class="section level2">
+<h2><span class="header-section-number">2.4</span> Use cases</h2>
+<div id="use-cases-mocking" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> mocking use cases</h3>
 <ul>
-<li><strong>http</strong>: <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">hyptertext transfer protocol</a></li>
-<li><strong>vcr</strong>: the name comes from the idea that we want to record something and play it back later, like a <a href="https://en.wikipedia.org/wiki/Videocassette_recorder">VCR</a></li>
-<li><strong>cassette</strong>: A <em>thing</em> to record HTTP interactions to. Right now the only option is file system, but in the future could be other things, e.g. a key-value store like <a href="https://redis.io/">Redis</a></li>
-<li><strong>Persister</strong>: defines how to save requests - currently only option is the file system</li>
-<li><strong>Serializers</strong>: defines how to serialize the HTTP response; that is, how the data is stored on whatever the persister is (right now only file system). Currently only option is YAML; other options in the future could include e.g. JSON</li>
-<li><strong>insert cassette</strong>: create a cassette (all HTTP interactions will be recorded to this cassette). once a cassette is inserted, we don’t allow insertion of additional cassettes</li>
-<li><strong>eject cassette</strong>: eject the cassette (no longer recording to that cassette). however, if any interactions were written to disk, those are still stored there</li>
-<li><strong>replay</strong>: refers to using a cached result of an http request that was recorded earlier</li>
-<li><strong>recording</strong>: this means you’ve set vcr in a mode in which we can record HTTP interactions. sometimes recording can be not possible given user configuration or otherwise</li>
+<li>one</li>
+<li>two</li>
+<li>three</li>
 </ul>
 </div>
-<div id="basic-usage" class="section level2">
-<h2><span class="header-section-number">2.5</span> Basic usage</h2>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vcr)
-<span class="kw">library</span>(crul)
+<div id="use-cases-caching" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> caching use cases</h3>
+<ul>
+<li>one</li>
+<li>two</li>
+<li>three</li>
+</ul>
 
-cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://api.crossref.org&quot;</span>)
-<span class="kw">system.time</span>(
-  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
-    cli<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;works&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="dv">3</span>))
-  })
-)
-<span class="co">## CrulAdapter enabled!</span>
-<span class="co">## HttrAdapter enabled!</span>
-<span class="co">## net connect allowed</span>
-<span class="co">## net connect disabled</span>
-<span class="co">## encoding couldn&#39;t be detected; assuming UTF-8</span>
-<span class="co">## ejecting cassette: helloworld</span>
-<span class="co">## CrulAdapter disabled!</span>
-<span class="co">## HttrAdapter disabled!</span>
-<span class="co">##    user  system elapsed </span>
-<span class="co">##   0.080   0.005   3.932</span></code></pre>
-<p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
-  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
-    cli<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;works&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="dv">3</span>))
-  })
-)
-<span class="co">## CrulAdapter enabled!</span>
-<span class="co">## HttrAdapter enabled!</span>
-<span class="co">## net connect allowed</span>
-<span class="co">## net connect disabled</span>
-<span class="co">## ejecting cassette: helloworld</span>
-<span class="co">## CrulAdapter disabled!</span>
-<span class="co">## HttrAdapter disabled!</span>
-<span class="co">##    user  system elapsed </span>
-<span class="co">##   0.042   0.001   0.046</span></code></pre>
-<p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
-<p>The cached response looks something like (condensed for brevity):</p>
-<pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>
-<span class="kw">-</span> <span class="fu">request:</span>
-    <span class="fu">method:</span><span class="at"> get</span>
-    <span class="fu">uri:</span><span class="at"> https://api.crossref.org/works?rows=3</span>
-    <span class="fu">body:</span>
-      <span class="fu">encoding:</span><span class="at"> </span><span class="st">&#39;&#39;</span>
-      <span class="fu">string:</span><span class="at"> </span><span class="st">&#39;&#39;</span>
-    <span class="fu">headers:</span>
-      <span class="fu">User-Agent:</span><span class="at"> libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span>
-      <span class="fu">Accept-Encoding:</span><span class="at"> gzip, deflate</span>
-      <span class="fu">Accept:</span><span class="at"> application/json, text/xml, application/xml, */*</span>
-  <span class="fu">response:</span>
-    <span class="fu">status:</span>
-      <span class="fu">status_code:</span><span class="at"> </span><span class="st">&#39;200&#39;</span>
-      <span class="fu">message:</span><span class="at"> OK</span>
-      <span class="fu">explanation:</span><span class="at"> Request fulfilled, document follows</span>
-    <span class="fu">headers:</span>
-      <span class="fu">status:</span><span class="at"> HTTP/1.1 200 OK</span>
-      <span class="fu">content-type:</span><span class="at"> application/json;charset=UTF-8</span>
-      <span class="fu">vary:</span><span class="at"> Accept</span>
-      <span class="fu">access-control-allow-origin:</span><span class="at"> </span><span class="st">&#39;*&#39;</span>
-      <span class="fu">access-control-allow-headers:</span><span class="at"> X-Requested-With</span>
-      <span class="fu">content-length:</span><span class="at"> </span><span class="st">&#39;5360&#39;</span>
-      <span class="fu">server:</span><span class="at"> http-kit</span>
-      <span class="fu">date:</span><span class="at"> Sat, 28 Apr 2018 15:12:29 GMT</span>
-      <span class="fu">x-rate-limit-limit:</span><span class="at"> </span><span class="st">&#39;50&#39;</span>
-      <span class="fu">x-rate-limit-interval:</span><span class="at"> 1s</span>
-      <span class="fu">connection:</span><span class="at"> close</span>
-    <span class="fu">body:</span>
-      <span class="fu">encoding:</span><span class="at"> UTF-8</span>
-      <span class="fu">string:</span><span class="at"> </span><span class="st">&#39;{&quot;status&quot;:&quot;ok&quot;,&quot;message-type&quot;:&quot;work-list&quot;,&quot;message-version&quot;:&quot;1.0.0&quot;,&quot;message&quot;:{&quot;facets&quot;:{},&quot;total-results&quot;:96454147,&quot;items&quot;:[{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845330},&quot;reference-count&quot;:0,&quot;publisher&quot;:&quot;Elsevier</span>
-<span class="st">        BV&quot;,&quot;issue&quot;:&quot;3&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1999,10,1]],&quot;date-time&quot;:&quot;1999-10-01T00:00:00Z&quot;,&quot;timestamp&quot;:938736000000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1999,10]]},&quot;DOI&quot;:&quot;10.1016\/s0305-9006(99)00007-0&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:38Z&quot;,&quot;timestamp&quot;:1027642298000},&quot;page&quot;:&quot;vii&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Editorial&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;52&quot;,&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900699000070?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900699000070?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2015,9,9]],&quot;date-time&quot;:&quot;2015-09-09T06:07:58Z&quot;,&quot;timestamp&quot;:1441778878000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1999,10]]},&quot;references-count&quot;:0,&quot;alternative-id&quot;:[&quot;S0305900699000070&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0305-9006(99)00007-0&quot;,&quot;ISSN&quot;:[&quot;0305-9006&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0305-9006&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;Geography,</span>
-<span class="st">        Planning and Development&quot;]},{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845347},&quot;reference-count&quot;:0,&quot;publisher&quot;:&quot;Elsevier</span>
-<span class="st">        BV&quot;,&quot;issue&quot;:&quot;4&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1998,12,1]],&quot;date-time&quot;:&quot;1998-12-01T00:00:00Z&quot;,&quot;timestamp&quot;:912470400000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1998,12]]},&quot;DOI&quot;:&quot;10.1016\/s0305-9006(98)00020-8&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:38Z&quot;,&quot;timestamp&quot;:1027642298000},&quot;page&quot;:&quot;VI&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Preface&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;50&quot;,&quot;author&quot;:[{&quot;given&quot;:&quot;Maurice&quot;,&quot;family&quot;:&quot;Yeats&quot;,&quot;affiliation&quot;:[]}],&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900698000208?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900698000208?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2015,9,9]],&quot;date-time&quot;:&quot;2015-09-09T06:07:58Z&quot;,&quot;timestamp&quot;:1441778878000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1998,12]]},&quot;references-count&quot;:0,&quot;alternative-id&quot;:[&quot;S0305900698000208&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0305-9006(98)00020-8&quot;,&quot;ISSN&quot;:[&quot;0305-9006&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0305-9006&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;Geography,</span>
-<span class="st">        Planning and Development&quot;]},{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845389},&quot;reference-count&quot;:24,&quot;publisher&quot;:&quot;Elsevier</span>
-<span class="st">        BV&quot;,&quot;issue&quot;:&quot;1&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1999,1,1]],&quot;date-time&quot;:&quot;1999-01-01T00:00:00Z&quot;,&quot;timestamp&quot;:915148800000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Powder</span>
-<span class="st">        Technology&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1999,1]]},&quot;DOI&quot;:&quot;10.1016\/s0032-5910(98)00119-3&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:20Z&quot;,&quot;timestamp&quot;:1027642280000},&quot;page&quot;:&quot;17-30&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Load</span>
-<span class="st">        diversion by embedding in crushed salt&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;101&quot;,&quot;author&quot;:[{&quot;given&quot;:&quot;W.&quot;,&quot;family&quot;:&quot;Feuser&quot;,&quot;affiliation&quot;:[]},{&quot;given&quot;:&quot;H.&quot;,&quot;family&quot;:&quot;Vijgen&quot;,&quot;affiliation&quot;:[]},{&quot;given&quot;:&quot;E.&quot;,&quot;family&quot;:&quot;Barnert&quot;,&quot;affiliation&quot;:[]}],&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Powder</span>
-<span class="st">        Technology&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0032591098001193?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0032591098001193?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2017,6,15]],&quot;date-time&quot;:&quot;2017-06-15T02:22:06Z&quot;,&quot;timestamp&quot;:1497493326000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1999,1]]},&quot;references-count&quot;:24,&quot;alternative-id&quot;:[&quot;S0032591098001193&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0032-5910(98)00119-3&quot;,&quot;ISSN&quot;:[&quot;0032-5910&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0032-5910&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;General</span>
-<span class="st">        Chemical Engineering&quot;]}],&quot;items-per-page&quot;:3,&quot;query&quot;:{&quot;start-index&quot;:0,&quot;search-terms&quot;:null}}}&#39;</span>
-  <span class="fu">recorded_at:</span><span class="at"> 2018-04-28 15:12:29 GMT</span>
-  <span class="fu">recorded_with:</span><span class="at"> vcr/0.0.8.9521, webmockr/0.2.2.9119, crul/0.5.2</span></code></pre>
-<p>All components of both the request and response are preserved, so that the HTTP client (in this case <code>crul</code>) can reconstruct its own response just as it would if it wasn’t using <code>vcr</code>.</p>
-
+</div>
 </div>
 </div>
 
