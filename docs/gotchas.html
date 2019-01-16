@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
+<meta name="author" content="built w/ vcr v0.2.2.9100 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
 
 
 
@@ -197,7 +197,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>10.2</b> turned_off</a></li>
 <li class="chapter" data-level="10.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>10.3</b> turn_off</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a></li>
+<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a><ul>
+<li class="chapter" data-level="11.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>11.1</b> Correct line identification</a></li>
+</ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
 <li class="chapter" data-level="12" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>12</b> session info</a></li>
 <li class="divider"></li>
@@ -231,7 +233,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>Encoding</strong>: We haven’t dealt with encoding much yet at all, so we’re likely to run into encoding issues. One blunt instrument for this for now is to set <code>preserve_exact_body_bytes = TRUE</code> when running <code>vcr::use_cassette()</code> or <code>vcr::insert_cassette()</code>, which stores the response body as base64.</li>
 <li><strong>devtools::check vs. devtools::test</strong>: At least one user has reported <code>vcr</code> not working as expected when using <code>devtools::test()</code> - but if they used <code>devtools::check()</code> <code>vcr</code> worked as expected. We haven’t dug into why this would be. Do report it if you run into this problem.</li>
 </ul>
+<div id="line-identification" class="section level2">
+<h2><span class="header-section-number">11.1</span> Correct line identification</h2>
+<p>To get the actual lines where failures occur, you can wrap the <code>test_that</code> block in a <code>use_cassette()</code> block:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(testthat)
+vcr<span class="op">::</span><span class="kw">use_cassette</span>(<span class="st">&quot;rl_citation&quot;</span>, {
+  <span class="kw">test_that</span>(<span class="st">&quot;my test&quot;</span>, {
+    aa &lt;-<span class="st"> </span><span class="kw">rl_citation</span>()
 
+    <span class="kw">expect_is</span>(aa, <span class="st">&quot;character&quot;</span>)
+    <span class="kw">expect_match</span>(aa, <span class="st">&quot;IUCN&quot;</span>)
+    <span class="kw">expect_match</span>(aa, <span class="st">&quot;www.iucnredlist.org&quot;</span>)
+  })
+})</code></pre>
+<p>OR put the <code>use_cassette()</code> block on the inside, but make sure to put <code>testthat</code> expectations outside of
+the <code>use_cassette()</code> block:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(testthat)
+<span class="kw">test_that</span>(<span class="st">&quot;my test&quot;</span>, {
+  vcr<span class="op">::</span><span class="kw">use_cassette</span>(<span class="st">&quot;rl_citation&quot;</span>, {
+    aa &lt;-<span class="st"> </span><span class="kw">rl_citation</span>()
+  })
+
+  <span class="kw">expect_is</span>(aa, <span class="st">&quot;character&quot;</span>)
+  <span class="kw">expect_match</span>(aa, <span class="st">&quot;IUCN&quot;</span>)
+  <span class="kw">expect_match</span>(aa, <span class="st">&quot;www.iucnredlist.org&quot;</span>)
+})</code></pre>
+<p>Do not wrap the <code>use_cassette()</code> block inside your <code>test_that()</code> block with <code>testthat</code> expectations inside the <code>use_cassette()</code> block, as you’ll only get the line number that the <code>use_cassette()</code> block starts on on failures.</p>
+
+</div>
 </div>
 
 

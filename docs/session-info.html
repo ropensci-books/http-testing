@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
+<meta name="author" content="built w/ vcr v0.2.2.9100 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
 
 
 
@@ -197,7 +197,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>10.2</b> turned_off</a></li>
 <li class="chapter" data-level="10.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>10.3</b> turn_off</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a></li>
+<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a><ul>
+<li class="chapter" data-level="11.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>11.1</b> Correct line identification</a></li>
+</ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
 <li class="chapter" data-level="12" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>12</b> session info</a></li>
 <li class="divider"></li>
@@ -234,43 +236,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;  collate  en_US.UTF-8                                
 #&gt;  ctype    en_US.UTF-8                                
 #&gt;  tz       US/Pacific                                 
-#&gt;  date     2019-01-12                                 
+#&gt;  date     2019-01-16                                 
 #&gt; 
 #&gt; ─ Packages ──────────────────────────────────────────────────────────────
-#&gt;  package     * version date       lib source                            
-#&gt;  assertthat    0.2.0   2017-04-11 [1] CRAN (R 3.5.0)                    
-#&gt;  base64enc     0.1-3   2015-07-28 [1] CRAN (R 3.5.0)                    
-#&gt;  bookdown    * 0.9.1   2019-01-10 [1] Github (rstudio/bookdown@dc33d2f) 
-#&gt;  cli           1.0.1   2018-09-25 [1] CRAN (R 3.5.1)                    
-#&gt;  crayon        1.3.4   2017-09-16 [1] CRAN (R 3.5.0)                    
-#&gt;  crul        * 0.7.0   2019-01-04 [1] CRAN (R 3.5.2)                    
-#&gt;  curl          3.3     2019-01-10 [1] CRAN (R 3.5.2)                    
-#&gt;  digest        0.6.18  2018-10-10 [1] CRAN (R 3.5.1)                    
-#&gt;  evaluate      0.12    2018-10-09 [1] CRAN (R 3.5.0)                    
-#&gt;  fauxpas       0.2.0   2018-03-01 [1] CRAN (R 3.5.0)                    
-#&gt;  htmltools     0.3.6   2017-04-28 [1] CRAN (R 3.5.0)                    
-#&gt;  httpcode      0.2.0   2016-11-14 [1] CRAN (R 3.5.0)                    
-#&gt;  httr          1.4.0   2018-12-11 [1] CRAN (R 3.5.0)                    
-#&gt;  jsonlite      1.6     2018-12-07 [1] CRAN (R 3.5.1)                    
-#&gt;  knitr       * 1.21    2018-12-10 [1] CRAN (R 3.5.1)                    
-#&gt;  lazyeval      0.2.1   2017-10-29 [1] CRAN (R 3.5.0)                    
-#&gt;  magrittr      1.5     2014-11-22 [1] CRAN (R 3.5.0)                    
-#&gt;  R6            2.3.0   2018-10-04 [1] CRAN (R 3.5.1)                    
-#&gt;  Rcpp          1.0.0   2018-11-07 [1] CRAN (R 3.5.1)                    
-#&gt;  rlang         0.3.1   2019-01-08 [1] CRAN (R 3.5.2)                    
-#&gt;  rmarkdown     1.11.3  2019-01-10 [1] Github (rstudio/rmarkdown@b209cdc)
-#&gt;  rstudioapi    0.9.0   2019-01-09 [1] CRAN (R 3.5.2)                    
-#&gt;  sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 3.5.1)                    
-#&gt;  stringi       1.2.4   2018-07-20 [1] CRAN (R 3.5.0)                    
-#&gt;  stringr       1.3.1   2018-05-10 [1] CRAN (R 3.5.0)                    
-#&gt;  testthat    * 2.0.1   2018-10-13 [1] CRAN (R 3.5.0)                    
-#&gt;  triebeard     0.3.0   2016-08-04 [1] CRAN (R 3.5.0)                    
-#&gt;  urltools      1.7.1   2018-08-03 [1] CRAN (R 3.5.1)                    
-#&gt;  vcr         * 0.2.0   2018-10-19 [1] CRAN (R 3.5.0)                    
-#&gt;  webmockr    * 0.3.0   2019-01-09 [1] CRAN (R 3.5.2)                    
-#&gt;  withr         2.1.2   2018-03-15 [1] CRAN (R 3.5.0)                    
-#&gt;  xfun          0.4     2018-10-23 [1] CRAN (R 3.5.1)                    
-#&gt;  yaml          2.2.0   2018-07-25 [1] CRAN (R 3.5.1)                    
+#&gt;  package     * version    date       lib
+#&gt;  assertthat    0.2.0      2017-04-11 [1]
+#&gt;  base64enc     0.1-3      2015-07-28 [1]
+#&gt;  bookdown    * 0.9.1      2019-01-10 [1]
+#&gt;  cli           1.0.1      2018-09-25 [1]
+#&gt;  crayon        1.3.4      2017-09-16 [1]
+#&gt;  crul        * 0.7.0      2019-01-04 [1]
+#&gt;  curl          3.3        2019-01-10 [1]
+#&gt;  digest        0.6.18     2018-10-10 [1]
+#&gt;  evaluate      0.12       2018-10-09 [1]
+#&gt;  fauxpas       0.2.0      2018-03-01 [1]
+#&gt;  htmltools     0.3.6      2017-04-28 [1]
+#&gt;  httpcode      0.2.0      2016-11-14 [1]
+#&gt;  httr          1.4.0      2018-12-11 [1]
+#&gt;  jsonlite      1.6        2018-12-07 [1]
+#&gt;  knitr       * 1.21       2018-12-10 [1]
+#&gt;  lazyeval      0.2.1      2017-10-29 [1]
+#&gt;  magrittr      1.5        2014-11-22 [1]
+#&gt;  R6            2.3.0      2018-10-04 [1]
+#&gt;  Rcpp          1.0.0      2018-11-07 [1]
+#&gt;  rlang         0.3.1      2019-01-08 [1]
+#&gt;  rmarkdown     1.11.3     2019-01-14 [1]
+#&gt;  rstudioapi    0.9.0      2019-01-09 [1]
+#&gt;  sessioninfo   1.1.1      2018-11-05 [1]
+#&gt;  stringi       1.2.4      2018-07-20 [1]
+#&gt;  stringr       1.3.1      2018-05-10 [1]
+#&gt;  testthat    * 2.0.1      2018-10-13 [1]
+#&gt;  triebeard     0.3.0      2016-08-04 [1]
+#&gt;  urltools      1.7.1      2018-08-03 [1]
+#&gt;  vcr         * 0.2.2.9100 2019-01-16 [1]
+#&gt;  webmockr    * 0.3.0      2019-01-09 [1]
+#&gt;  withr         2.1.2      2018-03-15 [1]
+#&gt;  xfun          0.4        2018-10-23 [1]
+#&gt;  yaml          2.2.0      2018-07-25 [1]
+#&gt;  source                            
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  Github (rstudio/bookdown@dc33d2f) 
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.2)                    
+#&gt;  CRAN (R 3.5.2)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.2)                    
+#&gt;  Github (rstudio/rmarkdown@170d048)
+#&gt;  CRAN (R 3.5.2)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  local                             
+#&gt;  CRAN (R 3.5.2)                    
+#&gt;  CRAN (R 3.5.0)                    
+#&gt;  CRAN (R 3.5.1)                    
+#&gt;  CRAN (R 3.5.1)                    
 #&gt; 
 #&gt; [1] /Library/Frameworks/R.framework/Versions/3.5/Resources/library</code></pre>
 

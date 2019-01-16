@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.0 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
+<meta name="author" content="built w/ vcr v0.2.2.9100 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
 
 
 
@@ -197,7 +197,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>10.2</b> turned_off</a></li>
 <li class="chapter" data-level="10.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>10.3</b> turn_off</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a></li>
+<li class="chapter" data-level="11" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>11</b> gotchas</a><ul>
+<li class="chapter" data-level="11.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>11.1</b> Correct line identification</a></li>
+</ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
 <li class="chapter" data-level="12" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>12</b> session info</a></li>
 <li class="divider"></li>
@@ -249,7 +251,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.078   0.005   3.520</span></code></pre>
+<span class="co">#&gt;   0.065   0.005   3.377</span></code></pre>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
   <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
@@ -257,7 +259,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.034   0.001   0.036</span></code></pre>
+<span class="co">#&gt;   0.046   0.001   0.049</span></code></pre>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>

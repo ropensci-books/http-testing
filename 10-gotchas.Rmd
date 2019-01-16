@@ -17,3 +17,38 @@ There's a few things to watch out for when using `vcr`.
 - **Very large response bodies**: A few things about large response bodies. First, `vcr` may give you trouble with very large response bodies as we've see yaml parsing problems already. Second, large response bodies means large cassettes on disk - so just be aware of the file size if that's something that matters to you. Third, large response bodies will take longer to load into R, so you may still have a multi second test run even though the test is using a cached HTTP response. 
 - **Encoding**: We haven't dealt with encoding much yet at all, so we're likely to run into encoding issues. One blunt instrument for this for now is to set `preserve_exact_body_bytes = TRUE` when running `vcr::use_cassette()` or `vcr::insert_cassette()`, which stores the response body as base64. 
 - **devtools::check vs. devtools::test**: At least one user has reported `vcr` not working as expected when using `devtools::test()` - but if they used `devtools::check()` `vcr` worked as expected. We haven't dug into why this would be. Do report it if you run into this problem. 
+
+## Correct line identification {#line-identification}
+
+To get the actual lines where failures occur, you can wrap the `test_that` block in a `use_cassette()` block:
+
+```r
+library(testthat)
+vcr::use_cassette("rl_citation", {
+  test_that("my test", {
+    aa <- rl_citation()
+
+    expect_is(aa, "character")
+    expect_match(aa, "IUCN")
+    expect_match(aa, "www.iucnredlist.org")
+  })
+})
+```
+
+OR put the `use_cassette()` block on the inside, but make sure to put `testthat` expectations outside of 
+the `use_cassette()` block:
+
+```r
+library(testthat)
+test_that("my test", {
+  vcr::use_cassette("rl_citation", {
+    aa <- rl_citation()
+  })
+
+  expect_is(aa, "character")
+  expect_match(aa, "IUCN")
+  expect_match(aa, "www.iucnredlist.org")
+})
+```
+
+Do not wrap the `use_cassette()` block inside your  `test_that()` block with `testthat` expectations inside the `use_cassette()` block, as you'll only get the line number that the `use_cassette()` block starts on on failures.
