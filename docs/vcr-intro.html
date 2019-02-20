@@ -22,7 +22,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.2.9100 / webmockr v0.3.0 / crul v0.7.0 / curl v3.3">
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.7.0 / curl v3.3">
 
 
 
@@ -251,7 +251,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.065   0.005   3.377</span></code></pre>
+<span class="co">#&gt;   0.174   0.021   8.851</span></code></pre>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
   <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
@@ -259,7 +259,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.046   0.001   0.049</span></code></pre>
+<span class="co">#&gt;   0.131   0.012   0.248</span></code></pre>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>
