@@ -1,0 +1,54 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
+# managing cassettes {#managing-cassettes}
+
+## gitignore cassettes {#gitignore-cassettes}
+
+The [.gitignore][gitignorefile] file lets you tell [git][] what files to 
+ignore - those files are not tracked by git and if you share the git
+repository to the public web, those files in the `.gitignore` file
+won't be shared in the public version. 
+
+When using `vcr` you may want to include your cassettes in the
+`.gitignore` file. You may wan to when your cassettes contain sensitive
+data that you don't want to have on the internet & dont want to hide 
+with [filter_sensitive_data](#api-keys).
+
+You may want to have your cassettes included in your GitHub repo, both
+to be present when tests run on CI, and when others run your tests. 
+
+There's no correct answer on whether to gitignore your cassettes.
+Think about security implications and whether you want CI and human
+contributors to use previously created cassettes or to create/use their
+own.
+
+## deleting cassettes
+
+Removing a cassette is as easy as deleting in your file finder,
+or from the command line, or from within a text editor or RStudio. 
+
+If you delete a cassette, on the next test run the cassette will 
+be recorded again.
+
+If you do want to re-record a test to a cassette, instead of 
+deleting the file you can toggle [record modes](#record-modes).
+
+## cassette file types
+
+For right now the only persistence option is yaml. So all files
+have a `.yml` extension. 
+
+When other persister options are added, additional file types
+may be found. The next persister type is likely to be JSON,
+so if you use that option, you'd have `.json` files instead of
+`.yml` files.
+
+
+[gitignorefile]: https://guide.freecodecamp.org/git/gitignore/

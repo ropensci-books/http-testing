@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 record modes | HTTP mocking and testing in R</title>
+  <title>Chapter 14 managing cassettes | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 record modes | HTTP mocking and testing in R" />
+  <meta property="og:title" content="Chapter 14 managing cassettes | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ropensci/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 record modes | HTTP mocking and testing in R" />
+  <meta name="twitter:title" content="Chapter 14 managing cassettes | HTTP mocking and testing in R" />
   
   <meta name="twitter:description" content="http testing book" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="vcr-configuration.html">
-<link rel="next" href="request-matching.html">
+<link rel="prev" href="escape-hatches.html">
+<link rel="next" href="gotchas.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -235,56 +235,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="record-modes" class="section level1">
-<h1><span class="header-section-number">Chapter 9</span> record modes</h1>
-<p>Record modes dictate under what circumstances http requests/responses are
-recorded to cassettes (disk). Set the recording mode with the parameter
-<code>record</code> in the <code>use_cassette()</code> and <code>insert_cassette()</code> functions.</p>
-<div id="once" class="section level2">
-<h2><span class="header-section-number">9.1</span> once</h2>
-<p>The <code>once</code> record mode will:</p>
-<ul>
-<li>Replay previously recorded interactions.</li>
-<li>Record new interactions if there is no cassette file.</li>
-<li>Cause an error to be raised for new requests if there is a cassette file.</li>
-</ul>
-<p>It is similar to the <code>new_episodes</code> record mode, but will prevent new,
-unexpected requests from being made (i.e. because the request URI changed
-or whatever).</p>
-<p><code>once</code> is the default record mode, used when you do not set one.</p>
+<div id="managing-cassettes" class="section level1">
+<h1><span class="header-section-number">Chapter 14</span> managing cassettes</h1>
+<div id="gitignore-cassettes" class="section level2">
+<h2><span class="header-section-number">14.1</span> gitignore cassettes</h2>
+<p>The <a href="https://guide.freecodecamp.org/git/gitignore/">.gitignore</a> file lets you tell [git][] what files to
+ignore - those files are not tracked by git and if you share the git
+repository to the public web, those files in the <code>.gitignore</code> file
+won’t be shared in the public version.</p>
+<p>When using <code>vcr</code> you may want to include your cassettes in the
+<code>.gitignore</code> file. You may wan to when your cassettes contain sensitive
+data that you don’t want to have on the internet &amp; dont want to hide
+with <a href="security.html#api-keys">filter_sensitive_data</a>.</p>
+<p>You may want to have your cassettes included in your GitHub repo, both
+to be present when tests run on CI, and when others run your tests.</p>
+<p>There’s no correct answer on whether to gitignore your cassettes.
+Think about security implications and whether you want CI and human
+contributors to use previously created cassettes or to create/use their
+own.</p>
 </div>
-<div id="none" class="section level2">
-<h2><span class="header-section-number">9.2</span> none</h2>
-<p>The <code>none</code> record mode will:</p>
-<ul>
-<li>Replay previously recorded interactions.</li>
-<li>Cause an error to be raised for any new requests.</li>
-</ul>
-<p>This is useful when your code makes potentially dangerous
-HTTP requests. The <code>none</code> record mode guarantees that no
-new HTTP requests will be made.</p>
+<div id="deleting-cassettes" class="section level2">
+<h2><span class="header-section-number">14.2</span> deleting cassettes</h2>
+<p>Removing a cassette is as easy as deleting in your file finder,
+or from the command line, or from within a text editor or RStudio.</p>
+<p>If you delete a cassette, on the next test run the cassette will
+be recorded again.</p>
+<p>If you do want to re-record a test to a cassette, instead of
+deleting the file you can toggle <a href="record-modes.html#record-modes">record modes</a>.</p>
 </div>
-<div id="new_episodes" class="section level2">
-<h2><span class="header-section-number">9.3</span> new_episodes</h2>
-<p>The <code>new_episodes</code> record mode will:</p>
-<ul>
-<li>Record new interactions.</li>
-<li>Replay previously recorded interactions.</li>
-</ul>
-<p>It is similar to the <code>once</code> record mode, but will <strong>always</strong> record new
-interactions, even if you have an existing recorded one that is similar
-(but not identical, based on the <code>match_request_on</code> option).</p>
-</div>
-<div id="all" class="section level2">
-<h2><span class="header-section-number">9.4</span> all</h2>
-<p>The <code>all</code> record mode will:</p>
-<ul>
-<li>Record new interactions.</li>
-<li>Never replay previously recorded interactions.</li>
-</ul>
-<p>This can be temporarily used to force vcr to re-record
-a cassette (i.e. to ensure the responses are not out of date)
-or can be used when you simply want to log all HTTP requests.</p>
+<div id="cassette-file-types" class="section level2">
+<h2><span class="header-section-number">14.3</span> cassette file types</h2>
+<p>For right now the only persistence option is yaml. So all files
+have a <code>.yml</code> extension.</p>
+<p>When other persister options are added, additional file types
+may be found. The next persister type is likely to be JSON,
+so if you use that option, you’d have <code>.json</code> files instead of
+<code>.yml</code> files.</p>
 
 </div>
 </div>
@@ -293,8 +279,8 @@ or can be used when you simply want to log all HTTP requests.</p>
           </div>
         </div>
       </div>
-<a href="vcr-configuration.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="request-matching.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="escape-hatches.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="gotchas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -324,7 +310,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/09-record-modes.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/14-cassettes.Rmd",
 "text": "Edit"
 },
 "history": {
