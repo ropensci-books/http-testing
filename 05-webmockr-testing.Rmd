@@ -1,0 +1,37 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# testing {#webmockr-testing}
+
+```{r}
+library("webmockr")
+library("crul")
+library("testthat")
+
+stub_registry_clear()
+
+# make a stub
+stub_request("get", "https://httpbin.org/get") %>%
+   to_return(body = "success!", status = 200)
+
+# check that it's in the stub registry
+stub_registry()
+
+# make the request
+z <- crul::HttpClient$new(url = "https://httpbin.org")$get("get")
+
+# run tests (nothing returned means it passed)
+expect_is(z, "HttpResponse")
+expect_equal(z$status_code, 200)
+expect_equal(z$parse("UTF-8"), "success!")
+```
+
+```{r echo=FALSE}
+stub_registry_clear()
+```
+

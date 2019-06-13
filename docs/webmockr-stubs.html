@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Caching HTTP requests | HTTP mocking and testing in R</title>
+  <title>Chapter 4 stubs | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Caching HTTP requests | HTTP mocking and testing in R" />
+  <meta property="og:title" content="Chapter 4 stubs | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ropensci/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Caching HTTP requests | HTTP mocking and testing in R" />
+  <meta name="twitter:title" content="Chapter 4 stubs | HTTP mocking and testing in R" />
   
   <meta name="twitter:description" content="http testing book" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="webmockr-utilities.html">
-<link rel="next" href="vcr-configuration.html">
+<link rel="prev" href="mocking.html">
+<link rel="next" href="webmockr-testing.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -230,103 +230,98 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="vcr-intro" class="section level1">
-<h1><span class="header-section-number">Chapter 7</span> Caching HTTP requests</h1>
-<p>some intro text …</p>
-<div id="terminology" class="section level2">
-<h2><span class="header-section-number">7.1</span> Terminology</h2>
-<ul>
-<li><strong>http</strong>: <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">hyptertext transfer protocol</a></li>
-<li><strong>vcr</strong>: the name comes from the idea that we want to record something and play it back later, like a <a href="https://en.wikipedia.org/wiki/Videocassette_recorder">VCR</a></li>
-<li><strong>cassette</strong>: A <em>thing</em> to record HTTP interactions to. Right now the only option is file system, but in the future could be other things, e.g. a key-value store like <a href="https://redis.io/">Redis</a></li>
-<li><strong>Persister</strong>: defines how to save requests - currently only option is the file system</li>
-<li><strong>Serializers</strong>: defines how to serialize the HTTP response; that is, how the data is stored on whatever the persister is (right now only file system). Currently only option is YAML; other options in the future could include e.g. JSON</li>
-<li><strong>insert cassette</strong>: create a cassette (all HTTP interactions will be recorded to this cassette). once a cassette is inserted, we don’t allow insertion of additional cassettes</li>
-<li><strong>eject cassette</strong>: eject the cassette (no longer recording to that cassette). however, if any interactions were written to disk, those are still stored there</li>
-<li><strong>replay</strong>: refers to using a cached result of an http request that was recorded earlier</li>
-<li><strong>recording</strong>: this means you’ve set vcr in a mode in which we can record HTTP interactions. sometimes recording can be not possible given user configuration or otherwise</li>
-</ul>
-</div>
-<div id="basic-usage" class="section level2">
-<h2><span class="header-section-number">7.2</span> Basic usage</h2>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vcr)
-<span class="kw">library</span>(crul)
+<div id="webmockr-stubs" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> stubs</h1>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</code></pre>
+<p>set return objects</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">wi_th</span>(
+    <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">to_return</span>(<span class="dt">status =</span> <span class="dv">418</span>)</code></pre>
+<pre><code>#&gt; &lt;webmockr stub&gt; 
+#&gt;   method: get
+#&gt;   uri: https://httpbin.org/get
+#&gt;   with: 
+#&gt;     query: hello=world
+#&gt;     body: 
+#&gt;     request_headers: 
+#&gt;   to_return: 
+#&gt;     status: 418
+#&gt;     body: 
+#&gt;     response_headers: 
+#&gt;   should_timeout: FALSE
+#&gt;   should_raise: FALSE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>))</code></pre>
+<pre><code>#&gt; &lt;crul response&gt; 
+#&gt;   url: https://httpbin.org/get?hello=world
+#&gt;   request_headers: 
+#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.3 crul/0.7.4.9310
+#&gt;     Accept-Encoding: gzip, deflate
+#&gt;     Accept: application/json, text/xml, application/xml, */*
+#&gt;   response_headers: 
+#&gt;   params: 
+#&gt;     hello: world
+#&gt;   status: 418</code></pre>
+<p><strong>Stubbing requests based on method, uri and query params</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">wi_th</span>(<span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>), 
+        <span class="dt">headers =</span> <span class="kw">list</span>(<span class="st">&#39;User-Agent&#39;</span> =<span class="st"> &#39;libcurl/7.51.0 r-curl/2.6 crul/0.3.6&#39;</span>, 
+                       <span class="st">&#39;Accept-Encoding&#39;</span> =<span class="st"> &quot;gzip, deflate&quot;</span>))</code></pre>
+<pre><code>#&gt; &lt;webmockr stub&gt; 
+#&gt;   method: get
+#&gt;   uri: https://httpbin.org/get
+#&gt;   with: 
+#&gt;     query: hello=world
+#&gt;     body: 
+#&gt;     request_headers: User-Agent=libcurl/7.51.0 r-cur..., Accept-Encoding=gzip, deflate
+#&gt;   to_return: 
+#&gt;     status: 
+#&gt;     body: 
+#&gt;     response_headers: 
+#&gt;   should_timeout: FALSE
+#&gt;   should_raise: FALSE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_registry</span>()</code></pre>
+<pre><code>#&gt; &lt;webmockr stub registry&gt; 
+#&gt;  Registered Stubs
+#&gt;    GET: https://httpbin.org/get 
+#&gt;    GET: https://httpbin.org/get?hello=world   | to_return:   with status 418 
+#&gt;    GET: https://httpbin.org/get?hello=world   with headers {&quot;User-Agent&quot;:&quot;libcurl/7.51.0 r-curl/2.6 crul/0.3.6&quot;,&quot;Accept-Encoding&quot;:&quot;gzip, deflate&quot;}</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
+x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>))</code></pre>
+<pre><code>#&gt; &lt;crul response&gt; 
+#&gt;   url: https://httpbin.org/get?hello=world
+#&gt;   request_headers: 
+#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.3 crul/0.7.4.9310
+#&gt;     Accept-Encoding: gzip, deflate
+#&gt;     Accept: application/json, text/xml, application/xml, */*
+#&gt;   response_headers: 
+#&gt;   params: 
+#&gt;     hello: world
+#&gt;   status: 418</code></pre>
+<p><strong>Stubbing requests and set expectation of a timeout</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;post&quot;</span>, <span class="st">&quot;https://httpbin.org/post&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">to_timeout</span>()
+x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
+x<span class="op">$</span><span class="kw">post</span>(<span class="st">&#39;post&#39;</span>)
+<span class="co">#&gt; Error: Request Timeout (HTTP 408).</span>
+<span class="co">#&gt;  - The client did not produce a request within the time that the server was prepared</span>
+<span class="co">#&gt;    to wait. The client MAY repeat the request without modifications at any later time.</span></code></pre>
+<p><strong>Stubbing requests and set HTTP error expectation</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fauxpas)
+<span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get?a=b&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">to_raise</span>(HTTPBadRequest)
+x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
+x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;b&quot;</span>))
+<span class="co">#&gt; Error: Bad Request (HTTP 400).</span>
+<span class="co">#&gt;  - The request could not be understood by the server due to malformed syntax.</span>
+<span class="co">#&gt;    The client SHOULD NOT repeat the request without modifications.</span></code></pre>
 
-cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://api.crossref.org&quot;</span>)
-<span class="kw">system.time</span>(
-  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
-    cli<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;works&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="dv">3</span>))
-  })
-)
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.085   0.008   5.101</span></code></pre>
-<p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
-  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
-    cli<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;works&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="dv">3</span>))
-  })
-)
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.066   0.002   0.087</span></code></pre>
-<p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
-<p>The cached response looks something like (condensed for brevity):</p>
-<pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>
-<span class="kw">-</span> <span class="fu">request:</span>
-    <span class="fu">method:</span><span class="at"> get</span>
-    <span class="fu">uri:</span><span class="at"> https://api.crossref.org/works?rows=3</span>
-    <span class="fu">body:</span>
-      <span class="fu">encoding:</span><span class="at"> </span><span class="st">&#39;&#39;</span>
-      <span class="fu">string:</span><span class="at"> </span><span class="st">&#39;&#39;</span>
-    <span class="fu">headers:</span>
-      <span class="fu">User-Agent:</span><span class="at"> libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span>
-      <span class="fu">Accept-Encoding:</span><span class="at"> gzip, deflate</span>
-      <span class="fu">Accept:</span><span class="at"> application/json, text/xml, application/xml, */*</span>
-  <span class="fu">response:</span>
-    <span class="fu">status:</span>
-      <span class="fu">status_code:</span><span class="at"> </span><span class="st">&#39;200&#39;</span>
-      <span class="fu">message:</span><span class="at"> OK</span>
-      <span class="fu">explanation:</span><span class="at"> Request fulfilled, document follows</span>
-    <span class="fu">headers:</span>
-      <span class="fu">status:</span><span class="at"> HTTP/1.1 200 OK</span>
-      <span class="fu">content-type:</span><span class="at"> application/json;charset=UTF-8</span>
-      <span class="fu">vary:</span><span class="at"> Accept</span>
-      <span class="fu">access-control-allow-origin:</span><span class="at"> </span><span class="st">&#39;*&#39;</span>
-      <span class="fu">access-control-allow-headers:</span><span class="at"> X-Requested-With</span>
-      <span class="fu">content-length:</span><span class="at"> </span><span class="st">&#39;5360&#39;</span>
-      <span class="fu">server:</span><span class="at"> http-kit</span>
-      <span class="fu">date:</span><span class="at"> Sat, 28 Apr 2018 15:12:29 GMT</span>
-      <span class="fu">x-rate-limit-limit:</span><span class="at"> </span><span class="st">&#39;50&#39;</span>
-      <span class="fu">x-rate-limit-interval:</span><span class="at"> 1s</span>
-      <span class="fu">connection:</span><span class="at"> close</span>
-    <span class="fu">body:</span>
-      <span class="fu">encoding:</span><span class="at"> UTF-8</span>
-      <span class="fu">string:</span><span class="at"> </span><span class="st">&#39;{&quot;status&quot;:&quot;ok&quot;,&quot;message-type&quot;:&quot;work-list&quot;,&quot;message-version&quot;:&quot;1.0.0&quot;,&quot;message&quot;:{&quot;facets&quot;:{},&quot;total-results&quot;:96454147,&quot;items&quot;:[{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845330},&quot;reference-count&quot;:0,&quot;publisher&quot;:&quot;Elsevier</span>
-<span class="st">        BV&quot;,&quot;issue&quot;:&quot;3&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1999,10,1]],&quot;date-time&quot;:&quot;1999-10-01T00:00:00Z&quot;,&quot;timestamp&quot;:938736000000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1999,10]]},&quot;DOI&quot;:&quot;10.1016\/s0305-9006(99)00007-0&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:38Z&quot;,&quot;timestamp&quot;:1027642298000},&quot;page&quot;:&quot;vii&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Editorial&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;52&quot;,&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900699000070?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900699000070?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2015,9,9]],&quot;date-time&quot;:&quot;2015-09-09T06:07:58Z&quot;,&quot;timestamp&quot;:1441778878000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1999,10]]},&quot;references-count&quot;:0,&quot;alternative-id&quot;:[&quot;S0305900699000070&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0305-9006(99)00007-0&quot;,&quot;ISSN&quot;:[&quot;0305-9006&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0305-9006&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;Geography,</span>
-<span class="st">        Planning and Development&quot;]},{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845347},&quot;reference-count&quot;:0,&quot;publisher&quot;:&quot;Elsevier</span>
-<span class="st">        BV&quot;,&quot;issue&quot;:&quot;4&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1998,12,1]],&quot;date-time&quot;:&quot;1998-12-01T00:00:00Z&quot;,&quot;timestamp&quot;:912470400000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1998,12]]},&quot;DOI&quot;:&quot;10.1016\/s0305-9006(98)00020-8&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:38Z&quot;,&quot;timestamp&quot;:1027642298000},&quot;page&quot;:&quot;VI&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Preface&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;50&quot;,&quot;author&quot;:[{&quot;given&quot;:&quot;Maurice&quot;,&quot;family&quot;:&quot;Yeats&quot;,&quot;affiliation&quot;:[]}],&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Progress</span>
-<span class="st">        in Planning&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900698000208?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0305900698000208?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2015,9,9]],&quot;date-time&quot;:&quot;2015-09-09T06:07:58Z&quot;,&quot;timestamp&quot;:1441778878000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1998,12]]},&quot;references-count&quot;:0,&quot;alternative-id&quot;:[&quot;S0305900698000208&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0305-9006(98)00020-8&quot;,&quot;ISSN&quot;:[&quot;0305-9006&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0305-9006&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;Geography,</span>
-<span class="st">        Planning and Development&quot;]},{&quot;indexed&quot;:{&quot;date-parts&quot;:[[2017,10,23]],&quot;date-time&quot;:&quot;2017-10-23T19:27:25Z&quot;,&quot;timestamp&quot;:1508786845389},&quot;reference-count&quot;:24,&quot;publisher&quot;:&quot;Elsevier</span>
-<span class="st">        BV&quot;,&quot;issue&quot;:&quot;1&quot;,&quot;license&quot;:[{&quot;URL&quot;:&quot;http:\/\/www.elsevier.com\/tdm\/userlicense\/1.0\/&quot;,&quot;start&quot;:{&quot;date-parts&quot;:[[1999,1,1]],&quot;date-time&quot;:&quot;1999-01-01T00:00:00Z&quot;,&quot;timestamp&quot;:915148800000},&quot;delay-in-days&quot;:0,&quot;content-version&quot;:&quot;tdm&quot;}],&quot;content-domain&quot;:{&quot;domain&quot;:[],&quot;crossmark-restriction&quot;:false},&quot;short-container-title&quot;:[&quot;Powder</span>
-<span class="st">        Technology&quot;],&quot;published-print&quot;:{&quot;date-parts&quot;:[[1999,1]]},&quot;DOI&quot;:&quot;10.1016\/s0032-5910(98)00119-3&quot;,&quot;type&quot;:&quot;journal-article&quot;,&quot;created&quot;:{&quot;date-parts&quot;:[[2002,7,26]],&quot;date-time&quot;:&quot;2002-07-26T00:11:20Z&quot;,&quot;timestamp&quot;:1027642280000},&quot;page&quot;:&quot;17-30&quot;,&quot;source&quot;:&quot;Crossref&quot;,&quot;is-referenced-by-count&quot;:0,&quot;title&quot;:[&quot;Load</span>
-<span class="st">        diversion by embedding in crushed salt&quot;],&quot;prefix&quot;:&quot;10.1016&quot;,&quot;volume&quot;:&quot;101&quot;,&quot;author&quot;:[{&quot;given&quot;:&quot;W.&quot;,&quot;family&quot;:&quot;Feuser&quot;,&quot;affiliation&quot;:[]},{&quot;given&quot;:&quot;H.&quot;,&quot;family&quot;:&quot;Vijgen&quot;,&quot;affiliation&quot;:[]},{&quot;given&quot;:&quot;E.&quot;,&quot;family&quot;:&quot;Barnert&quot;,&quot;affiliation&quot;:[]}],&quot;member&quot;:&quot;78&quot;,&quot;container-title&quot;:[&quot;Powder</span>
-<span class="st">        Technology&quot;],&quot;link&quot;:[{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0032591098001193?httpAccept=text\/xml&quot;,&quot;content-type&quot;:&quot;text\/xml&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;},{&quot;URL&quot;:&quot;http:\/\/api.elsevier.com\/content\/article\/PII:S0032591098001193?httpAccept=text\/plain&quot;,&quot;content-type&quot;:&quot;text\/plain&quot;,&quot;content-version&quot;:&quot;vor&quot;,&quot;intended-application&quot;:&quot;text-mining&quot;}],&quot;deposited&quot;:{&quot;date-parts&quot;:[[2017,6,15]],&quot;date-time&quot;:&quot;2017-06-15T02:22:06Z&quot;,&quot;timestamp&quot;:1497493326000},&quot;score&quot;:1.0,&quot;issued&quot;:{&quot;date-parts&quot;:[[1999,1]]},&quot;references-count&quot;:24,&quot;alternative-id&quot;:[&quot;S0032591098001193&quot;],&quot;URL&quot;:&quot;http:\/\/dx.doi.org\/10.1016\/s0032-5910(98)00119-3&quot;,&quot;ISSN&quot;:[&quot;0032-5910&quot;],&quot;issn-type&quot;:[{&quot;value&quot;:&quot;0032-5910&quot;,&quot;type&quot;:&quot;print&quot;}],&quot;subject&quot;:[&quot;General</span>
-<span class="st">        Chemical Engineering&quot;]}],&quot;items-per-page&quot;:3,&quot;query&quot;:{&quot;start-index&quot;:0,&quot;search-terms&quot;:null}}}&#39;</span>
-  <span class="fu">recorded_at:</span><span class="at"> 2018-04-28 15:12:29 GMT</span>
-  <span class="fu">recorded_with:</span><span class="at"> vcr/0.0.8.9521, webmockr/0.2.2.9119, crul/0.5.2</span></code></pre>
-<p>All components of both the request and response are preserved, so that the HTTP client (in this case <code>crul</code>) can reconstruct its own response just as it would if it wasn’t using <code>vcr</code>.</p>
-
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="webmockr-utilities.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="vcr-configuration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="mocking.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="webmockr-testing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -356,7 +351,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/07-vcr.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/04-webmockr-stubs.Rmd",
 "text": "Edit"
 },
 "history": {

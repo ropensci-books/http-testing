@@ -1,0 +1,30 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# utilities {#webmockr-utilities}
+
+```{r}
+library("webmockr")
+```
+
+## Managing stubs {#webmockr-}
+
+- `enable()`
+- `enabled()`
+- `disable()`
+- `httr_mock()`
+
+## Managing stubs {#webmockr-managing-stubs}
+
+- `stub_registry()`
+- `stub_registry_clear()`
+- `remove_request_stub()`
+
+## Managing requests {#webmockr-managing-requests}
+
+- `request_registry()`

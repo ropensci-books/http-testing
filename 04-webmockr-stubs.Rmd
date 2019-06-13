@@ -1,0 +1,67 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# stubs {#webmockr-stubs}
+
+```{r}
+library("webmockr")
+```
+
+set return objects
+
+```{r}
+stub_request("get", "https://httpbin.org/get") %>%
+  wi_th(
+    query = list(hello = "world")) %>%
+    to_return(status = 418)
+```
+
+```{r}
+x$get('get', query = list(hello = "world"))
+```
+
+**Stubbing requests based on method, uri and query params**
+
+```{r}
+stub_request("get", "https://httpbin.org/get") %>%
+  wi_th(query = list(hello = "world"), 
+        headers = list('User-Agent' = 'libcurl/7.51.0 r-curl/2.6 crul/0.3.6', 
+                       'Accept-Encoding' = "gzip, deflate"))
+```
+
+```{r}
+stub_registry()
+```
+
+```{r}
+x <- HttpClient$new(url = "https://httpbin.org")
+x$get('get', query = list(hello = "world"))
+```
+
+**Stubbing requests and set expectation of a timeout**
+
+```{r eval=FALSE}
+stub_request("post", "https://httpbin.org/post") %>% to_timeout()
+x <- HttpClient$new(url = "https://httpbin.org")
+x$post('post')
+#> Error: Request Timeout (HTTP 408).
+#>  - The client did not produce a request within the time that the server was prepared
+#>    to wait. The client MAY repeat the request without modifications at any later time.
+```
+
+**Stubbing requests and set HTTP error expectation**
+
+```{r eval=FALSE}
+library(fauxpas)
+stub_request("get", "https://httpbin.org/get?a=b") %>% to_raise(HTTPBadRequest)
+x <- HttpClient$new(url = "https://httpbin.org")
+x$get('get', query = list(a = "b"))
+#> Error: Bad Request (HTTP 400).
+#>  - The request could not be understood by the server due to malformed syntax.
+#>    The client SHOULD NOT repeat the request without modifications.
+```
