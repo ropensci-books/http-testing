@@ -259,7 +259,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.085   0.008   5.101</span></code></pre>
+<span class="co">#&gt;   0.094   0.010   3.975</span></code></pre>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
   <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
@@ -267,7 +267,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.066   0.002   0.087</span></code></pre>
+<span class="co">#&gt;   0.052   0.001   0.057</span></code></pre>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>

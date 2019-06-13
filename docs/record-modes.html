@@ -232,6 +232,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="record-modes" class="section level1">
 <h1><span class="header-section-number">Chapter 9</span> record modes</h1>
+<p>Record modes dictate under what circumstances http requests/responses are
+recorded to cassettes (disk). Set the recording mode with the parameter
+<code>record</code> in the <code>use_cassette()</code> and <code>insert_cassette()</code> functions.</p>
 <div id="once" class="section level2">
 <h2><span class="header-section-number">9.1</span> once</h2>
 <p>The <code>once</code> record mode will:</p>
@@ -274,7 +277,7 @@ interactions, even if you have an existing recorded one that is similar
 <li>Record new interactions.</li>
 <li>Never replay previously recorded interactions.</li>
 </ul>
-<p>This can be temporarily used to force VCR to re-record
+<p>This can be temporarily used to force vcr to re-record
 a cassette (i.e. to ensure the responses are not out of date)
 or can be used when you simply want to log all HTTP requests.</p>
 

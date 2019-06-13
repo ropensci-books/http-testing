@@ -9,6 +9,10 @@ knitr::opts_chunk$set(
 
 # record modes {#record-modes}
 
+Record modes dictate under what circumstances http requests/responses are
+recorded to cassettes (disk). Set the recording mode with the parameter 
+`record` in the `use_cassette()` and `insert_cassette()` functions.
+
 ## once
 
 The `once` record mode will:
@@ -56,6 +60,6 @@ The `all` record mode will:
 - Never replay previously recorded interactions.
 
 
-This can be temporarily used to force VCR to re-record
+This can be temporarily used to force vcr to re-record
 a cassette (i.e. to ensure the responses are not out of date)
 or can be used when you simply want to log all HTTP requests.
