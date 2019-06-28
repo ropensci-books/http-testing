@@ -1,0 +1,55 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+#  (PART) Appendix {-}
+
+# Testing considerations {#testing-considerations}
+
+When should you use `webmockr` vs. `vcr` vs. testing real HTTP interactions?
+
+There is no right answer to this question, but rather a range of considerations.
+
+On one hand, it seems appropriate to think about testing your R package
+in a way that is not sensitive to the remote service the package interacts
+with being down/etc. However, part of the user experience of using your
+package will be dealing with intermittent server side issues, for which
+ideally your package is robust to, and/or at least fails well in
+reponse to. Of course you can still test your package against failure
+scenarios without testing real interactions.
+
+In addition to intermittent server side issues, your tests may be performing
+queries with cached (vcr) or mocked (webmockr) responses that are no longer
+valid with the current state of the remote service. It may be harmless, for
+example, the response to some query now returns no data because the
+data for that entity was removed. But it could be more serious in that the
+remove service changed their API such that an API route is no longer
+available or the route name has changed, or similar.
+
+Testing real HTTP interactions should be the slowest option, but has the
+benefit of not adding any (permanent) files to your package. Mocking
+tests can be very lite weight, though you can include very heavy responses.
+Using vcr to cache real responses can lead to many files and sometimes
+files of large size. It's worth thinking about this trade-off between
+speed of tests, what can be tested, and files added to your package.
+
+If you're working with in a team, and if you're using vcr, you need to
+consider where files are stored and make sure access to those files
+doesn't vary by team member.
+
+A last option is to create a very minimal fake service to run your tests
+against. The consultancy Thoughtbot wrote a nice post on
+[How to Stub External Services in Tests][tbpost]. Using Ruby, they briefly
+described mocking with webmock (similar to `webmockr` in R), using vcr
+(similar to `vcr` in R), and creating a "fake" (fake service).
+
+Some have found they really don't like having the added vcr cassettes
+in their projects, and thus prefer mocking. See for example [this post][pst].
+
+
+[tbpost]: (https://thoughtbot.com/blog/how-to-stub-external-services-in-tests)
+[pst]: https://quickleft.com/blog/decreasing-vcr-dependency-webmock/

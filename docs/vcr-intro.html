@@ -220,9 +220,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>15.1</b> Correct line identification</a></li>
 </ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>16</b> session info</a></li>
+<li class="chapter" data-level="16" data-path="testing-considerations.html"><a href="testing-considerations.html"><i class="fa fa-check"></i><b>16</b> Testing considerations</a></li>
+<li class="chapter" data-level="17" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>17</b> session info</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2018</a></li>
+<li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2019</a></li>
 
 </ul>
 
@@ -270,7 +271,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.095   0.008   5.263</span></code></pre>
+<span class="co">#&gt;   0.087   0.009   3.597</span></code></pre>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
   <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
@@ -278,7 +279,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.037   0.001   0.039</span></code></pre>
+<span class="co">#&gt;   0.098   0.003   0.199</span></code></pre>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>

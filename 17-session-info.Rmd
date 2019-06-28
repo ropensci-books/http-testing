@@ -4,8 +4,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-#  (PART) Appendix {-}
-
 # session info
 
 Session info for this book
