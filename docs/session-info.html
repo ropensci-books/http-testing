@@ -13,7 +13,7 @@
   
   
   <meta property="og:description" content="http testing book" />
-  <meta name="github-repo" content="ropensci/http-testing-book" />
+  <meta name="github-repo" content="ropenscilabs/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 16 session info | HTTP mocking and testing in R" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6.9100 / webmockr v0.3.4.9100 / crul v0.7.4.9310 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
 
 
 
@@ -249,43 +249,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;  collate  en_US.UTF-8                                
 #&gt;  ctype    en_US.UTF-8                                
 #&gt;  tz       US/Pacific                                 
-#&gt;  date     2019-06-13                                 
+#&gt;  date     2019-06-28                                 
 #&gt; 
 #&gt; ─ Packages ──────────────────────────────────────────────────────────────
-#&gt;  package     * version     date       lib source                      
-#&gt;  assertthat    0.2.1       2019-03-21 [1] CRAN (R 3.6.0)              
-#&gt;  base64enc     0.1-3       2015-07-28 [1] CRAN (R 3.6.0)              
-#&gt;  bookdown      0.11        2019-05-28 [1] CRAN (R 3.6.0)              
-#&gt;  cli           1.1.0       2019-03-19 [1] CRAN (R 3.6.0)              
-#&gt;  crayon        1.3.4       2017-09-16 [1] CRAN (R 3.6.0)              
-#&gt;  crul        * 0.7.4.9310  2019-06-13 [1] local                       
-#&gt;  curl          3.3         2019-01-10 [1] CRAN (R 3.6.0)              
-#&gt;  digest        0.6.19      2019-05-20 [1] CRAN (R 3.6.0)              
-#&gt;  evaluate      0.14        2019-05-28 [1] CRAN (R 3.6.0)              
-#&gt;  fauxpas       0.2.0       2018-03-01 [1] CRAN (R 3.6.0)              
-#&gt;  htmltools     0.3.6       2017-04-28 [1] CRAN (R 3.6.0)              
-#&gt;  httpcode      0.2.0       2016-11-14 [1] CRAN (R 3.6.0)              
-#&gt;  httr          1.4.0       2018-12-11 [1] CRAN (R 3.6.0)              
-#&gt;  jsonlite      1.6         2018-12-07 [1] CRAN (R 3.6.0)              
-#&gt;  knitr         1.23        2019-05-18 [1] CRAN (R 3.6.0)              
-#&gt;  lazyeval      0.2.2       2019-03-15 [1] CRAN (R 3.6.0)              
-#&gt;  magrittr      1.5         2014-11-22 [1] CRAN (R 3.6.0)              
-#&gt;  R6            2.4.0       2019-02-14 [1] CRAN (R 3.6.0)              
-#&gt;  Rcpp          1.0.1       2019-03-17 [1] CRAN (R 3.6.0)              
-#&gt;  rlang         0.3.99.9003 2019-06-12 [1] Github (r-lib/rlang@2276162)
-#&gt;  rmarkdown     1.13        2019-05-22 [1] CRAN (R 3.6.0)              
-#&gt;  rstudioapi    0.10        2019-03-19 [1] CRAN (R 3.6.0)              
-#&gt;  sessioninfo   1.1.1       2018-11-05 [1] CRAN (R 3.6.0)              
-#&gt;  stringi       1.4.3       2019-03-12 [1] CRAN (R 3.6.0)              
-#&gt;  stringr       1.4.0       2019-02-10 [1] CRAN (R 3.6.0)              
-#&gt;  testthat    * 2.1.1       2019-04-23 [1] CRAN (R 3.6.0)              
-#&gt;  triebeard     0.3.0       2016-08-04 [1] CRAN (R 3.6.0)              
-#&gt;  urltools      1.7.3       2019-04-14 [1] CRAN (R 3.6.0)              
-#&gt;  vcr         * 0.2.6.9100  2019-06-13 [1] local                       
-#&gt;  webmockr    * 0.3.4.9100  2019-06-13 [1] local                       
-#&gt;  withr         2.1.2       2018-03-15 [1] CRAN (R 3.6.0)              
-#&gt;  xfun          0.7         2019-05-14 [1] CRAN (R 3.6.0)              
-#&gt;  yaml          2.2.0       2018-07-25 [1] CRAN (R 3.6.0)              
+#&gt;  package     * version    date       lib source                      
+#&gt;  assertthat    0.2.1      2019-03-21 [1] CRAN (R 3.6.0)              
+#&gt;  base64enc     0.1-3      2015-07-28 [1] CRAN (R 3.6.0)              
+#&gt;  bookdown      0.11       2019-05-28 [1] CRAN (R 3.6.0)              
+#&gt;  cli           1.1.0      2019-03-19 [1] CRAN (R 3.6.0)              
+#&gt;  crayon        1.3.4      2017-09-16 [1] CRAN (R 3.6.0)              
+#&gt;  crul        * 0.8.0      2019-06-27 [1] local                       
+#&gt;  curl          3.3        2019-01-10 [1] CRAN (R 3.6.0)              
+#&gt;  digest        0.6.19     2019-05-20 [1] CRAN (R 3.6.0)              
+#&gt;  evaluate      0.14       2019-05-28 [1] CRAN (R 3.6.0)              
+#&gt;  fauxpas       0.2.0      2018-03-01 [1] CRAN (R 3.6.0)              
+#&gt;  htmltools     0.3.6      2017-04-28 [1] CRAN (R 3.6.0)              
+#&gt;  httpcode      0.2.0      2016-11-14 [1] CRAN (R 3.6.0)              
+#&gt;  httr          1.4.0      2018-12-11 [1] CRAN (R 3.6.0)              
+#&gt;  jsonlite      1.6        2018-12-07 [1] CRAN (R 3.6.0)              
+#&gt;  knitr         1.23       2019-05-18 [1] CRAN (R 3.6.0)              
+#&gt;  lazyeval      0.2.2      2019-03-15 [1] CRAN (R 3.6.0)              
+#&gt;  magrittr      1.5        2014-11-22 [1] CRAN (R 3.6.0)              
+#&gt;  R6            2.4.0      2019-02-14 [1] CRAN (R 3.6.0)              
+#&gt;  Rcpp          1.0.1      2019-03-17 [1] CRAN (R 3.6.0)              
+#&gt;  rlang         0.4.0.9000 2019-06-27 [1] Github (r-lib/rlang@2ad1376)
+#&gt;  rmarkdown     1.13       2019-05-22 [1] CRAN (R 3.6.0)              
+#&gt;  rstudioapi    0.10       2019-03-19 [1] CRAN (R 3.6.0)              
+#&gt;  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 3.6.0)              
+#&gt;  stringi       1.4.3      2019-03-12 [1] CRAN (R 3.6.0)              
+#&gt;  stringr       1.4.0      2019-02-10 [1] CRAN (R 3.6.0)              
+#&gt;  testthat    * 2.1.1      2019-04-23 [1] CRAN (R 3.6.0)              
+#&gt;  triebeard     0.3.0      2016-08-04 [1] CRAN (R 3.6.0)              
+#&gt;  urltools      1.7.3      2019-04-14 [1] CRAN (R 3.6.0)              
+#&gt;  vcr         * 0.2.6      2019-02-12 [1] CRAN (R 3.6.0)              
+#&gt;  webmockr    * 0.3.4      2019-02-09 [1] CRAN (R 3.6.0)              
+#&gt;  withr         2.1.2      2018-03-15 [1] CRAN (R 3.6.0)              
+#&gt;  xfun          0.8        2019-06-25 [1] CRAN (R 3.6.0)              
+#&gt;  yaml          2.2.0      2018-07-25 [1] CRAN (R 3.6.0)              
 #&gt; 
 #&gt; [1] /Library/Frameworks/R.framework/Versions/3.6/Resources/library</code></pre>
 

@@ -13,7 +13,7 @@
   
   
   <meta property="og:description" content="http testing book" />
-  <meta name="github-repo" content="ropensci/http-testing-book" />
+  <meta name="github-repo" content="ropenscilabs/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 7 Caching HTTP requests | HTTP mocking and testing in R" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6.9100 / webmockr v0.3.4.9100 / crul v0.7.4.9310 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
 
 
 
@@ -264,7 +264,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.081   0.007   3.588</span></code></pre>
+<span class="co">#&gt;   0.081   0.010   4.747</span></code></pre>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
   <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {
@@ -272,7 +272,7 @@ cli &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span 
   })
 )
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.054   0.002   0.057</span></code></pre>
+<span class="co">#&gt;   0.041   0.000   0.043</span></code></pre>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">http_interactions:</span>
