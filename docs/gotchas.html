@@ -156,6 +156,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7" data-path="vcr-intro.html"><a href="vcr-intro.html"><i class="fa fa-check"></i><b>7</b> Caching HTTP requests</a><ul>
 <li class="chapter" data-level="7.1" data-path="vcr-intro.html"><a href="vcr-intro.html#terminology"><i class="fa fa-check"></i><b>7.1</b> Terminology</a></li>
 <li class="chapter" data-level="7.2" data-path="mocking.html"><a href="mocking.html#basic-usage"><i class="fa fa-check"></i><b>7.2</b> Basic usage</a></li>
+<li class="chapter" data-level="7.3" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-enabled-testing"><i class="fa fa-check"></i><b>7.3</b> vcr enabled testing</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="vcr-intro.html"><a href="vcr-intro.html#check-vs-test"><i class="fa fa-check"></i><b>7.3.1</b> check vs. test</a></li>
+<li class="chapter" data-level="7.3.2" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-enabled-tests-on-cran"><i class="fa fa-check"></i><b>7.3.2</b> CRAN</a></li>
+<li class="chapter" data-level="7.3.3" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-ci"><i class="fa fa-check"></i><b>7.3.3</b> CI sites: Travis, Appveyor, etc.</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>8</b> vcr configuration</a><ul>
 <li class="chapter" data-level="8.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>8.1</b> Get your configuration</a></li>
@@ -207,8 +212,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>14</b> managing cassettes</a><ul>
 <li class="chapter" data-level="14.1" data-path="managing-cassettes.html"><a href="managing-cassettes.html#gitignore-cassettes"><i class="fa fa-check"></i><b>14.1</b> gitignore cassettes</a></li>
-<li class="chapter" data-level="14.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>14.2</b> deleting cassettes</a></li>
-<li class="chapter" data-level="14.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>14.3</b> cassette file types</a></li>
+<li class="chapter" data-level="14.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#rbuildignore-cassettes"><i class="fa fa-check"></i><b>14.2</b> Rbuildignore cassettes</a></li>
+<li class="chapter" data-level="14.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>14.3</b> deleting cassettes</a></li>
+<li class="chapter" data-level="14.4" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>14.4</b> cassette file types</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>15</b> gotchas</a><ul>
 <li class="chapter" data-level="15.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>15.1</b> Correct line identification</a></li>
@@ -244,7 +250,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>HTTP errors</strong>: It’s a good idea to test failure behavior of a web service in your test suite. Sometimes <code>vcr</code> can handle that and sometimes it cannot. Open any issues about this because ideally i think <code>vcr</code> could handle all cases of HTTP failures.</li>
 <li><strong>Very large response bodies</strong>: A few things about large response bodies. First, <code>vcr</code> may give you trouble with very large response bodies as we’ve see yaml parsing problems already. Second, large response bodies means large cassettes on disk - so just be aware of the file size if that’s something that matters to you. Third, large response bodies will take longer to load into R, so you may still have a multi second test run even though the test is using a cached HTTP response.</li>
 <li><strong>Encoding</strong>: We haven’t dealt with encoding much yet at all, so we’re likely to run into encoding issues. One blunt instrument for this for now is to set <code>preserve_exact_body_bytes = TRUE</code> when running <code>vcr::use_cassette()</code> or <code>vcr::insert_cassette()</code>, which stores the response body as base64.</li>
-<li><strong>devtools::check vs. devtools::test</strong>: At least one user has reported <code>vcr</code> not working as expected when using <code>devtools::test()</code> - but if they used <code>devtools::check()</code> <code>vcr</code> worked as expected. We haven’t dug into why this would be. Do report it if you run into this problem.</li>
+<li><strong>devtools::check vs. devtools::test</strong>: See (<a href="vcr-intro.html#check-vs-test">7.3.1</a>)</li>
+<li><strong>ignored files</strong>: See (<a href="managing-cassettes.html#managing-cassettes">14</a>)</li>
 </ul>
 <div id="line-identification" class="section level2">
 <h2><span class="header-section-number">15.1</span> Correct line identification</h2>
