@@ -26,7 +26,7 @@ The main use case is for unit tests for R packages.
 
 `vcr` works by hooking into `webmockr`. However, when `webmockr` finds a match, we then look for a recorded interaction on disk. If one is not found, we record the request and response. If one is found, we use that recorded interaction to construct a real response as the R client expects.
 
-Read more about `webmockr` in [Section 3](#vcr-intro).
+Read more about `vcr` in [Section 3](#vcr-intro).
 
 ## Why crul? {#why-crul}
 
