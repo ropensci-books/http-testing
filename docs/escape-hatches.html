@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 escape hatches | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 escape hatches | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -250,22 +249,22 @@ have <code>vcr</code> loaded but you want to still make real HTTP requests.</p>
 <div id="lightswitch-vcr-webmockr-and-their-onoff-states" class="section level2">
 <h2><span class="header-section-number">13.1</span> lightswitch: vcr, webmockr and their on/off states</h2>
 <p>After loading <code>vcr</code>, <code>webmockr</code> is not loaded, thus real HTTP requests are allowed.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vcr)</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">library</span>(vcr)</a></code></pre></div>
 <p>After loading <code>webmockr</code> you can still make real HTTP requests.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(webmockr)</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw">library</span>(webmockr)</a></code></pre></div>
 <p>But after turning mocking on you can’t make real requests</p>
-<pre class="sourceCode r"><code class="sourceCode r">crul<span class="op">::</span><span class="kw">mock</span>()
-<span class="co"># OR</span>
-webmockr<span class="op">::</span><span class="kw">enable</span>()</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">crul<span class="op">::</span><span class="kw">mock</span>()</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="co"># OR</span></a>
+<a class="sourceLine" id="cb76-3" data-line-number="3">webmockr<span class="op">::</span><span class="kw">enable</span>()</a></code></pre></div>
 <p>And you’ll get errors that come from <code>webmockr</code> when attempting real HTTP requests</p>
-<pre class="sourceCode r"><code class="sourceCode r">HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()
-<span class="co">#&gt; Error: Real HTTP connections are disabled.</span>
-<span class="co">#&gt; Unregistered request: GET https://httpbin.org/get with headers {Accept-Encoding: gzip, deflate}</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; You can stub this request with the following snippet:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    stub_request(&#39;get&#39;, uri = &#39;https://httpbin.org/get&#39;) %&gt;%</span>
-<span class="co">#&gt;     wi_th(headers = list(&#39;Accept-Encoding&#39; = &#39;gzip, deflate&#39;))</span></code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="co">#&gt; Error: Real HTTP connections are disabled.</span></a>
+<a class="sourceLine" id="cb77-3" data-line-number="3"><span class="co">#&gt; Unregistered request: GET https://httpbin.org/get with headers {Accept-Encoding: gzip, deflate}</span></a>
+<a class="sourceLine" id="cb77-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb77-5" data-line-number="5"><span class="co">#&gt; You can stub this request with the following snippet:</span></a>
+<a class="sourceLine" id="cb77-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb77-7" data-line-number="7"><span class="co">#&gt;    stub_request(&#39;get&#39;, uri = &#39;https://httpbin.org/get&#39;) %&gt;%</span></a>
+<a class="sourceLine" id="cb77-8" data-line-number="8"><span class="co">#&gt;     wi_th(headers = list(&#39;Accept-Encoding&#39; = &#39;gzip, deflate&#39;))</span></a></code></pre></div>
 <p>You can have <code>vcr</code> loaded but if you’re not using <code>use_casette</code></p>
 </div>
 <div id="turned-off" class="section level2">
@@ -276,30 +275,30 @@ webmockr<span class="op">::</span><span class="kw">enable</span>()</code></pre>
 turn <code>vcr</code> back on - such that <code>vcr</code> is onl turned off for the duration of your
 code block running. Even if your code block errors, <code>vcr</code> will be turned back on
 due to use of <code>on.exit(turn_on())</code></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vcr)
-<span class="kw">library</span>(crul)
-<span class="kw">turned_off</span>({
- res &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()
-})</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">res
-<span class="co">#&gt; &lt;crul response&gt; </span>
-<span class="co">#&gt;   url: https://httpbin.org/get</span>
-<span class="co">#&gt;   request_headers: </span>
-<span class="co">#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span>
-<span class="co">#&gt;     Accept-Encoding: gzip, deflate</span>
-<span class="co">#&gt;     Accept: application/json, text/xml, application/xml, */*</span>
-<span class="co">#&gt;   response_headers: </span>
-<span class="co">#&gt;     status: HTTP/1.1 200 OK</span>
-<span class="co">#&gt;     server: nginx</span>
-<span class="co">#&gt;     date: Fri, 27 Apr 2018 23:22:44 GMT</span>
-<span class="co">#&gt;     content-type: application/json</span>
-<span class="co">#&gt;     content-length: 330</span>
-<span class="co">#&gt;     connection: keep-alive</span>
-<span class="co">#&gt;     access-control-allow-origin: *</span>
-<span class="co">#&gt;     access-control-allow-credentials: true</span>
-<span class="co">#&gt;     x-powered-by: Flask</span>
-<span class="co">#&gt;     x-processed-time: 0</span>
-<span class="co">#&gt;   status: 200</span></code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">library</span>(vcr)</a>
+<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="kw">library</span>(crul)</a>
+<a class="sourceLine" id="cb78-3" data-line-number="3"><span class="kw">turned_off</span>({</a>
+<a class="sourceLine" id="cb78-4" data-line-number="4"> res &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>()</a>
+<a class="sourceLine" id="cb78-5" data-line-number="5">})</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">res</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="co">#&gt; &lt;crul response&gt; </span></a>
+<a class="sourceLine" id="cb79-3" data-line-number="3"><span class="co">#&gt;   url: https://httpbin.org/get</span></a>
+<a class="sourceLine" id="cb79-4" data-line-number="4"><span class="co">#&gt;   request_headers: </span></a>
+<a class="sourceLine" id="cb79-5" data-line-number="5"><span class="co">#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span></a>
+<a class="sourceLine" id="cb79-6" data-line-number="6"><span class="co">#&gt;     Accept-Encoding: gzip, deflate</span></a>
+<a class="sourceLine" id="cb79-7" data-line-number="7"><span class="co">#&gt;     Accept: application/json, text/xml, application/xml, */*</span></a>
+<a class="sourceLine" id="cb79-8" data-line-number="8"><span class="co">#&gt;   response_headers: </span></a>
+<a class="sourceLine" id="cb79-9" data-line-number="9"><span class="co">#&gt;     status: HTTP/1.1 200 OK</span></a>
+<a class="sourceLine" id="cb79-10" data-line-number="10"><span class="co">#&gt;     server: nginx</span></a>
+<a class="sourceLine" id="cb79-11" data-line-number="11"><span class="co">#&gt;     date: Fri, 27 Apr 2018 23:22:44 GMT</span></a>
+<a class="sourceLine" id="cb79-12" data-line-number="12"><span class="co">#&gt;     content-type: application/json</span></a>
+<a class="sourceLine" id="cb79-13" data-line-number="13"><span class="co">#&gt;     content-length: 330</span></a>
+<a class="sourceLine" id="cb79-14" data-line-number="14"><span class="co">#&gt;     connection: keep-alive</span></a>
+<a class="sourceLine" id="cb79-15" data-line-number="15"><span class="co">#&gt;     access-control-allow-origin: *</span></a>
+<a class="sourceLine" id="cb79-16" data-line-number="16"><span class="co">#&gt;     access-control-allow-credentials: true</span></a>
+<a class="sourceLine" id="cb79-17" data-line-number="17"><span class="co">#&gt;     x-powered-by: Flask</span></a>
+<a class="sourceLine" id="cb79-18" data-line-number="18"><span class="co">#&gt;     x-processed-time: 0</span></a>
+<a class="sourceLine" id="cb79-19" data-line-number="19"><span class="co">#&gt;   status: 200</span></a></code></pre></div>
 </div>
 <div id="turn-off" class="section level2">
 <h2><span class="header-section-number">13.3</span> turn_off</h2>

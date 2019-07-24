@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 stubs | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 stubs | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -244,12 +243,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="webmockr-stubs" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> stubs</h1>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</a></code></pre></div>
 <p>set return objects</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">wi_th</span>(
-    <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>)) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">to_return</span>(<span class="dt">status =</span> <span class="dv">418</span>)</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">wi_th</span>(</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">    </span><span class="kw">to_return</span>(<span class="dt">status =</span> <span class="dv">418</span>)</a></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub&gt; 
 #&gt;   method: get
 #&gt;   uri: https://httpbin.org/get
@@ -263,11 +262,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;     response_headers: 
 #&gt;   should_timeout: FALSE
 #&gt;   should_raise: FALSE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>))</a></code></pre></div>
 <pre><code>#&gt; &lt;crul response&gt; 
 #&gt;   url: https://httpbin.org/get?hello=world
 #&gt;   request_headers: 
-#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.3 crul/0.8.0
+#&gt;     User-Agent: libcurl/7.54.0 r-curl/4.0 crul/0.8.0
 #&gt;     Accept-Encoding: gzip, deflate
 #&gt;     Accept: application/json, text/xml, application/xml, */*
 #&gt;   response_headers: 
@@ -275,10 +274,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;     hello: world
 #&gt;   status: 418</code></pre>
 <p><strong>Stubbing requests based on method, uri and query params</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">wi_th</span>(<span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>), 
-        <span class="dt">headers =</span> <span class="kw">list</span>(<span class="st">&#39;User-Agent&#39;</span> =<span class="st"> &#39;libcurl/7.51.0 r-curl/2.6 crul/0.3.6&#39;</span>, 
-                       <span class="st">&#39;Accept-Encoding&#39;</span> =<span class="st"> &quot;gzip, deflate&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">wi_th</span>(<span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>), </a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">        <span class="dt">headers =</span> <span class="kw">list</span>(<span class="st">&#39;User-Agent&#39;</span> =<span class="st"> &#39;libcurl/7.51.0 r-curl/2.6 crul/0.3.6&#39;</span>, </a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">                       <span class="st">&#39;Accept-Encoding&#39;</span> =<span class="st"> &quot;gzip, deflate&quot;</span>))</a></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub&gt; 
 #&gt;   method: get
 #&gt;   uri: https://httpbin.org/get
@@ -292,18 +291,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;     response_headers: 
 #&gt;   should_timeout: FALSE
 #&gt;   should_raise: FALSE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_registry</span>()</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">stub_registry</span>()</a></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub registry&gt; 
 #&gt;  Registered Stubs
 #&gt;    GET: https://httpbin.org/get 
 #&gt;    GET: https://httpbin.org/get?hello=world   | to_return:   with status 418 
 #&gt;    GET: https://httpbin.org/get?hello=world   with headers {&quot;User-Agent&quot;:&quot;libcurl/7.51.0 r-curl/2.6 crul/0.3.6&quot;,&quot;Accept-Encoding&quot;:&quot;gzip, deflate&quot;}</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
-x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">hello =</span> <span class="st">&quot;world&quot;</span>))</a></code></pre></div>
 <pre><code>#&gt; &lt;crul response&gt; 
 #&gt;   url: https://httpbin.org/get?hello=world
 #&gt;   request_headers: 
-#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.3 crul/0.8.0
+#&gt;     User-Agent: libcurl/7.54.0 r-curl/4.0 crul/0.8.0
 #&gt;     Accept-Encoding: gzip, deflate
 #&gt;     Accept: application/json, text/xml, application/xml, */*
 #&gt;   response_headers: 
@@ -311,20 +310,20 @@ x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&
 #&gt;     hello: world
 #&gt;   status: 418</code></pre>
 <p><strong>Stubbing requests and set expectation of a timeout</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;post&quot;</span>, <span class="st">&quot;https://httpbin.org/post&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">to_timeout</span>()
-x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
-x<span class="op">$</span><span class="kw">post</span>(<span class="st">&#39;post&#39;</span>)
-<span class="co">#&gt; Error: Request Timeout (HTTP 408).</span>
-<span class="co">#&gt;  - The client did not produce a request within the time that the server was prepared</span>
-<span class="co">#&gt;    to wait. The client MAY repeat the request without modifications at any later time.</span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">stub_request</span>(<span class="st">&quot;post&quot;</span>, <span class="st">&quot;https://httpbin.org/post&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">to_timeout</span>()</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">x<span class="op">$</span><span class="kw">post</span>(<span class="st">&#39;post&#39;</span>)</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; Error: Request Timeout (HTTP 408).</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt;  - The client did not produce a request within the time that the server was prepared</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;    to wait. The client MAY repeat the request without modifications at any later time.</span></a></code></pre></div>
 <p><strong>Stubbing requests and set HTTP error expectation</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fauxpas)
-<span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get?a=b&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">to_raise</span>(HTTPBadRequest)
-x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
-x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;b&quot;</span>))
-<span class="co">#&gt; Error: Bad Request (HTTP 400).</span>
-<span class="co">#&gt;  - The request could not be understood by the server due to malformed syntax.</span>
-<span class="co">#&gt;    The client SHOULD NOT repeat the request without modifications.</span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(fauxpas)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get?a=b&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">to_raise</span>(HTTPBadRequest)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;b&quot;</span>))</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; Error: Bad Request (HTTP 400).</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co">#&gt;  - The request could not be understood by the server due to malformed syntax.</span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="co">#&gt;    The client SHOULD NOT repeat the request without modifications.</span></a></code></pre></div>
 
 </div>
             </section>

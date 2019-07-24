@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 testing | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 testing | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -244,15 +243,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="webmockr-testing" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> testing</h1>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;crul&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;testthat&quot;</span>)
-
-<span class="kw">stub_registry_clear</span>()
-
-<span class="co"># make a stub</span>
-<span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">   </span><span class="kw">to_return</span>(<span class="dt">body =</span> <span class="st">&quot;success!&quot;</span>, <span class="dt">status =</span> <span class="dv">200</span>)</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;crul&quot;</span>)</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;testthat&quot;</span>)</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="kw">stub_registry_clear</span>()</a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co"># make a stub</span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="st">   </span><span class="kw">to_return</span>(<span class="dt">body =</span> <span class="st">&quot;success!&quot;</span>, <span class="dt">status =</span> <span class="dv">200</span>)</a></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub&gt; 
 #&gt;   method: get
 #&gt;   uri: https://httpbin.org/get
@@ -266,18 +265,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;     response_headers: 
 #&gt;   should_timeout: FALSE
 #&gt;   should_raise: FALSE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># check that it&#39;s in the stub registry</span>
-<span class="kw">stub_registry</span>()</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># check that it&#39;s in the stub registry</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">stub_registry</span>()</a></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub registry&gt; 
 #&gt;  Registered Stubs
 #&gt;    GET: https://httpbin.org/get   | to_return:  with body &quot;success!&quot;  with status 200</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make the request</span>
-z &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;get&quot;</span>)
-
-<span class="co"># run tests (nothing returned means it passed)</span>
-<span class="kw">expect_is</span>(z, <span class="st">&quot;HttpResponse&quot;</span>)
-<span class="kw">expect_equal</span>(z<span class="op">$</span>status_code, <span class="dv">200</span>)
-<span class="kw">expect_equal</span>(z<span class="op">$</span><span class="kw">parse</span>(<span class="st">&quot;UTF-8&quot;</span>), <span class="st">&quot;success!&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># make the request</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">z &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;get&quot;</span>)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co"># run tests (nothing returned means it passed)</span></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="kw">expect_is</span>(z, <span class="st">&quot;HttpResponse&quot;</span>)</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="kw">expect_equal</span>(z<span class="op">$</span>status_code, <span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7"><span class="kw">expect_equal</span>(z<span class="op">$</span><span class="kw">parse</span>(<span class="st">&quot;UTF-8&quot;</span>), <span class="st">&quot;success!&quot;</span>)</a></code></pre></div>
 
 </div>
             </section>

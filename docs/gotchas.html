@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 15 gotchas | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 15 gotchas | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -257,28 +256,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="line-identification" class="section level2">
 <h2><span class="header-section-number">15.1</span> Correct line identification</h2>
 <p>To get the actual lines where failures occur, you can wrap the <code>test_that</code> block in a <code>use_cassette()</code> block:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(testthat)
-vcr<span class="op">::</span><span class="kw">use_cassette</span>(<span class="st">&quot;rl_citation&quot;</span>, {
-  <span class="kw">test_that</span>(<span class="st">&quot;my test&quot;</span>, {
-    aa &lt;-<span class="st"> </span><span class="kw">rl_citation</span>()
-
-    <span class="kw">expect_is</span>(aa, <span class="st">&quot;character&quot;</span>)
-    <span class="kw">expect_match</span>(aa, <span class="st">&quot;IUCN&quot;</span>)
-    <span class="kw">expect_match</span>(aa, <span class="st">&quot;www.iucnredlist.org&quot;</span>)
-  })
-})</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">library</span>(testthat)</a>
+<a class="sourceLine" id="cb80-2" data-line-number="2">vcr<span class="op">::</span><span class="kw">use_cassette</span>(<span class="st">&quot;rl_citation&quot;</span>, {</a>
+<a class="sourceLine" id="cb80-3" data-line-number="3">  <span class="kw">test_that</span>(<span class="st">&quot;my test&quot;</span>, {</a>
+<a class="sourceLine" id="cb80-4" data-line-number="4">    aa &lt;-<span class="st"> </span><span class="kw">rl_citation</span>()</a>
+<a class="sourceLine" id="cb80-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb80-6" data-line-number="6">    <span class="kw">expect_is</span>(aa, <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb80-7" data-line-number="7">    <span class="kw">expect_match</span>(aa, <span class="st">&quot;IUCN&quot;</span>)</a>
+<a class="sourceLine" id="cb80-8" data-line-number="8">    <span class="kw">expect_match</span>(aa, <span class="st">&quot;www.iucnredlist.org&quot;</span>)</a>
+<a class="sourceLine" id="cb80-9" data-line-number="9">  })</a>
+<a class="sourceLine" id="cb80-10" data-line-number="10">})</a></code></pre></div>
 <p>OR put the <code>use_cassette()</code> block on the inside, but make sure to put <code>testthat</code> expectations outside of
 the <code>use_cassette()</code> block:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(testthat)
-<span class="kw">test_that</span>(<span class="st">&quot;my test&quot;</span>, {
-  vcr<span class="op">::</span><span class="kw">use_cassette</span>(<span class="st">&quot;rl_citation&quot;</span>, {
-    aa &lt;-<span class="st"> </span><span class="kw">rl_citation</span>()
-  })
-
-  <span class="kw">expect_is</span>(aa, <span class="st">&quot;character&quot;</span>)
-  <span class="kw">expect_match</span>(aa, <span class="st">&quot;IUCN&quot;</span>)
-  <span class="kw">expect_match</span>(aa, <span class="st">&quot;www.iucnredlist.org&quot;</span>)
-})</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">library</span>(testthat)</a>
+<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="kw">test_that</span>(<span class="st">&quot;my test&quot;</span>, {</a>
+<a class="sourceLine" id="cb81-3" data-line-number="3">  vcr<span class="op">::</span><span class="kw">use_cassette</span>(<span class="st">&quot;rl_citation&quot;</span>, {</a>
+<a class="sourceLine" id="cb81-4" data-line-number="4">    aa &lt;-<span class="st"> </span><span class="kw">rl_citation</span>()</a>
+<a class="sourceLine" id="cb81-5" data-line-number="5">  })</a>
+<a class="sourceLine" id="cb81-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb81-7" data-line-number="7">  <span class="kw">expect_is</span>(aa, <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb81-8" data-line-number="8">  <span class="kw">expect_match</span>(aa, <span class="st">&quot;IUCN&quot;</span>)</a>
+<a class="sourceLine" id="cb81-9" data-line-number="9">  <span class="kw">expect_match</span>(aa, <span class="st">&quot;www.iucnredlist.org&quot;</span>)</a>
+<a class="sourceLine" id="cb81-10" data-line-number="10">})</a></code></pre></div>
 <p>Do not wrap the <code>use_cassette()</code> block inside your <code>test_that()</code> block with <code>testthat</code> expectations inside the <code>use_cassette()</code> block, as you’ll only get the line number that the <code>use_cassette()</code> block starts on on failures.</p>
 
 </div>

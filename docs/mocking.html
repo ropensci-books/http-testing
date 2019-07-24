@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Mocking HTTP Requests | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Mocking HTTP Requests | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -299,11 +298,11 @@ example, the following two sets of headers are equal:
 <p><strong>Real HTTP requests</strong></p>
 <p>There’s a few scenarios to think about when using <code>webmockr</code>:</p>
 <p>After doing</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(webmockr)</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(webmockr)</a></code></pre></div>
 <p><code>webmockr</code> is loaded but not turned on. At this point <code>webmockr</code> doesn’t
 change anythning.</p>
 <p>Once you turn on <code>webmockr</code> like</p>
-<pre class="sourceCode r"><code class="sourceCode r">webmockr<span class="op">::</span><span class="kw">enable</span>()</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">webmockr<span class="op">::</span><span class="kw">enable</span>()</a></code></pre></div>
 <p><code>webmockr</code> will now by default not allow real HTTP requests from the http
 libraries that adapters are loaded for (right now only <code>crul</code>).</p>
 <p>You can optionally allow real requests via <code>webmockr_allow_net_connect()</code>, and
@@ -317,11 +316,11 @@ in the <code>webmockr_configure()</code> function.</p>
 </div>
 <div id="basic-usage" class="section level2">
 <h2><span class="header-section-number">3.3</span> Basic usage</h2>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)
-<span class="co"># enable webmockr</span>
-webmockr<span class="op">::</span><span class="kw">enable</span>()</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># enable webmockr</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">webmockr<span class="op">::</span><span class="kw">enable</span>()</a></code></pre></div>
 <p><strong>Stubbed request based on uri only and with the default response</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub&gt; 
 #&gt;   method: get
 #&gt;   uri: https://httpbin.org/get
@@ -335,13 +334,13 @@ webmockr<span class="op">::</span><span class="kw">enable</span>()</code></pre>
 #&gt;     response_headers: 
 #&gt;   should_timeout: FALSE
 #&gt;   should_raise: FALSE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;crul&quot;</span>)
-x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)
-x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>)</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;crul&quot;</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">x &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">x<span class="op">$</span><span class="kw">get</span>(<span class="st">&#39;get&#39;</span>)</a></code></pre></div>
 <pre><code>#&gt; &lt;crul response&gt; 
 #&gt;   url: https://httpbin.org/get
 #&gt;   request_headers: 
-#&gt;     User-Agent: libcurl/7.54.0 r-curl/3.3 crul/0.8.0
+#&gt;     User-Agent: libcurl/7.54.0 r-curl/4.0 crul/0.8.0
 #&gt;     Accept-Encoding: gzip, deflate
 #&gt;     Accept: application/json, text/xml, application/xml, */*
 #&gt;   response_headers: 

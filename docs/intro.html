@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Introduction | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Introduction | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -263,7 +262,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The main use case is for unit tests for R packages.</p>
 <p><code>vcr</code> works with both the <code>crul</code> package and the <code>httr</code> package.</p>
 <p><code>vcr</code> works by hooking into <code>webmockr</code>. However, when <code>webmockr</code> finds a match, we then look for a recorded interaction on disk. If one is not found, we record the request and response. If one is found, we use that recorded interaction to construct a real response as the R client expects.</p>
-<p>Read more about <code>webmockr</code> in <a href="vcr-intro.html#vcr-intro">Section 3</a>.</p>
+<p>Read more about <code>vcr</code> in <a href="vcr-intro.html#vcr-intro">Section 3</a>.</p>
 </div>
 <div id="why-crul" class="section level2">
 <h2><span class="header-section-number">2.3</span> Why crul?</h2>

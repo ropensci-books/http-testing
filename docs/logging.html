@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 11 logging | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 11 logging | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v3.3" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
 
 
 
@@ -54,7 +54,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -249,10 +248,10 @@ useful way to troubleshoot what <code>vcr</code> is doing.</p>
 <div id="logging-setup" class="section level2">
 <h2><span class="header-section-number">11.1</span> Setup logging</h2>
 <p>To set up logging, see <code>?vcr_logging</code> use <code>vcr_configure()</code></p>
-<pre class="sourceCode r"><code class="sourceCode r">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(
-  <span class="dt">log =</span> <span class="ot">TRUE</span>, 
-  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">TRUE</span>)
-)</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">)</a></code></pre></div>
 <ul>
 <li>The <code>log</code> parameter is a boolean to indicate whether <code>vcr</code> should log or not</li>
 <li>The <code>log_opts</code> parameter is a named list with various options:
@@ -287,16 +286,16 @@ useful way to troubleshoot what <code>vcr</code> is doing.</p>
 <li>when an interaction is recorded, or pulled from a stub, etc.</li>
 </ul>
 <p>If you turn off the date, you won’t get date entries:</p>
-<pre class="sourceCode r"><code class="sourceCode r">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(
-  <span class="dt">log =</span> <span class="ot">TRUE</span>, 
-  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)
-)</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Cassette&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">)</a></code></pre></div>
 <pre><code>[Cassette: &#39;foobar&#39;] - {{message}}</code></pre>
 <p>And you can change the prefix from <code>Cassette</code> to something else:</p>
-<pre class="sourceCode r"><code class="sourceCode r">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(
-  <span class="dt">log =</span> <span class="ot">TRUE</span>, 
-  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Unicorn&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)
-)</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">vcr<span class="op">::</span><span class="kw">vcr_configure</span>(</a>
+<a class="sourceLine" id="cb71-2" data-line-number="2">  <span class="dt">log =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb71-3" data-line-number="3">  <span class="dt">log_opts =</span> <span class="kw">list</span>(<span class="dt">file =</span> <span class="st">&quot;vcr.log&quot;</span>, <span class="dt">log_prefix =</span> <span class="st">&quot;Unicorn&quot;</span>, <span class="dt">date =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb71-4" data-line-number="4">)</a></code></pre></div>
 <pre><code>[Unicorn: &#39;foobar&#39;] - {{message}}</code></pre>
 
 </div>
