@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.3.4 / crul v0.8.0 / curl v4.0" />
+<meta name="author" content="built w/ vcr v0.2.6 / webmockr v0.4.0 / crul v0.8.4 / curl v4.0" />
 
 
 
@@ -270,7 +270,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb28-8" data-line-number="8">  })</a>
 <a class="sourceLine" id="cb28-9" data-line-number="9">)</a>
 <a class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt;   0.084   0.007   3.429</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt;   0.110   0.013   4.111</span></a></code></pre></div>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">system.time</span>(</a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {</a>
@@ -278,7 +278,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb29-4" data-line-number="4">  })</a>
 <a class="sourceLine" id="cb29-5" data-line-number="5">)</a>
 <a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt;   0.040   0.001   0.042</span></a></code></pre></div>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt;   0.062   0.002   0.076</span></a></code></pre></div>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="fu">http_interactions:</span></a>
