@@ -204,7 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a><ul>
 <li class="chapter" data-level="12.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>12.1</b> API keys and such</a></li>
-<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.2</b> Other security</a></li>
+<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>12.2</b> API keys and tests run in varied contexts</a></li>
+<li class="chapter" data-level="12.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.3</b> Other security</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a><ul>
 <li class="chapter" data-level="13.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>13.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
@@ -248,6 +249,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There’s a few things to watch out for when using <code>vcr</code>.</p>
 <ul>
 <li><strong>Security</strong>: Don’t put your secure API keys, tokens, etc. on the public web. See the Security chapter (<a href="security.html#security">12</a>)</li>
+<li><strong>API key issues</strong>: Running vcr enabled tests in different contexts when API keys are used can have some rough edges. See (<a href="security.html#different-api-keys">12.2</a>)</li>
 <li><strong>Dates</strong>: Be careful when using dates in tests with <code>vcr</code>. e.g. if you generate todays date, and pass that in to a function in your package that uses that date for an HTTP request, the date will be different from the one in the matching cassette, causing a <code>vcr</code> failure.</li>
 <li><strong>HTTP errors</strong>: It’s a good idea to test failure behavior of a web service in your test suite. Sometimes <code>vcr</code> can handle that and sometimes it cannot. Open any issues about this because ideally i think <code>vcr</code> could handle all cases of HTTP failures.</li>
 <li><strong>Very large response bodies</strong>: A few things about large response bodies. First, <code>vcr</code> may give you trouble with very large response bodies as we’ve see yaml parsing problems already. Second, large response bodies means large cassettes on disk - so just be aware of the file size if that’s something that matters to you. Third, large response bodies will take longer to load into R, so you may still have a multi second test run even though the test is using a cached HTTP response.</li>

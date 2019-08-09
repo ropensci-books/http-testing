@@ -204,7 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a><ul>
 <li class="chapter" data-level="12.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>12.1</b> API keys and such</a></li>
-<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.2</b> Other security</a></li>
+<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>12.2</b> API keys and tests run in varied contexts</a></li>
+<li class="chapter" data-level="12.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.3</b> Other security</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a><ul>
 <li class="chapter" data-level="13.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>13.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
@@ -276,7 +277,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb28-8" data-line-number="8">  })</a>
 <a class="sourceLine" id="cb28-9" data-line-number="9">)</a>
 <a class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt;   0.095   0.009   4.295</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt;   0.125   0.015   4.543</span></a></code></pre></div>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">system.time</span>(</a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {</a>
@@ -284,7 +285,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb29-4" data-line-number="4">  })</a>
 <a class="sourceLine" id="cb29-5" data-line-number="5">)</a>
 <a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt;   0.046   0.002   0.048</span></a></code></pre></div>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt;   0.043   0.001   0.045</span></a></code></pre></div>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="fu">http_interactions:</span></a>

@@ -11,17 +11,17 @@ knitr::opts_chunk$set(
 
 ## API keys and such {#api-keys}
 
-The configuration parameter `filter_sensitive_data` accepts a named list. 
+The configuration parameter `filter_sensitive_data` accepts a named list.
 
 Each element in the list should be of the following format:
 
 `thing_to_replace_it_with = thing_to_replace`
 
-We replace all instances of `thing_to_replace` with `thing_to_replace_it_with`. 
+We replace all instances of `thing_to_replace` with `thing_to_replace_it_with`.
 
 Before recording (writing to a cassette) we do the replacement and then when
 reading from the cassette we do the reverse replacement to get back
-to the real data. 
+to the real data.
 
 The before record replacement happens in an internal
 function `write_interactions()`, while before playback replacement
@@ -39,18 +39,60 @@ won't be easily found elsewhere in the response body/headers/etc.
 It's a good idea to not in place of `thing_to_replace` put your actual sensitive
 key thing, because that defeats the purpose of trying to protect your private
 data. This is why we highly recommend setting your API keys as environment
-variables, then you can as seen above just put a call to `Sys.getenv()`, 
-which we'll use internally to get your key, find it anywhere in the HTTP 
+variables, then you can as seen above just put a call to `Sys.getenv()`,
+which we'll use internally to get your key, find it anywhere in the HTTP
 responses, and replace it with your placeholder string.
 
 The reason you want to do this is because you may on purpose or on accident
 push your cassettes to the public web, and when that happens you don't want
-your private keys in those cassettes. 
+your private keys in those cassettes.
 
-Note that the way this is implemented in `vcr` is not super elegant and is 
-not general with respect to the serializer. We only support YAML serializing 
-right now, but when we support other serializers we'll need to change the implementation.
+Note that the way this is implemented in `vcr` is not super elegant and is
+not general with respect to the serializer. We only support YAML serializing
+right now, but when we support other serializers we'll need to change the
+implementation.
+
+## API keys and tests run in varied contexts {#different-api-keys}
+
+When `vcr` enabled tests are run in different contexts (laptops, CI services,
+containers, etc.), and those tests can optionally use authentication you can
+run into problems. An example will best illustrate the issue.
+
+Given an R package `foo`, the package maintainer sets up tests with `vcr`.
+Functions in package `foo` can optionally use an API key supplied by the user.
+For the purposes of this example, the API key when given is included as a
+query parameter (it is not good pratice to pass API keys as query parameter,
+but its not uncommon).
+
+When the maintainer runs tests locally on their own machine they can unset the
+environment variable that holds their API key so its not included in vcr
+cassettes. Additionally, when they run tests on CI systems (e.g., Travis-CI),
+they do not have an API key set. When tests are run in either of these two
+locations, the API key is not included in the requests, and thus not included
+in the cassettes.
+
+Now, consider a contributor that forks the repository and as a first run through
+the package installs the package, then runs tests. If this contributor does not
+have an API key set, the tests should run fine. However, once the contributor
+sets their API key and attempts to run tests (or imagine another contributor that
+already has an API key set), the tests will fail because the URI now contains an
+API key as a query parameter in the URL.
+
+There's various combinations of the above problem.
+
+One option for dealing with this is requiring an API key to be set. If you do
+this you likely want to make sure your actual key is not in the cassettes
+that will be pushed to the public web; see the bit about `filter_sensitive_data`
+above for that. If you do require an API key, then you can ensure that whenever 
+tests are run an API key is required; that way there's no way that tests will 
+be run with AND without a key - which can lead to problems. Requiring an API key
+means you can't run tests in environments where it's not possible to safely set
+a key, e.g., on CRAN (in which case you must skip tests).
+
+There's no magic way around this problem ~ it's a good thing to be aware of,
+especially if other people contribute to your package.
 
 ## Other security
 
-Let us know about any other security concerns! Surely there's things we haven't considered yet.
+Let us know about any other security concerns! Surely there's things we haven't
+considered yet.

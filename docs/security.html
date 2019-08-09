@@ -204,7 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a><ul>
 <li class="chapter" data-level="12.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>12.1</b> API keys and such</a></li>
-<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.2</b> Other security</a></li>
+<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>12.2</b> API keys and tests run in varied contexts</a></li>
+<li class="chapter" data-level="12.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.3</b> Other security</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a><ul>
 <li class="chapter" data-level="13.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>13.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
@@ -273,11 +274,47 @@ push your cassettes to the public web, and when that happens you don’t want
 your private keys in those cassettes.</p>
 <p>Note that the way this is implemented in <code>vcr</code> is not super elegant and is
 not general with respect to the serializer. We only support YAML serializing
-right now, but when we support other serializers we’ll need to change the implementation.</p>
+right now, but when we support other serializers we’ll need to change the
+implementation.</p>
+</div>
+<div id="different-api-keys" class="section level2">
+<h2><span class="header-section-number">12.2</span> API keys and tests run in varied contexts</h2>
+<p>When <code>vcr</code> enabled tests are run in different contexts (laptops, CI services,
+containers, etc.), and those tests can optionally use authentication you can
+run into problems. An example will best illustrate the issue.</p>
+<p>Given an R package <code>foo</code>, the package maintainer sets up tests with <code>vcr</code>.
+Functions in package <code>foo</code> can optionally use an API key supplied by the user.
+For the purposes of this example, the API key when given is included as a
+query parameter (it is not good pratice to pass API keys as query parameter,
+but its not uncommon).</p>
+<p>When the maintainer runs tests locally on their own machine they can unset the
+environment variable that holds their API key so its not included in vcr
+cassettes. Additionally, when they run tests on CI systems (e.g., Travis-CI),
+they do not have an API key set. When tests are run in either of these two
+locations, the API key is not included in the requests, and thus not included
+in the cassettes.</p>
+<p>Now, consider a contributor that forks the repository and as a first run through
+the package installs the package, then runs tests. If this contributor does not
+have an API key set, the tests should run fine. However, once the contributor
+sets their API key and attempts to run tests (or imagine another contributor that
+already has an API key set), the tests will fail because the URI now contains an
+API key as a query parameter in the URL.</p>
+<p>There’s various combinations of the above problem.</p>
+<p>One option for dealing with this is requiring an API key to be set. If you do
+this you likely want to make sure your actual key is not in the cassettes
+that will be pushed to the public web; see the bit about <code>filter_sensitive_data</code>
+above for that. If you do require an API key, then you can ensure that whenever
+tests are run an API key is required; that way there’s no way that tests will
+be run with AND without a key - which can lead to problems. Requiring an API key
+means you can’t run tests in environments where it’s not possible to safely set
+a key, e.g., on CRAN (in which case you must skip tests).</p>
+<p>There’s no magic way around this problem ~ it’s a good thing to be aware of,
+especially if other people contribute to your package.</p>
 </div>
 <div id="other-security" class="section level2">
-<h2><span class="header-section-number">12.2</span> Other security</h2>
-<p>Let us know about any other security concerns! Surely there’s things we haven’t considered yet.</p>
+<h2><span class="header-section-number">12.3</span> Other security</h2>
+<p>Let us know about any other security concerns! Surely there’s things we haven’t
+considered yet.</p>
 
 </div>
 </div>
