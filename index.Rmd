@@ -19,6 +19,9 @@ This book is intended as a detailed guide to using a particular suite of package
 
 * Source: <https://github.com/ropenscilabs/http-testing-book/>
 * Issues/Bug reports: <https://github.com/ropenscilabs/http-testing-book/issues>
+* pkgdown site for crul: <https://ropensci.github.io/crul/>
+* pkgdown site for webmockr: <https://ropensci.github.io/webmockr/>
+* pkgdown site for vcr: <https://ropensci.github.io/vcr/>
 
 Packages
 

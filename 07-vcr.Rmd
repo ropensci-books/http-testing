@@ -4,6 +4,10 @@
 
 some intro text ...
 
+## Package documentation {#vcr-pkgdown}
+
+Check out <https://ropensci.github.io/vcr/> for documentation on `vcr` functions.
+
 ## Terminology {#terminology}
 
 * **http**: [hyptertext transfer protocol](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol)

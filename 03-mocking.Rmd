@@ -13,6 +13,10 @@ knitr::opts_chunk$set(
 The very very short version is: [webmockr][] helps you stub HTTP requests so you 
 don't have to repeat yourself.
 
+## Package documentation {#webmockr-pkgdown}
+
+Check out <https://ropensci.github.io/webmockr/> for documentation on `webmockr` functions.
+
 ## Features {#webmockr-features}
 
 * Stubbing HTTP requests at low http client lib level
