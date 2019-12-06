@@ -35,7 +35,7 @@ Packages
 Stable version from CRAN
 
 ```{r eval=FALSE}
-install.packages(c("crul", "webmockr", "vcr"))
+install.packages(c("crul", "webmockr", "vcr", "httr"))
 ```
 
 none of `crul`, `webmockr` or `vcr` have compiled code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems.

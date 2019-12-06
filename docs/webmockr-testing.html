@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 testing | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
-  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.16.5 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 testing | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="http testing book" />
   
 
-<meta name="author" content="built w/ vcr v0.2.9.9110 / webmockr v0.4.0 / crul v0.8.4 / curl v4.0" />
+<meta name="author" content="built w/ vcr v0.4.0 / webmockr v0.5.0 / crul v0.9.0 / curl v4.3" />
 
 
 
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="webmockr-stubs.html">
-<link rel="next" href="webmockr-utilities.html">
+<link rel="prev" href="webmockr-stubs.html"/>
+<link rel="next" href="webmockr-utilities.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -39,6 +39,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -49,25 +52,26 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -76,9 +80,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -129,41 +133,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preamble</a></li>
 <li class="part"><span><b>I introduction</b></span></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#what-webmockr"><i class="fa fa-check"></i><b>2.1</b> What is webmockr?</a></li>
 <li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#what-vcr"><i class="fa fa-check"></i><b>2.2</b> What is vcr?</a></li>
 <li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#why-crul"><i class="fa fa-check"></i><b>2.3</b> Why crul?</a></li>
-<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#use-cases"><i class="fa fa-check"></i><b>2.4</b> Use cases</a><ul>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#use-cases"><i class="fa fa-check"></i><b>2.4</b> Use cases</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#use-cases-mocking"><i class="fa fa-check"></i><b>2.4.1</b> mocking use cases</a></li>
 <li class="chapter" data-level="2.4.2" data-path="intro.html"><a href="intro.html#use-cases-caching"><i class="fa fa-check"></i><b>2.4.2</b> caching use cases</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>II webmockr</b></span></li>
-<li class="chapter" data-level="3" data-path="mocking.html"><a href="mocking.html"><i class="fa fa-check"></i><b>3</b> Mocking HTTP Requests</a><ul>
+<li class="chapter" data-level="3" data-path="mocking.html"><a href="mocking.html"><i class="fa fa-check"></i><b>3</b> Mocking HTTP Requests</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="mocking.html"><a href="mocking.html#webmockr-pkgdown"><i class="fa fa-check"></i><b>3.1</b> Package documentation</a></li>
 <li class="chapter" data-level="3.2" data-path="mocking.html"><a href="mocking.html#webmockr-features"><i class="fa fa-check"></i><b>3.2</b> Features</a></li>
 <li class="chapter" data-level="3.3" data-path="mocking.html"><a href="mocking.html#webmockr-detail"><i class="fa fa-check"></i><b>3.3</b> How webmockr works in detail</a></li>
-<li class="chapter" data-level="3.4" data-path="mocking.html"><a href="mocking.html#basic-usage"><i class="fa fa-check"></i><b>3.4</b> Basic usage</a></li>
+<li class="chapter" data-level="3.4" data-path="mocking.html"><a href="mocking.html#webmockr-basic-usage"><i class="fa fa-check"></i><b>3.4</b> Basic usage</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="webmockr-stubs.html"><a href="webmockr-stubs.html"><i class="fa fa-check"></i><b>4</b> stubs</a></li>
+<li class="chapter" data-level="4" data-path="webmockr-stubs.html"><a href="webmockr-stubs.html"><i class="fa fa-check"></i><b>4</b> stubs</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="webmockr-stubs.html"><a href="webmockr-stubs.html#webmockr-disk"><i class="fa fa-check"></i><b>4.1</b> Writing to disk</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="webmockr-testing.html"><a href="webmockr-testing.html"><i class="fa fa-check"></i><b>5</b> testing</a></li>
-<li class="chapter" data-level="6" data-path="webmockr-utilities.html"><a href="webmockr-utilities.html"><i class="fa fa-check"></i><b>6</b> utilities</a><ul>
+<li class="chapter" data-level="6" data-path="webmockr-utilities.html"><a href="webmockr-utilities.html"><i class="fa fa-check"></i><b>6</b> utilities</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="webmockr-utilities.html"><a href="webmockr-utilities.html#webmockr-"><i class="fa fa-check"></i><b>6.1</b> Managing stubs</a></li>
 <li class="chapter" data-level="6.2" data-path="webmockr-utilities.html"><a href="webmockr-utilities.html#webmockr-managing-stubs"><i class="fa fa-check"></i><b>6.2</b> Managing stubs</a></li>
 <li class="chapter" data-level="6.3" data-path="webmockr-utilities.html"><a href="webmockr-utilities.html#webmockr-managing-requests"><i class="fa fa-check"></i><b>6.3</b> Managing requests</a></li>
 </ul></li>
 <li class="part"><span><b>III vcr</b></span></li>
-<li class="chapter" data-level="7" data-path="vcr-intro.html"><a href="vcr-intro.html"><i class="fa fa-check"></i><b>7</b> Caching HTTP requests</a><ul>
+<li class="chapter" data-level="7" data-path="vcr-intro.html"><a href="vcr-intro.html"><i class="fa fa-check"></i><b>7</b> Caching HTTP requests</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-pkgdown"><i class="fa fa-check"></i><b>7.1</b> Package documentation</a></li>
 <li class="chapter" data-level="7.2" data-path="vcr-intro.html"><a href="vcr-intro.html#terminology"><i class="fa fa-check"></i><b>7.2</b> Terminology</a></li>
-<li class="chapter" data-level="7.3" data-path="mocking.html"><a href="mocking.html#basic-usage"><i class="fa fa-check"></i><b>7.3</b> Basic usage</a></li>
-<li class="chapter" data-level="7.4" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-enabled-testing"><i class="fa fa-check"></i><b>7.4</b> vcr enabled testing</a><ul>
+<li class="chapter" data-level="7.3" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-basic-usage"><i class="fa fa-check"></i><b>7.3</b> Basic usage</a></li>
+<li class="chapter" data-level="7.4" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-enabled-testing"><i class="fa fa-check"></i><b>7.4</b> vcr enabled testing</a>
+<ul>
 <li class="chapter" data-level="7.4.1" data-path="vcr-intro.html"><a href="vcr-intro.html#check-vs-test"><i class="fa fa-check"></i><b>7.4.1</b> check vs. test</a></li>
 <li class="chapter" data-level="7.4.2" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-enabled-tests-on-cran"><i class="fa fa-check"></i><b>7.4.2</b> CRAN</a></li>
 <li class="chapter" data-level="7.4.3" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-ci"><i class="fa fa-check"></i><b>7.4.3</b> CI sites: Travis, Appveyor, etc.</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>8</b> vcr configuration</a><ul>
+<li class="chapter" data-level="8" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>8</b> vcr configuration</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>8.1</b> Get your configuration</a></li>
 <li class="chapter" data-level="8.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>8.2</b> Set configuration variables</a></li>
 <li class="chapter" data-level="8.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>8.3</b> Re-set to defaults</a></li>
@@ -173,7 +187,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>8.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
 <li class="chapter" data-level="8.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>8.8</b> serialize_with - which serializer to use</a></li>
 <li class="chapter" data-level="8.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>8.9</b> persist_with - which persister to use</a></li>
-<li class="chapter" data-level="8.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>8.10</b> ignore requests</a><ul>
+<li class="chapter" data-level="8.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>8.10</b> ignore requests</a>
+<ul>
 <li class="chapter" data-level="8.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>8.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
 <li class="chapter" data-level="8.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>8.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
 <li class="chapter" data-level="8.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>8.10.3</b> ignore_request - ignore any request for which function is true</a></li>
@@ -182,13 +197,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>8.12</b> preserve_exact_body_bytes</a></li>
 <li class="chapter" data-level="8.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>8.13</b> allow_http_connections_when_no_cassette</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>9</b> record modes</a><ul>
+<li class="chapter" data-level="9" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>9</b> record modes</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>9.1</b> once</a></li>
 <li class="chapter" data-level="9.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>9.2</b> none</a></li>
 <li class="chapter" data-level="9.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>9.3</b> new_episodes</a></li>
 <li class="chapter" data-level="9.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>9.4</b> all</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>10</b> request matching</a><ul>
+<li class="chapter" data-level="10" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>10</b> request matching</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>10.1</b> matching on method</a></li>
 <li class="chapter" data-level="10.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>10.2</b> matching on uri</a></li>
 <li class="chapter" data-level="10.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>10.3</b> matching on host</a></li>
@@ -198,27 +215,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>10.7</b> matching on headers</a></li>
 <li class="chapter" data-level="10.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>10.8</b> Playback repeats</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>11</b> logging</a><ul>
+<li class="chapter" data-level="11" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>11</b> logging</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>11.1</b> Setup logging</a></li>
 <li class="chapter" data-level="11.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>11.2</b> The log file</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a><ul>
+<li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>12.1</b> API keys and such</a></li>
 <li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>12.2</b> API keys and tests run in varied contexts</a></li>
 <li class="chapter" data-level="12.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.3</b> Other security</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a><ul>
+<li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>13.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
 <li class="chapter" data-level="13.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>13.2</b> turned_off</a></li>
 <li class="chapter" data-level="13.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>13.3</b> turn_off</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>14</b> managing cassettes</a><ul>
+<li class="chapter" data-level="14" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>14</b> managing cassettes</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="managing-cassettes.html"><a href="managing-cassettes.html#gitignore-cassettes"><i class="fa fa-check"></i><b>14.1</b> gitignore cassettes</a></li>
 <li class="chapter" data-level="14.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#rbuildignore-cassettes"><i class="fa fa-check"></i><b>14.2</b> Rbuildignore cassettes</a></li>
 <li class="chapter" data-level="14.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>14.3</b> deleting cassettes</a></li>
 <li class="chapter" data-level="14.4" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>14.4</b> cassette file types</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>15</b> gotchas</a><ul>
+<li class="chapter" data-level="15" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>15</b> gotchas</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>15.1</b> Correct line identification</a></li>
 </ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
@@ -246,15 +268,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="webmockr-testing" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> testing</h1>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;crul&quot;</span>)</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;testthat&quot;</span>)</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="kw">stub_registry_clear</span>()</a>
-<a class="sourceLine" id="cb22-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co"># make a stub</span></a>
-<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="st">   </span><span class="kw">to_return</span>(<span class="dt">body =</span> <span class="st">&quot;success!&quot;</span>, <span class="dt">status =</span> <span class="dv">200</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="webmockr-testing.html#cb28-1"></a><span class="kw">library</span>(<span class="st">&quot;webmockr&quot;</span>)</span>
+<span id="cb28-2"><a href="webmockr-testing.html#cb28-2"></a><span class="kw">library</span>(<span class="st">&quot;crul&quot;</span>)</span>
+<span id="cb28-3"><a href="webmockr-testing.html#cb28-3"></a><span class="kw">library</span>(<span class="st">&quot;testthat&quot;</span>)</span>
+<span id="cb28-4"><a href="webmockr-testing.html#cb28-4"></a></span>
+<span id="cb28-5"><a href="webmockr-testing.html#cb28-5"></a><span class="kw">stub_registry_clear</span>()</span>
+<span id="cb28-6"><a href="webmockr-testing.html#cb28-6"></a></span>
+<span id="cb28-7"><a href="webmockr-testing.html#cb28-7"></a><span class="co"># make a stub</span></span>
+<span id="cb28-8"><a href="webmockr-testing.html#cb28-8"></a><span class="kw">stub_request</span>(<span class="st">&quot;get&quot;</span>, <span class="st">&quot;https://httpbin.org/get&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb28-9"><a href="webmockr-testing.html#cb28-9"></a><span class="st">   </span><span class="kw">to_return</span>(<span class="dt">body =</span> <span class="st">&quot;success!&quot;</span>, <span class="dt">status =</span> <span class="dv">200</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub&gt; 
 #&gt;   method: get
 #&gt;   uri: https://httpbin.org/get
@@ -268,18 +290,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;     response_headers: 
 #&gt;   should_timeout: FALSE
 #&gt;   should_raise: FALSE</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># check that it&#39;s in the stub registry</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">stub_registry</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="webmockr-testing.html#cb30-1"></a><span class="co"># check that it&#39;s in the stub registry</span></span>
+<span id="cb30-2"><a href="webmockr-testing.html#cb30-2"></a><span class="kw">stub_registry</span>()</span></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub registry&gt; 
 #&gt;  Registered Stubs
 #&gt;    GET: https://httpbin.org/get   | to_return:  with body &quot;success!&quot;  with status 200</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co"># make the request</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">z &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;get&quot;</span>)</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co"># run tests (nothing returned means it passed)</span></a>
-<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="kw">expect_is</span>(z, <span class="st">&quot;HttpResponse&quot;</span>)</a>
-<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="kw">expect_equal</span>(z<span class="op">$</span>status_code, <span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7"><span class="kw">expect_equal</span>(z<span class="op">$</span><span class="kw">parse</span>(<span class="st">&quot;UTF-8&quot;</span>), <span class="st">&quot;success!&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="webmockr-testing.html#cb32-1"></a><span class="co"># make the request</span></span>
+<span id="cb32-2"><a href="webmockr-testing.html#cb32-2"></a>z &lt;-<span class="st"> </span>crul<span class="op">::</span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="dt">url =</span> <span class="st">&quot;https://httpbin.org&quot;</span>)<span class="op">$</span><span class="kw">get</span>(<span class="st">&quot;get&quot;</span>)</span>
+<span id="cb32-3"><a href="webmockr-testing.html#cb32-3"></a></span>
+<span id="cb32-4"><a href="webmockr-testing.html#cb32-4"></a><span class="co"># run tests (nothing returned means it passed)</span></span>
+<span id="cb32-5"><a href="webmockr-testing.html#cb32-5"></a><span class="kw">expect_is</span>(z, <span class="st">&quot;HttpResponse&quot;</span>)</span>
+<span id="cb32-6"><a href="webmockr-testing.html#cb32-6"></a><span class="kw">expect_equal</span>(z<span class="op">$</span>status_code, <span class="dv">200</span>)</span>
+<span id="cb32-7"><a href="webmockr-testing.html#cb32-7"></a><span class="kw">expect_equal</span>(z<span class="op">$</span><span class="kw">parse</span>(<span class="st">&quot;UTF-8&quot;</span>), <span class="st">&quot;success!&quot;</span>)</span></code></pre></div>
 
 </div>
             </section>
@@ -293,11 +315,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -305,12 +329,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -322,6 +345,10 @@ gitbook.start({
 "text": "Edit"
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

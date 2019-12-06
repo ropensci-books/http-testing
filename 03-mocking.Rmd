@@ -93,7 +93,7 @@ in the `webmockr_configure()` function.
 
 `webmockr` doesn't do that. Check out [vcr][]
 
-## Basic usage {#basic-usage}
+## Basic usage {#webmockr-basic-usage}
 
 ```{r}
 library("webmockr")

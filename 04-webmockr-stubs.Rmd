@@ -65,3 +65,73 @@ x$get('get', query = list(a = "b"))
 #>  - The request could not be understood by the server due to malformed syntax.
 #>    The client SHOULD NOT repeat the request without modifications.
 ```
+
+## Writing to disk {#webmockr-disk}
+
+
+There are two ways to deal with mocking writing to disk. First, you can create a file
+with the data you'd like in that file, then tell crul or httr where that file is.
+Second, you can simply give webmockr a file path (that doesn't exist yet) and some 
+data, and webmockr can take care of putting the data in the file.
+
+
+```{r echo=FALSE}
+stub_registry_clear()
+request_registry_clear()
+```
+
+Here's the first method, where you put data in a file as your mock, then pass the 
+file as a connection (with `file(<file path>)`) to `to_return()`.
+
+```{r}
+## make a temp file
+f <- tempfile(fileext = ".json")
+## write something to the file
+cat("{\"hello\":\"world\"}\n", file = f)
+## make the stub
+invisible(stub_request("get", "https://httpbin.org/get") %>% 
+  to_return(body = file(f)))
+## make a request
+out <- HttpClient$new("https://httpbin.org/get")$get(disk = f)
+## view stubbed file content
+readLines(file(f))
+```
+
+With the second method, use `webmockr::mock_file()` to have `webmockr` handle file
+and contents.
+
+```{r}
+g <- tempfile(fileext = ".json")
+## make the stub
+invisible(stub_request("get", "https://httpbin.org/get?a=b") %>% 
+  to_return(body = mock_file(path = g, payload = "{\"hello\":\"mars\"}\n")))
+## make a request
+out <- crul::HttpClient$new("https://httpbin.org/get?a=b")$get(disk = g)
+## view stubbed file content
+readLines(out$content)
+```
+
+`webmockr` also supports `httr::write_disk()`, here letting `webmockr` handle the
+mock file creation:
+
+```{r}
+library(httr)
+httr_mock()
+## make a temp file
+f <- tempfile(fileext = ".json")
+## make the stub
+invisible(stub_request("get", "https://httpbin.org/get?cheese=swiss") %>% 
+  to_return(
+    body = mock_file(path = f, payload = "{\"foo\": \"bar\"}"),
+    headers = list('content-type' = "application/json")
+  ))
+## make a request
+out <- GET("https://httpbin.org/get?cheese=swiss", write_disk(f, TRUE))
+## view stubbed file content
+readLines(out$content)
+```
+
+```{r cleanup, echo=FALSE}
+unlink(c(f, g))
+httr_mock(FALSE)
+```
