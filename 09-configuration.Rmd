@@ -159,3 +159,20 @@ vcr_configure(allow_http_connections_when_no_cassette = TRUE)
 ```{r echo=FALSE}
 vcr_configure_reset()
 ```
+
+## write_disk_path {#write-disk-path}
+
+The path to write files to for any requests that write responses to disk.
+By default this parameter is `NULL`; if you don't set this and you do http 
+requests while using vcr, you'll get an error that you need to set this config
+variable (or you may just get an invalid path error).
+
+For testing a package, you'll probably want this path to be in your `tests/`
+directory, perhaps next to your cassettes directory, e.g., if your cassettes
+are in `tests/fixtures`, then put your files from requests that write to disk
+in `tests/files`. Note: in the below example, `vcr_configure` is run from 
+within `tests/testthat`, so you set the paths relative to that location.
+
+```{r}
+vcr_configure(dir = "../fixtures", write_disk_path = "../files")
+```

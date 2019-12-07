@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 14 managing cassettes | HTTP mocking and testing in R</title>
+  <title>Chapter 15 managing cassettes | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
   <meta name="generator" content="bookdown 0.16.5 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 14 managing cassettes | HTTP mocking and testing in R" />
+  <meta property="og:title" content="Chapter 15 managing cassettes | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ropenscilabs/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 14 managing cassettes | HTTP mocking and testing in R" />
+  <meta name="twitter:title" content="Chapter 15 managing cassettes | HTTP mocking and testing in R" />
   
   <meta name="twitter:description" content="http testing book" />
   
@@ -176,76 +176,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.4.3" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-ci"><i class="fa fa-check"></i><b>7.4.3</b> CI sites: Travis, Appveyor, etc.</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>8</b> vcr configuration</a>
+<li class="chapter" data-level="8" data-path="vcr-usage.html"><a href="vcr-usage.html"><i class="fa fa-check"></i><b>8</b> vcr usage</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>8.1</b> Get your configuration</a></li>
-<li class="chapter" data-level="8.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>8.2</b> Set configuration variables</a></li>
-<li class="chapter" data-level="8.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>8.3</b> Re-set to defaults</a></li>
-<li class="chapter" data-level="8.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>8.4</b> dir - directory of where cassettes are stored</a></li>
-<li class="chapter" data-level="8.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>8.5</b> record - record mode</a></li>
-<li class="chapter" data-level="8.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>8.6</b> match_requests_on - customize how vcr matches requests</a></li>
-<li class="chapter" data-level="8.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>8.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
-<li class="chapter" data-level="8.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>8.8</b> serialize_with - which serializer to use</a></li>
-<li class="chapter" data-level="8.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>8.9</b> persist_with - which persister to use</a></li>
-<li class="chapter" data-level="8.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>8.10</b> ignore requests</a>
-<ul>
-<li class="chapter" data-level="8.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>8.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
-<li class="chapter" data-level="8.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>8.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
-<li class="chapter" data-level="8.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>8.10.3</b> ignore_request - ignore any request for which function is true</a></li>
+<li class="chapter" data-level="8.1" data-path="vcr-usage.html"><a href="vcr-usage.html#vcr-disk"><i class="fa fa-check"></i><b>8.1</b> Mocking writing to disk</a></li>
 </ul></li>
-<li class="chapter" data-level="8.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>8.11</b> uri_parser - which uri parser to use</a></li>
-<li class="chapter" data-level="8.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>8.12</b> preserve_exact_body_bytes</a></li>
-<li class="chapter" data-level="8.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>8.13</b> allow_http_connections_when_no_cassette</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>9</b> record modes</a>
+<li class="chapter" data-level="9" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>9</b> vcr configuration</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>9.1</b> once</a></li>
-<li class="chapter" data-level="9.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>9.2</b> none</a></li>
-<li class="chapter" data-level="9.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>9.3</b> new_episodes</a></li>
-<li class="chapter" data-level="9.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>9.4</b> all</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>10</b> request matching</a>
+<li class="chapter" data-level="9.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>9.1</b> Get your configuration</a></li>
+<li class="chapter" data-level="9.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>9.2</b> Set configuration variables</a></li>
+<li class="chapter" data-level="9.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>9.3</b> Re-set to defaults</a></li>
+<li class="chapter" data-level="9.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>9.4</b> dir - directory of where cassettes are stored</a></li>
+<li class="chapter" data-level="9.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>9.5</b> record - record mode</a></li>
+<li class="chapter" data-level="9.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>9.6</b> match_requests_on - customize how vcr matches requests</a></li>
+<li class="chapter" data-level="9.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>9.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
+<li class="chapter" data-level="9.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>9.8</b> serialize_with - which serializer to use</a></li>
+<li class="chapter" data-level="9.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>9.9</b> persist_with - which persister to use</a></li>
+<li class="chapter" data-level="9.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>9.10</b> ignore requests</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>10.1</b> matching on method</a></li>
-<li class="chapter" data-level="10.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>10.2</b> matching on uri</a></li>
-<li class="chapter" data-level="10.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>10.3</b> matching on host</a></li>
-<li class="chapter" data-level="10.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>10.4</b> matching on path</a></li>
-<li class="chapter" data-level="10.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>10.5</b> matching on query string</a></li>
-<li class="chapter" data-level="10.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>10.6</b> matching on body</a></li>
-<li class="chapter" data-level="10.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>10.7</b> matching on headers</a></li>
-<li class="chapter" data-level="10.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>10.8</b> Playback repeats</a></li>
+<li class="chapter" data-level="9.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>9.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
+<li class="chapter" data-level="9.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>9.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
+<li class="chapter" data-level="9.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>9.10.3</b> ignore_request - ignore any request for which function is true</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>11</b> logging</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>11.1</b> Setup logging</a></li>
-<li class="chapter" data-level="11.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>11.2</b> The log file</a></li>
+<li class="chapter" data-level="9.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>9.11</b> uri_parser - which uri parser to use</a></li>
+<li class="chapter" data-level="9.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>9.12</b> preserve_exact_body_bytes</a></li>
+<li class="chapter" data-level="9.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>9.13</b> allow_http_connections_when_no_cassette</a></li>
+<li class="chapter" data-level="9.14" data-path="vcr-configuration.html"><a href="vcr-configuration.html#write-disk-path"><i class="fa fa-check"></i><b>9.14</b> write_disk_path</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a>
+<li class="chapter" data-level="10" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>10</b> record modes</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>12.1</b> API keys and such</a></li>
-<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>12.2</b> API keys and tests run in varied contexts</a></li>
-<li class="chapter" data-level="12.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.3</b> Other security</a></li>
+<li class="chapter" data-level="10.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>10.1</b> once</a></li>
+<li class="chapter" data-level="10.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>10.2</b> none</a></li>
+<li class="chapter" data-level="10.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>10.3</b> new_episodes</a></li>
+<li class="chapter" data-level="10.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>10.4</b> all</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a>
+<li class="chapter" data-level="11" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>11</b> request matching</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>13.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
-<li class="chapter" data-level="13.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>13.2</b> turned_off</a></li>
-<li class="chapter" data-level="13.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>13.3</b> turn_off</a></li>
+<li class="chapter" data-level="11.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>11.1</b> matching on method</a></li>
+<li class="chapter" data-level="11.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>11.2</b> matching on uri</a></li>
+<li class="chapter" data-level="11.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>11.3</b> matching on host</a></li>
+<li class="chapter" data-level="11.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>11.4</b> matching on path</a></li>
+<li class="chapter" data-level="11.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>11.5</b> matching on query string</a></li>
+<li class="chapter" data-level="11.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>11.6</b> matching on body</a></li>
+<li class="chapter" data-level="11.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>11.7</b> matching on headers</a></li>
+<li class="chapter" data-level="11.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>11.8</b> Playback repeats</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>14</b> managing cassettes</a>
+<li class="chapter" data-level="12" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>12</b> logging</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="managing-cassettes.html"><a href="managing-cassettes.html#gitignore-cassettes"><i class="fa fa-check"></i><b>14.1</b> gitignore cassettes</a></li>
-<li class="chapter" data-level="14.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#rbuildignore-cassettes"><i class="fa fa-check"></i><b>14.2</b> Rbuildignore cassettes</a></li>
-<li class="chapter" data-level="14.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>14.3</b> deleting cassettes</a></li>
-<li class="chapter" data-level="14.4" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>14.4</b> cassette file types</a></li>
+<li class="chapter" data-level="12.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>12.1</b> Setup logging</a></li>
+<li class="chapter" data-level="12.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>12.2</b> The log file</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>15</b> gotchas</a>
+<li class="chapter" data-level="13" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>13</b> security</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>15.1</b> Correct line identification</a></li>
+<li class="chapter" data-level="13.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>13.1</b> API keys and such</a></li>
+<li class="chapter" data-level="13.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>13.2</b> API keys and tests run in varied contexts</a></li>
+<li class="chapter" data-level="13.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>13.3</b> Other security</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>14</b> escape hatches</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>14.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
+<li class="chapter" data-level="14.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>14.2</b> turned_off</a></li>
+<li class="chapter" data-level="14.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>14.3</b> turn_off</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>15</b> managing cassettes</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="managing-cassettes.html"><a href="managing-cassettes.html#gitignore-cassettes"><i class="fa fa-check"></i><b>15.1</b> gitignore cassettes</a></li>
+<li class="chapter" data-level="15.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#rbuildignore-cassettes"><i class="fa fa-check"></i><b>15.2</b> Rbuildignore cassettes</a></li>
+<li class="chapter" data-level="15.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>15.3</b> deleting cassettes</a></li>
+<li class="chapter" data-level="15.4" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>15.4</b> cassette file types</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>16</b> gotchas</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>16.1</b> Correct line identification</a></li>
 </ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="testing-considerations.html"><a href="testing-considerations.html"><i class="fa fa-check"></i><b>16</b> Testing considerations</a></li>
-<li class="chapter" data-level="17" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>17</b> session info</a></li>
+<li class="chapter" data-level="17" data-path="testing-considerations.html"><a href="testing-considerations.html"><i class="fa fa-check"></i><b>17</b> Testing considerations</a></li>
+<li class="chapter" data-level="18" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>18</b> session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2019</a></li>
 
@@ -267,11 +272,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="managing-cassettes" class="section level1">
-<h1><span class="header-section-number">Chapter 14</span> managing cassettes</h1>
+<h1><span class="header-section-number">Chapter 15</span> managing cassettes</h1>
 <p>Be aware when you add your cassettes to either <code>.gitignore</code> and/or
 <code>.Rbuildignore</code>.</p>
 <div id="gitignore-cassettes" class="section level2">
-<h2><span class="header-section-number">14.1</span> gitignore cassettes</h2>
+<h2><span class="header-section-number">15.1</span> gitignore cassettes</h2>
 <p>The <a href="https://guide.freecodecamp.org/git/gitignore/">.gitignore</a> file lets you tell [git][] what files to
 ignore - those files are not tracked by git and if you share the git
 repository to the public web, those files in the <code>.gitignore</code> file
@@ -288,7 +293,7 @@ contributors to use previously created cassettes or to create/use their
 own.</p>
 </div>
 <div id="rbuildignore-cassettes" class="section level2">
-<h2><span class="header-section-number">14.2</span> Rbuildignore cassettes</h2>
+<h2><span class="header-section-number">15.2</span> Rbuildignore cassettes</h2>
 <p>The <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#index-_002eRbuildignore-file">.Rbuildignore</a> file is used to tell R to ignore
 certain files/directories.</p>
 <p>There’s not a clear use case for why you’d want to add vcr cassettes
@@ -296,7 +301,7 @@ to your <code>.Rbuildignore</code> file, but if you do be aware that will affect
 your vcr enabled tests.</p>
 </div>
 <div id="deleting-cassettes" class="section level2">
-<h2><span class="header-section-number">14.3</span> deleting cassettes</h2>
+<h2><span class="header-section-number">15.3</span> deleting cassettes</h2>
 <p>Removing a cassette is as easy as deleting in your file finder,
 or from the command line, or from within a text editor or RStudio.</p>
 <p>If you delete a cassette, on the next test run the cassette will
@@ -305,7 +310,7 @@ be recorded again.</p>
 deleting the file you can toggle <a href="record-modes.html#record-modes">record modes</a>.</p>
 </div>
 <div id="cassette-file-types" class="section level2">
-<h2><span class="header-section-number">14.4</span> cassette file types</h2>
+<h2><span class="header-section-number">15.4</span> cassette file types</h2>
 <p>For right now the only persistence option is yaml. So all files
 have a <code>.yml</code> extension.</p>
 <p>When other persister options are added, additional file types
@@ -352,7 +357,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/14-cassettes.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/15-cassettes.Rmd",
 "text": "Edit"
 },
 "history": {

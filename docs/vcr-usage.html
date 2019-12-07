@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Introduction | HTTP mocking and testing in R</title>
+  <title>Chapter 8 vcr usage | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
   <meta name="generator" content="bookdown 0.16.5 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Introduction | HTTP mocking and testing in R" />
+  <meta property="og:title" content="Chapter 8 vcr usage | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ropenscilabs/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Introduction | HTTP mocking and testing in R" />
+  <meta name="twitter:title" content="Chapter 8 vcr usage | HTTP mocking and testing in R" />
   
   <meta name="twitter:description" content="http testing book" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="mocking.html"/>
+<link rel="prev" href="vcr-intro.html"/>
+<link rel="next" href="vcr-configuration.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -271,72 +271,85 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Introduction</h1>
-<div id="what-webmockr" class="section level2">
-<h2><span class="header-section-number">2.1</span> What is webmockr?</h2>
-<p><code>webmockr</code> is an R package to help you “mock” HTTP requests. What does mock mean? Mock refers to the fact that we’re faking the response. Here is how it works:</p>
-<ul>
-<li>You “stub” a request. That is, you set rules for what HTTP request you’d like to match on</li>
-<li>You also can set rules for what you’d like to respond with, if anything (if nothing, then we give you <code>NULL</code>)</li>
-<li>Then you make HTTP requests, and those that match your stub will return what you requested be returned</li>
-<li>While <code>webmockr</code> is in use, real HTTP interactions are not allowed</li>
-<li>There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session</li>
-</ul>
-<p><code>webmockr</code> works with both the <code>crul</code> package and the <code>httr</code> package.</p>
-<p>Read more about <code>webmockr</code> in <a href="mocking.html#mocking">Section 2</a>.</p>
-</div>
-<div id="what-vcr" class="section level2">
-<h2><span class="header-section-number">2.2</span> What is vcr?</h2>
-<p>The short version is: <code>vcr</code> helps you stub HTTP requests so you don’t have to repeat HTTP requests.</p>
-<p>The main use case is for unit tests for R packages.</p>
-<p><code>vcr</code> works with both the <code>crul</code> package and the <code>httr</code> package.</p>
-<p><code>vcr</code> works by hooking into <code>webmockr</code>. However, when <code>webmockr</code> finds a match, we then look for a recorded interaction on disk. If one is not found, we record the request and response. If one is found, we use that recorded interaction to construct a real response as the R client expects.</p>
-<p>Read more about <code>vcr</code> in <a href="vcr-intro.html#vcr-intro">Section 3</a>.</p>
-</div>
-<div id="why-crul" class="section level2">
-<h2><span class="header-section-number">2.3</span> Why crul?</h2>
-<p><code>crul</code> is just one of the HTTP clients in R. It’s the one that I maintain though, so
-was easiest to get started with adding mocking integration.</p>
-<p>There is now integration with <code>httr</code> for both <code>webmockr</code> and <code>vcr</code>.</p>
-<p>The major feature that <code>httr</code> has that <code>crul</code> does not have is OAuth support, but that’s
-not an important use case for me so is not a high priority for <code>crul</code>.</p>
-<p>A major reason to use <code>crul</code> over <code>httr</code> is that it uses more of an object oriented
-interface. That is, you create objects that you can call methods on and retrieve
-variables/results from calls/etc. It’s a different approach than <code>httr</code> which focuses
-on passing things to functions.</p>
-</div>
-<div id="use-cases" class="section level2">
-<h2><span class="header-section-number">2.4</span> Use cases</h2>
-<div id="use-cases-mocking" class="section level3">
-<h3><span class="header-section-number">2.4.1</span> mocking use cases</h3>
-<ul>
-<li>one</li>
-<li>two</li>
-<li>three</li>
-</ul>
-</div>
-<div id="use-cases-caching" class="section level3">
-<h3><span class="header-section-number">2.4.2</span> caching use cases</h3>
-<ul>
-<li>one</li>
-<li>two</li>
-<li>three</li>
-</ul>
+<div id="vcr-usage" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> vcr usage</h1>
+<p>Now that we’ve covered basic <code>vcr</code> usage, it’s time for some more advanced usage topics.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="vcr-usage.html#cb37-1"></a><span class="kw">library</span>(<span class="st">&quot;vcr&quot;</span>)</span></code></pre></div>
+<div id="vcr-disk" class="section level2">
+<h2><span class="header-section-number">8.1</span> Mocking writing to disk</h2>
+<p>If you have http requests for which you write the response to disk, then
+use <code>vcr_configure()</code> to set the <code>write_disk_path</code> option. See more about
+the <a href="vcr-configuration.html#write-disk-path">write_disk_path configuration option</a>.</p>
+<p>Here, we create a temporary directory, then set the fixtures</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="vcr-usage.html#cb38-1"></a>tmpdir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</span>
+<span id="cb38-2"><a href="vcr-usage.html#cb38-2"></a><span class="kw">vcr_configure</span>(</span>
+<span id="cb38-3"><a href="vcr-usage.html#cb38-3"></a>  <span class="dt">dir =</span> <span class="kw">file.path</span>(tmpdir, <span class="st">&quot;fixtures&quot;</span>),</span>
+<span id="cb38-4"><a href="vcr-usage.html#cb38-4"></a>  <span class="dt">write_disk_path =</span> <span class="kw">file.path</span>(tmpdir, <span class="st">&quot;files&quot;</span>)</span>
+<span id="cb38-5"><a href="vcr-usage.html#cb38-5"></a>)</span></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpyGtaLe/fixtures
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE
+#&gt;   ignored hosts: 
+#&gt;   ignore localhost?: FALSE
+#&gt;   Write disk path: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpyGtaLe/files</code></pre>
+<p>Then pass a file path (that doesn’t exist yet) to crul’s <code>disk</code> parameter.
+<code>vcr</code> will take care of handling writing the response to that file in
+addition to the cassette.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="vcr-usage.html#cb40-1"></a><span class="kw">library</span>(crul)</span>
+<span id="cb40-2"><a href="vcr-usage.html#cb40-2"></a><span class="co">## make a temp file</span></span>
+<span id="cb40-3"><a href="vcr-usage.html#cb40-3"></a>f &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.json&quot;</span>)</span>
+<span id="cb40-4"><a href="vcr-usage.html#cb40-4"></a><span class="co">## make a request</span></span>
+<span id="cb40-5"><a href="vcr-usage.html#cb40-5"></a>cas &lt;-<span class="st"> </span><span class="kw">use_cassette</span>(<span class="st">&quot;test_write_to_disk&quot;</span>, {</span>
+<span id="cb40-6"><a href="vcr-usage.html#cb40-6"></a>  out &lt;-<span class="st"> </span>HttpClient<span class="op">$</span><span class="kw">new</span>(<span class="st">&quot;https://httpbin.org/get&quot;</span>)<span class="op">$</span><span class="kw">get</span>(<span class="dt">disk =</span> f)</span>
+<span id="cb40-7"><a href="vcr-usage.html#cb40-7"></a>})</span>
+<span id="cb40-8"><a href="vcr-usage.html#cb40-8"></a><span class="kw">file.exists</span>(out<span class="op">$</span>content)</span></code></pre></div>
+<pre><code>#&gt; [1] TRUE</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="vcr-usage.html#cb42-1"></a>out<span class="op">$</span><span class="kw">parse</span>()</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;{\n  \&quot;args\&quot;: {}, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;libcurl/7.54.0 r-curl/4.3 crul/0.9.0\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;24.21.229.59, 24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get\&quot;\n}\n&quot;</code></pre>
+<p>This also works with <code>httr</code>. The only difference is that you write to disk
+with a function <code>httr::write_disk(path)</code> rather than a parameter.</p>
+<p>Note that when you write to disk when using <code>vcr</code>, the cassette is slightly
+changed. Instead of holding the http response body itself, the cassette
+has the file path with the response body.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb44-1"><a href="vcr-usage.html#cb44-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>
+<span id="cb44-2"><a href="vcr-usage.html#cb44-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">request</span><span class="kw">:</span></span>
+<span id="cb44-3"><a href="vcr-usage.html#cb44-3"></a><span class="at">    </span><span class="fu">method</span><span class="kw">:</span><span class="at"> get</span></span>
+<span id="cb44-4"><a href="vcr-usage.html#cb44-4"></a><span class="at">    </span><span class="fu">uri</span><span class="kw">:</span><span class="at"> https://httpbin.org/get</span></span>
+<span id="cb44-5"><a href="vcr-usage.html#cb44-5"></a><span class="at">  </span><span class="fu">response</span><span class="kw">:</span></span>
+<span id="cb44-6"><a href="vcr-usage.html#cb44-6"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
+<span id="cb44-7"><a href="vcr-usage.html#cb44-7"></a><span class="at">      </span><span class="fu">status</span><span class="kw">:</span><span class="at"> HTTP/1.1 200 OK</span></span>
+<span id="cb44-8"><a href="vcr-usage.html#cb44-8"></a><span class="at">      </span><span class="fu">access-control-allow-credentials</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;true&#39;</span></span>
+<span id="cb44-9"><a href="vcr-usage.html#cb44-9"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
+<span id="cb44-10"><a href="vcr-usage.html#cb44-10"></a><span class="at">      </span><span class="fu">encoding</span><span class="kw">:</span><span class="at"> UTF-8</span></span>
+<span id="cb44-11"><a href="vcr-usage.html#cb44-11"></a><span class="at">      </span><span class="fu">file</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb44-12"><a href="vcr-usage.html#cb44-12"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> /private/var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T/Rtmp5W4olr/files/file177e2e5d97ec.json</span></span></code></pre></div>
+<p>And the file has the response body that otherwise would have been in the <code>string</code>
+yaml field above:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb45-1"><a href="vcr-usage.html#cb45-1"></a><span class="fu">{</span></span>
+<span id="cb45-2"><a href="vcr-usage.html#cb45-2"></a>  <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="fu">{},</span> </span>
+<span id="cb45-3"><a href="vcr-usage.html#cb45-3"></a>  <span class="dt">&quot;headers&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb45-4"><a href="vcr-usage.html#cb45-4"></a>    <span class="dt">&quot;Accept&quot;</span><span class="fu">:</span> <span class="st">&quot;application/json, text/xml, application/xml, */*&quot;</span><span class="fu">,</span> </span>
+<span id="cb45-5"><a href="vcr-usage.html#cb45-5"></a>    <span class="dt">&quot;Accept-Encoding&quot;</span><span class="fu">:</span> <span class="st">&quot;gzip, deflate&quot;</span><span class="fu">,</span> </span>
+<span id="cb45-6"><a href="vcr-usage.html#cb45-6"></a>    <span class="dt">&quot;Host&quot;</span><span class="fu">:</span> <span class="st">&quot;httpbin.org&quot;</span><span class="fu">,</span> </span>
+<span id="cb45-7"><a href="vcr-usage.html#cb45-7"></a>    <span class="dt">&quot;User-Agent&quot;</span><span class="fu">:</span> <span class="st">&quot;libcurl/7.54.0 r-curl/4.3 crul/0.9.0&quot;</span></span>
+<span id="cb45-8"><a href="vcr-usage.html#cb45-8"></a>  <span class="fu">},</span> </span>
+<span id="cb45-9"><a href="vcr-usage.html#cb45-9"></a>  <span class="dt">&quot;origin&quot;</span><span class="fu">:</span> <span class="st">&quot;24.21.229.59, 24.21.229.59&quot;</span><span class="fu">,</span> </span>
+<span id="cb45-10"><a href="vcr-usage.html#cb45-10"></a>  <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://httpbin.org/get&quot;</span></span>
+<span id="cb45-11"><a href="vcr-usage.html#cb45-11"></a><span class="fu">}</span></span></code></pre></div>
 
 </div>
 </div>
-</div>
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="mocking.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="vcr-intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="vcr-configuration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -367,7 +380,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/02-intro.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/08-vcr-usage.Rmd",
 "text": "Edit"
 },
 "history": {

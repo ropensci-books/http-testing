@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 vcr configuration | HTTP mocking and testing in R</title>
+  <title>Chapter 9 vcr configuration | HTTP mocking and testing in R</title>
   <meta name="description" content="http testing book" />
   <meta name="generator" content="bookdown 0.16.5 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 vcr configuration | HTTP mocking and testing in R" />
+  <meta property="og:title" content="Chapter 9 vcr configuration | HTTP mocking and testing in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ropenscilabs/http-testing-book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 vcr configuration | HTTP mocking and testing in R" />
+  <meta name="twitter:title" content="Chapter 9 vcr configuration | HTTP mocking and testing in R" />
   
   <meta name="twitter:description" content="http testing book" />
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="vcr-intro.html"/>
+<link rel="prev" href="vcr-usage.html"/>
 <link rel="next" href="record-modes.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -176,76 +176,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.4.3" data-path="vcr-intro.html"><a href="vcr-intro.html#vcr-ci"><i class="fa fa-check"></i><b>7.4.3</b> CI sites: Travis, Appveyor, etc.</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>8</b> vcr configuration</a>
+<li class="chapter" data-level="8" data-path="vcr-usage.html"><a href="vcr-usage.html"><i class="fa fa-check"></i><b>8</b> vcr usage</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>8.1</b> Get your configuration</a></li>
-<li class="chapter" data-level="8.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>8.2</b> Set configuration variables</a></li>
-<li class="chapter" data-level="8.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>8.3</b> Re-set to defaults</a></li>
-<li class="chapter" data-level="8.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>8.4</b> dir - directory of where cassettes are stored</a></li>
-<li class="chapter" data-level="8.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>8.5</b> record - record mode</a></li>
-<li class="chapter" data-level="8.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>8.6</b> match_requests_on - customize how vcr matches requests</a></li>
-<li class="chapter" data-level="8.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>8.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
-<li class="chapter" data-level="8.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>8.8</b> serialize_with - which serializer to use</a></li>
-<li class="chapter" data-level="8.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>8.9</b> persist_with - which persister to use</a></li>
-<li class="chapter" data-level="8.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>8.10</b> ignore requests</a>
-<ul>
-<li class="chapter" data-level="8.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>8.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
-<li class="chapter" data-level="8.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>8.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
-<li class="chapter" data-level="8.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>8.10.3</b> ignore_request - ignore any request for which function is true</a></li>
+<li class="chapter" data-level="8.1" data-path="vcr-usage.html"><a href="vcr-usage.html#vcr-disk"><i class="fa fa-check"></i><b>8.1</b> Mocking writing to disk</a></li>
 </ul></li>
-<li class="chapter" data-level="8.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>8.11</b> uri_parser - which uri parser to use</a></li>
-<li class="chapter" data-level="8.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>8.12</b> preserve_exact_body_bytes</a></li>
-<li class="chapter" data-level="8.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>8.13</b> allow_http_connections_when_no_cassette</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>9</b> record modes</a>
+<li class="chapter" data-level="9" data-path="vcr-configuration.html"><a href="vcr-configuration.html"><i class="fa fa-check"></i><b>9</b> vcr configuration</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>9.1</b> once</a></li>
-<li class="chapter" data-level="9.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>9.2</b> none</a></li>
-<li class="chapter" data-level="9.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>9.3</b> new_episodes</a></li>
-<li class="chapter" data-level="9.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>9.4</b> all</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>10</b> request matching</a>
+<li class="chapter" data-level="9.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#get-your-configuration"><i class="fa fa-check"></i><b>9.1</b> Get your configuration</a></li>
+<li class="chapter" data-level="9.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#set-configuration-variables"><i class="fa fa-check"></i><b>9.2</b> Set configuration variables</a></li>
+<li class="chapter" data-level="9.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-reset"><i class="fa fa-check"></i><b>9.3</b> Re-set to defaults</a></li>
+<li class="chapter" data-level="9.4" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-dir"><i class="fa fa-check"></i><b>9.4</b> dir - directory of where cassettes are stored</a></li>
+<li class="chapter" data-level="9.5" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-record-mode"><i class="fa fa-check"></i><b>9.5</b> record - record mode</a></li>
+<li class="chapter" data-level="9.6" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-match-on"><i class="fa fa-check"></i><b>9.6</b> match_requests_on - customize how vcr matches requests</a></li>
+<li class="chapter" data-level="9.7" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-allow-unused"><i class="fa fa-check"></i><b>9.7</b> allow_unused_http_interactions - Allow HTTP connections when no cassette</a></li>
+<li class="chapter" data-level="9.8" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-serialize-with"><i class="fa fa-check"></i><b>9.8</b> serialize_with - which serializer to use</a></li>
+<li class="chapter" data-level="9.9" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-persist-with"><i class="fa fa-check"></i><b>9.9</b> persist_with - which persister to use</a></li>
+<li class="chapter" data-level="9.10" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-ignore-requests"><i class="fa fa-check"></i><b>9.10</b> ignore requests</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>10.1</b> matching on method</a></li>
-<li class="chapter" data-level="10.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>10.2</b> matching on uri</a></li>
-<li class="chapter" data-level="10.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>10.3</b> matching on host</a></li>
-<li class="chapter" data-level="10.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>10.4</b> matching on path</a></li>
-<li class="chapter" data-level="10.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>10.5</b> matching on query string</a></li>
-<li class="chapter" data-level="10.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>10.6</b> matching on body</a></li>
-<li class="chapter" data-level="10.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>10.7</b> matching on headers</a></li>
-<li class="chapter" data-level="10.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>10.8</b> Playback repeats</a></li>
+<li class="chapter" data-level="9.10.1" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_hosts---specify-particular-hosts-to-ignore"><i class="fa fa-check"></i><b>9.10.1</b> ignore_hosts - specify particular hosts to ignore</a></li>
+<li class="chapter" data-level="9.10.2" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_localhost---ignore-all-localhost-flavors"><i class="fa fa-check"></i><b>9.10.2</b> ignore_localhost - ignore all localhost flavors</a></li>
+<li class="chapter" data-level="9.10.3" data-path="vcr-configuration.html"><a href="vcr-configuration.html#ignore_request---ignore-any-request-for-which-function-is-true"><i class="fa fa-check"></i><b>9.10.3</b> ignore_request - ignore any request for which function is true</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>11</b> logging</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>11.1</b> Setup logging</a></li>
-<li class="chapter" data-level="11.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>11.2</b> The log file</a></li>
+<li class="chapter" data-level="9.11" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-uri-parser"><i class="fa fa-check"></i><b>9.11</b> uri_parser - which uri parser to use</a></li>
+<li class="chapter" data-level="9.12" data-path="vcr-configuration.html"><a href="vcr-configuration.html#config-preserve-exact-body-bytes"><i class="fa fa-check"></i><b>9.12</b> preserve_exact_body_bytes</a></li>
+<li class="chapter" data-level="9.13" data-path="vcr-configuration.html"><a href="vcr-configuration.html#allow-http-connections-when-no-cassette"><i class="fa fa-check"></i><b>9.13</b> allow_http_connections_when_no_cassette</a></li>
+<li class="chapter" data-level="9.14" data-path="vcr-configuration.html"><a href="vcr-configuration.html#write-disk-path"><i class="fa fa-check"></i><b>9.14</b> write_disk_path</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>12</b> security</a>
+<li class="chapter" data-level="10" data-path="record-modes.html"><a href="record-modes.html"><i class="fa fa-check"></i><b>10</b> record modes</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>12.1</b> API keys and such</a></li>
-<li class="chapter" data-level="12.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>12.2</b> API keys and tests run in varied contexts</a></li>
-<li class="chapter" data-level="12.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>12.3</b> Other security</a></li>
+<li class="chapter" data-level="10.1" data-path="record-modes.html"><a href="record-modes.html#once"><i class="fa fa-check"></i><b>10.1</b> once</a></li>
+<li class="chapter" data-level="10.2" data-path="record-modes.html"><a href="record-modes.html#none"><i class="fa fa-check"></i><b>10.2</b> none</a></li>
+<li class="chapter" data-level="10.3" data-path="record-modes.html"><a href="record-modes.html#new_episodes"><i class="fa fa-check"></i><b>10.3</b> new_episodes</a></li>
+<li class="chapter" data-level="10.4" data-path="record-modes.html"><a href="record-modes.html#all"><i class="fa fa-check"></i><b>10.4</b> all</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>13</b> escape hatches</a>
+<li class="chapter" data-level="11" data-path="request-matching.html"><a href="request-matching.html"><i class="fa fa-check"></i><b>11</b> request matching</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>13.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
-<li class="chapter" data-level="13.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>13.2</b> turned_off</a></li>
-<li class="chapter" data-level="13.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>13.3</b> turn_off</a></li>
+<li class="chapter" data-level="11.1" data-path="request-matching.html"><a href="request-matching.html#matching-on-method"><i class="fa fa-check"></i><b>11.1</b> matching on method</a></li>
+<li class="chapter" data-level="11.2" data-path="request-matching.html"><a href="request-matching.html#matching-on-uri"><i class="fa fa-check"></i><b>11.2</b> matching on uri</a></li>
+<li class="chapter" data-level="11.3" data-path="request-matching.html"><a href="request-matching.html#matching-on-host"><i class="fa fa-check"></i><b>11.3</b> matching on host</a></li>
+<li class="chapter" data-level="11.4" data-path="request-matching.html"><a href="request-matching.html#matching-on-path"><i class="fa fa-check"></i><b>11.4</b> matching on path</a></li>
+<li class="chapter" data-level="11.5" data-path="request-matching.html"><a href="request-matching.html#matching-on-query-string"><i class="fa fa-check"></i><b>11.5</b> matching on query string</a></li>
+<li class="chapter" data-level="11.6" data-path="request-matching.html"><a href="request-matching.html#matching-on-body"><i class="fa fa-check"></i><b>11.6</b> matching on body</a></li>
+<li class="chapter" data-level="11.7" data-path="request-matching.html"><a href="request-matching.html#matching-on-headers"><i class="fa fa-check"></i><b>11.7</b> matching on headers</a></li>
+<li class="chapter" data-level="11.8" data-path="request-matching.html"><a href="request-matching.html#playback-repeats"><i class="fa fa-check"></i><b>11.8</b> Playback repeats</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>14</b> managing cassettes</a>
+<li class="chapter" data-level="12" data-path="logging.html"><a href="logging.html"><i class="fa fa-check"></i><b>12</b> logging</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="managing-cassettes.html"><a href="managing-cassettes.html#gitignore-cassettes"><i class="fa fa-check"></i><b>14.1</b> gitignore cassettes</a></li>
-<li class="chapter" data-level="14.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#rbuildignore-cassettes"><i class="fa fa-check"></i><b>14.2</b> Rbuildignore cassettes</a></li>
-<li class="chapter" data-level="14.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>14.3</b> deleting cassettes</a></li>
-<li class="chapter" data-level="14.4" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>14.4</b> cassette file types</a></li>
+<li class="chapter" data-level="12.1" data-path="logging.html"><a href="logging.html#logging-setup"><i class="fa fa-check"></i><b>12.1</b> Setup logging</a></li>
+<li class="chapter" data-level="12.2" data-path="logging.html"><a href="logging.html#the-log-file"><i class="fa fa-check"></i><b>12.2</b> The log file</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>15</b> gotchas</a>
+<li class="chapter" data-level="13" data-path="security.html"><a href="security.html"><i class="fa fa-check"></i><b>13</b> security</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>15.1</b> Correct line identification</a></li>
+<li class="chapter" data-level="13.1" data-path="security.html"><a href="security.html#api-keys"><i class="fa fa-check"></i><b>13.1</b> API keys and such</a></li>
+<li class="chapter" data-level="13.2" data-path="security.html"><a href="security.html#different-api-keys"><i class="fa fa-check"></i><b>13.2</b> API keys and tests run in varied contexts</a></li>
+<li class="chapter" data-level="13.3" data-path="security.html"><a href="security.html#other-security"><i class="fa fa-check"></i><b>13.3</b> Other security</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="escape-hatches.html"><a href="escape-hatches.html"><i class="fa fa-check"></i><b>14</b> escape hatches</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="escape-hatches.html"><a href="escape-hatches.html#lightswitch-vcr-webmockr-and-their-onoff-states"><i class="fa fa-check"></i><b>14.1</b> lightswitch: vcr, webmockr and their on/off states</a></li>
+<li class="chapter" data-level="14.2" data-path="escape-hatches.html"><a href="escape-hatches.html#turned-off"><i class="fa fa-check"></i><b>14.2</b> turned_off</a></li>
+<li class="chapter" data-level="14.3" data-path="escape-hatches.html"><a href="escape-hatches.html#turn-off"><i class="fa fa-check"></i><b>14.3</b> turn_off</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="managing-cassettes.html"><a href="managing-cassettes.html"><i class="fa fa-check"></i><b>15</b> managing cassettes</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="managing-cassettes.html"><a href="managing-cassettes.html#gitignore-cassettes"><i class="fa fa-check"></i><b>15.1</b> gitignore cassettes</a></li>
+<li class="chapter" data-level="15.2" data-path="managing-cassettes.html"><a href="managing-cassettes.html#rbuildignore-cassettes"><i class="fa fa-check"></i><b>15.2</b> Rbuildignore cassettes</a></li>
+<li class="chapter" data-level="15.3" data-path="managing-cassettes.html"><a href="managing-cassettes.html#deleting-cassettes"><i class="fa fa-check"></i><b>15.3</b> deleting cassettes</a></li>
+<li class="chapter" data-level="15.4" data-path="managing-cassettes.html"><a href="managing-cassettes.html#cassette-file-types"><i class="fa fa-check"></i><b>15.4</b> cassette file types</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="gotchas.html"><a href="gotchas.html"><i class="fa fa-check"></i><b>16</b> gotchas</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="gotchas.html"><a href="gotchas.html#line-identification"><i class="fa fa-check"></i><b>16.1</b> Correct line identification</a></li>
 </ul></li>
 <li class="part"><span><b>IV Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="testing-considerations.html"><a href="testing-considerations.html"><i class="fa fa-check"></i><b>16</b> Testing considerations</a></li>
-<li class="chapter" data-level="17" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>17</b> session info</a></li>
+<li class="chapter" data-level="17" data-path="testing-considerations.html"><a href="testing-considerations.html"><i class="fa fa-check"></i><b>17</b> Testing considerations</a></li>
+<li class="chapter" data-level="18" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>18</b> session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2019</a></li>
 
@@ -267,13 +272,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="vcr-configuration" class="section level1">
-<h1><span class="header-section-number">Chapter 8</span> vcr configuration</h1>
+<h1><span class="header-section-number">Chapter 9</span> vcr configuration</h1>
 <p><code>vcr</code> configuration</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="vcr-configuration.html#cb37-1"></a><span class="kw">library</span>(<span class="st">&quot;vcr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="vcr-configuration.html#cb46-1"></a><span class="kw">library</span>(<span class="st">&quot;vcr&quot;</span>)</span></code></pre></div>
 <div id="get-your-configuration" class="section level2">
-<h2><span class="header-section-number">8.1</span> Get your configuration</h2>
+<h2><span class="header-section-number">9.1</span> Get your configuration</h2>
 <p>Use <code>vcr_configuration()</code> to get the current configuration</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="vcr-configuration.html#cb38-1"></a><span class="kw">vcr_configuration</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="vcr-configuration.html#cb47-1"></a><span class="kw">vcr_configuration</span>()</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -285,7 +290,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   ignore localhost?: FALSE
 #&gt;   Write disk path:</code></pre>
 <p>You can get the default configuration variables via <code>vcr_config_defaults()</code></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="vcr-configuration.html#cb40-1"></a><span class="kw">vcr_config_defaults</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="vcr-configuration.html#cb49-1"></a><span class="kw">vcr_config_defaults</span>()</span></code></pre></div>
 <pre><code>#&gt; $dir
 #&gt; [1] &quot;.&quot;
 #&gt; 
@@ -356,12 +361,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>These defaults are set when you load <code>vcr</code> - you can override any of them as described below.</p>
 </div>
 <div id="set-configuration-variables" class="section level2">
-<h2><span class="header-section-number">8.2</span> Set configuration variables</h2>
+<h2><span class="header-section-number">9.2</span> Set configuration variables</h2>
 <p>Use <code>vcr_configure()</code> to set configuration variables.</p>
 <p>For example, set a single variable:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="vcr-configuration.html#cb42-1"></a><span class="kw">vcr_configure</span>(</span>
-<span id="cb42-2"><a href="vcr-configuration.html#cb42-2"></a>  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span></span>
-<span id="cb42-3"><a href="vcr-configuration.html#cb42-3"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="vcr-configuration.html#cb51-1"></a><span class="kw">vcr_configure</span>(</span>
+<span id="cb51-2"><a href="vcr-configuration.html#cb51-2"></a>  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span></span>
+<span id="cb51-3"><a href="vcr-configuration.html#cb51-3"></a>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: foobar/vcr_cassettes
 #&gt;   Record: once
@@ -373,10 +378,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   ignore localhost?: FALSE
 #&gt;   Write disk path:</code></pre>
 <p>Or many at once:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="vcr-configuration.html#cb44-1"></a><span class="kw">vcr_configure</span>(</span>
-<span id="cb44-2"><a href="vcr-configuration.html#cb44-2"></a>  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span>,</span>
-<span id="cb44-3"><a href="vcr-configuration.html#cb44-3"></a>  <span class="dt">record =</span> <span class="st">&quot;all&quot;</span></span>
-<span id="cb44-4"><a href="vcr-configuration.html#cb44-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="vcr-configuration.html#cb53-1"></a><span class="kw">vcr_configure</span>(</span>
+<span id="cb53-2"><a href="vcr-configuration.html#cb53-2"></a>  <span class="dt">dir =</span> <span class="st">&quot;foobar/vcr_cassettes&quot;</span>,</span>
+<span id="cb53-3"><a href="vcr-configuration.html#cb53-3"></a>  <span class="dt">record =</span> <span class="st">&quot;all&quot;</span></span>
+<span id="cb53-4"><a href="vcr-configuration.html#cb53-4"></a>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: foobar/vcr_cassettes
 #&gt;   Record: all
@@ -389,8 +394,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-reset" class="section level2">
-<h2><span class="header-section-number">8.3</span> Re-set to defaults</h2>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="vcr-configuration.html#cb46-1"></a><span class="kw">vcr_configure_reset</span>()</span></code></pre></div>
+<h2><span class="header-section-number">9.3</span> Re-set to defaults</h2>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="vcr-configuration.html#cb55-1"></a><span class="kw">vcr_configure_reset</span>()</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -403,8 +408,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-dir" class="section level2">
-<h2><span class="header-section-number">8.4</span> dir - directory of where cassettes are stored</h2>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="vcr-configuration.html#cb48-1"></a><span class="kw">vcr_configure</span>(<span class="dt">dir =</span> <span class="st">&quot;new/path&quot;</span>)</span></code></pre></div>
+<h2><span class="header-section-number">9.4</span> dir - directory of where cassettes are stored</h2>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="vcr-configuration.html#cb57-1"></a><span class="kw">vcr_configure</span>(<span class="dt">dir =</span> <span class="st">&quot;new/path&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: once
@@ -417,9 +422,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-record-mode" class="section level2">
-<h2><span class="header-section-number">8.5</span> record - record mode</h2>
+<h2><span class="header-section-number">9.5</span> record - record mode</h2>
 <p>One of: ‘all’, ‘none’, ‘new_episodes’, ‘once’. See <code>?recording</code> for info on the options</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="vcr-configuration.html#cb50-1"></a><span class="kw">vcr_configure</span>(<span class="dt">record =</span> <span class="st">&quot;new_episodes&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="vcr-configuration.html#cb59-1"></a><span class="kw">vcr_configure</span>(<span class="dt">record =</span> <span class="st">&quot;new_episodes&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: new_episodes
@@ -432,8 +437,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-match-on" class="section level2">
-<h2><span class="header-section-number">8.6</span> match_requests_on - customize how vcr matches requests</h2>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="vcr-configuration.html#cb52-1"></a><span class="kw">vcr_configure</span>(<span class="dt">match_requests_on =</span> <span class="kw">c</span>(<span class="st">&#39;query&#39;</span>, <span class="st">&#39;headers&#39;</span>))</span></code></pre></div>
+<h2><span class="header-section-number">9.6</span> match_requests_on - customize how vcr matches requests</h2>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="vcr-configuration.html#cb61-1"></a><span class="kw">vcr_configure</span>(<span class="dt">match_requests_on =</span> <span class="kw">c</span>(<span class="st">&#39;query&#39;</span>, <span class="st">&#39;headers&#39;</span>))</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -446,11 +451,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-allow-unused" class="section level2">
-<h2><span class="header-section-number">8.7</span> allow_unused_http_interactions - Allow HTTP connections when no cassette</h2>
+<h2><span class="header-section-number">9.7</span> allow_unused_http_interactions - Allow HTTP connections when no cassette</h2>
 <p>Default is <code>TRUE</code>, and thus does not error when http interactions are unused. You
 can set to <code>FALSE</code> in which case vcr errors when a cassette is ejected and
 not all http interactions have been used.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="vcr-configuration.html#cb54-1"></a><span class="kw">vcr_configure</span>(<span class="dt">allow_unused_http_interactions =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="vcr-configuration.html#cb63-1"></a><span class="kw">vcr_configure</span>(<span class="dt">allow_unused_http_interactions =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -463,9 +468,9 @@ not all http interactions have been used.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-serialize-with" class="section level2">
-<h2><span class="header-section-number">8.8</span> serialize_with - which serializer to use</h2>
+<h2><span class="header-section-number">9.8</span> serialize_with - which serializer to use</h2>
 <p>Right now the only option is <code>yaml</code></p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="vcr-configuration.html#cb56-1"></a><span class="kw">vcr_configure</span>(<span class="dt">serialize_with =</span> <span class="st">&quot;yaml&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="vcr-configuration.html#cb65-1"></a><span class="kw">vcr_configure</span>(<span class="dt">serialize_with =</span> <span class="st">&quot;yaml&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -478,9 +483,9 @@ not all http interactions have been used.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-persist-with" class="section level2">
-<h2><span class="header-section-number">8.9</span> persist_with - which persister to use</h2>
+<h2><span class="header-section-number">9.9</span> persist_with - which persister to use</h2>
 <p>Right now the only option is <code>FileSystem</code></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="vcr-configuration.html#cb58-1"></a><span class="kw">vcr_configure</span>(<span class="dt">persist_with =</span> <span class="st">&quot;FileSystem&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="vcr-configuration.html#cb67-1"></a><span class="kw">vcr_configure</span>(<span class="dt">persist_with =</span> <span class="st">&quot;FileSystem&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -493,10 +498,10 @@ not all http interactions have been used.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-ignore-requests" class="section level2">
-<h2><span class="header-section-number">8.10</span> ignore requests</h2>
+<h2><span class="header-section-number">9.10</span> ignore requests</h2>
 <div id="ignore_hosts---specify-particular-hosts-to-ignore" class="section level3">
-<h3><span class="header-section-number">8.10.1</span> ignore_hosts - specify particular hosts to ignore</h3>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="vcr-configuration.html#cb60-1"></a><span class="kw">vcr_configure</span>(<span class="dt">ignore_hosts =</span> <span class="st">&quot;google.com&quot;</span>)</span></code></pre></div>
+<h3><span class="header-section-number">9.10.1</span> ignore_hosts - specify particular hosts to ignore</h3>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="vcr-configuration.html#cb69-1"></a><span class="kw">vcr_configure</span>(<span class="dt">ignore_hosts =</span> <span class="st">&quot;google.com&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -509,8 +514,8 @@ not all http interactions have been used.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="ignore_localhost---ignore-all-localhost-flavors" class="section level3">
-<h3><span class="header-section-number">8.10.2</span> ignore_localhost - ignore all localhost flavors</h3>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="vcr-configuration.html#cb62-1"></a><span class="kw">vcr_configure</span>(<span class="dt">ignore_localhost =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<h3><span class="header-section-number">9.10.2</span> ignore_localhost - ignore all localhost flavors</h3>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="vcr-configuration.html#cb71-1"></a><span class="kw">vcr_configure</span>(<span class="dt">ignore_localhost =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -523,8 +528,8 @@ not all http interactions have been used.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="ignore_request---ignore-any-request-for-which-function-is-true" class="section level3">
-<h3><span class="header-section-number">8.10.3</span> ignore_request - ignore any request for which function is true</h3>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="vcr-configuration.html#cb64-1"></a><span class="kw">vcr_configure</span>(<span class="dt">ignore_request =</span> <span class="cf">function</span>(x) x <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</span></code></pre></div>
+<h3><span class="header-section-number">9.10.3</span> ignore_request - ignore any request for which function is true</h3>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="vcr-configuration.html#cb73-1"></a><span class="kw">vcr_configure</span>(<span class="dt">ignore_request =</span> <span class="cf">function</span>(x) x <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -538,10 +543,10 @@ not all http interactions have been used.</p>
 </div>
 </div>
 <div id="config-uri-parser" class="section level2">
-<h2><span class="header-section-number">8.11</span> uri_parser - which uri parser to use</h2>
+<h2><span class="header-section-number">9.11</span> uri_parser - which uri parser to use</h2>
 <p>By default we use <code>httr::parse_url</code>, but you can use a different one. Remember
 to pass in the function quoted, and namespaced.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="vcr-configuration.html#cb66-1"></a><span class="kw">vcr_configure</span>(<span class="dt">uri_parser =</span> <span class="st">&quot;urltools::url_parse&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="vcr-configuration.html#cb75-1"></a><span class="kw">vcr_configure</span>(<span class="dt">uri_parser =</span> <span class="st">&quot;urltools::url_parse&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -554,13 +559,13 @@ to pass in the function quoted, and namespaced.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="config-preserve-exact-body-bytes" class="section level2">
-<h2><span class="header-section-number">8.12</span> preserve_exact_body_bytes</h2>
+<h2><span class="header-section-number">9.12</span> preserve_exact_body_bytes</h2>
 <p>Some HTTP servers are not well-behaved and respond with invalid data. Set
 <code>preserve_exact_body_bytes</code> to <code>TRUE</code> to base64 encode the result body in
 order to preserve the bytes exactly as-is. <code>vcr</code> does not do this by
 default, since base64-encoding the string removes the human readibility
 of the cassette.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="vcr-configuration.html#cb68-1"></a><span class="kw">vcr_configure</span>(<span class="dt">preserve_exact_body_bytes =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="vcr-configuration.html#cb77-1"></a><span class="kw">vcr_configure</span>(<span class="dt">preserve_exact_body_bytes =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -573,12 +578,12 @@ of the cassette.</p>
 #&gt;   Write disk path:</code></pre>
 </div>
 <div id="allow-http-connections-when-no-cassette" class="section level2">
-<h2><span class="header-section-number">8.13</span> allow_http_connections_when_no_cassette</h2>
+<h2><span class="header-section-number">9.13</span> allow_http_connections_when_no_cassette</h2>
 <p>Determines how <code>vcr</code> treats HTTP requests that are made when no cassette is in use.
 When <code>TRUE</code>, requests made when there is no vcr cassette in use will be allowed.
 When <code>FALSE</code> (default), an [UnhandledHTTPRequestError] error will be raised for
 any HTTP request made when there is no cassette in use</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="vcr-configuration.html#cb70-1"></a><span class="kw">vcr_configure</span>(<span class="dt">allow_http_connections_when_no_cassette =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="vcr-configuration.html#cb79-1"></a><span class="kw">vcr_configure</span>(<span class="dt">allow_http_connections_when_no_cassette =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: .
 #&gt;   Record: once
@@ -599,6 +604,29 @@ any HTTP request made when there is no cassette in use</p>
 #&gt;   ignored hosts: 
 #&gt;   ignore localhost?: FALSE
 #&gt;   Write disk path:</code></pre>
+</div>
+<div id="write-disk-path" class="section level2">
+<h2><span class="header-section-number">9.14</span> write_disk_path</h2>
+<p>The path to write files to for any requests that write responses to disk.
+By default this parameter is <code>NULL</code>; if you don’t set this and you do http
+requests while using vcr, you’ll get an error that you need to set this config
+variable (or you may just get an invalid path error).</p>
+<p>For testing a package, you’ll probably want this path to be in your <code>tests/</code>
+directory, perhaps next to your cassettes directory, e.g., if your cassettes
+are in <code>tests/fixtures</code>, then put your files from requests that write to disk
+in <code>tests/files</code>. Note: in the below example, <code>vcr_configure</code> is run from
+within <code>tests/testthat</code>, so you set the paths relative to that location.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="vcr-configuration.html#cb82-1"></a><span class="kw">vcr_configure</span>(<span class="dt">dir =</span> <span class="st">&quot;../fixtures&quot;</span>, <span class="dt">write_disk_path =</span> <span class="st">&quot;../files&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; &lt;vcr configuration&gt;
+#&gt;   Cassette Dir: ../fixtures
+#&gt;   Record: once
+#&gt;   URI Parser: crul::url_parse
+#&gt;   Match Requests on: method, uri
+#&gt;   Preserve Bytes?: FALSE
+#&gt;   Logging?: FALSE
+#&gt;   ignored hosts: 
+#&gt;   ignore localhost?: FALSE
+#&gt;   Write disk path: ../files</code></pre>
 
 </div>
 </div>
@@ -607,7 +635,7 @@ any HTTP request made when there is no cassette in use</p>
           </div>
         </div>
       </div>
-<a href="vcr-intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="vcr-usage.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="record-modes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -639,7 +667,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/08-configuration.Rmd",
+"link": "https://github.com/ropensci/http-testing-book/edit/master/09-configuration.Rmd",
 "text": "Edit"
 },
 "history": {
