@@ -252,7 +252,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="17" data-path="testing-considerations.html"><a href="testing-considerations.html"><i class="fa fa-check"></i><b>17</b> Testing considerations</a></li>
 <li class="chapter" data-level="18" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>18</b> session info</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/ropensci/http-testing-book" target="blank">(c) Scott Chamberlain, 2019</a></li>
+<li><a href="https://github.com/ropensci-books/http-testing" target="blank">(c) Scott Chamberlain, 2019</a></li>
 
 </ul>
 
@@ -287,7 +287,7 @@ the <a href="vcr-configuration.html#write-disk-path">write_disk_path configurati
 <span id="cb38-4"><a href="vcr-usage.html#cb38-4"></a>  <span class="dt">write_disk_path =</span> <span class="kw">file.path</span>(tmpdir, <span class="st">&quot;files&quot;</span>)</span>
 <span id="cb38-5"><a href="vcr-usage.html#cb38-5"></a>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpKFhBQk/fixtures
+#&gt;   Cassette Dir: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//Rtmpbe2fEQ/fixtures
 #&gt;   Record: once
 #&gt;   URI Parser: crul::url_parse
 #&gt;   Match Requests on: method, uri
@@ -295,7 +295,7 @@ the <a href="vcr-configuration.html#write-disk-path">write_disk_path configurati
 #&gt;   Logging?: FALSE
 #&gt;   ignored hosts: 
 #&gt;   ignore localhost?: FALSE
-#&gt;   Write disk path: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpKFhBQk/files</code></pre>
+#&gt;   Write disk path: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//Rtmpbe2fEQ/files</code></pre>
 <p>Then pass a file path (that doesn’t exist yet) to crul’s <code>disk</code> parameter.
 <code>vcr</code> will take care of handling writing the response to that file in
 addition to the cassette.</p>
@@ -380,7 +380,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ropensci/http-testing-book/edit/master/08-vcr-usage.Rmd",
+"link": "https://github.com/ropensci-books/http-testing/edit/master/08-vcr-usage.Rmd",
 "text": "Edit"
 },
 "history": {
