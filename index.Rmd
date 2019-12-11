@@ -7,7 +7,7 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: ropenscilabs/http-testing-book
+github-repo: ropensci-books/http-testing
 description: "http testing book"
 ---
 
@@ -17,11 +17,11 @@ This book is intended as a detailed guide to using a particular suite of package
 
 **Info**
 
-* Source: <https://github.com/ropenscilabs/http-testing-book/>
-* Issues/Bug reports: <https://github.com/ropenscilabs/http-testing-book/issues>
-* pkgdown site for crul: <https://ropensci.github.io/crul/>
-* pkgdown site for webmockr: <https://ropensci.github.io/webmockr/>
-* pkgdown site for vcr: <https://ropensci.github.io/vcr/>
+* Source: <https://github.com/ropensci-books/http-testing>
+* Issues/Bug reports: <https://github.com/ropensci-books/http-testing/issues>
+* pkgdown site for crul: <https://docs.ropensci.org/crul/>
+* pkgdown site for webmockr: <https://docs.ropensci.org/webmockr/>
+* pkgdown site for vcr: <https://docs.ropensci.org/vcr/>
 
 Packages
 

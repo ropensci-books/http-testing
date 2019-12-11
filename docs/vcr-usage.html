@@ -13,7 +13,7 @@
   
   
   <meta property="og:description" content="http testing book" />
-  <meta name="github-repo" content="ropenscilabs/http-testing-book" />
+  <meta name="github-repo" content="ropensci-books/http-testing" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 8 vcr usage | HTTP mocking and testing in R" />
@@ -287,7 +287,7 @@ the <a href="vcr-configuration.html#write-disk-path">write_disk_path configurati
 <span id="cb38-4"><a href="vcr-usage.html#cb38-4"></a>  <span class="dt">write_disk_path =</span> <span class="kw">file.path</span>(tmpdir, <span class="st">&quot;files&quot;</span>)</span>
 <span id="cb38-5"><a href="vcr-usage.html#cb38-5"></a>)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//Rtmpie597I/fixtures
+#&gt;   Cassette Dir: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpKFhBQk/fixtures
 #&gt;   Record: once
 #&gt;   URI Parser: crul::url_parse
 #&gt;   Match Requests on: method, uri
@@ -295,7 +295,7 @@ the <a href="vcr-configuration.html#write-disk-path">write_disk_path configurati
 #&gt;   Logging?: FALSE
 #&gt;   ignored hosts: 
 #&gt;   ignore localhost?: FALSE
-#&gt;   Write disk path: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//Rtmpie597I/files</code></pre>
+#&gt;   Write disk path: /var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpKFhBQk/files</code></pre>
 <p>Then pass a file path (that doesn’t exist yet) to crul’s <code>disk</code> parameter.
 <code>vcr</code> will take care of handling writing the response to that file in
 addition to the cassette.</p>
