@@ -273,10 +273,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="vcr-intro" class="section level1">
 <h1><span class="header-section-number">Chapter 7</span> Caching HTTP requests</h1>
-<p>some intro text …</p>
+<p>Record HTTP calls and replay them</p>
 <div id="vcr-pkgdown" class="section level2">
 <h2><span class="header-section-number">7.1</span> Package documentation</h2>
-<p>Check out <a href="https://ropensci.github.io/vcr/" class="uri">https://ropensci.github.io/vcr/</a> for documentation on <code>vcr</code> functions.</p>
+<p>Check out <a href="https://docs.ropensci.org/vcr/" class="uri">https://docs.ropensci.org/vcr/</a> for documentation on <code>vcr</code> functions.</p>
 </div>
 <div id="terminology" class="section level2">
 <h2><span class="header-section-number">7.2</span> Terminology</h2>
@@ -304,7 +304,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb34-8"><a href="vcr-intro.html#cb34-8"></a>  })</span>
 <span id="cb34-9"><a href="vcr-intro.html#cb34-9"></a>)</span>
 <span id="cb34-10"><a href="vcr-intro.html#cb34-10"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb34-11"><a href="vcr-intro.html#cb34-11"></a><span class="co">#&gt;   0.096   0.010   4.087</span></span></code></pre></div>
+<span id="cb34-11"><a href="vcr-intro.html#cb34-11"></a><span class="co">#&gt;   0.092   0.012  37.050</span></span></code></pre></div>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="vcr-intro.html#cb35-1"></a><span class="kw">system.time</span>(</span>
 <span id="cb35-2"><a href="vcr-intro.html#cb35-2"></a>  <span class="kw">use_cassette</span>(<span class="dt">name =</span> <span class="st">&quot;helloworld&quot;</span>, {</span>
@@ -312,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb35-4"><a href="vcr-intro.html#cb35-4"></a>  })</span>
 <span id="cb35-5"><a href="vcr-intro.html#cb35-5"></a>)</span>
 <span id="cb35-6"><a href="vcr-intro.html#cb35-6"></a><span class="co">#&gt;    user  system elapsed </span></span>
-<span id="cb35-7"><a href="vcr-intro.html#cb35-7"></a><span class="co">#&gt;   0.045   0.001   0.047</span></span></code></pre></div>
+<span id="cb35-7"><a href="vcr-intro.html#cb35-7"></a><span class="co">#&gt;   0.049   0.002   0.052</span></span></code></pre></div>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP resonse - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb36-1"><a href="vcr-intro.html#cb36-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>

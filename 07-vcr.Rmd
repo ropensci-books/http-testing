@@ -2,11 +2,11 @@
 
 # Caching HTTP requests {#vcr-intro}
 
-some intro text ...
+Record HTTP calls and replay them
 
 ## Package documentation {#vcr-pkgdown}
 
-Check out <https://ropensci.github.io/vcr/> for documentation on `vcr` functions.
+Check out <https://docs.ropensci.org/vcr/> for documentation on `vcr` functions.
 
 ## Terminology {#terminology}
 

@@ -15,7 +15,7 @@ don't have to repeat yourself.
 
 ## Package documentation {#webmockr-pkgdown}
 
-Check out <https://ropensci.github.io/webmockr/> for documentation on `webmockr` functions.
+Check out <https://docs.ropensci.org/webmockr/> for documentation on `webmockr` functions.
 
 ## Features {#webmockr-features}
 
