@@ -44,7 +44,7 @@ jobs:
         run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::epub_book", output_dir = "epubbook")'
        
       - name: Move files around
-        run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/_main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/_main.epub")'
+        run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
   
       - name: Commit results
         run: |
