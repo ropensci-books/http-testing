@@ -32,8 +32,7 @@ jobs:
           restore-keys: bookdown-
 
       - name: Install packages
-        run: |
-          R -e 'remotes::install_deps()'
+        run: Rscript -e 'install.packages("remotes")'  -e 'remotes::install_deps()'
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
         
