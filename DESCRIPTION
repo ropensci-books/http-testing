@@ -10,4 +10,8 @@ Imports:
   bookdown,
   crul,
   vcr,
-  webmockr
+  webmockr,
+  testthat,
+  httr,
+  urltools,
+  sessioninfo
