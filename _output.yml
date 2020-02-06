@@ -7,7 +7,7 @@ bookdown::gitbook:
       after: |
         <li><a href="https://github.com/ropensci-books/http-testing" target="blank">(c) Scott Chamberlain, 2019</a></li>
     edit: https://github.com/ropensci-books/http-testing/edit/master/%s
-    download: ["pdf", "epub"]
+    download: ["main.pdf", "main.epub"]
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
