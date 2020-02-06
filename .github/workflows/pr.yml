@@ -50,13 +50,13 @@ jobs:
         if: github.repository == 'ropensci-books/http-testing'
       - name: Install Netlify CLI
         run: npm install netlify-cli -g
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.repository == 'ropensci-books/http-testing' && github.event_name == 'push'
       - name: Deploy to Netlify (test)
         run: DEPLOY_URL=$(netlify deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir=docs --json | jq '.deploy_url' --raw-output);echo "::set-env name=DEPLOY_URL::$DEPLOY_URL"
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.repository == 'ropensci-books/http-testing' && github.event_name == 'push'
       - name: Create commit comment
         uses: peter-evans/commit-comment@v1
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.repository == 'ropensci-books/http-testing' && github.event_name == 'push'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sha: ${{ github.event.pull_request.head.sha }}
