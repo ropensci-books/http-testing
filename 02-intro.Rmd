@@ -20,7 +20,7 @@ Read more about `webmockr` in [Section 2](#mocking).
 
 The short version is: `vcr` helps you stub HTTP requests so you don't have to repeat HTTP requests.
 
-The main use case is for unit tests for R packages.
+The main use case is for unit tests of R packages.
 
 `vcr` works with both the `crul` package and the `httr` package.
 
