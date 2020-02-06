@@ -25,4 +25,8 @@ For commits to the repo (not forks), the book will be built and deployed by GitH
 
 * **commits in a PR**: the book is built (gitbook, PDF, EPUB) and deployed to a Netlify website.
 
-Maëlle Salmon owns the Netlify website. To change the Netlify website, create a new Netlify website from a local folder, get its NETLIFY_SITE_ID via the site settings, and get a deploy token for your account via the settings. 
+Maëlle Salmon owns the Netlify website. To change the Netlify website, 
+
+* create a new Netlify website from a local folder, get its site ID (`NETLIFY_SITE_ID`) via the site settings, 
+and get a deploy token (`NETLIFY_AUTH_TOKEN`) for your account via the settings. 
+* save NETLIFY_SITE_ID and NETLIFY_AUTH_TOKEN in the repo settings, secrets tab.
