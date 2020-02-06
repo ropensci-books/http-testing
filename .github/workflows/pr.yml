@@ -1,0 +1,65 @@
+on: pull_request
+
+name: Render-Book-from-PR
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
+
+      - name: Install pandoc and pandoc citeproc
+        run: |
+          brew install pandoc
+          brew install pandoc-citeproc
+      - uses: r-lib/actions/setup-tinytex@v1
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ hashFiles('DESCRIPTION') }}
+
+      - name: Cache bookdown results
+        uses: actions/cache@v1
+        with:
+          path: _bookdown_files
+          key: bookdown-${{ hashFiles('**/*Rmd') }}
+          restore-keys: bookdown-
+
+      - name: Install packages
+        run: Rscript -e 'install.packages("remotes")'  -e 'remotes::install_deps()'
+      - name: Build site
+        run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
+        
+      - name: Render book PDF
+        run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::pdf_book", output_dir = "pdfbook")'
+        
+      - name: Render book EPUB
+        run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::epub_book", output_dir = "epubbook")'
+       
+      - name: Move files around
+        run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
+  
+       uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+        if: github.repository == 'ropensci-books/http-testing'
+      - name: Install Netlify CLI
+        run: npm install netlify-cli -g
+        if: github.repository == 'ropensci-books/http-testing'
+      - name: Deploy to Netlify (test)
+        run: DEPLOY_URL=$(netlify deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir=_book --json | jq '.deploy_url' --raw-output);echo "::set-env name=DEPLOY_URL::$DEPLOY_URL"
+        if: github.repository == 'ropensci-books/http-testing'
+      - name: Create commit comment
+        uses: peter-evans/commit-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sha: ${{ github.event.pull_request.head.sha }}
+          body: |
+            You can go look at [the preview][1]. :smile_cat:
+        if: github.repository == 'ropensci/dev_guide'
+            [1]: ${process.env.DEPLOY_URL}
