@@ -16,3 +16,17 @@ If you are considering a pull request, you may want to open an issue first to di
 ### Discussion forum
 
 Check out our [discussion forum](https://discuss.ropensci.org) if you think your issue requires a longer form discussion.
+
+### Book deployment
+
+For commits to the repo (not forks), the book will be built and deployed by GitHub Actions.
+
+* **commits to master**: the book is built (gitbook, PDF, EPUB) and deployed via gh-pages.
+
+* **commits in a PR**: the book is built (gitbook, PDF, EPUB) and deployed to a Netlify website.
+
+Maëlle Salmon owns the Netlify website. To change the Netlify website, 
+
+* create a new Netlify website from a local folder, get its site ID (`NETLIFY_SITE_ID`) via the site settings, 
+and get a deploy token (`NETLIFY_AUTH_TOKEN`) for your account via the settings. 
+* save NETLIFY_SITE_ID and NETLIFY_AUTH_TOKEN in the repo settings, secrets tab.
