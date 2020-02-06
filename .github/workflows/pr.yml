@@ -44,7 +44,7 @@ jobs:
       - name: Move files around
         run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
   
-       uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: "12.x"
         if: github.repository == 'ropensci-books/http-testing'
