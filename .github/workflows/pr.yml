@@ -61,5 +61,5 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha }}
           body: |
             You can go look at [the preview][1]. :smile_cat:
-        if: github.repository == 'ropensci/dev_guide'
             [1]: ${process.env.DEPLOY_URL}
+        if: github.repository == 'ropensci-books/http-testing'
