@@ -56,10 +56,10 @@ jobs:
         if: github.repository == 'ropensci-books/http-testing'
       - name: Create commit comment
         uses: peter-evans/commit-comment@v1
+        if: github.repository == 'ropensci-books/http-testing'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sha: ${{ github.event.pull_request.head.sha }}
           body: |
             You can go look at [the preview][1]. :smile_cat:
             [1]: ${process.env.DEPLOY_URL}
-        if: github.repository == 'ropensci-books/http-testing'
