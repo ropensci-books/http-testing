@@ -61,7 +61,7 @@ Plus any single or combination of the following:
 
 **Real HTTP requests**
 
-There are a few scenarios to think about when using `webmockr`:
+There is a few scenarios to think about when using `webmockr`:
 
 After doing
 
