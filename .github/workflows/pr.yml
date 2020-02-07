@@ -4,7 +4,7 @@ name: Render-Book-from-PR
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
@@ -28,7 +28,7 @@ jobs:
           restore-keys: bookdown-
 
       - name: Install packages
-        run: Rscript -e 'install.packages("remotes")'  -e 'remotes::install_deps()'
+        run: Rscript -e 'install.packages("remotes", repos = c(CRAN = "https://cran.r-pkg.org/"))'  -e 'remotes::install_deps(repos = c(CRAN = "https://cran.r-pkg.org/"))'
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
         
