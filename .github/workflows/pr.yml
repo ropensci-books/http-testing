@@ -4,7 +4,7 @@ name: Render-Book-from-PR
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
