@@ -4,7 +4,7 @@ name: Render-Book-from-PR
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
@@ -31,7 +31,7 @@ jobs:
           restore-keys: bookdown-
 
       - name: Install packages
-        run: Rscript -e 'install.packages("remotes")'  -e 'remotes::install_deps()'
+        run: Rscript -e 'install.packages("remotes", repos = c(CRAN = "https://cran.r-pkg.org/"))'  -e 'remotes::install_deps(repos = c(CRAN = "https://cran.r-pkg.org/"))'
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
         
@@ -45,18 +45,26 @@ jobs:
         run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
   
       - uses: actions/setup-node@v1
+        env: # Set the secret as an input
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        if: env.NETLIFY_SITE_ID != ''
         with:
           node-version: "12.x"
-        if: github.repository == 'ropensci-books/http-testing'
       - name: Install Netlify CLI
+        env: # Set the secret as an input
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        if: env.NETLIFY_SITE_ID != ''
         run: npm install netlify-cli -g
-        if: github.repository == 'ropensci-books/http-testing'
       - name: Deploy to Netlify (test)
+        env: # Set the secret as an input
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        if: env.NETLIFY_SITE_ID != ''
         run: DEPLOY_URL=$(netlify deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir=docs --json | jq '.deploy_url' --raw-output);echo "::set-env name=DEPLOY_URL::$DEPLOY_URL"
-        if: github.repository == 'ropensci-books/http-testing'
       - name: Create commit comment
+        env: # Set the secret as an input
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        if: env.NETLIFY_SITE_ID != ''
         uses: peter-evans/commit-comment@v1
-        if: github.repository == 'ropensci-books/http-testing'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sha: ${{ github.event.pull_request.head.sha }}
