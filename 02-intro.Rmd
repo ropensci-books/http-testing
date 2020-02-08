@@ -4,7 +4,7 @@
 
 ## What is webmockr? {#what-webmockr}
 
-`webmockr` is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
+`webmockr` is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works: test
 
 * You "stub" a request. That is, you set rules for what HTTP request you'd like to match on
 * You also can set rules for what you'd like to respond with, if anything (if nothing, then we give you `NULL`)
