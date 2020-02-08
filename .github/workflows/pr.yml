@@ -45,17 +45,17 @@ jobs:
         run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
   
       - uses: actions/setup-node@v1
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.actor == 'sckott'
         with:
           node-version: "12.x"
       - name: Install Netlify CLI
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.actor == 'sckott'
         run: npm install netlify-cli -g
       - name: Deploy to Netlify (test)
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.actor == 'sckott'
         run: DEPLOY_URL=$(netlify deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir=docs --json | jq '.deploy_url' --raw-output);echo "::set-env name=DEPLOY_URL::$DEPLOY_URL"
       - name: Create commit comment
-        if: github.repository == 'ropensci-books/http-testing'
+        if: github.actor == 'sckott'
         uses: peter-evans/commit-comment@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
