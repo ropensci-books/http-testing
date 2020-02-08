@@ -6,6 +6,5 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      steps:
-        - name: Hello world
-          run: echo $github.repository
+      - name: Hello world
+        run: echo $github.repository
