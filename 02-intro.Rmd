@@ -33,7 +33,7 @@ Read more about `vcr` in [Section 3](#vcr-intro).
 `crul` is just one of the HTTP clients in R. It's the one that I maintain though, so
 was easiest to get started with adding mocking integration.
 
-There is now integration with `httr` for both `webmockr` and `vcr`.ok
+There is now integration with `httr` for both `webmockr` and `vcr`.
 
 The major feature that `httr` has that `crul` does not have is OAuth support, but that's 
 not an important use case for me so is not a high priority for `crul`.
