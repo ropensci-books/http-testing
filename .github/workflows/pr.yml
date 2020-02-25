@@ -1,11 +1,16 @@
 on: pull_request
-
-name: Render-Book-from-PR
+  
+name: PR-workflow
 
 jobs:
-  build:
-    runs-on: macos-latest
+  bookdown:
+    name: Render Book
+    runs-on: macOS-latest
     steps:
+      - name: Is this a fork
+        run: |
+          fork=$(jq --raw-output .pull_request.head.repo.fork "${GITHUB_EVENT_PATH}");echo "::set-env name=fork::$fork"
+            
       - name: Checkout repo
         uses: actions/checkout@master
 
@@ -16,7 +21,9 @@ jobs:
         run: |
           brew install pandoc
           brew install pandoc-citeproc
+          
       - uses: r-lib/actions/setup-tinytex@v1
+        
       - name: Cache R packages
         uses: actions/cache@v1
         with:
@@ -32,6 +39,7 @@ jobs:
 
       - name: Install packages
         run: Rscript -e 'install.packages("remotes", repos = c(CRAN = "https://cran.r-pkg.org/"))'  -e 'remotes::install_deps(repos = c(CRAN = "https://cran.r-pkg.org/"))'
+
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
         
@@ -42,28 +50,39 @@ jobs:
         run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::epub_book", output_dir = "epubbook")'
        
       - name: Move files around
+        if: env.fork == 'false'
         run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
-      
-      - name: If this is a fork stop here
-        run: |
-          fork=$(jq --raw-output .pull_request.head.repo.fork "${GITHUB_EVENT_PATH}")
-          if [ $fork == true ]; then
-             echo "This is a fork, no preview rendering"
-             exit 78;
-          else
-             echo "This is not a fork, on to preview rendering"
-          fi
+
       - uses: actions/setup-node@v1
+        if: env.fork == 'false'
         with:
           node-version: "12.x"
+      
       - name: Install Netlify CLI
+        if: env.fork == 'false'
         run: npm install netlify-cli -g
+        
       - name: Deploy to Netlify (test)
+        if: env.fork == 'false'
         run: DEPLOY_URL=$(netlify deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir=docs --json | jq '.deploy_url' --raw-output);echo "::set-env name=DEPLOY_URL::$DEPLOY_URL"
-      - name: Create commit comment
-        uses: peter-evans/commit-comment@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          sha: ${{ github.event.pull_request.head.sha }}
-          body: |
-            You can go look at [the preview](${process.env.DEPLOY_URL}). :smile_cat:
+
+      - name: Create check
+        if: env.fork == 'false'
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/${{ github.repository }}/check-runs \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'Accept: application/vnd.github.antiope-preview+json' \
+          --header 'content-type: application/json' \
+          --data '{
+            "name": "Preview Book",
+            "external_id": "42",
+            "head_sha": "${{ github.event.pull_request.head.sha }}",
+            "conclusion": "success",
+            "html_url": "${{ env.DEPLOY_URL }}",
+            "details_url": "${{ env.DEPLOY_URL }}",
+            "output": {
+                "title": "Preview link",
+                "summary": "[Preview link](${{ env.DEPLOY_URL }}) :rocket:"
+            }
+            }'
