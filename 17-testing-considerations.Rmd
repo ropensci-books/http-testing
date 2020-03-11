@@ -48,8 +48,9 @@ described mocking with webmock (similar to `webmockr` in R), using vcr
 (similar to `vcr` in R), and creating a "fake" (fake service).
 
 Some have found they really don't like having the added vcr cassettes
-in their projects, and thus prefer mocking. See for example [this post][pst].
+in their projects, and thus prefer mocking.
 
 
-[tbpost]: (https://thoughtbot.com/blog/how-to-stub-external-services-in-tests)
-[pst]: https://quickleft.com/blog/decreasing-vcr-dependency-webmock/
+[tbpost]: https://thoughtbot.com/blog/how-to-stub-external-services-in-tests
+
+<!-- https://quickleft.com/blog/decreasing-vcr-dependency-webmock/ -->
