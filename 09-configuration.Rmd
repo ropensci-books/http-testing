@@ -176,3 +176,9 @@ within `tests/testthat`, so you set the paths relative to that location.
 ```{r}
 vcr_configure(dir = "../fixtures", write_disk_path = "../files")
 ```
+
+If you want to ignore these files in your installed package, 
+add them to `.Rinstignore`. If you want these files ignored on build
+then add them to `.Rbuildignore`. However, adding these files to `.Rbuildignore`
+will make tests that depend on these files break because the files won't be found; so
+you'll likely have to skip the associated tests as well. 
