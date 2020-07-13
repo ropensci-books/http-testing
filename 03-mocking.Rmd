@@ -70,7 +70,7 @@ library(webmockr)
 ```
 
 `webmockr` is loaded but not turned on. At this point `webmockr` doesn't 
-change anythning.
+change anything.
 
 Once you turn on `webmockr` like 
 
