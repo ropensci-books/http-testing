@@ -79,7 +79,7 @@ webmockr::enable()
 ```
 
 `webmockr` will now by default not allow real HTTP requests from the http 
-libraries that adapters are loaded for (right now only `crul`).
+libraries that adapters are loaded for (`crul` and `httr`).
 
 You can optionally allow real requests via `webmockr_allow_net_connect()`, and
 disallow real requests via `webmockr_disable_net_connect()`. You can check 
