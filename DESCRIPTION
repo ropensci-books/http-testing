@@ -1,4 +1,4 @@
-Package: httptestingbook
+Package: httptesting.book
 Type: Book
 Title: HTTP testing with R packages.
 Version: 0.3
