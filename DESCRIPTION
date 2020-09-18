@@ -16,6 +16,7 @@ Imports:
   urltools,
   sessioninfo,
   downlit,
-  purrr
+  purrr,
+  xml2
 Remotes:
   maelle/downlit@bookdown
