@@ -289,3 +289,18 @@ pre {
 .hidden {
     display: none;
 }
+
+.wip {
+  background: #ffff66;
+  font-style: italic;
+  padding: 10px;
+}
+
+.wip::before {
+    content: "\f071";
+    font-family: FontAwesome;
+    left: 10px;
+    top: 10px;
+    bottom: 0px;
+    font-size: 30px;
+}
