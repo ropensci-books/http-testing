@@ -14,4 +14,8 @@ Imports:
   testthat,
   httr,
   urltools,
-  sessioninfo
+  sessioninfo,
+  downlit,
+  purrr
+Remotes:
+  maelle/downlit@bookdown

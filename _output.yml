@@ -5,9 +5,11 @@ bookdown::gitbook:
       before: |
         <li><a href="./">HTTP mocking and testing in R</a></li>
       after: |
-        <li><a href="https://github.com/ropensci-books/http-testing" target="blank">(c) Scott Chamberlain, 2020</a></li>
+        <li><a href="https://github.com/ropensci-books/http-testing" target="blank">(c) Scott Chamberlain & Maëlle Salmon, 2020</a></li>
+        <li>Project funded by <a href="https://ropensci.org">rOpenSci</a> (Scott's work) & <a href="https://www.r-consortium.org">the R Consortium</a> (Maëlle's work)</a></li>
     edit: https://github.com/ropensci-books/http-testing/edit/master/%s
     download: ["main.pdf", "main.epub"]
+  highlight: NULL
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
