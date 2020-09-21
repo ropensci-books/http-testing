@@ -25,22 +25,4 @@ Our aim is to develop an useful guidance to go with the great recent tools that 
 
 _Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (`{crul}`, `{webmockr}`, `{vcr}`) but its scope has been extended to generalize the explanation of concepts to similar packages._
 
-## Session info
-
-```{r}
-library("magrittr")
-
-dependencies <- attachment::att_from_rmds(".")
-dependencies <- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]
-
-sessioninfo::package_info(
-  pkgs = dependencies
-  ) %>%
-  as.data.frame() %>%
-  .[, c("package", "ondiskversion")] %>%
-  knitr::kable()
-```
-
-None of crul, webmockr, vcr, httptest, presser have compiled code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems. presser has compiled code.
-
 [^crm]: Customer relationship management.

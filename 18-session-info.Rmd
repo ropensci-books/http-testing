@@ -4,7 +4,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-# session info
+
+## Session info
+
+```{r}
+library("magrittr")
+
+dependencies <- attachment::att_from_rmds(".")
+dependencies <- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]
+
+sessioninfo::package_info(
+  pkgs = dependencies
+  ) %>%
+  as.data.frame() %>%
+  .[, c("package", "ondiskversion")] %>%
+  knitr::kable()
+```
+
+None of crul, webmockr, vcr, httptest, presser have compiled code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems. presser has compiled code.
+
+## Full session info
 
 Session info for this book
 

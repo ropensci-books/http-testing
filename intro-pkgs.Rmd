@@ -1,6 +1,15 @@
-#  (PART) introduction {-}
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
 
-# Introduction {#intro}
+# Packages for HTTP testing
+
+A brief presentation of packages you'll "meet" again later in this book!
+
 
 ## What is webmockr? {#what-webmockr}
 
@@ -42,18 +51,3 @@ A major reason to use `crul` over `httr` is that it uses more of an object orien
 interface. That is, you create objects that you can call methods on and retrieve 
 variables/results from calls/etc. It's a different approach than `httr` which focuses
 on passing things to functions.
-
-
-## Use cases {#use-cases}
-
-### mocking use cases {#use-cases-mocking}
-
-* one
-* two 
-* three
-
-### caching use cases {#use-cases-caching}
-
-* one
-* two 
-* three
