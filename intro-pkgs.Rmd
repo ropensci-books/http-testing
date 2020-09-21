@@ -10,12 +10,11 @@ knitr::opts_chunk$set(
 
 A brief presentation of packages you'll "meet" again later in this book!
 
+## webmockr
 
-## What is webmockr? {#what-webmockr}
+`{webmockr}` is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
 
-`webmockr` is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
-
-* You "stub" a request. That is, you set rules for what HTTP request you'd like to match on
+* You "stub" a request. That is, you set rules for what HTTP request you'd like to match on.
 * You also can set rules for what you'd like to respond with, if anything (if nothing, then we give you `NULL`)
 * Then you make HTTP requests, and those that match your stub will return what you requested be returned
 * While `webmockr` is in use, real HTTP interactions are not allowed
@@ -37,17 +36,15 @@ The main use case is for unit tests of R packages.
 
 Read more about `vcr` in [Section 3](#vcr-intro).
 
-## Why crul? {#why-crul}
+## testthat 
 
-`crul` is just one of the HTTP clients in R. It's the one that I maintain though, so
-was easiest to get started with adding mocking integration.
+`{testthat}` is not a package specifically for HTTP testing, it is a package for general purpose unit testing of R packages.
+In this book we will assume that is what you use, because of its popularity.
 
-There is now integration with `httr` for both `webmockr` and `vcr`.
+Now, if you use an alternative like tinytest, 
 
-The major feature that `httr` has that `crul` does not have is OAuth support, but that's 
-not an important use case for me so is not a high priority for `crul`.
+* httptest won't work as it's specifically designed as a complement to testthat;
 
-A major reason to use `crul` over `httr` is that it uses more of an object oriented 
-interface. That is, you create objects that you can call methods on and retrieve 
-variables/results from calls/etc. It's a different approach than `httr` which focuses
-on passing things to functions.
+* vcr might work;
+
+* presser might work.

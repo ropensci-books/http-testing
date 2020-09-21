@@ -18,6 +18,8 @@ Imports:
     downlit,
     purrr,
     xml2,
-    attachment
+    attachment,
+    httptest,
+    presser
 Remotes:
   r-lib/downlit

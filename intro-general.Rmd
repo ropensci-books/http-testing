@@ -3,7 +3,7 @@
 # Introduction {#intro}
 
 
-### HTTP requests in R: what package?
+## HTTP requests in R: what package?
 
 In R, to interact with web resources, it is recommended to use `{curl}`; or its higher-level interfaces `{httr}` ([pronounced _hitter_ or _h-t-t-r_](https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15)) or `{crul}`.
 
