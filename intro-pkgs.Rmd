@@ -10,6 +10,17 @@ knitr::opts_chunk$set(
 
 A brief presentation of packages you'll "meet" again later in this book!
 
+## Why do we need special packages for HTTP testing?
+
+Packages for HTTP testing are useful because there are challenges to HTTP testing.
+Packages for HTTP testing help you solve these challenges, rather than letting you solve them with some homegrown solutions (you can still choose to do that, of course).
+
+What are the challenges of HTTP testing?
+
+* Having tests depend on an internet connection is not ideal.
+* Having tests depend on having secrets for authentication at hand is not ideal.
+* Having tests for situations that hard to trigger (e.g. the failure of a remote server) is tricky.
+
 ## webmockr
 
 `{webmockr}` is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
