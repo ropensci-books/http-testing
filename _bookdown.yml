@@ -3,3 +3,8 @@ language:
   ui:
     chapter_name: "Chapter "
 delete_merged_file: true
+rmd_files: ["index.Rmd", 
+           "02-intro.Rmd", "03-mocking.Rmd", "04-webmockr-stubs.Rmd", "05-webmockr-testing.Rmd",    
+           "06-webmockr-utilities.Rmd", "07-vcr.Rmd", "08-vcr-usage.Rmd", "09-configuration.Rmd",     
+           "10-record-modes.Rmd", "11-request-matching.Rmd", "12-logging.Rmd", "13-security.Rm"d,
+           "14-escape-hatches.Rmd", "15-cassettes.Rmd", "16-gotchas.Rmd", "17-testing-considerations.Rmd"]
