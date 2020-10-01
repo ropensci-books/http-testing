@@ -13,7 +13,7 @@ description: "http testing book"
 
 # Preamble
 
-Are you working on a R package accessing resources on the web, be it a cat facts API, a scientific data source or your CRM system[^crm]?
+Are you working on a R package accessing resources on the web, be it a cat facts API, a scientific data source or your system for Customer relationship management?
 As for all other packages, appropriate unit testing can make your code more robust.
 The unit testing of a package interacting with web resources, however, brings special challenges: 
 dependence of tests on a good internet connection, testing in the absence of authentication secrets, etc.
@@ -24,5 +24,3 @@ This book is meant to be a free, central reference for developers of R packages 
 Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}` and `{presser}` are.
 
 _Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (`{crul}`, `{webmockr}`, `{vcr}`) but its scope has been extended to generalize the explanation of concepts to similar packages._
-
-[^crm]: Customer relationship management.

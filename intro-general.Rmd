@@ -54,7 +54,8 @@ When writing a package interacting with web resources, you will probably use eit
 * httr is the most popular and oldest of the two, and supports OAuth among other things. httr docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
 
 * crul does not support OAuth but it uses an object-oriented interface, which you might like.
-crul has a set of [clients, or ways to perform requests](https://docs.ropensci.org/crul/articles/choosing-a-client.html), that might be handy.
+crul has a set of [clients, or ways to perform requests](https://docs.ropensci.org/crul/articles/choosing-a-client.html), that might be handy. crul also has a vignette about [API package best practices
+](https://docs.ropensci.org/crul/articles/best-practices-api-packages.html).
 
 Below we will try to programmatically access the [status of GitHub](https://www.githubstatus.com/api/#status), the open-source platfrom provided by the company of the same name.
 We will access the same information with httr and crul.
