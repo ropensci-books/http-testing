@@ -14,7 +14,7 @@ First of all, your life and the life of your package's users will be easier if t
 
 1.  Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate. For instance, don't even try interacting with a web API requiring authentication if the user does not provide authentication information. For limiting rate i.e. not sending too many requests, automatically wait or, if the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the `{ratelimitr}` package.
 
-2.  If there's a status API i.e. a separate API indicating whether the web resource is up or down, use it. If it tells you the API is down, \`stop()\` with an informative error message.
+2.  If there's a status API i.e. a separate API indicating whether the web resource is up or down, use it. If it tells you the API is down, `stop()` with an informative error message.
 
 3.  If the API indicates an error, depending on the actual error,
 
@@ -28,7 +28,7 @@ That was it for aspects the user will care about. Now, what might be more proble
 
 ## Graceful vignettes and examples
 
-4.  [Pre-compute vignettes](https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette) in some way. Don't use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the [unexported \`release\_questions()\` function](https://devtools.r-lib.org/reference/release.html#details)). Don't let vignettes run on a system where a failure has bad consequences.
+4.  [Pre-compute vignettes](https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette) in some way. Don't use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the [unexported `release\_questions()` function](https://devtools.r-lib.org/reference/release.html#details)). Don't let vignettes run on a system where a failure has bad consequences.
 5.  Don't run [examples](https://blog.r-hub.io/2020/01/27/examples/).
 
 These two precautions ensure that CRAN checks won't end with some WARNINGs e.g. because an example failed when the API was down.
@@ -37,7 +37,7 @@ These two precautions ensure that CRAN checks won't end with some WARNINGs e.g. 
 
 We're getting closer to the actual topic of this book!
 
-6.  Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. \`testthat::skip\_on\_cran()\` will ensure that.
+6.  Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. `testthat::skip\_on\_cran()` will ensure that.
 7.  Do not only test success behavior! Test for the behavior of your package in case of API errors, which shall also be covered later in the book.
 
 ## Conclusion
