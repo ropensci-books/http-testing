@@ -58,6 +58,8 @@ The differences and similarities between httptest and vcr will become clearer in
 
 `{presser}` maintained by Gábor Csárdi provides an alternative (complementary?) tool for HTTP testing.
 It will not let you store cached versions of responses, instead it will help you set up a fake web service.
+Therefore, with `{presser}` there is faking but at a different level.
+If you can't wait to learn the advantages of this approach other mocking, check out [presser's own take](https://r-lib.github.io/presser/articles/introduction.html#presser-vs-mocking-1) on this, but otherwise, let's wait until we implement presser for a minimal package.
 
 ## testthat 
 
@@ -71,3 +73,13 @@ Now, if you use an alternative like tinytest,
 * vcr might work;
 
 * presser might work.
+
+## Conclusion
+
+Now that you have an idea of the tools we can use for HTTP testing, we'll now create a minimal package and then decline it in three versions tested with
+
+* vcr and webmockr;
+* httptest;
+* presser.
+
+Our minimal package will use httr. However, it will help you understand concepts even if you end up using crul (in which case you can use vcr and webmockr; or presser) or curl (in which case you can only use presser).
