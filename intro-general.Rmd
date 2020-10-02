@@ -103,6 +103,6 @@ jsonlite::fromJSON(response$parse())
 
 Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of those packages.
 
-Note that the choice of a package will constraint the HTTP testing tools you can use (see next chapter).
+Note that the choice of a package will constraint the HTTP testing tools you can use.
 However, the general ideas will remain the same.
 You could switch your package backend from say crul to httr _without changing your tests_, if your tests do not test too many specifities of internals.
