@@ -6,7 +6,7 @@
 
 HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation.
 HTTP is a way for you to exchange information with a remote server.
-In your package, is information is getting back and forth between the R session and internet, you are using some sort of HTTP tooling.
+In your package, if information is going back and forth between the R session and internet, you are using some sort of HTTP tooling.
 Your package is making _requests_ and receives _responses_.
 
 ### HTTP requests
@@ -22,7 +22,7 @@ Hopefully you are interacting with a well documented web resource that will expl
 ### HTTP responses
 
 The HTTP response is what the remote server provides, and what your package parses.
-A response has a status code indicating whether the request succeeded, headers and it can have a body.
+A response has a status code indicating whether the request succeeded, response headers, and (optionally) a response body.
 
 Hopefully the documentation of the web API you are working with shows good examples of responses.
 In any case you'll find yourself experimenting with different requests to see what the response "looks like".
@@ -47,11 +47,12 @@ How do you get started with interacting with HTTP in R?
 
 In R, to interact with web resources, it is recommended to use `{curl}`; or its higher-level interfaces `{httr}` ([pronounced _hitter_ or _h-t-t-r_](https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15)) or `{crul}`.
 
-Do not use RCurl that is not actively maintained!
+Do not use RCurl, because it is not actively maintained!
 
 When writing a package interacting with web resources, you will probably use either `{httr}` or `{crul}`.
 
-* httr is the most popular and oldest of the two, and supports OAuth among other things. httr docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
+* httr is the most popular and oldest of the two, and supports OAuth. 
+httr docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
 
 * crul does not support OAuth but it uses an object-oriented interface, which you might like.
 crul has a set of [clients, or ways to perform requests](https://docs.ropensci.org/crul/articles/choosing-a-client.html), that might be handy. crul also has a vignette about [API package best practices
@@ -96,6 +97,9 @@ response <- client$get()
 # Check the response status
 response$status_http()
 
+# Or in a package you'd just write
+response$raise_for_status()
+
 # Parse the content
 response$parse()
 jsonlite::fromJSON(response$parse())
@@ -103,6 +107,6 @@ jsonlite::fromJSON(response$parse())
 
 Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of those packages.
 
-Note that the choice of a package will constraint the HTTP testing tools you can use.
+Note that the choice of a package will constrain the HTTP testing tools you can use.
 However, the general ideas will remain the same.
 You could switch your package backend from say crul to httr _without changing your tests_, if your tests do not test too many specifities of internals.

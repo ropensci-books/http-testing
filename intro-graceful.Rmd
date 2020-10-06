@@ -10,9 +10,11 @@ First of all, your life and the life of your package's users will be easier if t
 
 ## User-facing grace (how your package actually works)
 
-0.  If you can, do not request the API every time the user asks for something but cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out [memoise](<https://github.com/r-lib/memoise>). To remember answers across sessions, see [webmiddens](https://docs.ropensci.org/webmiddens/), and approaches presented in the R-hub blog post ["Persistent config and data for R packages"](<https://blog.r-hub.io/2020/03/12/user-preferences/>)
+0.  If you can, do not request the API every time the user asks for something but cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out [memoise](<https://github.com/r-lib/memoise>). To remember answers across sessions, see [webmiddens](https://docs.ropensci.org/webmiddens/), and approaches presented in the R-hub blog post ["Persistent config and data for R packages"](<https://blog.r-hub.io/2020/03/12/user-preferences/>). Caching behavior should be well documented for users, and there should probably be an expiration time for caches that's based on how often data is updated on the remote service.
 
-1.  Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate. For instance, don't even try interacting with a web API requiring authentication if the user does not provide authentication information. For limiting rate i.e. not sending too many requests, automatically wait or, if the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the [ratelimitr](https://github.com/tarakc02/ratelimitr) package.
+1.  Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate. 
+  * For instance, don't even try interacting with a web API requiring authentication if the user does not provide authentication information. 
+  * For limiting rate i.e. not sending too many requests, automatically wait or, if the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the [ratelimitr](https://github.com/tarakc02/ratelimitr) package.
 
 2.  If there's a status API i.e. a separate API indicating whether the web resource is up or down, use it. If it tells you the API is down, `stop()` with an informative error message.
 
@@ -29,7 +31,13 @@ That was it for aspects the user will care about. Now, what might be more proble
 ## Graceful vignettes and examples
 
 4.  [Pre-compute vignettes](https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette) in some way. Don't use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the [unexported `release\_questions()` function](https://devtools.r-lib.org/reference/release.html#details)). Don't let vignettes run on a system where a failure has bad consequences.
-5.  Don't run [examples](https://blog.r-hub.io/2020/01/27/examples/).
+5.  Don't run [examples](https://blog.r-hub.io/2020/01/27/examples/) on CRAN. Now, for a first submission, CRAN maintainers might complain if there is no example. In that case, you might want to add some minimal example, e.g.
+
+```r
+if (crul::ok("some-url")) {
+  foo_bar() # some eg that uses some-url
+}
+```
 
 These two precautions ensure that CRAN checks won't end with some WARNINGs e.g. because an example failed when the API was down.
 
