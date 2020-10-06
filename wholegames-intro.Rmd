@@ -9,9 +9,18 @@ The next section will then present single topics such as "how to deal with authe
 
 ## Our example package
 
-Our minimal package, `examplighratia`, accesses the GitHub status API and one endpoint of GitHub V3 REST API.
+Our minimal package, [`examplighratia`](https://github.com/maelle/exemplighratia), accesses the GitHub status API and one endpoint of GitHub V3 REST API.
 It is named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
 If you really need to interact with GitHub V3 API, we recommend the `{gh}` package.
+We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).
+
+GitHub V3 API works without authentication too, but at a lower rate.
+For the sake of simplicity we shall assume it does not work without authentication.
+Authentication is the setting of a token in a HTTP header, so no OAuth dance or so. 
+
+GitHub Status API, on the contrary, does not necessitate authentication at all.
+
+So we have two functions, one that works without authentication, one that works with authentication.
 
 How did we create the package?
 You are obviously free to use your own favorite workflow tools!
@@ -59,3 +68,13 @@ gh_api_status <- function() {
 
 }
 ```
+
+* To add a simple test, `use_test("api-status")` (and using testthat dev version so setting `Config/testthat/edition: 3` in `DESCRIPTION`).
+
+```r
+test_that("gh_api_status() works", {
+  testthat::expect_type(gh_api_status(), "character")
+})
+```
+
+* To add a second function, `use_r("organizations.R")`.
