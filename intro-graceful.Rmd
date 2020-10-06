@@ -30,7 +30,7 @@ That was it for aspects the user will care about. Now, what might be more proble
 
 ## Graceful vignettes and examples
 
-4.  [Pre-compute vignettes](https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette) in some way. Don't use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the [unexported `release\_questions()` function](https://devtools.r-lib.org/reference/release.html#details)). Don't let vignettes run on a system where a failure has bad consequences.
+4.  [Pre-compute vignettes](https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette) in some way. Don't use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the [unexported `release_questions()` function](https://devtools.r-lib.org/reference/release.html#details)). Don't let vignettes run on a system where a failure has bad consequences.
 5.  Don't run [examples](https://blog.r-hub.io/2020/01/27/examples/) on CRAN. Now, for a first submission, CRAN maintainers might complain if there is no example. In that case, you might want to add some minimal example, e.g.
 
 ```r
@@ -45,7 +45,7 @@ These two precautions ensure that CRAN checks won't end with some WARNINGs e.g. 
 
 We're getting closer to the actual topic of this book!
 
-6.  Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. `testthat::skip\_on\_cran()` will ensure that.
+6.  Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. `testthat::skip_on_cran()` will ensure that.
 7.  Do not only test success behavior! Test for the behavior of your package in case of API errors, which shall also be covered later in the book.
 
 ## Conclusion
