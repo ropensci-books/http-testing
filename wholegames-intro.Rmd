@@ -109,16 +109,14 @@ gh_organizations <- function(since = 1) {
 
   token <- Sys.getenv("GITHUB_PAT")
 
-  if (nchar(token)) {
-    headers <- httr::add_headers("Authorization" = paste("token", token))
-  } else {
-    headers <- httr::add_headers()
+  if (!nchar(token)) {
+    stop("No token provided! Set up the GITHUB_PAT environment variable please.")
   }
 
   response <- httr::RETRY(
     "GET",
     url,
-    headers
+    httr::add_headers("Authorization" = paste("token", token))
   )
 
   httr::stop_for_status(response)
