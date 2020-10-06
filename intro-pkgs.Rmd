@@ -28,23 +28,27 @@ What are the challenges of HTTP testing?
 * You "stub" a request. That is, you set rules for what HTTP request you'd like to respond to with a fake. E.g. a rule might be a method, or an URL.
 * You also can set rules for what fake you'd like to respond with, if anything (if nothing, then we give you `NULL`).
 * Then you make HTTP requests, and those that match your stub i.e. set of rules will return what you requested be returned.
-* While `webmockr` is in use, real HTTP interactions are not allowed.
+* While webmockr is in use, real HTTP interactions are not allowed.
 * There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.
 
-`webmockr` works with both the crul package and the httr package.
+webmockr works with both the crul package and the httr package.
 
-`webmockr` is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
+webmockr is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
+
+webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
 
 ## What is vcr? {#what-vcr}
 
 The short version is: vcr maintained by Scott Chamberlain helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
-It uses the power of `webmockr`, with a higher level interface.
+It uses the power of webmockr, with a higher level interface.
 
 vcr works with both the crul package and the httr package.
 
 When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
 All subsequent runs of the test use that local file instead of really calling the API.
 Therefore tests work independently of an internet connection.
+
+vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 
 ## httptest
 
