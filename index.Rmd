@@ -1,7 +1,7 @@
 --- 
-title: "HTTP mocking and testing in R"
+title: "HTTP mocking in R"
 date: "`r paste0('built on ', Sys.Date())`"
-author: "`r paste0('built with vcr v', packageVersion('vcr'), ' / webmockr v', packageVersion('webmockr'), ' / crul v', packageVersion('crul'), ' / curl v', packageVersion('curl'))`"
+author: "Scott Chamberlain, Maëlle Salmon"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -13,29 +13,14 @@ description: "http testing book"
 
 # Preamble
 
-This book is intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages.
+Are you working on a R package accessing resources on the web, be it a cat facts API, a scientific data source or your system for Customer relationship management?
+As for all other packages, appropriate unit testing can make your code more robust.
+The unit testing of a package interacting with web resources, however, brings special challenges: 
+dependence of tests on a good internet connection, testing in the absence of authentication secrets, etc.
+Having tests fail due to resources being down or slow, during development or on CRAN, means a time loss for everyone involved (slower development, messages from CRAN).
+Although some packages accessing remote resources are well tested, there is a lack of resources around best practices.
 
-**Info**
+This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development.
+Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}` and `{presser}` are.
 
-* Source: <https://github.com/ropensci-books/http-testing>
-* Issues/Bug reports: <https://github.com/ropensci-books/http-testing/issues>
-* pkgdown site for crul: <https://docs.ropensci.org/crul/>
-* pkgdown site for webmockr: <https://docs.ropensci.org/webmockr/>
-* pkgdown site for vcr: <https://docs.ropensci.org/vcr/>
-
-Packages
-
-* `crul`: <https://github.com/ropensci/crul/>
-* `webmockr`: <https://github.com/ropensci/webmockr/>
-* `vcr`: <https://github.com/ropensci/vcr/>
-* `curl`: <https://github.com/jeroen/curl/>
-
-**Installation**
-
-Stable version from CRAN
-
-```{r eval=FALSE}
-install.packages(c("crul", "webmockr", "vcr", "httr"))
-```
-
-none of `crul`, `webmockr` or `vcr` have compiled code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems.
+_Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (`{crul}`, `{webmockr}`, `{vcr}`) but its scope has been extended to generalize the explanation of concepts to similar packages._

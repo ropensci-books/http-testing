@@ -1,0 +1,92 @@
+```{r echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Packages for HTTP testing
+
+A brief presentation of packages you'll "meet" again later in this book!
+
+## Why do we need special packages for HTTP testing?
+
+Packages for HTTP testing are useful because there are challenges to HTTP testing.
+Packages for HTTP testing help you solve these challenges, rather than letting you solve them with some homegrown solutions (you can still choose to do that, of course).
+
+What are the challenges of HTTP testing?
+
+* Having tests depend on an internet connection is not ideal.
+* Having tests depend on having secrets for authentication at hand is not ideal.
+* Having tests for situations that are hard to trigger (e.g. the failure of a remote server) is tricky.
+
+## webmockr
+
+`{webmockr}` maintained by Scott Chamberlain is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
+
+* You "stub" a request. That is, you set rules for what HTTP request you'd like to respond to with a fake. E.g. a rule might be a method, or an URL.
+* You also can set rules for what fake you'd like to respond with, if anything (if nothing, then we give you `NULL`).
+* Then you make HTTP requests, and those that match your stub i.e. set of rules will return what you requested be returned.
+* While webmockr is in use, real HTTP interactions are not allowed.
+* There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.
+
+webmockr works with both the crul package and the httr package.
+
+webmockr is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
+
+webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
+
+## What is vcr? {#what-vcr}
+
+The short version is: vcr maintained by Scott Chamberlain helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
+It uses the power of webmockr, with a higher level interface.
+
+vcr works with both the crul package and the httr package.
+
+When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
+All subsequent runs of the test use that local file instead of really calling the API.
+Therefore tests work independently of an internet connection.
+
+vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
+
+## httptest
+
+`{httptest}` maintained by Neal Richardson is fairly similar to `{vcr}` in its philosophy.
+It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
+httptest works with httr.
+
+The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
+
+## presser
+
+`{presser}` maintained by Gábor Csárdi provides an alternative (complementary?) tool for HTTP testing.
+It will not let you store cached versions of responses, instead it will help you set up a fake web service.
+Therefore, with `{presser}` there is faking but what's faked is the web service itself.
+If you can't wait to learn the advantages of this approach other mocking, check out [presser's own take](https://r-lib.github.io/presser/articles/introduction.html#presser-vs-mocking-1) on this, but otherwise, let's wait until we implement presser for a minimal package.
+
+## testthat 
+
+`{testthat}` maintained by Hadley Wickham is not a package specifically for HTTP testing, it is a package for general purpose unit testing of R packages.
+In this book we will assume that is what you use, because of its popularity.
+
+Now, if you use an alternative like tinytest, 
+
+* httptest won't work as it's specifically designed as a complement to testthat;
+
+* vcr might work;
+
+* presser might work.
+
+## Conclusion
+
+Now that you have an idea of the tools we can use for HTTP testing, we'll now create a minimal package and then amend it in three versions tested with
+
+* vcr and webmockr;
+* httptest;
+* presser.
+
+Our minimal package will use httr. However, it will help you understand concepts even if you end up using crul or curl.[^limits]
+
+
+[^limits]:  If you end up using crul, you can use vcr and webmockr; or presser; but not httptest. If you end up using curl you can only use presser.
