@@ -1,0 +1,61 @@
+#  (PART) Whole Game(s) {-}
+
+# Introduction
+
+Similar to the [Whole Game chapter in the R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/whole-game.html), we shall go through how to add HTTP tests to a minimal package.
+However, we will do it _three_ times to present alternative approaches.
+After that exercise, we shall compare approaches.
+The next section will then present single topics such as "how to deal with authentication" in further details.
+
+## Our example package
+
+Our minimal package, `examplighratia`, accesses the GitHub status API and one endpoint of GitHub V3 REST API.
+It is named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
+If you really need to interact with GitHub V3 API, we recommend the `{gh}` package.
+
+How did we create the package?
+You are obviously free to use your own favorite workflow tools!
+
+* We followed `{usethis}` setup article.
+* `usethis::create_package("path/to/folder/exemplighratia")`
+* `usethis::use_package("httr")`
+* `usethis::use_package("purrr")`
+* To add the first function, `use_r("api-status.R")`
+
+```r
+status_url <- function() {
+  "https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"
+}
+
+#' GitHub APIs status
+#'
+#' @description Get the status of requests to GitHub APIs
+#'
+#' @return A character vector, one of "operational", "degraded_performance",
+#' "partial_outage", or "major_outage."
+#'
+#' @details See details in https://www.githubstatus.com/api#components.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' gh_api_status()
+#' }
+gh_api_status <- function() {
+  response <- httr::GET(status_url())
+
+  # Check status
+  httr::stop_for_status(response)
+
+  # Parse the content
+  content <- httr::content(response)
+
+  # Extract the part about the API status
+  components <- content$components
+  api_status <- components[purrr::map_chr(components, "name") == "API Requests"][[1]]
+
+  # Return status
+  api_status$status
+
+}
+```
