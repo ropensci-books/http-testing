@@ -27,6 +27,7 @@ You are obviously free to use your own favorite workflow tools!
 
 * We followed `{usethis}` setup article.
 * `usethis::create_package("path/to/folder/exemplighratia")`
+* `usethis::use_mit_license()`
 * `usethis::use_package("httr")`
 * `usethis::use_package("purrr")`
 * To add the first function, `use_r("api-status.R")`
@@ -129,3 +130,16 @@ gh_organizations <- function(since = 1) {
 }
 
 ```
+
+* To add a simple test, `use_test("organizations")`.
+
+```r
+test_that("gh_organizations works", {
+  testthat::expect_type(gh_organizations(), "character")
+})
+
+```
+
+All good, now our package has 100% test coverage and passes R CMD Check. 
+But what if we try working without a connection?
+In the following chapters, we'll add more robust testing infrastructure to this minimal package.
