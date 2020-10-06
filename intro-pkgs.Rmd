@@ -80,7 +80,7 @@ Now, if you use an alternative like tinytest,
 
 ## Conclusion
 
-Now that you have an idea of the tools we can use for HTTP testing, we'll now create a minimal package and then decline it in three versions tested with
+Now that you have an idea of the tools we can use for HTTP testing, we'll now create a minimal package and then amend it in three versions tested with
 
 * vcr and webmockr;
 * httptest;
