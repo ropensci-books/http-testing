@@ -77,4 +77,55 @@ test_that("gh_api_status() works", {
 })
 ```
 
-* To add a second function, `use_r("organizations.R")`.
+* To add a second function, `use_r("organizations.R")`. Note that an ideal version of this function would have some sort of callback in the retry, to call the `gh_api_status()` function (which seems easier to implement with [crul's retry method](https://blog.r-hub.io/2020/04/07/retry-wheel/#retry-in-crul)).
+
+```r
+gh_v3_url <- function() {
+  "https://api.github.com/"
+}
+
+#' GitHub organizations
+#'
+#' @description Get logins of GitHub organizations.
+#'
+#' @param since The integer ID of the last organization that you've seen.
+#'
+#' @return A character vector of at most 30 elements.
+#' @export
+#'
+#' @details Refer to https://developer.github.com/v3/orgs/#list-organizations
+#'
+#' @examples
+#' \dontrun{
+#' gh_organizations(since = 42)
+#' }
+gh_organizations <- function(since = 1) {
+  url <- httr::modify_url(
+    gh_v3_url(),
+    path = "organizations",
+    query = list(since = since)
+    )
+
+  token <- Sys.getenv("GITHUB_PAT")
+
+  if (nchar(token)) {
+    headers <- httr::add_headers("Authorization" = paste("token", token))
+  } else {
+    headers <- httr::add_headers()
+  }
+
+  response <- httr::RETRY(
+    "GET",
+    url,
+    headers
+  )
+
+  httr::stop_for_status(response)
+
+  content <- httr::content(response)
+
+  purrr::map_chr(content, "login")
+
+}
+
+```
