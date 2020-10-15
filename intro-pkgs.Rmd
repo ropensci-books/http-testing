@@ -52,11 +52,19 @@ vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 
 ## httptest
 
-`{httptest}` maintained by Neal Richardson is fairly similar to `{vcr}` in its philosophy.
+`{httptest}` maintained by Neal Richardson is fairly similar to `{vcr}` in that it uses mocked API responses.
 It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
 httptest works with httr.
 
 The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
+
+```{block, type='alert'}
+With both vcr and httptest the tests will use some sort of fake of API responses.
+
+In vcr they are called both **fixtures** and **cassettes**.
+In httptest they are called **mock files**.
+```
+
 
 ## presser
 

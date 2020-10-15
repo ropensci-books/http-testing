@@ -310,3 +310,16 @@ pre {
   padding: 0;
   font-style: italic;
 }
+
+div .alert::before {
+    content: "\f071";
+    font-family: FontAwesome;
+    left: 10px;
+    top: 10px;
+    bottom: 0px;
+    font-size: 30px;
+}
+div .alert {
+  background: none;
+  border:  5px solid #1f58a3;
+}

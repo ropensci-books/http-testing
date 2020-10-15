@@ -1,0 +1,95 @@
+# Use vcr
+
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr.
+
+We need to install `{vcr}`.
+
+First, we need to run `vcr::use_vcr()` which has a few consequences
+
+* Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
+* Creating an example test file for us to look at. This is useful the first few times you use vcr, after a while you might even delete it without reading it.
+* Adding a `.gitattributes` file with the line `tests/fixtures/**/* -diff` which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. [^secrets]
+* Creating a helper file under tests/testthat,
+
+```r
+library("vcr")
+invisible(vcr::vcr_configure(
+  dir = "../fixtures"
+))
+vcr::check_cassette_names()
+```
+
+When testthat runs tests, files whose name starts with "helper" are always run first. This one makes sure to load vcr, indicated where mocked responses are saved, and checks that you are not using the same name twice for cassettes (mock files).
+
+We tweak vcr helper a bit
+
+* We do not want our API token to appear in the mock responses so we use the `filter_sensitive_data` argument of `vcr::vcr_configure()`.
+
+* We need to ensure that we set up a fake API key when there is no API token around.
+Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
+With mock responses around, we obviously don't really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
+
+```r
+library("vcr")
+
+vcr_dir <- "../fixtures"
+
+if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
+  if (dir.exists(vcr_dir)) {
+    Sys.setenv("GITHUB_PAT" = "foobar")
+  } else {
+    stop("No API key nor cassettes, tests cannot be run.",
+         call. = FALSE)
+  }
+}
+
+invisible(vcr::vcr_configure(
+  dir = vcr_dir,
+  filter_sensitive_data = list("<<github_api_token>>" = Sys.getenv('GITHUB_PAT'))
+))
+```
+
+So this was just setup, now on to adapting our tests!
+The key function will be `vcr::use_cassette("cassette-informative-and-unique-name", {<our-code>})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
+
+
+```{block, type='alert'}
+Where do we put the `vcr::use_cassette()` call?
+Well as written in the manual page of that function, _There's a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:_
+What's correct?
+* Wrapping the whole `testthat::test_that()` call;
+
+````r
+vcr::use_cassette("thing, {
+  testthat::test_that("thing", {
+    lala <- get_foo()
+    expect_true(lala)
+  })
+})
+````
+
+* Wrapping a few lines inside `testthat::test_that()` **excluding the expectactions `expect_blabla()`**
+
+````r
+testthat::test_that("thing", {
+  vcr::use_cassette("thing, {
+    lala <- get_foo()
+  })
+    expect_true(lala)
+})
+````
+
+What's incorrect?
+
+````r
+testthat::test_that("thing", {
+  vcr::use_cassette("thing, {
+    lala <- get_foo()
+    expect_true(lala)
+  })
+})
+````
+```
+
+
+[^secrets]: However, if you change something related to handling secrets in your code or tests, please check again your new cassettes do not include secrets.
