@@ -1,7 +1,39 @@
-# Conclusion of the short demos
+# vcr and httptest
+
+We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia
+
+* Adding a package as a Suggests dependency;
+* Creating a helper file that in particular loads this package before each test;
+* Wrapping our tests into functions that allows to record API responses in mock files and to play them back from said mock files.
+
+Now, there were a few differences. 
+We won't end up advocating for one package in particular since both have their merits, but we do hope to help you differentiate the two packages.
+
+## Calling mock files
+
+As mentioned before, vcr and httptest both use mock files but they call them differently.
+
+In vcr they are called both **fixtures** and **cassettes**.
+In httptest they are called **mock files**.
+
+## Naming mock files
+
+With vcr the `use_cassette()` call needs to include a name that will be used to create the filename of the mock file.
+The help of `?use_cassette` explains some criteria for naming them, such as the fact that cassette names need to be unique.
+Now if you wrap your whole `test_that()` block in them you might just as well use a name similar to the test name, and you already make those meaningful, right?
+
+With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body. 
+
+## Handling secrets
+
+With vcr, since everything from the HTTP interactions is recorded, you always need to add some sort of configuration to be sure to wipe your API tokens from the mock files.
 
 Handling secrets
 
 Cassette names
 
 Built-in recording / focus on tweaking cassettes
+
+## Conclusion
+
+And now, to make things even more complex, or fun, we shall explore a third HTTP testing package that does not involve mock files of API responses.
