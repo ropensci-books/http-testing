@@ -2,6 +2,8 @@
 
 In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr.
 
+## Setup
+
 We need to install `{vcr}`.
 
 First, we need to run `vcr::use_vcr()` which has a few consequences
@@ -50,23 +52,146 @@ invisible(vcr::vcr_configure(
 ```
 
 So this was just setup, now on to adapting our tests!
+
+## Actual testing
+
 The key function will be `vcr::use_cassette("cassette-informative-and-unique-name", {<our-code>})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
 
 
-```{block, type='alert'}
+Let's tweak the test for `gh_api_status`, it now becomes
+
+```r
+vcr::use_cassette("gh_api_status", {
+  test_that("gh_api_status() works", {
+    testthat::expect_type(gh_api_status(), "character")
+  })
+})
+```
+
+If we run this test (in RStudio clicking on "Run test"), 
+
+* the first time, vcr creates a cassette (mock file) under `tests/testthat/gh_api_status.yml` where it stores the API response.
+It contains all the things, header included.
+
+```yaml
+http_interactions:
+- request:
+    method: get
+    uri: https://kctbh9vrtdwd.statuspage.io/api/v2/components.json
+    body:
+      encoding: ''
+      string: ''
+    headers:
+      Accept: application/json, text/xml, application/xml, */*
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      vary: Accept,Accept-Encoding,Fastly-SSL
+      cache-control: max-age=0, private, must-revalidate
+      x-cache: MISS
+      content-type: application/json; charset=utf-8
+      content-encoding: gzip
+      strict-transport-security: max-age=259200
+      date: Thu, 15 Oct 2020 11:59:23 GMT
+      x-request-id: d9888435-3f04-4401-be5c-b9d1bfdfa015
+      x-download-options: noopen
+      x-xss-protection: 1; mode=block
+      x-runtime: '0.037254'
+      x-permitted-cross-domain-policies: none
+      access-control-allow-origin: '*'
+      accept-ranges: bytes
+      x-content-type-options: nosniff
+      etag: W/"gz[a479c9894f51b7db286dc31cd922e7bf]"
+      x-statuspage-skip-logging: 'true'
+      x-statuspage-version: fd137a4bb14c20ce721393e5b6540ea6eebff3a3
+      referrer-policy: strict-origin-when-cross-origin
+      age: '0'
+    body:
+      encoding: UTF-8
+      file: no
+      string: '{"page":{"id":"kctbh9vrtdwd","name":"GitHub","url":"https://www.githubstatus.com","time_zone":"Etc/UTC","updated_at":"2020-10-15T08:57:35.302Z"},"components":[{"id":"8l4ygp009s5s","name":"Git
+        Operations","status":"operational","created_at":"2017-01-31T20:05:05.370Z","updated_at":"2020-09-24T02:32:00.916Z","position":1,"description":"Performance
+        of git clones, pulls, pushes, and associated operations","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"brv1bkgrwx7q","name":"API
+        Requests","status":"operational","created_at":"2017-01-31T20:01:46.621Z","updated_at":"2020-09-30T19:00:29.476Z","position":2,"description":"Requests
+        for GitHub APIs","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"4230lsnqdsld","name":"Webhooks","status":"operational","created_at":"2019-11-13T18:00:24.256Z","updated_at":"2020-10-13T14:51:17.928Z","position":3,"description":"Real
+        time HTTP callbacks of user-generated and system events","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"0l2p9nhqnxpd","name":"Visit
+        www.githubstatus.com for more information","status":"operational","created_at":"2018-12-05T19:39:40.838Z","updated_at":"2020-04-02T21:56:21.954Z","position":4,"description":null,"showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"kr09ddfgbfsf","name":"Issues","status":"operational","created_at":"2017-01-31T20:01:46.638Z","updated_at":"2020-10-10T00:02:16.199Z","position":5,"description":"Requests
+        for Issues on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"hhtssxt0f5v2","name":"Pull
+        Requests","status":"operational","created_at":"2020-09-02T15:39:06.329Z","updated_at":"2020-10-10T00:02:49.033Z","position":6,"description":"Requests
+        for Pull Requests on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"br0l2tvcx85d","name":"GitHub
+        Actions","status":"operational","created_at":"2019-11-13T18:02:19.432Z","updated_at":"2020-10-13T20:23:36.040Z","position":7,"description":"Workflows,
+        Compute and Orchestration for GitHub Actions","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"st3j38cctv9l","name":"GitHub
+        Packages","status":"operational","created_at":"2019-11-13T18:02:40.064Z","updated_at":"2020-09-08T15:50:32.845Z","position":8,"description":"API
+        requests and webhook delivery for GitHub Packages","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"vg70hn9s2tyj","name":"GitHub
+        Pages","status":"operational","created_at":"2017-01-31T20:04:33.923Z","updated_at":"2020-10-10T00:02:38.220Z","position":9,"description":"Frontend
+        application and API servers for Pages builds","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false}]}'
+  recorded_at: 2020-10-15 11:59:23 GMT
+  recorded_with: vcr/0.5.4, webmockr/0.7.0
+```
+
+* all the times after that, vcr simply uses the mock files instead of actually calling the API.
+
+Let's tweak our other test, of `gh_organizations()`
+
+```r
+vcr::use_cassette("gh_organizations", {
+  test_that("gh_organizations works", {
+    testthat::expect_type(gh_organizations(), "character")
+  })
+})
+```
+
+The first time we run it, vcr creates a cassette where we notice these lines
+
+```yaml
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/organizations?since=1
+    body:
+      encoding: ''
+      string: ''
+    headers:
+      Accept: application/json, text/xml, application/xml, */*
+      Content-Type: ''
+      Authorization: token <<github_api_token>>
+```
+
+Our API token has been replaced with the string we indicated in `vcr::vcr_configure()`.
+
+## Summarize
+
+* We set up vcr using `use_vcr()` and tweaking the helper file to fool our own package that needs an API token.
+* We wrapped our `test_that()` blocks into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold the API interactions.
+
+Now, how do we make sure this works?
+
+* Turn off wifi, run the tests again. It works! Turn on wifi again.
+* Open .Renviron (`usethis::edit_r_environ()`), edit "GITHUB_PAT" into "byeGITHUB_PAT", re-start R, run the tests again. It works! Fix your "GITHUB_PAT" token in .Renviron.
+
+So we now have tests that no longer rely on an internet connection nor on having API credentials.
+
+**How do we get there with other packages? Let's try httptest in the next chapter!**
+
+## PS: Where to put use_cassette()
+
 Where do we put the `vcr::use_cassette()` call?
 Well as written in the manual page of that function, _There's a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:_
 What's correct?
 * Wrapping the whole `testthat::test_that()` call;
 
-````r
+```r
 vcr::use_cassette("thing, {
   testthat::test_that("thing", {
     lala <- get_foo()
     expect_true(lala)
   })
 })
-````
+```
 
 * Wrapping a few lines inside `testthat::test_that()` **excluding the expectactions `expect_blabla()`**
 
@@ -89,7 +214,8 @@ testthat::test_that("thing", {
   })
 })
 ````
-```
+
+We used the solution of wrapping whole `test_that` blocks because we already haf written tests; and because it will be one difference less with httptest in the next chapter.
 
 
 [^secrets]: However, if you change something related to handling secrets in your code or tests, please check again your new cassettes do not include secrets.

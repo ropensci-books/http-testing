@@ -1,1 +1,7 @@
 # Conclusion of the short demos
+
+Handling secrets
+
+Cassette names
+
+Built-in recording / focus on tweaking cassettes
