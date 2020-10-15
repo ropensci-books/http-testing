@@ -68,6 +68,8 @@ vcr::use_cassette("gh_api_status", {
 })
 ```
 
+We only had to wrap the `test_that()` block.
+
 If we run this test (in RStudio clicking on "Run test"), 
 
 * the first time, vcr creates a cassette (mock file) under `tests/testthat/gh_api_status.yml` where it stores the API response.

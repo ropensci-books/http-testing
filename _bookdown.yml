@@ -6,7 +6,7 @@ delete_merged_file: true
 rmd_files: ["index.Rmd", 
            "intro-general.Rmd", "intro-graceful.Rmd", "intro-pkgs.Rmd", 
            "wholegames-intro.Rmd", "wholegames-vcr.Rmd", "wholegames-httptest.Rmd",
-           "wholegames-conclu.Rmd",
+           "wholegames-mocking.Rmd",
            "03-mocking.Rmd", "04-webmockr-stubs.Rmd", "05-webmockr-testing.Rmd",    
            "06-webmockr-utilities.Rmd", "07-vcr.Rmd", "08-vcr-usage.Rmd", "09-configuration.Rmd",     
            "10-record-modes.Rmd", "11-request-matching.Rmd", "12-logging.Rmd", "13-security.Rmd",
