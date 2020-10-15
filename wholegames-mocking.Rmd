@@ -32,11 +32,11 @@ With httptest the mock filepaths are translated from requests according to sever
 
 With vcr, since everything from the HTTP interactions is recorded, you always need to add some sort of configuration to be sure to wipe your API tokens from the mock files.
 
-Handling secrets
+## Recording, playing back
 
-Cassette names
+## Testing for errors
 
-Built-in recording / focus on tweaking cassettes
+with httptest, use https://enpiar.com/r/httptest/reference/mockPaths.html?
 
 ## Conclusion
 
