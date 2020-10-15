@@ -1,1 +1,10 @@
 # Use httptest
+
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using httptest.
+For this, we start from the initial state of exemplighratia again. Back to square one!
+
+## Setup
+
+We need to install `{vcr}`.
+
+First, we need to run `vcr::use_vcr()` which has a few effects

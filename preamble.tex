@@ -1,4 +1,5 @@
 \usepackage{booktabs}
+\usepackage{mdframed}
 \usepackage{amsthm}
 \makeatletter
 \def\thm@space@setup{%
@@ -6,3 +7,6 @@
   \thm@postskip=\thm@preskip
 }
 \makeatother
+\newenvironment{alert}
+    {\begin{mdframed}[linecolor=roblue,linewidth=2pt]}
+    {\end{mdframed}}
