@@ -9,6 +9,10 @@ We have just followed very similar processes to add HTTP testing infrastructure 
 Now, there were a few differences. 
 We won't end up advocating for one package in particular since both have their merits, but we do hope to help you differentiate the two packages.
 
+## Setting up the infrastructure
+
+To set up the HTTP testing infrastructure, in one case you need to run `vcr::use_vcr()` and in another case you need to run `httptest::use_httptest()`. Not too hard to remember.
+
 ## Calling mock files
 
 As mentioned before, vcr and httptest both use mock files but they call them differently.
