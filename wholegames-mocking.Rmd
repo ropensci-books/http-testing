@@ -32,7 +32,17 @@ With httptest the mock filepaths are translated from requests according to sever
 
 With vcr, since everything from the HTTP interactions is recorded, you always need to add some sort of configuration to be sure to wipe your API tokens from the mock files.
 
+With httptest, only responses are saved, and most often, only their bodies. 
+Most often, responses don't contain secrets e.g. they don't contain your API token.
+If the response contains secrets, refer to httptest's article about ["Redacting sensitive information"](https://enpiar.com/r/httptest/articles/redacting.html).
+
 ## Recording, playing back
+
+When using mock files for testing, first you need to record responses in mock files; and then you want to use the mock files instead of real HTTP interactions (that's the whole point).
+
+With vcr, the recording vs playing back modes happen automatically depending on the existence of the cassette. If you write `vcr::use_cassette("blabla", )` and there's no cassette called blabla, vcr will create it. Note that if you change the HTTP interactions in the code block, you'll have to re-record the cassette which is as simple as deleting it then running the test. _Note that you can also change the way vcr behaves by looking into `?vcr::vcr_configure`'s "Cassette Options"._
+
+With httptest, there is a lot of flexibility around how to record mock files. It is because httptest doesn't assume that every API mock came from a real request to a real server; maybe you copy some of the mocks directly from the API docs.
 
 ## Testing for errors
 

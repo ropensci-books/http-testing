@@ -163,7 +163,7 @@ http_interactions:
       Authorization: token <<github_api_token>>
 ```
 
-Our API token has been replaced with the string we indicated in `vcr::vcr_configure()`.
+Our API token has been replaced with the string we indicated in `vcr::vcr_configure()`, `<<github_api_token>>`.
 
 ## Summarize
 
@@ -186,6 +186,7 @@ For the full list of changes applied to exemplighratia in this chapter, see [the
 Where do we put the `vcr::use_cassette()` call?
 Well as written in the manual page of that function, _There's a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:_
 What's correct?
+
 * Wrapping the whole `testthat::test_that()` call;
 
 ```r
