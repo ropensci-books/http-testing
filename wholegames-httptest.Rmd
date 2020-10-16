@@ -219,6 +219,7 @@ with_mock_api({
 
 After we run it the mock file `tests/testthat/api.github.com/organizations-5377e8.json` was created.
 It does not contain our API token despite our not making any configuration efforts, because by default httptest only saves the _body_ of the response.
+Also. most importantly, it only saves responses, whereas vcr saves all interactions including requests.
 
 Now in some cases secrets might be in the body of the response (in the case of the GitHub API, think of `gh::gh_whoami()`), in which case we would refer to httptest's article about ["Redacting sensitive information"](https://enpiar.com/r/httptest/articles/redacting.html), and add a line `set_redactor(~ gsub_response(., Sys.getenv('GITHUB_PAT'), "<<github_api_token>>"))` to `tests/testthat/helper.R` or to `inst/httptest/redact.R`.
 
