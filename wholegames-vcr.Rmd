@@ -4,14 +4,14 @@ In this chapter we aim at adding HTTP testing infrastructure to exemplighratia u
 
 ## Setup
 
-We need to install `{vcr}`.
+Before working on all this, we need to install `{vcr}`.
 
 First, we need to run `vcr::use_vcr()` which has a few effects
 
 * Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
 * Creating an example test file for us to look at. This is useful the first few times you use vcr, after a while you might even delete it without reading it.
 * Adding a `.gitattributes` file with the line `tests/fixtures/**/* -diff` which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. [^secrets]
-* Creating a helper file under tests/testthat,
+* Creating a setup file under tests/testthat/setup-pkgname,
 
 ```r
 library("vcr")
@@ -21,9 +21,9 @@ invisible(vcr::vcr_configure(
 vcr::check_cassette_names()
 ```
 
-When testthat runs tests, files whose name starts with "helper" are always run first. This one makes sure to load vcr, indicated where mocked responses are saved, and checks that you are not using the same name twice for cassettes (mock files).
+When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). This one makes sure to load vcr, indicated where mocked responses are saved, and checks that you are not using the same name twice for cassettes (mock files).
 
-We tweak vcr helper a bit
+We tweak vcr setup a bit
 
 * We do not want our API token to appear in the mock responses so we use the `filter_sensitive_data` argument of `vcr::vcr_configure()`.
 
@@ -167,7 +167,7 @@ Our API token has been replaced with the string we indicated in `vcr::vcr_config
 
 ## Summarize
 
-* We set up vcr using `use_vcr()` and tweaking the helper file to fool our own package that needs an API token.
+* We set up vcr using `use_vcr()` and tweaking the setup file to fool our own package that needs an API token.
 * We wrapped our `test_that()` blocks into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold the API interactions.
 
 Now, how do we make sure this works?
@@ -220,7 +220,6 @@ testthat::test_that("thing", {
 })
 ````
 
-We used the solution of wrapping whole `test_that` blocks because we already haf written tests; and because it will be one difference less with httptest in the next chapter.
-
+We used the solution of only wrapping the lines containing API calls in `vcr::use_cassette()` because that's what vcr maintainer prefers.
 
 [^secrets]: However, if you change something related to handling secrets in your code or tests, please check again your new cassettes do not include secrets.
