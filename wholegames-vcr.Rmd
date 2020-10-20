@@ -163,9 +163,16 @@ test_that("gh_organizations errors when the API doesn't behave", {
 The first test is similar to what we did for `gh_api_status()`.
 In the second test there is more to unpack.
 
-* We enable the use of `{webmockr}` at the beginning with `webmockr::enable()` and then disable it with `webmockr::disable()`.
+* We enable the use of `{webmockr}` at the beginning with `webmockr::enable()`.
 * We explicitly write that a request to `https://api.github.com/organizations?since=1` should return a status of 502.
-* We then test for the error message. 
+
+```r
+  stub <- webmockr::stub_request("get", "https://api.github.com/organizations?since=1")
+  webmockr::to_return(stub, status = 502)
+```
+
+* We then test for the error message with `expect_error(gh_organizations(), "oops")`. 
+* We disable webmockr with `webmockr::disable()`
 
 Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
 
