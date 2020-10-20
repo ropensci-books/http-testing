@@ -61,14 +61,16 @@ The key function will be `vcr::use_cassette("cassette-informative-and-unique-nam
 Let's tweak the test for `gh_api_status`, it now becomes
 
 ```r
-vcr::use_cassette("gh_api_status", {
-  test_that("gh_api_status() works", {
-    testthat::expect_type(gh_api_status(), "character")
+test_that("gh_api_status() works", {
+  vcr::use_cassette("gh_api_status", {
+    status <- gh_api_status()
   })
+  testthat::expect_type(status, "character")
 })
+
 ```
 
-We only had to wrap the `test_that()` block.
+We only had to wrap a call to the API in `vcr::use_cassette()`.
 
 If we run this test (in RStudio clicking on "Run test"), 
 
@@ -137,17 +139,37 @@ http_interactions:
 
 * all the times after that, vcr simply uses the mock files instead of actually calling the API.
 
-Let's tweak our other test, of `gh_organizations()`
+Let's tweak our other test, of `gh_organizations()`. 
+Here things get more exciting or complicating, as we also set out to adding a test of the error behavior.
 
 ```r
-vcr::use_cassette("gh_organizations", {
-  test_that("gh_organizations works", {
-    testthat::expect_type(gh_organizations(), "character")
+test_that("gh_organizations works", {
+  vcr::use_cassette("gh_organizations", {
+    orgs <- gh_organizations()
   })
+  testthat::expect_type(orgs, "character")
 })
+
+test_that("gh_organizations errors when the API doesn't behave", {
+  webmockr::enable()
+  stub <- webmockr::stub_request("get", "https://api.github.com/organizations?since=1")
+  webmockr::to_return(stub, status = 502)
+  expect_error(gh_organizations(), "oops")
+  webmockr::disable()
+})
+
 ```
 
-The first time we run it, vcr creates a cassette where we notice these lines
+The first test is similar to what we did for `gh_api_status()`.
+In the second test there is more to unpack.
+
+* We enable the use of `{webmockr}` at the beginning with `webmockr::enable()` and then disable it with `webmockr::disable()`.
+* We explicitly write that a request to `https://api.github.com/organizations?since=1` should return a status of 502.
+* We then test for the error message. 
+
+Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
+
+Regarding our secret API token, the first time we run the test file, vcr creates a cassette where we notice these lines
 
 ```yaml
 http_interactions:
@@ -168,7 +190,8 @@ Our API token has been replaced with the string we indicated in `vcr::vcr_config
 ## Summarize
 
 * We set up vcr using `use_vcr()` and tweaking the setup file to fool our own package that needs an API token.
-* We wrapped our `test_that()` blocks into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold the API interactions.
+* We wrapped our part of the code in `test_that()` blocks into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold the API interactions.
+* We used webmockr to create an environment where only fake requests are allowed. We defined that the request that `gh_organizations()` makes should get a 502 status. We were therefore able to test for the error message `gh_organizations()` returns in such cases.
 
 Now, how do we make sure this works?
 
