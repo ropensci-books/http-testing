@@ -5,18 +5,19 @@ For this, we start from the initial state of exemplighratia again. Back to squar
 
 ## Setup
 
-We need to install `{httptest}`.
+Before working on all this, we need to install `{httptest}`.
 
 First, we need to run `httptest::use_httptest()` which has a few effects:
 
 * Adding httptest as a dependency to `DESCRIPTION`, under Suggests just like testthat.
-* Creating a helper file under tests/testthat,
+* Creating a setup file under `tests/testthat/setup`,
 
 ```r
 library(httptest)
 ```
 
-When testthat runs tests, files whose name starts with "helper" are always run first. This one makes sure to load httptest.
+When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
+This one makes sure to load httptest.
 
 We shall tweak it a bit to be able 
 
