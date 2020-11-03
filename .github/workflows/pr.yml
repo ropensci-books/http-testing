@@ -38,7 +38,7 @@ jobs:
           restore-keys: bookdown-
 
       - name: Install packages
-        run: Rscript -e 'install.packages("remotes", repos = c(CRAN = "https://cran.r-pkg.org/"))'  -e 'remotes::install_deps(repos = c(CRAN = "https://cran.r-pkg.org/"))'
+        run: Rscript -e 'install.packages("remotes", repos = c(CRAN = "https://cran.r-pkg.org/"))'  -e 'remotes::install_deps(dependencies = TRUE, repos = c(CRAN = "https://cran.r-pkg.org/"))'
 
       - name: Build site
         run: |

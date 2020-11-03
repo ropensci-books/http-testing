@@ -33,7 +33,7 @@ jobs:
           restore-keys: bookdown-
 
       - name: Install packages
-        run: Rscript -e 'install.packages("remotes")'  -e 'remotes::install_deps()'
+        run: Rscript -e 'install.packages("remotes")'  -e 'remotes::install_deps(dependencies = TRUE)'
         
       - name: Build site
         run: |
