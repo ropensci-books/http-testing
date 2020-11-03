@@ -1,4 +1,5 @@
 output_dir: "docs"
+repo: https://github.com/ropensci-books/http-testing
 language:
   ui:
     chapter_name: "Chapter "

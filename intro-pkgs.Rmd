@@ -58,13 +58,12 @@ httptest works with httr.
 
 The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
 
-```{block, type='alert'}
+::: {.alert} 
 With both vcr and httptest the tests will use some sort of fake of API responses.
 
 In vcr they are called both **fixtures** and **cassettes**.
 In httptest they are called **mock files**.
-```
-
+:::
 
 ## presser
 
