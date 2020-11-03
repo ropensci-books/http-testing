@@ -22,7 +22,8 @@ Imports:
 Suggests:
    bookdown,
    bootstraplib,
-   downlit
+   downlit,
+   bootstraplib
 Remotes:
    r-lib/downlit,
    rstudio/bookdown,
