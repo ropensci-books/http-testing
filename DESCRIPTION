@@ -21,7 +21,7 @@ Imports:
     presser
 Suggests:
    bookdown,
-   bootstraplib,
+   bslib,
    downlit
 Remotes:
    r-lib/downlit,
