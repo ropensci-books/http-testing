@@ -21,7 +21,7 @@ library(httptest)
 ```
 
 When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
-This one makes sure to load httptest.
+The setup file added by httptest loads httptest.
 
 We shall tweak it a bit to be able 
 
