@@ -23,30 +23,26 @@ library(httptest)
 When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
 The setup file added by httptest loads httptest.
 
-We shall tweak it a bit to be able 
-
-* to automatically create mock files when the environment variable `RECORDING` is set to TRUE. This is one of many ways to record or not. We could even never record, and create mock files by hand instead (potentially copy-pasting from a real response, or the API docs)
-* to fool our package into believing there is an API token around in contexts where there is not. Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need `gh_organizations()` to not stop because `Sys.getenv("GITHUB_PAT")` returns nothing.
+We shall tweak it a bit to fool our package into believing there is an API token around in contexts where there is not. Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need `gh_organizations()` to not stop because `Sys.getenv("GITHUB_PAT")` returns nothing.
 
 ```r
-
-Sys.setenv(RECORDING = TRUE)
-
-if (Sys.getenv("RECORDING")) {
-  with_mock_api <- httptest::capture_requests
-} else {
-  Sys.setenv("GITHUB_PAT" = "foobar")
-}
-
 library(httptest)
+
+# for contexts where the package needs to be fooled
+# (CRAN, forks)
+# this is ok because the package will used recorded responses
+# so no need for a real secret
+if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
+  Sys.setenv(GITHUB_PAT = "foobar")
+}
 ```
+
+So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-We will use two ways to add tests
-
-* With a function that automatically records API responses in a mock file if said mock file doesn't already exist (which will remind you of `vcr::use_cassette()`);
-* By creating mock files manually.
+The key function will be `httptest::with_mocked_dir("dir", {<code-block>})` which tells vcr to create mock files under `tests/testthat/dir` to store all API responses for API calls occurring in the code block. 
+We are allowed to tweak the mock files by hand, and we will do that in some cases.
 
 Let's tweak the test file for `gh_status_api`, it becomes
 
