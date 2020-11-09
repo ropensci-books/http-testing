@@ -93,7 +93,7 @@ simplify = FALSE)
 The first test is similar to what we did for `gh_api_status()` except we didn't touch the mock file this time, out of laziness.
 In the second test there is more to unpack: how do we get a mock file corresponding to an error?
 
-* We first run the test as is. Note the `simplify = FALSE` that means the mock file also contains headers for the response.
+* We first run the test as is. It fails because there is no error, which we expected. Note the `simplify = FALSE` that means the mock file also contains headers for the response.
 * We replaced `200L` with `502L` and removed the body, to end up with a very simple mock file under ` tests/testthat/gh_organizations_error/api.github.com/organizations-5377e8.R`
 
 ```r
