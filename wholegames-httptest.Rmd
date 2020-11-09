@@ -3,6 +3,10 @@
 In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using httptest.
 For this, we start from the initial state of exemplighratia again. Back to square one!
 
+::: {.alert .alert-dismissible .alert-info} 
+[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/3/files)
+:::
+
 ## Setup
 
 Before working on all this, we need to install `{httptest}`.
@@ -124,8 +128,7 @@ Again, one could imagine other strategies, but in all cases it is important to k
 ## Summary
 
 * We set up httptest usage in our package exemplighratia by running `use_httptest()` and tweaking the setup file to fool our own package that needs an API token.
-* Inside `test_that()` blocks, we wrapped parts of the code into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold all information about the API interactions.
-* In one of the tests, we used webmockr to create an environment where only fake requests are allowed. We defined that the request that `gh_organizations()` makes should get a 502 status. We were therefore able to test for the error message `gh_organizations()` returns in such cases.
+* We wrapped `test_that()` into `httptest::with_mock_dir()` and ran the tests a first time to generate mock files that hold all information about the API responses. In some cases we modified these mock files to make them smaller or to make them correspond to an API error.
 
 Now, how do we make sure this works?
 
@@ -136,7 +139,7 @@ So we now have tests that no longer rely on an internet connection nor on having
 
 We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
 
-For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/2/files).
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/3/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
 How do we get there with other packages? Let's try httptest in the next chapter!
