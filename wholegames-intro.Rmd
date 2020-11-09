@@ -25,12 +25,15 @@ So we have two functions, one that works without authentication, one that works 
 How did we create the package?
 You are obviously free to use your own favorite workflow tools!
 
-* We followed `{usethis}` setup article.
-* `usethis::create_package("path/to/folder/exemplighratia")`
-* `usethis::use_mit_license()`
-* `usethis::use_package("httr")`
-* `usethis::use_package("purrr")`
-* To add the first function, `use_r("api-status.R")`
+* We followed [usethis setup article](https://usethis.r-lib.org/articles/articles/usethis-setup.html).
+
+Then we ran
+
+* `usethis::create_package("path/to/folder/exemplighratia")` to create and open the package project;
+* `usethis::use_mit_license()` to add an MIT license;
+* `usethis::use_package("httr")` to add a dependency on httr;
+* `usethis::use_package("purrr")` to add a dependency on purrr;
+* `use_r("api-status.R")` to add the first function whose code is written below;
 
 ```r
 status_url <- function() {
@@ -70,7 +73,7 @@ gh_api_status <- function() {
 }
 ```
 
-* To add a simple test, `use_test("api-status")` (and using testthat dev version so setting `Config/testthat/edition: 3` in `DESCRIPTION`).
+* `use_test("api-status")` (and using testthat dev version so setting `Config/testthat/edition: 3` in `DESCRIPTION`) to add a simple test whose code is below.
 
 ```r
 test_that("gh_api_status() works", {
@@ -78,7 +81,7 @@ test_that("gh_api_status() works", {
 })
 ```
 
-* To add a second function, `use_r("organizations.R")`. Note that an ideal version of this function would have some sort of callback in the retry, to call the `gh_api_status()` function (which seems easier to implement with [crul's retry method](https://blog.r-hub.io/2020/04/07/retry-wheel/#retry-in-crul)).
+* `use_r("organizations.R")` to add a second function. Note that an ideal version of this function would have some sort of callback in the retry, to call the `gh_api_status()` function (which seems easier to implement with [crul's retry method](https://blog.r-hub.io/2020/04/07/retry-wheel/#retry-in-crul)).
 
 ```r
 gh_v3_url <- function() {
@@ -129,7 +132,7 @@ gh_organizations <- function(since = 1) {
 
 ```
 
-* To add a simple test, `use_test("organizations")`.
+* `use_test("organizations")` to add a simple test.
 
 ```r
 test_that("gh_organizations works", {
