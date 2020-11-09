@@ -138,5 +138,5 @@ We also added a continuous integration workflow for having a build using real in
 For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/3/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
-How do we get there with other packages? Let's try httptest in the next chapter!
+How do we get there with yet another package? We'll try presser but first let's compare vcr and httptest as they both use mocking.
 :::
