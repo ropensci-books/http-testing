@@ -26,4 +26,4 @@ Suggests:
 Remotes:
    r-lib/downlit,
    rstudio/bookdown,
-   rstudio/bootstraplib@ba6b004cf2417c7c0c001a50e6b14e43926a95b4
+   rstudio/bslib
