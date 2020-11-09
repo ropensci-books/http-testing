@@ -226,7 +226,7 @@ One could imagine other strategies:
 * Always having one continuous integration build with vcr turned off but skipping it in contexts where there isn't any token (pull requests from forks for instance?);
 * Only running tests with vcr turned off locally once in a while.
 
-## Summarize
+## Summary
 
 * We set up vcr usage in our package exemplighratia by running `use_vcr()` and tweaking the setup file to fool our own package that needs an API token.
 * Inside `test_that()` blocks, we wrapped parts of the code into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold all information about the API interactions.
