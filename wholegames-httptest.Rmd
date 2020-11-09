@@ -1,4 +1,4 @@
-# Use httptest
+# Use httptest {#httptest}
 
 In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using httptest.
 For this, we start from the initial state of exemplighratia again. Back to square one!

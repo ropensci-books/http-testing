@@ -1,0 +1,12 @@
+# Use presser {#presser}
+
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using presser.
+
+## Setup
+
+Before working on all this, we need to install `{presser}`.
+
+
+## Actual testing
+
+## Summarize

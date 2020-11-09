@@ -1,4 +1,4 @@
-# vcr and httptest
+# vcr and httptest {#mocking-pkgs-comparison}
 
 We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia
 

@@ -28,7 +28,7 @@ What are the challenges of HTTP testing?
 * You "stub" a request. That is, you set rules for what HTTP request you'd like to respond to with a fake. E.g. a rule might be a method, or an URL.
 * You also can set rules for what fake you'd like to respond with, if anything (if nothing, then we give you `NULL`).
 * Then you make HTTP requests, and those that match your stub i.e. set of rules will return what you requested be returned.
-* While webmockr is in use, real HTTP interactions are not allowed.
+* While webmockr is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You'll get error messages for HTTP requests not covered by any stub.
 * There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.
 
 webmockr works with both the crul package and the httr package.
@@ -42,35 +42,52 @@ webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
 The short version is: vcr maintained by Scott Chamberlain helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
 It uses the power of webmockr, with a higher level interface.
 
-vcr works with both the crul package and the httr package.
-
 When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
 All subsequent runs of the test use that local file instead of really calling the API.
 Therefore tests work independently of an internet connection.
 
 vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 
-## httptest
+vcr works for packages using httr or curl.
 
-`{httptest}` maintained by Neal Richardson is fairly similar to `{vcr}` in that it uses mocked API responses.
+::: {.alert .alert-dismissible .alert-info} 
+[Direct link to vcr demo](#vcr)
+:::
+
+## What is httptest?
+
+`{httptest}` maintained by Neal Richardson, like `{vcr}`, uses mocked API responses.
 It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
-httptest works with httr.
+
+Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions.
+
+httptest works for packages using httr.
+
+::: {.alert .alert-dismissible .alert-info} 
+[Direct link to httptest demo](#httptest)
+:::
 
 The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
 
-::: {.alert} 
+::: {.alert .alert-dismissible .alert-primary} 
 With both vcr and httptest the tests will use some sort of fake of API responses.
 
 In vcr they are called both **fixtures** and **cassettes**.
 In httptest they are called **mock files**.
 :::
 
-## presser
+## What is presser?
 
 `{presser}` maintained by Gábor Csárdi provides an alternative (complementary?) tool for HTTP testing.
-It will not let you store cached versions of responses, instead it will help you set up a fake web service.
-Therefore, with `{presser}` there is faking but what's faked is the web service itself.
-If you can't wait to learn the advantages of this approach other mocking, check out [presser's own take](https://r-lib.github.io/presser/articles/introduction.html#presser-vs-mocking-1) on this, but otherwise, let's wait until we implement presser for a minimal package.
+It will let you faking a whole web service, potentially outputting responses from mock files you'll have created.
+It does not help with recording fake responses.
+Because it runs a fake web service, you can even interact with said web service in your browser or with curl in the command line.
+
+presser works with packages using any HTTP package i.e. it works with curl, crul, httr.
+
+::: {.alert .alert-dismissible .alert-info} 
+[Direct link to presser demo](#presser)
+:::
 
 ## testthat 
 
@@ -83,7 +100,7 @@ Now, if you use an alternative like tinytest,
 
 * vcr might work;
 
-* presser might work.
+* presser can work.
 
 ## Conclusion
 

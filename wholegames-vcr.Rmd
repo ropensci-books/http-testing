@@ -1,4 +1,4 @@
-# Use vcr
+# Use vcr {#vcr}
 
 In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr.
 
