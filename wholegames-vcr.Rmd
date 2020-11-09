@@ -213,10 +213,11 @@ See `?vcr::lightswitch`.
 
 In the case of exemplighratia, we added a GitHub Actions workflow that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
+Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a `GITHUB_PAT` secret environment variable.
 
 One could imagine other strategies:
 
-* Always having one continuous integration build with vcr turned off;
+* Always having one continuous integration build with vcr turned off but skip it in contexts where there isn't any token (pull requests from forks for instance?);
 * Only running tests with vcr turned off locally once in a while.
 
 
@@ -233,7 +234,7 @@ Now, how do we make sure this works?
 
 So we now have tests that no longer rely on an internet connection nor on having API credentials.
 
-We also added a continuous integration workflow for having a build using real interactions once every week.
+We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
 
 For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/2/files).
 
