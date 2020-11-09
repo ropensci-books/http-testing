@@ -38,16 +38,6 @@ jobs:
       - name: Build site
         run: |
           bookdown::render_book(".")
-          htmls <- file.path(
-            getwd(), 
-            dir("docs", full.names = TRUE)
-          )
-          htmls <- htmls[grepl("\\.html$", htmls)]
-          purrr::walk2(
-            htmls, htmls,
-            downlit::downlit_html_path,
-            classes = downlit::classes_chroma()
-            )
         shell: Rscript {0}
         
       - name: Render book PDF
