@@ -10,12 +10,12 @@ In this chapter we aim at adding HTTP testing infrastructure to exemplighratia u
 
 Before working on all this, we need to install `{vcr}`.
 
-First, we need to run `vcr::use_vcr()` which has a few effects
+First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which has a few effects
 
 * Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
 * Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.
 * Adding a `.gitattributes` file with the line `tests/fixtures/**/* -diff` which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. [^secrets]
-* Creating a setup file under `tests/testthat/setup-pkgname`,
+* Creating a setup file under `tests/testthat/setup-exemplighratia`,
 
 ```r
 library("vcr")
@@ -25,15 +25,21 @@ invisible(vcr::vcr_configure(
 vcr::check_cassette_names()
 ```
 
-When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). This one makes sure to load vcr, indicated where mocked responses are saved, and checks that you are not using the same name twice for cassettes (mock files).
+When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). The setup file created by vcr
 
-We tweak vcr setup a bit
+* loads vcr, 
+* indicates where mocked responses are saved (`"../fixtures"` which translates, from the root of the package, to `tests/testthat/fixtures`), 
+* and checks that you are not using the same name twice for cassettes (mock files).
+
+We had to tweak vcr setup a bit for our needs.
 
 * We do not want our API token to appear in the mock responses so we use the `filter_sensitive_data` argument of `vcr::vcr_configure()`.
 
 * We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
 With mock responses around, we obviously don't really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
+
+Below is the updated setup file saved under `tests/testthat/setup-exemplighratia`.
 
 ```r
 library("vcr")
@@ -59,7 +65,7 @@ So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-The key function will be `vcr::use_cassette("cassette-informative-and-unique-name", {<our-code>})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
+The key function will be `vcr::use_cassette("cassette-informative-and-unique-name", {<code-block>})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
 
 
 Let's tweak the test for `gh_api_status`, it now becomes
@@ -74,12 +80,12 @@ test_that("gh_api_status() works", {
 
 ```
 
-We only had to wrap a call to the API in `vcr::use_cassette()`.
+We only had to wrap the code involving interactions with the API, `status <- gh_api_status()`, in `vcr::use_cassette()`.
 
 If we run this test (in RStudio clicking on "Run test"), 
 
-* the first time, vcr creates a cassette (mock file) under `tests/testthat/gh_api_status.yml` where it stores the API response.
-It contains all the things, header included.
+* the first time, vcr creates a cassette (mock file) under `tests/testthat/fixtures/gh_api_status.yml` where it stores the API response.
+It contains all the information related to requests and responses, headers included.
 
 ```yaml
 http_interactions:
@@ -144,10 +150,10 @@ http_interactions:
 * all the times after that, vcr simply uses the mock files instead of actually calling the API.
 
 Let's tweak our other test, of `gh_organizations()`. 
-Here things get more exciting or complicating, as we also set out to adding a test of the error behavior.
+Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. `httr::stop_for_status(response)` became `httr::stop_for_status(response, task = "get data from the API, oops")`. 
 
-The test file is:
+The test file ` tests/testthat/test-organizations.R` is now:
 
 ```r
 test_that("gh_organizations works", {
@@ -208,24 +214,23 @@ Hopefully we'd notice that thanks to following API news.
 However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.
 
-The vcr package provides various methods to turn vcr use on and off to allow real requests.
+The vcr package provides various methods to turn vcr use on and off to allow real requests i.e. ignoring mock files.
 See `?vcr::lightswitch`.
 
-In the case of exemplighratia, we added a GitHub Actions workflow that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
+In the case of exemplighratia, we added a [GitHub Actions workflow](https://github.com/maelle/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml) that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
-Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a `GITHUB_PAT` secret environment variable.
+Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a `GITHUB_PAT` secret environment variable. Furthermore, it is slower.
 
 One could imagine other strategies:
 
-* Always having one continuous integration build with vcr turned off but skip it in contexts where there isn't any token (pull requests from forks for instance?);
+* Always having one continuous integration build with vcr turned off but skipping it in contexts where there isn't any token (pull requests from forks for instance?);
 * Only running tests with vcr turned off locally once in a while.
-
 
 ## Summarize
 
-* We set up vcr using `use_vcr()` and tweaking the setup file to fool our own package that needs an API token.
-* We wrapped our part of the code in `test_that()` blocks into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold the API interactions.
-* We used webmockr to create an environment where only fake requests are allowed. We defined that the request that `gh_organizations()` makes should get a 502 status. We were therefore able to test for the error message `gh_organizations()` returns in such cases.
+* We set up vcr usage in our package exemplighratia by running `use_vcr()` and tweaking the setup file to fool our own package that needs an API token.
+* Inside `test_that()` blocks, we wrapped parts of the code into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold all information about the API interactions.
+* In one of the tests, we used webmockr to create an environment where only fake requests are allowed. We defined that the request that `gh_organizations()` makes should get a 502 status. We were therefore able to test for the error message `gh_organizations()` returns in such cases.
 
 Now, how do we make sure this works?
 
@@ -238,18 +243,20 @@ We also added a continuous integration workflow for having a build using real in
 
 For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/2/files).
 
-**How do we get there with other packages? Let's try httptest in the next chapter!**
+::: {.alert .alert-dismissible .alert-primary} 
+How do we get there with other packages? Let's try httptest in the next chapter!
+:::
 
 ## PS: Where to put use_cassette()
 
 Where do we put the `vcr::use_cassette()` call?
-Well as written in the manual page of that function, _There's a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:_
+Well, as written in the manual page of that function, _There's a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:_
 What's correct?
 
 * Wrapping the whole `testthat::test_that()` call;
 
 ```r
-vcr::use_cassette("thing, {
+vcr::use_cassette("thing", {
   testthat::test_that("thing", {
     lala <- get_foo()
     expect_true(lala)
@@ -261,7 +268,7 @@ vcr::use_cassette("thing, {
 
 ````r
 testthat::test_that("thing", {
-  vcr::use_cassette("thing, {
+  vcr::use_cassette("thing", {
     lala <- get_foo()
   })
     expect_true(lala)
