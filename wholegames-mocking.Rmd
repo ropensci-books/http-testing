@@ -4,7 +4,7 @@ We have just followed very similar processes to add HTTP testing infrastructure 
 
 * Adding a package as a Suggests dependency;
 * Creating a helper file that in particular loads this package before each test;
-* Wrapping our tests into functions that allows to record API responses in mock files and to play them back from said mock files.
+* Tweaking tests, in some cases wrapping our tests into functions that allows to record API responses in mock files and to play them back from said mock files; in other cases (only with httptest), creating mock files ourselves.
 
 Now, there were a few differences. 
 We won't end up advocating for one package in particular since both have their merits, but we do hope to help you differentiate the two packages.
@@ -43,6 +43,23 @@ When using mock files for testing, first you need to record responses in mock fi
 With vcr, the recording vs playing back modes happen automatically depending on the existence of the cassette. If you write `vcr::use_cassette("blabla", )` and there's no cassette called blabla, vcr will create it. Note that if you change the HTTP interactions in the code block, you'll have to re-record the cassette which is as simple as deleting it then running the test. _Note that you can also change the way vcr behaves by looking into `?vcr::vcr_configure`'s "Cassette Options"._
 
 With httptest, there is a lot of flexibility around how to record mock files. It is because httptest doesn't assume that every API mock came from a real request to a real server; maybe you copy some of the mocks directly from the API docs.
+
+::: {.alert .alert-dismissible .alert-info} 
+httptest flexiblity comes from [original design principles of httptest](https://github.com/nealrichardson/httptest/issues/40#issuecomment-708672654)
+
+> _"[httptest] doesn't assume that every API mock came from a real request to a real server, and it is designed so that you are able to see and modify test fixtures.
+Among the considerations:_
+>
+> _1. In many cases, API responses contain way more content than is necessary to test your R code around them: 100 records when 2 will suffice, request metadata that you don't care about and can't meaningfully assert things about, and so on. In the interest of minimally reproducible examples, and of making tests readable, it often makes sense to take an actual API response and delete a lot of its content, or even to fabricate one entirely._
+>
+> _2. And then it's good to keep that API mock fixed so you know exactly what is in it. If I re-recorded a Twitter API response of, say, the most recent 10 tweets with #rstats, the specific content will change every time I record it, so my tests can't say much about what is in the response without having to rewrite them every time too._
+>
+> _3. Some conditions (rate limiting, server errors, e.g.) are difficult to test with real responses, but if you can hand-create a API mock with, say, a 503 response status code and test how your code handles it, you can have confidence of how your package will respond when that rare event happens with the real API._
+>
+> _4. Re-recording all responses can make for a huge code diff, which can blow up your repository size and make code review harder."_
+:::
+
+Now, creating mock files by hand (or inventing some custom scripts to create them) involves more elbow grease, so it's a compromise.
 
 ## Testing for errors
 
