@@ -27,6 +27,7 @@ The help of `?use_cassette` explains some criteria for naming them, such as the 
 Now if you wrap your whole `test_that()` block in them you might just as well use a name similar to the test name, and you already make those meaningful, right?
 
 With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body. 
+If you use `with_mock_dir()` you need a name for the directory under which the mock files are saved, and you can make it meaningful.
 
 ## Handling secrets
 
