@@ -5,6 +5,7 @@ bookdown::bs4_book:
     h4-font-size: "1.1rem"
   includes:
     before_body: WIP.html
+  css: style.css
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
