@@ -9,8 +9,8 @@ The next section will then present single topics such as "how to deal with authe
 
 ## Our example package
 
-Our minimal package, [`examplighratia`](https://github.com/maelle/exemplighratia), accesses the GitHub status API and one endpoint of GitHub V3 REST API.
-It is named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH and an a instead of an e that is a typo.
+Our minimal package, [`exemplighratia`](https://github.com/maelle/exemplighratia), accesses the GitHub status API and one endpoint of GitHub V3 REST API.
+It is named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
 If you really need to interact with GitHub V3 API, we recommend the `{gh}` package.
 We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).
 
@@ -143,4 +143,4 @@ test_that("gh_organizations works", {
 
 All good, now our package has 100% test coverage and passes R CMD Check (granted, our tests could be more thorough, but remember this is a minimal example). 
 But what if we try working without a connection?
-In the following chapters, we'll add more robust testing infrastructure to this minimal package.
+In the following chapters, we'll add more robust testing infrastructure to this minimal package, and we will do that _three_ times to compare packages/approaches: once with [vcr](#vcr), once with [httptest](#httptest), and once with [presser](#presser).

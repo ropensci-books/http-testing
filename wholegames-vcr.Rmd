@@ -3,14 +3,14 @@
 In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr.
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/2/files)
+[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/2/files). Feel free to fork the repository to experiment yourself!
 :::
 
 ## Setup
 
 Before working on all this, we need to install `{vcr}`.
 
-First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which has a few effects
+First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which has a few effects:
 
 * Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
 * Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.
