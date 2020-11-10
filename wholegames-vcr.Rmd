@@ -65,7 +65,7 @@ So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-The key function will be `vcr::use_cassette("cassette-informative-and-unique-name", {<code-block>})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
+The most important function will be `vcr::use_cassette("cassette-informative-and-unique-name", {code-block})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
 
 
 Let's tweak the test for `gh_api_status`, it now becomes
