@@ -147,7 +147,7 @@ http_interactions:
   recorded_with: vcr/0.5.4, webmockr/0.7.0
 ```
 
-* all the times after that, vcr simply uses the mock files instead of actually calling the API.
+* all the times after that, unless we delete the mock file, vcr simply uses the mock files instead of actually calling the API.
 
 Let's tweak our other test, of `gh_organizations()`. 
 Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
@@ -279,7 +279,7 @@ What's incorrect?
 
 ````r
 testthat::test_that("thing", {
-  vcr::use_cassette("thing, {
+  vcr::use_cassette("thing", {
     lala <- get_foo()
     expect_true(lala)
   })
