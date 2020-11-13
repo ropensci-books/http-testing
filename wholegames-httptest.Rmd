@@ -4,7 +4,7 @@ In this chapter we aim at adding HTTP testing infrastructure to exemplighratia u
 For this, we start from the initial state of exemplighratia again. Back to square one!
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/3/files) Feel free to fork the repository to experiment yourself!
+[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/9/files) Feel free to fork the repository to experiment yourself!
 :::
 
 ## Setup
@@ -135,7 +135,7 @@ So we now have tests that no longer rely on an internet connection nor on having
 
 We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
 
-For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/3/files).
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/9/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
 How do we get there with yet another package? We'll try presser but first let's compare vcr and httptest as they both use mocking.
