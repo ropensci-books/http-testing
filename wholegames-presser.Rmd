@@ -79,8 +79,8 @@ test_that("gh_api_status() works", {
           auto_unbox = TRUE
         )
       })
-    web <-  presser::local_app_process(app)
-    web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = web$url()))
+    web <-  presser::local_app_process(app, start = TRUE)
+    web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = "{url}"))
   }
 
   testthat::expect_type(gh_api_status(), "character")
@@ -90,7 +90,7 @@ test_that("gh_api_status() works", {
 So what's happening here?
 
 * When we're not asking for requests to the real service to  be made (`Sys.getenv("REAL_REQUESTS")`), we prepare a new app via `presser::new_app()`. It's a very simple one, that returns, for GET requests, a list corresponding to what we're used to getting out of the status API, except that a) it's much smaller and b) the "operational" status is hard-coded.
-* When then create a local app process via `presser::local_app_process()`. It will be started automatically when we call the `$url()` method to know where it's served at; and most importantly it will be stopped automatically after the test. No mess made!
+* When then create a local app process via `presser::local_app_process(, start = TRUE)`. It will start right away thanks to `start=TRUE` but we could have chosen to start it later via calling e.g. `web$url()` (see `?presser::local_app_process`); and most importantly it will be stopped automatically after the test. No mess made!
 * We set the `EXEMPLIGHRATIA_GITHUB_STATUS_URL` variable to the URL of the local app process. This is what connects our code to our fake web service.
 
 It might seem like a lot of overhead code but
@@ -108,8 +108,8 @@ test_that("gh_api_status() errors when the API does not behave", {
   app$get("/", function(req, res) {
     res$send_status(502L)
   })
-  web <-  presser::local_app_process(app)
-  web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = web$url()))
+  web <-  presser::local_app_process(app, start = TRUE)
+  web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = "{url}"))
   testthat::expect_error(gh_api_status(), "ouch")
 })
 ```
@@ -138,8 +138,8 @@ test_that("gh_organizations works", {
         auto_unbox = TRUE
         )
     })
-    web <-  presser::local_app_process(app)
-    web$local_env(list(EXEMPLIGHRATIA_GITHUB_API_URL = web$url()))
+    web <-  presser::local_app_process(app, start = TRUE)
+    web$local_env(list(EXEMPLIGHRATIA_GITHUB_API_URL = "{url}"))
   }
 
   testthat::expect_type(gh_organizations(), "character")
