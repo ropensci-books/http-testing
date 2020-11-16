@@ -121,6 +121,74 @@ It's a similar process to the earlier test:
 * connecting our code to it via setting the `EXEMPLIGHRATIA_GITHUB_STATUS_URL` environment variable to the URL of the fake service;
 * test.
 
+Last but not least let's convert our test of `gh_organizations()`,
 
+```r
+test_that("gh_organizations works", {
 
-## Summarize
+  if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
+    app <- presser::new_app()
+    app$get("/organizations", function(req, res) {
+      res$send_json(
+        jsonlite::read_json(
+          testthat::test_path(
+            file.path("responses", "organizations.json")
+          )
+        ),
+        auto_unbox = TRUE
+        )
+    })
+    web <-  presser::local_app_process(app)
+    web$local_env(list(EXEMPLIGHRATIA_GITHUB_API_URL = web$url()))
+  }
+
+  testthat::expect_type(gh_organizations(), "character")
+})
+```
+
+As before we 
+
+* create a new app;
+* have it returned something we chose for a GET request of the `/organizations` endpoint. In this case, we have it return the content of a JSON file we created at `tests/testthat/responses/organizations.json` by copy-pasting a real response from the API;
+* launch a local app process;
+* set its URL as the `EXEMPLIGHRATIA_GITHUB_API_URL` environment variable;
+* test.
+
+## Also testing for real interactions
+
+What if the API responses change?
+Hopefully we'd notice that thanks to following API news.
+However, sometimes web APIs change without any notice.
+Therefore it is important to run tests against the real web service once in a while.
+
+In our tests we have used the condition
+
+```r
+if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
+```
+
+before launching the app and using its URL as URL for the service.
+So if our tests are generic enough, we can add a CI build where the environment variable `REAL_REQUESTS` is set to true.
+If they are not generic enough, we can use the approach exemplified in the chapter about httptest
+
+* set up a folder real-tests with tests interacting with the real web service;
+* add it to Rbuildignore;
+* in a CI build, delete tests/testthat and replace it with real-tests, before running R CMD check.
+
+## Summary
+
+* We set up presser usage in our package exemplighratia by adding a dependency on presser and by adding a setup file to fool our own package that needs an API token.
+* We created and launched fake apps in our test files.
+
+Now, how do we make sure this works?
+
+* Turn off wifi, run the tests again. It works! Turn on wifi again.
+* Open .Renviron (`usethis::edit_r_environ()`), edit "GITHUB_PAT" into "byeGITHUB_PAT", re-start R, run the tests again. It works! Fix your "GITHUB_PAT" token in .Renviron.
+
+So we now have tests that no longer rely on an internet connection nor on having API credentials.
+
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/4/files).
+
+::: {.alert .alert-dismissible .alert-primary} 
+In the next chapter, we shall compare the three approaches to HTTP testing we've demo-ed.
+:::
