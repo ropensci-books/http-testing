@@ -28,7 +28,7 @@ vcr::check_cassette_names()
 When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). The setup file created by vcr
 
 * loads vcr, 
-* indicates where mocked responses are saved (`"../fixtures"` which translates, from the root of the package, to `tests/testthat/fixtures`), 
+* indicates where mocked responses are saved (`"../fixtures"` which translates, from the root of the package, to `tests/fixtures`), 
 * and checks that you are not using the same name twice for cassettes (mock files).
 
 We had to tweak vcr setup a bit for our needs.

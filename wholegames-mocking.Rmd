@@ -82,7 +82,17 @@ With vcr, you either
 
 * use webmockr as we showed in our demo. On the one hand it's more compact than creating a fake mock file, on the other hand it's a way to test that's different from the vcr cassette.
 
-* or you edit a cassette by hand which would be similar to testing for API errors with httptest.
+```r
+test_that("gh_organizations errors when the API doesn't behave", {
+  webmockr::enable()
+  stub <- webmockr::stub_request("get", "https://api.github.com/organizations?since=1")
+  webmockr::to_return(stub, status = 502)
+  expect_error(gh_organizations(), "oops")
+  webmockr::disable()
+})
+```
+
+* or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you'd need to skip the test when [vcr is off](https://docs.ropensci.org/vcr/reference/lightswitch.html), as when vcr is off real requests are made.
 
 ## Conclusion
 
