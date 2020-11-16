@@ -9,7 +9,7 @@ Before working on all this, we need to install `{presser}`.
 Then, we need to add presser as a Suggests dependency of our package.
 At the time of writing we are using a handy function available only in presser above version 1.1.0.9000, which means installing presser from GitHub and not CRAN, so we have to run `remotes::install_github("r-lib/presser")` and then `usethis::use_dev_package("presser", type = "Suggests")`.
 
-Last but not least, we create a setup file at `tests/testthat/setup.R`.+
+Last but not least, we create a setup file at `tests/testthat/setup.R`.
 When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
 The setup file added by httptest loads httptest.
 We need to ensure that we set up a fake API key when there is no API token around.
