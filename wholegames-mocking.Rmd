@@ -99,4 +99,4 @@ test_that("gh_organizations errors when the API doesn't behave", {
 Both vcr and httptest are similar packages in that they use mock files for allowing easier HTTP testing.
 They are a bit different in their design philosophy and features, which might help you choose one of them.
 
-And now, to make things even more complex, or fun, we shall explore a third HTTP testing package that does not involve mock files of API responses.
+And now, to make things even more complex, or fun, we shall explore a third HTTP testing package that does not _mock_ requests but instead spins up a local fake web service.
