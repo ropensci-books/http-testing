@@ -1,2 +1,71 @@
 # vcr, httptest, presser {#pkgs-comparison}
-`
+
+We're now at a nice stage where we have made a demo of usage for each of the HTTP testing packages, in our exemplighratia package.
+Of course, the choice of strategy in the demo is a bit subjective, but we hope it showed the best of each tool.
+
+::: {.alert .alert-dismissible .alert-primary} 
+A first message that's important to us: if you're learning about HTTP testing and using it in a branch of your own package sounds daunting, create a minimal package for playing!
+:::
+
+## What HTTP client can you use (curl, httr, crul)
+
+* httptest only works with httr (the most popular HTTP R client);
+* vcr (& webmockr) works with both httr and crul (the two "high-level" HTTP R clients);
+* presser works with any R HTTP client, even base R if you wish.
+
+## Sustainability of the packages
+
+All 3 packages are actively maintained.
+During the writing of this book, issues and pull requests were tackled rather quickly, and always in a very nice way.
+
+## Test writing experience
+
+In all cases having HTTP tests, i.e. tests that work independently from any internet connection, depends on
+
+* setup, which is mainly adding a dependency on the HTTP testing packages in DESCRIPTION, and a setup or helper file;
+* providing responses from the API.
+
+The difference between packages, the _test writign experience_ depends on how you can provide responses from the API, both real ones and fake ones.
+
+With vcr and httptest for tests testing normal behavior, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`).
+Recording happens automatically during the first run of tests.
+You might also provide fake recorded response or dumb down the existing ones.
+For creating API errors, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or tweaking fixtures.[^seq-httptest]
+
+[^seq-httptest]: Sequence of requests are not [supported smoothly yet by httptest](https://github.com/nealrichardson/httptest/issues/49).
+
+With presser you need to create an app. 
+There could be one per test, per test file or for the whole test suite.
+It might seem like more overhead code but being able to share an app between different tests reduces this effort.
+The one thing that's not supported in presser yet is a smooth workflow for recording responses, so at the time of writing you might need to write your own workflow for recording responses.
+
+### The special case of secrets
+
+With presser as no authentication is needed at any point, you have less chance of exposing a secret.
+
+With httptest only the body of responses is saved, so unless it contains secrets, no further effort is needed. If you _need_ to redact mock files, see [the corresponding vignette](https://enpiar.com/r/httptest/articles/redacting.html).
+
+With vcr as all HTTP interactions, including request URLs and headers, are saved to disk, you will most often have to use the `filter_sensitive_data` argument of `vcr::vcr_configure()`.
+
+### How about making real requests
+
+In all three cases, switching back to real requests might be an environment variable away (turning vcr off, setting the URL of the real web service as URL to be connected to instead of a presser fake web service).
+However, your tests using fixed/fake responses / a fake web service might not work with real requests as you can't trigger an API error, and as you can't get the data from two months ago via a "latest data" endpoint.
+Therefore, and it's a challenge common to all three packages, you might need to choose to have _distinct_ tests as integration tests.
+
+## Test debugging experience
+
+
+## Debugging
+
+## Conclusion
+
+In this chapter we compared the three R packages that make HTTP testing easier.
+If you are still unsure which one to pick, first try packages out without commitment, in branches or so, but then choose one and [commit to your lock-in](http://veekaybee.github.io/2019/02/10/lockin/).
+
+> "Every piece of code written in a given language or framework is a step away from any other language, and five more minutes you’ll have to spend migrating it to something else. That’s fine. You just have to decide what you’re willing to be locked into."
+> (...)
+> "Code these days becomes obsolete so quickly, regardless of what’s chosen. By the time your needs change, by the time the latest framework is obsolete, all of the code will be rotten anyway"
+> (...)
+> The most dangerous feature about these articles examining cloud lock-in is that they introduce a kind of paralysis into teams that result in applications never being completely fleshed out or finished.
+> Vicky Boykis, "Commit to your lock-in".
