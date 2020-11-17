@@ -25,6 +25,6 @@ Suggests:
    downlit
 Remotes:
    r-lib/downlit,
-   rstudio/bookdown@be72ac4,
+   rstudio/bookdown,
    rstudio/bslib,
    rstudio/htmltools
