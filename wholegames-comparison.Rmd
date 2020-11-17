@@ -78,9 +78,14 @@ With httptest, the process is similar as with vcr except the key functions are
 In this chapter we compared the three R packages that make HTTP testing easier.
 If you are still unsure which one to pick, first try packages out without commitment, in branches or so, but then choose one and [commit to your lock-in](http://veekaybee.github.io/2019/02/10/lockin/).
 
-> "Every piece of code written in a given language or framework is a step away from any other language, and five more minutes you’ll have to spend migrating it to something else. That’s fine. You just have to decide what you’re willing to be locked into."
+> "Every piece of code written in a given language or framework is a step away from any other language, and five more minutes you’ll have to spend migrating it to something else. That’s fine. You just have to decide what you’re willing to be locked into.
+>
 > (...)
-> "Code these days becomes obsolete so quickly, regardless of what’s chosen. By the time your needs change, by the time the latest framework is obsolete, all of the code will be rotten anyway"
+>
+> Code these days becomes obsolete so quickly, regardless of what’s chosen. By the time your needs change, by the time the latest framework is obsolete, all of the code will be rotten anyway
+>
 > (...)
-> The most dangerous feature about these articles examining cloud lock-in is that they introduce a kind of paralysis into teams that result in applications never being completely fleshed out or finished.
+>
+> The most dangerous feature about these articles examining cloud lock-in is that they introduce a kind of paralysis into teams that result in applications never being completely fleshed out or finished."
+>
 > Vicky Boykis, "Commit to your lock-in".
