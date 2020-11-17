@@ -25,7 +25,7 @@ In all cases having HTTP tests, i.e. tests that work independently from any inte
 * setup, which is mainly adding a dependency on the HTTP testing packages in DESCRIPTION, and a setup or helper file;
 * providing responses from the API.
 
-The difference between packages, the _test writign experience_ depends on how you can provide responses from the API, both real ones and fake ones.
+The difference between packages, the _test writing experience_ depends on how you can provide responses from the API, both real ones and fake ones.
 
 With vcr and httptest for tests testing normal behavior, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`).
 Recording happens automatically during the first run of tests.
