@@ -55,8 +55,23 @@ Therefore, and it's a challenge common to all three packages, you might need to 
 
 ## Test debugging experience
 
+Sadly sometimes one needs to run code from the tests in an interactive session, either to debug tests after making a code change, or to learn how to write HTTP tests.
 
-## Debugging
+With presser, debugging works this way: load the helper or test file where 
+
+* the app is created,
+* the environment variable connecting your package code to the fake web service is changed.
+
+Then run your code.
+
+With vcr, you'll have to load the helper file or source the setup file after making sure the paths use in it work both from `tests/testthat/` and the package root (see `?vcr::vcr_test_path`), and then use `vcr::inject_cassette()`; don't forget to run `vcr::eject_cassette()` afterwards.
+With webmockr debugging is quite natural, run the code that's in the test, in particular `webmockr::enable()`. 
+
+With httptest, the process is similar as with vcr except the key functions are
+
+* [`use_mock_api()`](https://enpiar.com/r/httptest/reference/use_mock_api.html)
+* [mockPaths](https://enpiar.com/r/httptest/reference/mockPaths.html).
+
 
 ## Conclusion
 
