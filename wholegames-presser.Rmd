@@ -115,6 +115,7 @@ test_that("gh_api_status() errors when the API does not behave", {
 ```
 
 It's a similar process to the earlier test:
+
 * setting up a new app;
 * having it return something we chose, in this case a 502 status;
 * launching a local app process;
