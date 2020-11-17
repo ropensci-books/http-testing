@@ -9,7 +9,8 @@ jobs:
     steps:
       - name: Is this a fork
         run: |
-          fork=$(jq --raw-output .pull_request.head.repo.fork "${GITHUB_EVENT_PATH}");echo "::set-env name=fork::$fork"
+          fork=$(jq --raw-output .pull_request.head.repo.fork "${GITHUB_EVENT_PATH}");echo echo "fork=${fork}" >> $GITHUB_ENV
+
             
       - name: Checkout repo
         uses: actions/checkout@master
