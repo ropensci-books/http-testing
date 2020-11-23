@@ -30,6 +30,8 @@ Now if you wrap your whole `test_that()` block in them you might just as well us
 With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body. 
 If you use `with_mock_dir()` you need a name for the directory under which the mock files are saved, and you can make it meaningful.
 
+Also note that with vcr one file contains several HTTP interactions (requests and responses) whereas with httptest one file contains one response only (and the filename helps matching it to a request).
+
 ## Matching requests
 
 With httptest as the mock file name includes everything that's potentially varying about a request, each mock file corresponds to one request only.
@@ -75,7 +77,7 @@ Now, creating mock files by hand (or inventing some custom scripts to create the
 
 In your test suite you probably want to check how things go if the server returns 502 or so, and you cannot trigger such a response to record it.
 
-With httptest, to test for API errors, you need to create a fake mock files or several ones.
+With httptest, to test for API errors, you need to create one or several fake mock file(s).
 The easiest way to do that might be to use `httptest::with_mock_dir()` that will create mock files with the expected filenames and locations, that you can then tweak.
 Or reading the error message of `httptest::with_mock_ap()` helps you know where to create a mock file.
 
