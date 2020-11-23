@@ -19,6 +19,7 @@ As mentioned before, vcr and httptest both use mock files but they call them dif
 
 In vcr they are called both **fixtures** and **cassettes**.
 In httptest they are called **mock files**.
+Note that fixtures is not as specific as cassettes and mock files: cassettes and mock files are fixtures, but anything (a csv file of input for instance) you use to consistently test your package is a fixture.
 
 ## Naming mock files
 
