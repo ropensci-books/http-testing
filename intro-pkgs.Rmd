@@ -59,7 +59,7 @@ vcr works for packages using httr or curl.
 `{httptest}` maintained by Neal Richardson, like `{vcr}`, uses mocked API responses.
 It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
 
-Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions.
+Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions (although you can choose to edit vcr mock files after recording).
 
 httptest works for packages using httr.
 
