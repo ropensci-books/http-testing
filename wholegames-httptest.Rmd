@@ -110,7 +110,7 @@ Without the HTTP testing infrastructure, testing for behavior of the package in 
 
 Regarding our secret API token, since httptest doesn't save the requests, and since the responses don't contain the token, it is safe without our making any effort.
 
-## Also testing for real interactions
+## Also testing for real interactions {#httptest-real}
 
 What if the API responses change?
 Hopefully we'd notice that thanks to following API news.

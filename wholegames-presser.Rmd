@@ -169,7 +169,7 @@ if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
 
 before launching the app and using its URL as URL for the service.
 So if our tests are generic enough, we can add a CI build where the environment variable `REAL_REQUESTS` is set to true.
-If they are not generic enough, we can use the approach exemplified in the chapter about httptest
+If they are not generic enough, we can use the[ approach exemplified in the chapter about httptest](#httptest-real).
 
 * set up a folder real-tests with tests interacting with the real web service;
 * add it to Rbuildignore;
