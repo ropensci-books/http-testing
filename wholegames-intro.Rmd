@@ -11,7 +11,7 @@ The next section will then present single topics such as "how to deal with authe
 
 Our minimal package, [`exemplighratia`](https://github.com/maelle/exemplighratia), accesses the GitHub status API and one endpoint of GitHub V3 REST API.
 It is named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
-If you really need to interact with GitHub V3 API, we recommend the `{gh}` package.
+If you really need to interact with GitHub V3 API, we recommend the [gh package](https://gh.r-lib.org/).
 We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).
 
 GitHub V3 API works without authentication too, but at a lower rate.
