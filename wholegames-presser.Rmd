@@ -11,7 +11,6 @@ At the time of writing we are using a handy function available only in presser a
 
 Last but not least, we create a setup file at `tests/testthat/setup.R`.
 When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
-The setup file added by httptest loads httptest.
 We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
 When using our own fake web service, we obviously don't really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
