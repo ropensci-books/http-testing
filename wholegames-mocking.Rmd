@@ -95,7 +95,7 @@ test_that("gh_organizations errors when the API doesn't behave", {
 })
 ```
 
-* or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you'd need to skip the test when [vcr is off](https://docs.ropensci.org/vcr/reference/lightswitch.html), as when vcr is off real requests are made.
+* or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you'd need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use `vcr::skip_if_vcr_off()`.
 
 ## Conclusion
 
