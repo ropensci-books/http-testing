@@ -50,8 +50,8 @@ With vcr as all HTTP interactions, including request URLs and headers, are saved
 ### How about making real requests
 
 In all three cases, switching back to real requests might be an environment variable away (turning vcr off, setting the URL of the real web service as URL to be connected to instead of a presser fake web service).
-However, your tests using fixed/fake responses / a fake web service might not work with real requests as you can't trigger an API error, and as you can't get the data from two months ago via a "latest data" endpoint.
-Therefore, and it's a challenge common to all three packages, you might need to choose to have _distinct_ tests as integration tests.
+However, your tests using fixed/fake responses / a fake web service might not work with real requests as you can't trigger an API error, and as you might test for specific values in your tests using mock files whereas the API returns something different every day.
+Therefore, and it's a challenge common to all three packages, you might need to choose to have _distinct_ tests as integration tests/[contract tests](https://www.martinfowler.com/bliki/ContractTest.html).
 
 ## Test debugging experience
 
