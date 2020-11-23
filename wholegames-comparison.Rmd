@@ -30,7 +30,7 @@ The difference between packages, the _test writing experience_ depends on how yo
 With vcr and httptest for tests testing normal behavior, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`).
 Recording happens automatically during the first run of tests.
 You might also provide fake recorded response or dumb down the existing ones.
-For creating API errors, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or tweaking fixtures.[^seq-httptest]
+For creating API errors, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or amending mock files.[^seq-httptest]
 
 [^seq-httptest]: Sequence of requests are not [supported smoothly yet by httptest](https://github.com/nealrichardson/httptest/issues/49).
 
