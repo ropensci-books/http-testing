@@ -21,7 +21,7 @@ if(!nzchar(Sys.getenv("REAL_REQUESTS"))) {
 }
 ```
 
-It could also load presser, but in our demo we will namespace presser functions instead.
+The setup file could also load presser, but in our demo we will namespace presser functions instead.
 
 ## Actual testing
 
