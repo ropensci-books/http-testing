@@ -1,4 +1,4 @@
-# vcr, httptest, webfakes {#pkgs-comparison}
+# vcr (& webmockr), httptest, webfakes {#pkgs-comparison}
 
 We're now at a nice stage where we have made a demo of usage for each of the HTTP testing packages, in our exemplighratia package.
 Of course, the choice of strategy in the demo is a bit subjective, but we hope it showed the best of each tool.
@@ -15,7 +15,7 @@ A first message that's important to us: if you're learning about HTTP testing an
 
 ## Sustainability of the packages
 
-All 3 packages are actively maintained.
+All packages (vcr, webmockr, httptest, webfakes) are actively maintained.
 During the writing of this book, issues and pull requests were tackled rather quickly, and always in a very nice way.
 
 ## Test writing experience
