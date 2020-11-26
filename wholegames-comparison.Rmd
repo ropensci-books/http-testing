@@ -27,17 +27,20 @@ In all cases having HTTP tests, i.e. tests that work independently from any inte
 
 The difference between packages, the _test writing experience_ depends on how you can provide responses from the API, both real ones and fake ones.
 
-With vcr and httptest for tests testing normal behavior, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`).
+With vcr and httptest for tests testing _normal behavior_, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`).
 Recording happens automatically during the first run of tests.
 You might also provide fake recorded response or dumb down the existing ones.
-For creating API errors, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or amending mock files.[^seq-httptest]
+For creating _API errors_, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or amending mock files, see [vcr](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) and httptest related docs.[^seq-httptest]
 
 [^seq-httptest]: Sequence of requests are not [supported smoothly yet by httptest](https://github.com/nealrichardson/httptest/issues/49).
 
 With webfakes you need to create an app. 
 There could be one per test, per test file or for the whole test suite.
 It might seem like more overhead code but being able to share an app between different tests reduces this effort.
+You can test for an [API sequence of responses (e.g. 502 then 200)](https://r-lib.github.io/webfakes/dev/articles/how-to.html#how-do-i-test-a-sequence-of-requests-) by following an how-to.
 The one thing that's not supported in webfakes yet is a smooth workflow for recording responses, so at the time of writing you might need to write your own workflow for recording responses.
+
+**In general setup&test writing might be easier for packages with mocking (vcr and httptest) but you might be able to replicate more complex behavior with webfakes (such as an OAuth dance).**
 
 ### The special case of secrets
 
@@ -62,16 +65,15 @@ With webfakes, debugging works this way: load the helper or test file where
 * the app is created,
 * the environment variable connecting your package code to the fake web service is changed.
 
-Then run your code.
+Then run your code. To debug _webfakes apps_, follow the [guidance](https://r-lib.github.io/webfakes/dev/articles/how-to.html#how-can-i-debug-an-app-).
 
-With vcr, you'll have to load the helper file or source the setup file after making sure the paths use in it work both from `tests/testthat/` and the package root (see `?vcr::vcr_test_path`), and then use `vcr::inject_cassette()`; don't forget to run `vcr::eject_cassette()` afterwards.
-With webmockr debugging is quite natural, run the code that's in the test, in particular `webmockr::enable()`. 
+With vcr, refer to the [debugging](https://docs.ropensci.org/vcr/articles/debugging.html): you'll have to load the helper file or source the setup file after making sure the paths use in it work both from `tests/testthat/` and the package root (see `?vcr::vcr_test_path`), and then use `vcr::inject_cassette()`; don't forget to run `vcr::eject_cassette()` afterwards.
+With webmockr debugging is quite natural, run the code that's in the test, in particular `webmockr::enable()` and `webmockr::disable()`. 
 
 With httptest, the process is similar as with vcr except the key functions are
 
 * [`use_mock_api()`](https://enpiar.com/r/httptest/reference/use_mock_api.html)
-* [mockPaths](https://enpiar.com/r/httptest/reference/mockPaths.html).
-
+* [.mockPaths](https://enpiar.com/r/httptest/reference/mockPaths.html).
 
 ## Conclusion
 

@@ -34,6 +34,7 @@ What are the challenges of HTTP testing?
 webmockr works with both the crul package and the httr package.
 
 webmockr is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
+You might even never use it directly but if you use vcr it's one of its foundations.
 
 webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
 
@@ -51,7 +52,7 @@ vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 vcr works for packages using httr or curl.
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to vcr demo](#vcr)
+[Direct link to vcr (& webmockr) demo](#vcr)
 :::
 
 ## What is httptest?
@@ -59,7 +60,7 @@ vcr works for packages using httr or curl.
 `{httptest}` maintained by Neal Richardson, like `{vcr}`, uses mocked API responses.
 It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
 
-Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions (although you can choose to edit vcr mock files after recording).
+Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions (although you can choose to [edit vcr mock files](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) after recording).
 
 httptest works for packages using httr.
 

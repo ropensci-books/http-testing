@@ -1,6 +1,6 @@
-# Use vcr {#vcr}
+# Use vcr (& webmockr) {#vcr}
 
-In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr.
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (& webmockr).
 
 ::: {.alert .alert-dismissible .alert-info} 
 [Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/2/files). Feel free to fork the repository to experiment yourself!
@@ -186,6 +186,15 @@ In the second test there is more to unpack.
 
 * We then test for the error message with `expect_error(gh_organizations(), "oops")`. 
 * We disable webmockr with `webmockr::disable()`.
+
+::: {.alert .alert-dismissible .alert-primary}
+Instead of using webmockr for creating a fake API eror, we could have
+
+* recorded a normal cassette;
+* edited it to replace the status code.
+
+Read pros and cons of this approach in the vcr vignette [_Why and how edit your vcr cassettes?_](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html), especially if you don't find the webmockr approach enjoyable.
+:::
 
 Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
 

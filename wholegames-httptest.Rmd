@@ -45,7 +45,7 @@ So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-The key function will be `httptest::with_mock_dir("dir", {<code-block>})` which tells vcr to create mock files under `tests/testthat/dir` to store all API responses for API calls occurring in the code block. 
+The key function will be `httptest::with_mock_dir("dir", {code-block})` which tells vcr to create mock files under `tests/testthat/dir` to store all API responses for API calls occurring in the code block. 
 We are allowed to tweak the mock files by hand, and we will do that in some cases.
 
 Let's tweak the test file for `gh_status_api`, it becomes
