@@ -1,5 +1,5 @@
 --- 
-title: "HTTP mocking in R"
+title: "HTTP testing in R"
 date: "`r paste0('built on ', Sys.Date())`"
 author: "Scott Chamberlain, Maëlle Salmon"
 site: bookdown::bookdown_site
