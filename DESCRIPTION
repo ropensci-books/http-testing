@@ -18,7 +18,7 @@ Imports:
     xml2,
     attachment,
     httptest,
-    presser
+    webfakes
 Suggests:
    bookdown,
    bslib,
@@ -27,4 +27,5 @@ Remotes:
    r-lib/downlit,
    rstudio/bookdown,
    rstudio/bslib,
-   rstudio/htmltools
+   rstudio/htmltools,
+   r-lib/webfakes

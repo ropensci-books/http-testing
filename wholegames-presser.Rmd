@@ -1,13 +1,13 @@
-# Use presser {#presser}
+# Use webfakes {#webfakes}
 
-In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using presser.
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.
 
 ## Setup
 
-Before working on all this, we need to install `{presser}`.
+Before working on all this, we need to install `{webfakes}`.
 
-Then, we need to add presser as a Suggests dependency of our package.
-At the time of writing we are using a handy function available only in presser above version 1.1.0.9000, which means installing presser from GitHub and not CRAN, so we have to run `remotes::install_github("r-lib/presser")` and then `usethis::use_dev_package("presser", type = "Suggests")`.
+Then, we need to add webfakes as a Suggests dependency of our package.
+At the time of writing we are using a handy function available only in webfakes above version 1.1.0.9000, which means installing webfakes from GitHub and not CRAN, so we have to run `remotes::install_github("r-lib/webfakes")` and then `usethis::use_dev_package("webfakes", type = "Suggests")`.
 
 Last but not least, we create a setup file at `tests/testthat/setup.R`.
 When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
@@ -21,11 +21,11 @@ if(!nzchar(Sys.getenv("REAL_REQUESTS"))) {
 }
 ```
 
-The setup file could also load presser, but in our demo we will namespace presser functions instead.
+The setup file could also load webfakes, but in our demo we will namespace webfakes functions instead.
 
 ## Actual testing
 
-With presser we will be spinning local fake web services that we will want our package to interact with instead of the real APIs.
+With webfakes we will be spinning local fake web services that we will want our package to interact with instead of the real APIs.
 Therefore, we first need to amend the code of functions returning URLs to services to be able to change them via an environment variable.
 They become:
 
@@ -64,7 +64,7 @@ Then, let's tweak our test of `gh_api_status()`.
 ```r
 test_that("gh_api_status() works", {
   if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
-   app <- presser::new_app()
+   app <- webfakes::new_app()
       app$get("/", function(req, res) {
         res$send_json(
           list( components =
@@ -78,7 +78,7 @@ test_that("gh_api_status() works", {
           auto_unbox = TRUE
         )
       })
-    web <-  presser::local_app_process(app, start = TRUE)
+    web <-  webfakes::local_app_process(app, start = TRUE)
     web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = "{url}"))
   }
 
@@ -88,8 +88,8 @@ test_that("gh_api_status() works", {
 
 So what's happening here?
 
-* When we're not asking for requests to the real service to  be made (`Sys.getenv("REAL_REQUESTS")`), we prepare a new app via `presser::new_app()`. It's a very simple one, that returns, for GET requests, a list corresponding to what we're used to getting out of the status API, except that a) it's much smaller and b) the "operational" status is hard-coded.
-* When then create a local app process via `presser::local_app_process(, start = TRUE)`. It will start right away thanks to `start=TRUE` but we could have chosen to start it later via calling e.g. `web$url()` (see `?presser::local_app_process`); and most importantly it will be stopped automatically after the test. No mess made!
+* When we're not asking for requests to the real service to  be made (`Sys.getenv("REAL_REQUESTS")`), we prepare a new app via `webfakes::new_app()`. It's a very simple one, that returns, for GET requests, a list corresponding to what we're used to getting out of the status API, except that a) it's much smaller and b) the "operational" status is hard-coded.
+* When then create a local app process via `webfakes::local_app_process(, start = TRUE)`. It will start right away thanks to `start=TRUE` but we could have chosen to start it later via calling e.g. `web$url()` (see `?webfakes::local_app_process`); and most importantly it will be stopped automatically after the test. No mess made!
 * We set the `EXEMPLIGHRATIA_GITHUB_STATUS_URL` variable to the URL of the local app process. This is what connects our code to our fake web service.
 
 It might seem like a lot of overhead code but
@@ -103,11 +103,11 @@ This inspired us to change error behavior a bit with a slightly more specific er
 
 ```r
 test_that("gh_api_status() errors when the API does not behave", {
-  app <- presser::new_app()
+  app <- webfakes::new_app()
   app$get("/", function(req, res) {
     res$send_status(502L)
   })
-  web <-  presser::local_app_process(app, start = TRUE)
+  web <-  webfakes::local_app_process(app, start = TRUE)
   web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = "{url}"))
   testthat::expect_error(gh_api_status(), "ouch")
 })
@@ -127,7 +127,7 @@ Last but not least let's convert our test of `gh_organizations()`,
 test_that("gh_organizations works", {
 
   if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
-    app <- presser::new_app()
+    app <- webfakes::new_app()
     app$get("/organizations", function(req, res) {
       res$send_json(
         jsonlite::read_json(
@@ -138,7 +138,7 @@ test_that("gh_organizations works", {
         auto_unbox = TRUE
         )
     })
-    web <-  presser::local_app_process(app, start = TRUE)
+    web <-  webfakes::local_app_process(app, start = TRUE)
     web$local_env(list(EXEMPLIGHRATIA_GITHUB_API_URL = "{url}"))
   }
 
@@ -177,7 +177,7 @@ If they are not generic enough, we can use the[ approach exemplified in the chap
 
 ## Summary
 
-* We set up presser usage in our package exemplighratia by adding a dependency on presser and by adding a setup file to fool our own package that needs an API token.
+* We set up webfakes usage in our package exemplighratia by adding a dependency on webfakes and by adding a setup file to fool our own package that needs an API token.
 * We created and launched fake apps in our test files.
 
 Now, how do we make sure this works?

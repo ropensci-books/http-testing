@@ -23,7 +23,7 @@ sessioninfo::package_info(
   knitr::kable()
 ```
 
-None of crul, webmockr, vcr, httptest, presser have compiled code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems. presser has compiled code.
+None of crul, webmockr, vcr, httptest have compiled code, but an underlying dependency of all of them, `curl` does. See [curl's README](https://github.com/jeroen/curl/#installation) for installation instructions in case you run into curl related problems. webfakes has compiled code.
 
 ## Full session info
 

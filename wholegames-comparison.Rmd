@@ -1,4 +1,4 @@
-# vcr, httptest, presser {#pkgs-comparison}
+# vcr, httptest, webfakes {#pkgs-comparison}
 
 We're now at a nice stage where we have made a demo of usage for each of the HTTP testing packages, in our exemplighratia package.
 Of course, the choice of strategy in the demo is a bit subjective, but we hope it showed the best of each tool.
@@ -11,7 +11,7 @@ A first message that's important to us: if you're learning about HTTP testing an
 
 * httptest only works with httr (the most popular HTTP R client);
 * vcr (& webmockr) works with both httr and crul (the two "high-level" HTTP R clients);
-* presser works with any R HTTP client, even base R if you wish.
+* webfakes works with any R HTTP client, even base R if you wish.
 
 ## Sustainability of the packages
 
@@ -34,14 +34,14 @@ For creating API errors, and API sequence of responses (e.g. 502 then 200), you 
 
 [^seq-httptest]: Sequence of requests are not [supported smoothly yet by httptest](https://github.com/nealrichardson/httptest/issues/49).
 
-With presser you need to create an app. 
+With webfakes you need to create an app. 
 There could be one per test, per test file or for the whole test suite.
 It might seem like more overhead code but being able to share an app between different tests reduces this effort.
-The one thing that's not supported in presser yet is a smooth workflow for recording responses, so at the time of writing you might need to write your own workflow for recording responses.
+The one thing that's not supported in webfakes yet is a smooth workflow for recording responses, so at the time of writing you might need to write your own workflow for recording responses.
 
 ### The special case of secrets
 
-With presser as no authentication is needed at any point, you have less chance of exposing a secret.
+With webfakes as no authentication is needed at any point, you have less chance of exposing a secret.
 
 With httptest only the body of responses is saved, so unless it contains secrets, no further effort is needed. If you _need_ to redact mock files, see [the corresponding vignette](https://enpiar.com/r/httptest/articles/redacting.html).
 
@@ -49,7 +49,7 @@ With vcr as all HTTP interactions, including request URLs and headers, are saved
 
 ### How about making real requests
 
-In all three cases, switching back to real requests might be an environment variable away (turning vcr off, setting the URL of the real web service as URL to be connected to instead of a presser fake web service).
+In all three cases, switching back to real requests might be an environment variable away (turning vcr off, setting the URL of the real web service as URL to be connected to instead of a webfakes fake web service).
 However, your tests using fixed/fake responses / a fake web service might not work with real requests as you can't trigger an API error, and as you might test for specific values in your tests using mock files whereas the API returns something different every day.
 Therefore, and it's a challenge common to all three packages, you might need to choose to have _distinct_ tests as integration tests/[contract tests](https://www.martinfowler.com/bliki/ContractTest.html).
 
@@ -57,7 +57,7 @@ Therefore, and it's a challenge common to all three packages, you might need to 
 
 Sadly sometimes one needs to run code from the tests in an interactive session, either to debug tests after making a code change, or to learn how to write HTTP tests.
 
-With presser, debugging works this way: load the helper or test file where 
+With webfakes, debugging works this way: load the helper or test file where 
 
 * the app is created,
 * the environment variable connecting your package code to the fake web service is changed.

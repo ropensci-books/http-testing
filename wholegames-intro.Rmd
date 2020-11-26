@@ -3,7 +3,7 @@
 # Introduction
 
 Similar to the [Whole Game chapter in the R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/whole-game.html), we shall go through how to add HTTP tests to a minimal package.
-However, we will do it _three_ times to present alternative approaches: with [vcr](#vcr), [httptest](#httptest), [presser](#presser).
+However, we will do it _three_ times to present alternative approaches: with [vcr](#vcr), [httptest](#httptest), [webfakes](#webfakes).
 After that exercise, we shall compare approaches: we will compare both packages that involve mocking i.e. [vcr vs. httptest](#mocking-pkgs-comparison); and all three HTTP packages in a [last chapter](#pkgs-comparison).
 The next section will then present single topics such as "how to deal with authentication" in further details.
 
@@ -143,4 +143,4 @@ test_that("gh_organizations works", {
 
 All good, now our package has 100% test coverage and passes R CMD Check (granted, our tests could be more thorough, but remember this is a minimal example). 
 But what if we try working without a connection?
-In the following chapters, we'll add more robust testing infrastructure to this minimal package, and we will do that _three_ times to compare packages/approaches: once with [vcr](#vcr), once with [httptest](#httptest), and once with [presser](#presser).
+In the following chapters, we'll add more robust testing infrastructure to this minimal package, and we will do that _three_ times to compare packages/approaches: once with [vcr](#vcr), once with [httptest](#httptest), and once with [webfakes](#webfakes).

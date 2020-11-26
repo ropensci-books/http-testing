@@ -21,7 +21,7 @@ Having tests fail due to resources being down or slow, during development or on 
 Although some packages accessing remote resources are well tested, there is a lack of resources around best practices.
 
 This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development.
-Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}` and `{presser}` are.
+Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}` and `{webfakes}` are.
 
 _Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (`{crul}`, `{webmockr}`, `{vcr}`) but its scope has been extended to generalize the explanation of concepts to similar packages._
 
