@@ -176,7 +176,7 @@ test_that("gh_organizations errors when the API doesn't behave", {
 The first test is similar to what we did for `gh_api_status()`.
 In the second test there is more to unpack.
 
-* We enable the use of `{webmockr}` at the beginning with `webmockr::enable()`. Why webmockr? Because it's the package powering request stubbing in vcr so vcr and webmockr go well together.
+* We enable the use of `{webmockr}` at the beginning with `webmockr::enable()`. Why webmockr? Because it can help mock a failure scenario.
 * We explicitly write that a request to `https://api.github.com/organizations?since=1` should return a status of 502.
 
 ```r
@@ -295,6 +295,6 @@ testthat::test_that("thing", {
 })
 ````
 
-We used the solution of only wrapping the lines containing API calls in `vcr::use_cassette()` because that's what vcr maintainer prefers.
+We used the solution of only wrapping the lines containing API calls in `vcr::use_cassette()`, but it is up to you to choose what you prefer.
 
 [^secrets]: However, if you change something related to handling secrets in your code or tests, please check again your new cassettes do not include secrets.
