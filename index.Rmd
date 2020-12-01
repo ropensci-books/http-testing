@@ -8,7 +8,8 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: ropensci-books/http-testing
-description: "http testing book"
+description: "Best practice and tips for testing packages interfacing web resources."
+url: 'https\://books.ropensci.org/http-testing/'
 ---
 
 # Preamble

@@ -1,4 +1,4 @@
-#  (PART) introduction {-}
+#  (PART) Introduction {-}
 
 # HTTP in R 101
 
