@@ -24,7 +24,7 @@ Hopefully you are interacting with a well documented web resource that will expl
 The HTTP response is what the remote server provides, and what your package parses.
 A response has a status code indicating whether the request succeeded, response headers, and (optionally) a response body.
 
-Hopefully the documentation of the web API you are working with shows good examples of responses.
+Hopefully the documentation of the web API or web resource you are working with shows good examples of responses.
 In any case you'll find yourself experimenting with different requests to see what the response "looks like".
 
 ### More resources about HTTP

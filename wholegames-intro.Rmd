@@ -14,6 +14,10 @@ It is named after the Latin phrase _exempli gratia_ that means "for instance", w
 If you really need to interact with GitHub V3 API, we recommend the [gh package](https://gh.r-lib.org/).
 We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).
 
+::: {.alert .alert-dismissible .alert-info} 
+Our example package calls web _APIs_ but the tools and concepts are applicable to packages wrapping any web resource, even poorly documented ones.
+:::
+
 GitHub V3 API works without authentication too, but at a lower rate.
 For the sake of having an example of a package _requiring_ authentication we shall assume the API is *not* usable without authentication.
 Authentication is, here, the setting of a token in a HTTP header (so quite simple, compared to e.g. OAuth).
