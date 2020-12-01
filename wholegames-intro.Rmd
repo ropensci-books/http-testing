@@ -73,7 +73,7 @@ gh_api_status <- function() {
 }
 ```
 
-* `use_test("api-status")` (and using testthat latest version so setting `Config/testthat/edition: 3` in `DESCRIPTION`) to add a simple test whose code is below.
+* `use_test("api-status")` (and using [testthat latest edition](https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/#3rd-edition) so setting `Config/testthat/edition: 3` in `DESCRIPTION`) to add a simple test whose code is below.
 
 ```r
 test_that("gh_api_status() works", {
