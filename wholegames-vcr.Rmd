@@ -37,7 +37,7 @@ We had to tweak vcr setup a bit for our needs.
 
 * We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
-With mock responses around, we obviously don't really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
+With mock responses around, we don't need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
 
 Below is the updated setup file saved under `tests/testthat/setup-exemplighratia`.
 
