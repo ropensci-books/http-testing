@@ -23,7 +23,7 @@ GitHub Status API, on the contrary, does not necessitate authentication at all.
 So we shall create two functions, one that works without authentication, one that works with authentication.
 
 How did we create the package?
-You are obviously free to use your own favorite workflow tools but sharing our workflow might be informative.
+You are obviously free to use your own favorite workflow tools, but below we share our workflow using the [usethis package](https://r-pkgs.org/whole-game.html).
 
 * We followed [usethis setup article](https://usethis.r-lib.org/articles/articles/usethis-setup.html).
 
