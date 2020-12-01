@@ -20,7 +20,7 @@ Authentication is, here, the setting of a token in a HTTP header (so quite simpl
 
 GitHub Status API, on the contrary, does not necessitate authentication at all.
 
-So we have two functions, one that works without authentication, one that works with authentication.
+So we shall create two functions, one that works without authentication, one that works with authentication.
 
 How did we create the package?
 You are obviously free to use your own favorite workflow tools but sharing our workflow might be informative.
