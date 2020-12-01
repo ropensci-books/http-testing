@@ -34,7 +34,7 @@ What are the challenges of HTTP testing?
 webmockr works with both the crul package and the httr package.
 
 webmockr is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
-You might even never use it directly but if you use vcr it's one of its foundations.
+You may never use it directly but if you use vcr it's one of its foundations.
 
 webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
 
@@ -71,16 +71,16 @@ httptest works for packages using httr.
 The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
 
 ::: {.alert .alert-dismissible .alert-primary} 
-With both vcr and httptest the tests will use some sort of fake of API responses.
+With both vcr and httptest the tests will use some sort of fake API responses.
 
-In vcr they are called both **fixtures** and **cassettes**.
+In vcr they are called **fixtures** or **cassettes**.
 In httptest they are called **mock files**.
 :::
 
 ## What is webfakes?
 
-`{webfakes}` maintained by Gábor Csárdi provides an alternative (complementary?) tool for HTTP testing.
-It will let you faking a whole web service, potentially outputting responses from mock files you'll have created.
+`{webfakes}`, maintained by Gábor Csárdi, provides an alternative (complementary?) tool for HTTP testing.
+It will let you fake a whole web service, potentially outputting responses from mock files you'll have created.
 It does not help with recording fake responses.
 Because it runs a fake web service, you can even interact with said web service in your browser or with curl in the command line.
 
