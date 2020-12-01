@@ -30,7 +30,7 @@ Now if you wrap your whole `test_that()` block in them you might just as well us
 With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body. 
 If you use `with_mock_dir()` you need a name for the directory under which the mock files are saved, and you can make it meaningful.
 
-Also note that with vcr one file contains several HTTP interactions (requests and responses) whereas with httptest one file contains one response only (and the filename helps matching it to a request).
+Also note that with vcr one file can (but does not have to) contain several HTTP interactions (requests and responses) whereas with httptest one file contains one response only (and the filename helps matching it to a request).
 
 ## Matching requests
 
