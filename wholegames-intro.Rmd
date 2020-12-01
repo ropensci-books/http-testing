@@ -15,8 +15,8 @@ If you really need to interact with GitHub V3 API, we recommend the [gh package]
 We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).
 
 GitHub V3 API works without authentication too, but at a lower rate.
-For the sake of having an example of a package _requiring_ authentication we shall assume the API is not usable without authentication.
-Authentication is the setting of a token in a HTTP header, so no OAuth dance or so. 
+For the sake of having an example of a package _requiring_ authentication we shall assume the API is *not* usable without authentication.
+Authentication is, here, the setting of a token in a HTTP header (so quite simple, compared to e.g. OAuth).
 
 GitHub Status API, on the contrary, does not necessitate authentication at all.
 
