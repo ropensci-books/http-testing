@@ -1,0 +1,105 @@
+# vcr and httptest {#mocking-pkgs-comparison}
+
+We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia
+
+* Adding a package as a Suggests dependency;
+* Creating a helper file that in particular loads this package before each test;
+* Tweaking tests, in some cases wrapping our tests into functions that allows to record API responses in mock files and to play them back from said mock files; in other cases (only with httptest), creating mock files ourselves.
+
+Now, there were a few differences. 
+We won't end up advocating for one package in particular since both have their merits, but we do hope to help you differentiate the two packages.
+
+## Setting up the infrastructure
+
+To set up the HTTP testing infrastructure, in one case you need to run `vcr::use_vcr()` and in another case you need to run `httptest::use_httptest()`. Not too hard to remember.
+
+## Calling mock files
+
+As mentioned before, vcr and httptest both use mock files but they call them differently.
+
+In vcr they are called both **fixtures** and **cassettes**.
+In httptest they are called **mock files**.
+Note that fixtures is not as specific as cassettes and mock files: cassettes and mock files are fixtures, but anything (a csv file of input for instance) you use to consistently test your package is a fixture.
+
+## Naming mock files
+
+With vcr the `use_cassette()` call needs to include a name that will be used to create the filename of the mock file.
+The help of `?use_cassette` explains some criteria for naming them, such as the fact that cassette names need to be unique.
+Now if you wrap your whole `test_that()` block in them you might just as well use a name similar to the test name, and you already make those meaningful, right?
+
+With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body. 
+If you use `with_mock_dir()` you need a name for the directory under which the mock files are saved, and you can make it meaningful.
+
+Also note that with vcr one file can (but does not have to) contain several HTTP interactions (requests and responses) whereas with httptest one file contains one response only (and the filename helps matching it to a request).
+
+## Matching requests
+
+With httptest as the mock file name includes everything that's potentially varying about a request, each mock file corresponds to one request only.
+
+With vcr, there are different possible [configurations for matching a request to a saved interaction](https://docs.ropensci.org/vcr/articles/request_matching.html) but by default you can mostly expect that one saved interaction corresponds to one request only.
+
+## Handling secrets
+
+With vcr, since everything from the HTTP interactions is recorded, you always need to add some sort of configuration to be sure to wipe your API tokens from the mock files.
+
+With httptest, only responses are saved, and most often, only their bodies. 
+Most often, responses don't contain secrets e.g. they don't contain your API token.
+If the response contains secrets, refer to httptest's article about ["Redacting sensitive information"](https://enpiar.com/r/httptest/articles/redacting.html).
+
+## Recording, playing back
+
+When using mock files for testing, first you need to record responses in mock files; and then you want to use the mock files instead of real HTTP interactions (that's the whole point).
+
+With vcr, the recording vs playing back modes happen automatically depending on the existence of the cassette. If you write `vcr::use_cassette("blabla", )` and there's no cassette called blabla, vcr will create it. Note that if you change the HTTP interactions in the code block, you'll have to re-record the cassette which is as simple as deleting it then running the test. _Note that you can also change the way vcr behaves by looking into `?vcr::vcr_configure`'s "Cassette Options"._
+
+With httptest, there is a lot of flexibility around how to record mock files. It is because httptest doesn't assume that every API mock came from a real request to a real server; maybe you copy some of the mocks directly from the API docs.
+
+**Note that nothing prevents you from editing vcr cassettes by hand, but you'll have to be careful not re-recording them by mistake.**
+
+::: {.alert .alert-dismissible .alert-info} 
+httptest flexiblity comes from [original design principles of httptest](https://github.com/nealrichardson/httptest/issues/40#issuecomment-708672654)
+
+> _"[httptest] doesn't assume that every API mock came from a real request to a real server, and it is designed so that you are able to see and modify test fixtures.
+Among the considerations:_
+>
+> _1. In many cases, API responses contain way more content than is necessary to test your R code around them: 100 records when 2 will suffice, request metadata that you don't care about and can't meaningfully assert things about, and so on. In the interest of minimally reproducible examples, and of making tests readable, it often makes sense to take an actual API response and delete a lot of its content, or even to fabricate one entirely._
+>
+> _2. And then it's good to keep that API mock fixed so you know exactly what is in it. If I re-recorded a Twitter API response of, say, the most recent 10 tweets with #rstats, the specific content will change every time I record it, so my tests can't say much about what is in the response without having to rewrite them every time too._
+>
+> _3. Some conditions (rate limiting, server errors, e.g.) are difficult to test with real responses, but if you can hand-create a API mock with, say, a 503 response status code and test how your code handles it, you can have confidence of how your package will respond when that rare event happens with the real API._
+>
+> _4. Re-recording all responses can make for a huge code diff, which can blow up your repository size and make code review harder."_
+:::
+
+Now, creating mock files by hand (or inventing some custom scripts to create them) involves more elbow grease, so it's a compromise.
+
+## Testing for API errors
+
+In your test suite you probably want to check how things go if the server returns 502 or so, and you cannot trigger such a response to record it.
+
+With httptest, to test for API errors, you need to create one or several fake mock file(s).
+The easiest way to do that might be to use `httptest::with_mock_dir()` that will create mock files with the expected filenames and locations, that you can then tweak.
+Or reading the error message of `httptest::with_mock_ap()` helps you know where to create a mock file.
+
+With vcr, you either
+
+* use webmockr as we showed in our demo. On the one hand it's more compact than creating a fake mock file, on the other hand it's a way to test that's different from the vcr cassette.
+
+```r
+test_that("gh_organizations errors when the API doesn't behave", {
+  webmockr::enable()
+  stub <- webmockr::stub_request("get", "https://api.github.com/organizations?since=1")
+  webmockr::to_return(stub, status = 502)
+  expect_error(gh_organizations(), "oops")
+  webmockr::disable()
+})
+```
+
+* or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you'd need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use `vcr::skip_if_vcr_off()`.
+
+## Conclusion
+
+Both vcr and httptest are similar packages in that they use mock files for allowing easier HTTP testing.
+They are a bit different in their design philosophy and features, which might help you choose one of them.
+
+And now, to make things even more complex, or fun, we shall explore a third HTTP testing package that does not _mock_ requests but instead spins up a local fake web service.

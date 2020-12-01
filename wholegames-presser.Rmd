@@ -1,0 +1,194 @@
+# Use webfakes {#webfakes}
+
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.
+
+## Setup
+
+Before working on all this, we need to install `{webfakes}`.
+
+Then, we need to add webfakes as a Suggests dependency of our package.
+At the time of writing we are using a handy function available only in webfakes above version 1.1.0.9000, which means installing webfakes from GitHub and not CRAN, so we have to run `remotes::install_github("r-lib/webfakes")` and then `usethis::use_dev_package("webfakes", type = "Suggests")`.
+
+Last but not least, we create a setup file at `tests/testthat/setup.R`.
+When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
+We need to ensure that we set up a fake API key when there is no API token around.
+Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
+When using our own fake web service, we obviously don't really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
+
+```r
+if(!nzchar(Sys.getenv("REAL_REQUESTS"))) {
+  Sys.setenv("GITHUB_PAT" = "foobar")
+}
+```
+
+The setup file could also load webfakes, but in our demo we will namespace webfakes functions instead.
+
+## Actual testing
+
+With webfakes we will be spinning local fake web services that we will want our package to interact with instead of the real APIs.
+Therefore, we first need to amend the code of functions returning URLs to services to be able to change them via an environment variable.
+They become:
+
+```r
+status_url <- function() {
+
+  env_url <- Sys.getenv("EXEMPLIGHRATIA_GITHUB_STATUS_URL")
+
+  if (nzchar(env_url)) {
+    return(env_url)
+  }
+
+  "https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"
+}
+```
+
+and 
+
+```r
+gh_v3_url <- function() {
+
+  api_url <- Sys.getenv("EXEMPLIGHRATIA_GITHUB_API_URL")
+
+  if (nzchar(api_url)) {
+    return(api_url)
+  }
+
+  "https://api.github.com/"
+}
+```
+
+Having these two switches is crucial.
+
+Then, let's tweak our test of `gh_api_status()`. 
+
+```r
+test_that("gh_api_status() works", {
+  if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
+   app <- webfakes::new_app()
+      app$get("/", function(req, res) {
+        res$send_json(
+          list( components =
+          list(
+            list(
+            name = "API Requests",
+            status = "operational"
+            )
+          )
+          ),
+          auto_unbox = TRUE
+        )
+      })
+    web <-  webfakes::local_app_process(app, start = TRUE)
+    web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = "{url}"))
+  }
+
+  testthat::expect_type(gh_api_status(), "character")
+})
+```
+
+So what's happening here?
+
+* When we're not asking for requests to the real service to  be made (`Sys.getenv("REAL_REQUESTS")`), we prepare a new app via `webfakes::new_app()`. It's a very simple one, that returns, for GET requests, a list corresponding to what we're used to getting out of the status API, except that a) it's much smaller and b) the "operational" status is hard-coded.
+* When then create a local app process via `webfakes::local_app_process(, start = TRUE)`. It will start right away thanks to `start=TRUE` but we could have chosen to start it later via calling e.g. `web$url()` (see `?webfakes::local_app_process`); and most importantly it will be stopped automatically after the test. No mess made!
+* We set the `EXEMPLIGHRATIA_GITHUB_STATUS_URL` variable to the URL of the local app process. This is what connects our code to our fake web service.
+
+It might seem like a lot of overhead code but
+
+* It means no real requests are made which is our ultimate goal.
+* We will get used to it.
+* We can write helper code in a testthat helper file to not repeat ourselves in further test files; there could even be an app shared between all test files depending on your package.
+
+Now, let's add a test for error behavior.
+This inspired us to change error behavior a bit with a slightly more specific error message i.e. `httr::stop_for_status(response)` became `httr::stop_for_status(response, task = "get API status, ouch!")`. 
+
+```r
+test_that("gh_api_status() errors when the API does not behave", {
+  app <- webfakes::new_app()
+  app$get("/", function(req, res) {
+    res$send_status(502L)
+  })
+  web <-  webfakes::local_app_process(app, start = TRUE)
+  web$local_env(list(EXEMPLIGHRATIA_GITHUB_STATUS_URL = "{url}"))
+  testthat::expect_error(gh_api_status(), "ouch")
+})
+```
+
+It's a similar process to the earlier test:
+
+* setting up a new app;
+* having it return something we chose, in this case a 502 status;
+* launching a local app process;
+* connecting our code to it via setting the `EXEMPLIGHRATIA_GITHUB_STATUS_URL` environment variable to the URL of the fake service;
+* test.
+
+Last but not least let's convert our test of `gh_organizations()`,
+
+```r
+test_that("gh_organizations works", {
+
+  if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
+    app <- webfakes::new_app()
+    app$get("/organizations", function(req, res) {
+      res$send_json(
+        jsonlite::read_json(
+          testthat::test_path(
+            file.path("responses", "organizations.json")
+          )
+        ),
+        auto_unbox = TRUE
+        )
+    })
+    web <-  webfakes::local_app_process(app, start = TRUE)
+    web$local_env(list(EXEMPLIGHRATIA_GITHUB_API_URL = "{url}"))
+  }
+
+  testthat::expect_type(gh_organizations(), "character")
+})
+```
+
+As before we 
+
+* create a new app;
+* have it returned something we chose for a GET request of the `/organizations` endpoint. In this case, we have it return the content of a JSON file we created at `tests/testthat/responses/organizations.json` by copy-pasting a real response from the API;
+* launch a local app process;
+* set its URL as the `EXEMPLIGHRATIA_GITHUB_API_URL` environment variable;
+* test.
+
+## Also testing for real interactions
+
+What if the API responses change?
+Hopefully we'd notice that thanks to following API news.
+However, sometimes web APIs change without any notice.
+Therefore it is important to run tests against the real web service once in a while.
+
+In our tests we have used the condition
+
+```r
+if (!nzchar(Sys.getenv("REAL_REQUESTS"))) {
+```
+
+before launching the app and using its URL as URL for the service.
+So if our tests are generic enough, we can add a CI build where the environment variable `REAL_REQUESTS` is set to true.
+If they are not generic enough, we can use the[ approach exemplified in the chapter about httptest](#httptest-real).
+
+* set up a folder real-tests with tests interacting with the real web service;
+* add it to Rbuildignore;
+* in a CI build, delete tests/testthat and replace it with real-tests, before running R CMD check.
+
+## Summary
+
+* We set up webfakes usage in our package exemplighratia by adding a dependency on webfakes and by adding a setup file to fool our own package that needs an API token.
+* We created and launched fake apps in our test files.
+
+Now, how do we make sure this works?
+
+* Turn off wifi, run the tests again. It works! Turn on wifi again.
+* Open .Renviron (`usethis::edit_r_environ()`), edit "GITHUB_PAT" into "byeGITHUB_PAT", re-start R, run the tests again. It works! Fix your "GITHUB_PAT" token in .Renviron.
+
+So we now have tests that no longer rely on an internet connection nor on having API credentials.
+
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/4/files).
+
+::: {.alert .alert-dismissible .alert-primary} 
+In the next chapter, we shall compare the three approaches to HTTP testing we've demo-ed.
+:::

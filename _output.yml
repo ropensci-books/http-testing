@@ -1,17 +1,11 @@
-bookdown::gitbook:
-  css: style.css
+bookdown::bs4_book:
+  theme:
+    primary: "#1f58a3"
+    yellow: "#804600"
+    h4-font-size: "1.1rem"
   includes:
     before_body: WIP.html
-  config:
-    toc:
-      before: |
-        <li><a href="./">HTTP mocking and testing in R</a></li>
-      after: |
-        <li><a class="tocbottom" href="https://github.com/ropensci-books/http-testing" target="blank">(c) Scott Chamberlain 2020</a></li>
-        <li>Project funded by <a class="tocbottom" href="https://ropensci.org">rOpenSci</a> (Scott's work) & <a class="tocbottom" href="https://www.r-consortium.org">the R Consortium</a> (Maëlle Salmon's work)</a></li>
-    edit: https://github.com/ropensci-books/http-testing/edit/main/%s
-    download: ["main.pdf", "main.epub"]
-  highlight: NULL
+  css: style.css
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
