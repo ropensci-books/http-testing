@@ -1,4 +1,4 @@
-# CRAN-preparedness for your tests
+# CRAN-preparedness for your tests {#cran-preparedness}
 
 There is no one right answer to how to manage your tests for CRAN, except that you 
 do want a [clean check result on CRAN at all times](#graceful).

@@ -18,6 +18,11 @@ When developing a package that uses secrets (API keys, OAuth tokens) and produce
 * With httptest only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about editing mock files.
 * With webfakes you will be creating recorded responses yourself, make sure this process does not leak secrets. If you test something related to authentication, use fake secrets.
 
+### Escape tests that require secrets
+
+This all depends on your setup for testing [real requests](#real-requests-chapter).
+You have to be sure no test requiring secrets will be run on [CRAN](#cran-preparedness) for instance.
+
 ## Sensitive recorded responses?
 
 In that case you might want to gitignore the cassettes / mock files / recorded responses, 
