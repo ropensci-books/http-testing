@@ -15,11 +15,17 @@ For tests using vcr, httptest or webfakes, you at most need a fake secret, e.g. 
 #### API keys
 
 For API keys, you can use something like GitHub repo secrets if you use GitHub Actions.
+Then for the secret to be accessible as environment variable from your workflow in GitHub Actions [as explained in gargle docs](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html#provide-environment-variable-to-other-services-1) you need to add a line like
+
+```yaml
+env:
+  PACKAGE_PASSWORD: ${{ secrets.PACKAGE_PASSWORD }}
+```
 
 #### OAuth tokens
 
 For OAuth tokens that are _files_ (at least with httr), you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. 
-Read the documentation of the continuous integration service your are using to find out how secrets are protected.
+Read the documentation of the continuous integration service your are using to find out how secrets are protected and how you can use them in your builds.
 
 See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). 
 
