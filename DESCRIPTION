@@ -19,7 +19,8 @@ Imports:
     attachment,
     httptest,
     webfakes,
-    rhub
+    rhub,
+    gh
 Suggests:
    bookdown,
    bslib,
