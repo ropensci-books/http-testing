@@ -1,3 +1,14 @@
 #  (PART) Advanced Topics {-}
 
 # Making real requests {#real-requests-chapter}
+
+As touched upon in the Whole Games section, it's good to have _some_ tests against the real API.
+
+Maybe you can just run the same tests without using the mock files.
+  * with vcr, this behavior is [one environment variable away](https://docs.ropensci.org/vcr/reference/lightswitch.html) (namely, `VCR_TURN_OFF`).
+  * with httptest you can create the [same kind of behavior](https://enpiar.com/r/httptest/index.html#how-do-i-switch-between-mocking-and-real-requests) 
+  * with webfakes you can also create that behavior.
+
+Now this means assuming _all_ your tests work with real requests. 
+  * If a few tests won't work with real requests (say they have a fixture mimicking an [API error](#errors-chapter), or specific answer as if today were a given date) then you can skip these tests when mocking/faking the web service is off. With vcr this means using `vcr::skip_if_vcr_off()`; with httptest and webfakes you'd create your custom skipper.
+  * If most tests won't work with real requests, then creating a different folder for tests making real requests makes sense. It might be less unit-y as you could view these tests as integration/contract tests. Maybe they could use testthat's snapshot testing (so you could view what's different in the API).

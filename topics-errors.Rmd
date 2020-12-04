@@ -1,1 +1,4 @@
-# Faking HTTP errors
+# Faking HTTP errors {#errors-chapter}
+
+With HTTP testing you can test the behavior of your package in case of an API error without having to actually trigger an API error.
+This is important for testing your package's gracefulness (informative error message for the user) and robustness (if you e.g. use retrying in case of API errors).
