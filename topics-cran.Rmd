@@ -30,4 +30,6 @@ If you are worried at all about problems with HTTP tests on CRAN you can use
 `testthat::skip_on_cran()` to skip specific tests.
 Make sure your tests run somewhere else (on continuous integration) regularly! 
 
+We'd recommend not running tests making real requests on CRAN, even when interacting with an API without authentication.
+
 To stress-test your package before a CRAN submission, use `rhub::check_for_cran()` without passing any environment variable to the function, and use [WinBuilder](https://blog.r-hub.io/2020/04/01/win-builder/).
