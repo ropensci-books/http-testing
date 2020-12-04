@@ -37,7 +37,7 @@ See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/ar
 
 The approach is:
 
-  * Create your OAUth token locally, either outside of your package folder, or inside of it if you really want to, but **gitignored and Rbuildignored**.
+  * Create your OAuth token locally, either outside of your package folder, or inside of it if you really want to, but **gitignored and Rbuildignored**.
   * Encrypt it using e.g. the [user-friendly cyphr package](https://docs.ropensci.org/cyphr/). Save the code for this and for the step before in a file e.g. inst/secrets.R for when you need to re-create a token as even refresh tokens expire.
   * For encrypting you need some sort of password. You will want to save it securely as _text_ in your [user-level .Renviron](https://rstats.wtf/r-startup.html#renviron) and in your GitHub repo secrets (or equivalent secret place for other CI services). E.g. create a key via `sodium_key <- sodium::keygen()` and get its text equivalent via `sodium::bin2hex(sodium_key)`. E.g. the latter command might give me `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2` and I will save this in .Renviron
   
