@@ -2,12 +2,15 @@
 
 When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data),
 
-* You want the secrets to be usable by you, collaborators and CI services, without being readable by anyon else;
+* You want the secrets to be usable by you, collaborators and CI services, without being readable by anyone else;
 * You want tests and checks (e.g. vignette building) that use the secrets to be turned off in environments where secrets won't be available (CRAN, forks of your development repository).
 
 ## Managing secrets securely
 
 ### Share secrets with continuous integration services
+
+You need to share secrets with continuous integration services... for real requests only!
+For tests using vcr, httptest or webfakes, you at most need a fake secret, e.g. "foobar" as API key -- except for recording cassettes and mock files, but that is something you do locally.
 
 #### API keys
 
@@ -15,11 +18,20 @@ For API keys, you can use something like GitHub repo secrets if you use GitHub A
 
 #### OAuth tokens
 
-For OAuth tokens that are _files_ (at least with httr), you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). The approach is:
+For OAuth tokens that are _files_ (at least with httr), you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. 
+Read the documentation of the continuous integration service your are using to find out how secrets are protected.
 
-  * Create your OAUth token locally, either outside of your package folder, or inside of it but **gitignored and Rbuildignored**.
+See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). 
+
+The approach is:
+
+  * Create your OAUth token locally, either outside of your package folder, or inside of it if you really want to, but **gitignored and Rbuildignored**.
   * Encrypt it using e.g. the [user-friendly cyphr package](https://docs.ropensci.org/cyphr/). Save the code for this and for the step before in a file e.g. inst/secrets.R for when you need to re-create a token as even refresh tokens expire.
-  * For encrypting you need some sort of password. You will want to save it securely as _text_ in your .Renviron and in your GitHub repo secrets (or equivalent secret place for other CI services). E.g. create a key via `sodium_key <- sodium::keygen()` and get its text equivalent via `sodium::bin2hex(sodium_key))`
+  * For encrypting you need some sort of password. You will want to save it securely as _text_ in your [user-level .Renviron](https://rstats.wtf/r-startup.html#renviron) and in your GitHub repo secrets (or equivalent secret place for other CI services). E.g. create a key via `sodium_key <- sodium::keygen()` and get its text equivalent via `sodium::bin2hex(sodium_key)`. E.g. the latter command might give me `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2` and I will save this in .Renviron
+  
+```
+MEETUPR_PWD="e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2"
+```
     
 Example of a script creating and encrypting an OAuth token (for the Meetup API).
 
@@ -55,16 +67,20 @@ cyphr::encrypt_file(
 * In tests you have a setup file with code like below.
 
 ```r
-  key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
 
-  temptoken <- tempfile(fileext = ".rds")
+temptoken <- tempfile(fileext = ".rds")
 
-  cyphr::decrypt_file(
-    testthat::test_path("secret.rds"),
-    key = key,
-    dest = temptoken
-  )
-``` 
+cyphr::decrypt_file(
+  testthat::test_path("secret.rds"),
+  key = key,
+  dest = temptoken
+)
+```
+
+Now what happens in contexts where `MEETUPR_PWD` is not available?
+Well there should be no tests using it!
+See [our chapter about making real requests](#real-requests-chapte).
 
 ### Do not store secrets in the cassettes, mock files, recorded responses
 
