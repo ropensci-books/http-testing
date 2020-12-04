@@ -9,8 +9,62 @@ When developing a package that uses secrets (API keys, OAuth tokens) and produce
 
 ### Share secrets with continuous integration services
 
-* For API keys, you can use something like GitHub repo secrets if you use GitHub Actions.
-* For OAuth tokens that are _files_, you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html).
+#### API keys
+
+For API keys, you can use something like GitHub repo secrets if you use GitHub Actions.
+
+#### OAuth tokens
+
+For OAuth tokens that are _files_ (at least with httr), you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). The approach is:
+
+  * Create your OAUth token locally, either outside of your package folder, or inside of it but **gitignored and Rbuildignored**.
+  * Encrypt it using e.g. the [user-friendly cyphr package](https://docs.ropensci.org/cyphr/). Save the code for this and for the step before in a file e.g. inst/secrets.R for when you need to re-create a token as even refresh tokens expire.
+  * For encrypting you need some sort of password. You will want to save it securely as _text_ in your .Renviron and in your GitHub repo secrets (or equivalent secret place for other CI services). E.g. create a key via `sodium_key <- sodium::keygen()` and get its text equivalent via `sodium::bin2hex(sodium_key))`
+    
+Example of a script creating and encrypting an OAuth token (for the Meetup API).
+
+```r
+# thanks Jenny Bryan https://github.com/r-lib/gargle/blob/4fcf142fde43d107c6a20f905052f24859133c30/R/secret.R
+
+token_path <- testthat::test_path(".meetup_token.rds")
+use_build_ignore(token_path)
+use_git_ignore(token_path)
+
+meetupr::meetup_auth(
+  token = NULL,
+  cache = TRUE,
+  set_renv = FALSE,
+  token_path = token_path
+)
+
+# sodium_key <- sodium::keygen()
+# set_renv("MEETUPR_PWD" = sodium::bin2hex(sodium_key))
+# set_renv being an internal function taken from rtweet
+# that saves something to .Renviron
+
+# get key from environment variable
+key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+
+cyphr::encrypt_file(
+  token_path,
+  key = key,
+  dest = testthat::test_path("secret.rds")
+)
+```
+
+* In tests you have a setup file with code like below.
+
+```r
+  key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+
+  temptoken <- tempfile(fileext = ".rds")
+
+  cyphr::decrypt_file(
+    testthat::test_path("secret.rds"),
+    key = key,
+    dest = temptoken
+  )
+``` 
 
 ### Do not store secrets in the cassettes, mock files, recorded responses
 
