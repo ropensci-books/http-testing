@@ -20,6 +20,8 @@ jobs:
 
       - name: Setup pandoc
         uses: r-lib/actions/setup-pandoc@master
+        with:
+          pandoc-version: '2.9.2.1’'
 
           
       - uses: r-lib/actions/setup-tinytex@v1
