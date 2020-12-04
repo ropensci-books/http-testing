@@ -13,7 +13,6 @@ What can happen?
 * A web resource disappearing;
 * etc.
 
-
 ## How to make real requests
 
 Maybe you can just run the same tests without using the mock files.
@@ -24,8 +23,28 @@ Maybe you can just run the same tests without using the mock files.
 Now this means assuming _all_ your tests work with real requests. 
   * If a few tests won't work with real requests (say they have a fixture mimicking an [API error](#errors-chapter), or specific answer as if today were a given date) then you can skip these tests when mocking/faking the web service is off. With vcr this means using `vcr::skip_if_vcr_off()`; with httptest and webfakes you'd create your custom skipper.
   * If most tests won't work with real requests, then creating a different folder for tests making real requests makes sense. It might be less unit-y as you could view these tests as integration/contract tests. Maybe they could use testthat's snapshot testing (so you could view what's different in the API).
+
+### When to make real requests?
+
+Locally, you might want to make real requests once in a while, in particular before a CRAN release.
+
+On continuous integration you have to learn how to trigger workflows and configure build matrices to e.g.
+
+* Have one build in your build matrix using real requests at each commit (this might be too much, see next section);
+* Have one scheduled workflow once a day or once a week using real requests.
+
+## Why not make only or too many real requests?
+
+The reasons why you can't only make real requests in your tests are the reasons why you are reading these books:
+
+* they are slower;
+* you can't test for API errors;
+* etc.
+
+Now no matter what your setup is you don't want to make _too many_ real requests as it can be bad for the web resource and bad for you (e.g. using all your allowed requests!).
+Regarding allowed requests, if possible you could however increase them by requesting for some sort of special development account if such a thing exists for the API you are working with.
   
-### A complement to real requests: API news!
+## A complement to real requests: API news!
 
 Running real requests is important to notice if something changes in the API (expected requests, responses).
 Now, you can and should also follow the news of the web resource you are using in case there is something in place.
