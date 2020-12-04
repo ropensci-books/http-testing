@@ -24,6 +24,8 @@ Although some packages accessing remote resources are well tested, there is a la
 This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development.
 Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}` and `{webfakes}` are.
 
+We expect you to know [package development basics](https://r-pkgs.org/), and [git](https://happygitwithr.com/).
+
 _Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (`{crul}`, `{webmockr}`, `{vcr}`) but its scope has been extended to generalize the explanation of concepts to similar packages._
 
 ```{block, type = "alert alert-dismissible alert-success"}
