@@ -1,4 +1,4 @@
-# Security
+# Security {#security-chapter}
 
 When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data),
 

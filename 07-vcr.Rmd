@@ -40,13 +40,6 @@ cassettes) are in whatever directory you're running it in.
 Alternatively, you can run `devtools::test_file()` (or the "Run test" button in RStudio) to create your vcr cassettes one test file at a time. 
 
 
-### CI sites: Travis, Appveyor, etc. {#vcr-ci}
+### CI sites: GitHub Actions, Appveyor, etc. {#vcr-ci}
 
-Similar considerations are involved when dealing with Travis, Appveyor, Circle-CI,
-etc. 
-
-There are a few differences. With CI services you can manage environment variables
-so you can run tests that require API keys, etc. In addition, if tests fail you
-aren't threatened with your package being taken down.
-
-
+Refer to [the security chapter](#security-chapter)
