@@ -14,8 +14,8 @@ When developing a package that uses secrets (API keys, OAuth tokens) and produce
 
 ### Do not store secrets in the cassettes, mock files, recorded responses
 
-* With vcr make sure to configure vcr correctly.
-* With httptest only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about editing mock files.
+* With vcr make sure to [configure vcr correctly](#vcr-security).
+* With httptest only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about [redacting sensitive information](https://enpiar.com/r/httptest/articles/redacting.html).
 * With webfakes you will be creating recorded responses yourself, make sure this process does not leak secrets. If you test something related to authentication, use fake secrets.
 
 ### Escape tests that require secrets
