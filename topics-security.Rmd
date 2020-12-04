@@ -5,6 +5,12 @@ When developing a package that uses secrets (API keys, OAuth tokens) and produce
 * You want the secrets to be usable by you, collaborators and CI services, without being readable by anyone else;
 * You want tests and checks (e.g. vignette building) that use the secrets to be turned off in environments where secrets won't be available (CRAN, forks of your development repository).
 
+Your general attitude should be to think about:
+
+* what could go wrong (e.g. your token ending up being published), 
+* how to prevent that (save your unedited token outside of your package, make sure it is not printed in logs or present in package check artefacts), 
+* how to fix mistakes (how do you deactivate a token and how do you check no one used it in the meantime).
+
 ## Managing secrets securely
 
 ### Share secrets with continuous integration services
