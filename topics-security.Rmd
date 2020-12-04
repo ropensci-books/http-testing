@@ -1,1 +1,25 @@
 # Security
+
+When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data),
+
+* You want the secrets to be usable by you, collaborators and CI services, without being readable by anyon else;
+* You want tests and checks (e.g. vignette building) that use the secrets to be turned off in environments where secrets won't be available (CRAN, forks of your development repository).
+
+## Managing secrets securely
+
+### Share secrets with continuous integration services
+
+* For API keys, you can use something like GitHub repo secrets if you use GitHub Actions.
+* For OAuth tokens that are _files_, you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html).
+
+### Do not store secrets in the cassettes, mock files, recorded responses
+
+* With vcr make sure to configure vcr correctly.
+* With httptest only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about editing mock files.
+* With webfakes you will be creating recorded responses yourself, make sure this process does not leak secrets. If you test something related to authentication, use fake secrets.
+
+## Sensitive recorded responses?
+
+In that case you might want to gitignore the cassettes / mock files / recorded responses, 
+and skip the tests using them on continuous integration (e.g. `testthat::skip_on_ci()` or something more involved).
+You'd also [Rbuildignore](https://blog.r-hub.io/2020/05/20/rbuildignore/) the cassettes / mock files / recorded responses, as you do not want to release them to CRAN.

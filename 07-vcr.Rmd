@@ -109,23 +109,20 @@ http_interactions:
 All components of both the request and response are preserved, so that the HTTP client (in this case `crul`) can reconstruct its own response just as it would if it wasn't using `vcr`.
 
 
-## vcr enabled testing {#vcr-enabled-testing}
-
 ### check vs. test {#check-vs-test}
 
-> TLDR: Run `devtools::test()` before running `devtools::check()`
+> TLDR: Run `devtools::test()` before running `devtools::check()` for recording your cassettes.
 
 When running tests or checks of your whole package, note that you'll get different results with
-`devtools::check()` vs. `devtools::test()`. This arises because `devtools::check()` runs in a
+`devtools::check()` (check button of RStudio build pane) vs. `devtools::test()` (test button of RStudio build pane). This arises because `devtools::check()` runs in a
 temporary directory and files created (vcr cassettes) are only in that temporary directory and
 thus don't persist after `devtools::check()` exits. 
 
 However, `devtools::test()` does not run in a temporary directory, so files created (vcr
 cassettes) are in whatever directory you're running it in.
 
-Alternatively, you can run `devtools::test_file()` to create your vcr cassettes. 
+Alternatively, you can run `devtools::test_file()` (or the "Run test" button in RStudio) to create your vcr cassettes one test file at a time. 
 
-The same goes for using the RStudio IDE buttons/keyboard shortcuts. 
 
 ### CI sites: Travis, Appveyor, etc. {#vcr-ci}
 
