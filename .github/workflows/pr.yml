@@ -5,6 +5,8 @@ name: PR-workflow
 jobs:
   bookdown:
     name: Render Book
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     runs-on: macOS-latest
     steps:
       - name: Is this a fork
