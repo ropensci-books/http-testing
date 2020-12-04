@@ -1,1 +1,32 @@
 # CRAN-preparedness for your tests
+
+There is no one right answer to how to manage your tests for CRAN, except that you 
+do want a [clean check result on CRAN at all times](#graceful).
+The following is a 
+discussion of the various considerations - which should give you enough
+information to make an educated decision. 
+
+You can run vcr/httptest/webfakes enabled tests on CRAN. 
+CRAN is okay with files associated with tests,
+and so in general on CRAN you can run your tests that use cassettes, mock files or recorded responses on CRAN.
+
+When running HTTP tests on CRAN, be aware of a few things:
+
+- If your tests require any (not "foobar") environment variables or R options,
+they won't be available on CRAN. In these cases you likely want to skip these
+tests with `testthat::skip_on_cran()`.
+- If your tests have cassettes, mock files or recorded responses with sensitive information in them,
+you probably do not want to have those cassettes on the internet, in which case
+you won't be running vcr enabled tests on CRAN either. In the case of sensitive 
+information, you'll want to read the [gitignore cassettes](#gitignore-cassettes)
+section
+- There is a maximal size for package sources so you will want your cassettes, mock files or recorded responses to not be too big. There are three ways to limit their size
+    - Make requests that do not generate a huge response (e.g. tweak the time range);
+    - Edit the recorded responses;
+    - Share cassettes / mock files / recorded responses between tests.
+
+If you are worried at all about problems with HTTP tests on CRAN you can use 
+`testthat::skip_on_cran()` to skip specific tests.
+Make sure your tests run somewhere else (on continuous integration) regularly! 
+
+To stress-test your package before a CRAN submission, use `rhub::check_for_cran()` without passing any environment variable to the function, and use [WinBuilder](https://blog.r-hub.io/2020/04/01/win-builder/).

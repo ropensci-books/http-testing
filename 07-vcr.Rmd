@@ -127,30 +127,6 @@ Alternatively, you can run `devtools::test_file()` to create your vcr cassettes.
 
 The same goes for using the RStudio IDE buttons/keyboard shortcuts. 
 
-### CRAN {#vcr-enabled-tests-on-cran}
-
-There is no one right answer to how to manage your tests for CRAN. The following is a 
-discussion of the various considerations - which should give the reader enough
-information to make an educated decision. 
-
-You can run vcr enabled tests on CRAN. CRAN is okay with files associated with tests,
-and so in general you can run your vcr enabled tests on CRAN just as you run them
-locally.
-
-If you do run your vcr enabled tests on CRAN be aware of a few things:
-
-- If your vcr enabled tests require any environment variables or R options,
-they won't be available on CRAN. In these cases you likely want to skip these
-tests.
-- If your vcr enabled tests have cassettes with sensitive information in them,
-you probably do not want to have those cassettes on the internet, in which case
-you won't be running vcr enabled tests on CRAN either. In the case of sensitive 
-information, you'll want to read the [gitignore cassettes](#gitignore-cassettes)
-section
-
-If you are worried at all about problems with vcr enabled tests on CRAN you can use 
-`testthat::skip_on_cran()` to skip specific tests.
-
 ### CI sites: Travis, Appveyor, etc. {#vcr-ci}
 
 Similar considerations are involved when dealing with Travis, Appveyor, Circle-CI,

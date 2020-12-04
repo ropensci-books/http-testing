@@ -1,4 +1,4 @@
-# Graceful HTTP R packages
+# Graceful HTTP R packages {#graceful}
 
 Based on the previous chapter, your package interacting with a web resource has a dependency on `{curl}`, `{httr}` or `{crul}`. You have hopefully read the docs of the dependency you chose, including, in the case of httr and crul, the vignette about best practice for HTTP packages. Now, in this chapter we want to give more tips aimed at making your HTTP R package graceful, part of which you'll learn more about in this very book!
 
