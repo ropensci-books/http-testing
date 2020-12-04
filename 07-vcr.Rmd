@@ -42,4 +42,4 @@ Alternatively, you can run `devtools::test_file()` (or the "Run test" button in 
 
 ### CI sites: GitHub Actions, Appveyor, etc. {#vcr-ci}
 
-Refer to [the security chapter](#security-chapter)
+Refer to [the security chapter](#vcr-security).
