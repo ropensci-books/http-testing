@@ -19,7 +19,7 @@ Maybe you can just run the same tests without using the mock files.
 
 * with vcr, this behavior is [one environment variable away](https://docs.ropensci.org/vcr/reference/lightswitch.html) (namely, `VCR_TURN_OFF`).
 * with httptest you can create the [same kind of behavior](https://enpiar.com/r/httptest/index.html#how-do-i-switch-between-mocking-and-real-requests).
-* with webfakes you can also create that behavior.
+* with webfakes you can also [create that behavior](https://r-lib.github.io/webfakes/articles/how-to.html#how-to-make-sure-that-my-code-works-with-the-real-api-).
 
 Now this means assuming _all_ your tests work with real requests. 
 
