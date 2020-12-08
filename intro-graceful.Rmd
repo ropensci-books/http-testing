@@ -41,6 +41,14 @@ if (crul::ok("some-url")) {
 
 These two precautions ensure that CRAN checks won't end with some WARNINGs e.g. because an example failed when the API was down.
 
+## Graceful code
+
+For simplifying your own life and those of contributors, make sure to re-use code in your package by e.g. defining helper functions for making requests, handling responses etc.
+It will make it easier for you to support interactions with more parts of the web API.
+Writing DRY (don't repeat yourself) code means less lines of code to test, less API calls to make or fake!
+
+Also, were you to export a function à la `gh::gh()`, you'll help users call any endpoint of the web API even if you haven't written any high-level helper for it yet.
+
 ## Graceful tests
 
 We're getting closer to the actual topic of this book!
