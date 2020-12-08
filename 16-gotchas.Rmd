@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 There's a few things to watch out for when using `vcr`. 
 
-- **Security**: Don't put your secure API keys, tokens, etc. on the public web. See the Security chapter (\@ref(security))
+- **Security**: Don't put your secure API keys, tokens, etc. on the public web. See the [Security chapter](#security-chapter) and the [vcr security chapter](#vcr-security).
 - **API key issues**: Running vcr enabled tests in different contexts when API keys are used can have some rough edges.
 - **Dates**: Be careful when using dates in tests with `vcr`. e.g. if you generate todays date, and pass that in to a function in your package that uses that date for an HTTP request, the date will be different from the one in the matching cassette, causing a `vcr` failure.
 - **HTTP errors**: It's a good idea to test failure behavior of a web service in your test suite. Sometimes `vcr` can handle that and sometimes it cannot. Open any issues about this because ideally i think `vcr` could handle all cases of HTTP failures.

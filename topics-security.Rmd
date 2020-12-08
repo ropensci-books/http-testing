@@ -13,6 +13,15 @@ Your general attitude should be to think about:
 
 ## Managing secrets securely
 
+### Follow best practice when developing your package
+
+This book is about testing but security starts with how you develop your package.
+To better protect your users' secret,
+
+* It might be best not to let users pass API keys as parameters. It's best to have them save them in `.Renviron` or e.g. using the [keyring package](https://github.com/r-lib/keyring). This way, API keys are not in scripts.
+
+* If the API you are working with lets you pass keys either in the request headers or query string, prefer to use request headers.
+
 ### Share secrets with continuous integration services
 
 You need to share secrets with continuous integration services... for real requests only!
