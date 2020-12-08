@@ -5,6 +5,8 @@ name: PR-workflow
 jobs:
   bookdown:
     name: Render Book
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     runs-on: macOS-latest
     steps:
       - name: Is this a fork
@@ -18,10 +20,11 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@master
 
-      - name: Install pandoc and pandoc citeproc
-        run: |
-          brew install pandoc
-          brew install pandoc-citeproc
+      - name: Setup pandoc
+        uses: r-lib/actions/setup-pandoc@master
+        with:
+          pandoc-version: '2.9.2.1'
+
           
       - uses: r-lib/actions/setup-tinytex@v1
         

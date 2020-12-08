@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# vcr usage {#vcr-usage}
+# vcr advanced usage {#vcr-usage}
 
 Now that we've covered basic `vcr` usage, it's time for some more advanced usage topics.
 

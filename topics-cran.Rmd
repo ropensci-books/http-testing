@@ -1,0 +1,36 @@
+# CRAN- (and Bioconductor) preparedness for your tests {#cran-preparedness}
+
+There is no one right answer to how to manage your tests for CRAN, except that you 
+do want a [clean check result on CRAN at all times](#graceful).
+This probably applies to Bioconductor too.
+The following is a 
+discussion of the various considerations - which should give you enough
+information to make an educated decision. 
+
+You can run vcr/httptest/webfakes enabled tests on CRAN. 
+CRAN is okay with files associated with tests,
+and so in general on CRAN you can run your tests that use cassettes, mock files or recorded responses on CRAN.
+Another aspect is the presence of dependencies: make sure the HTTP testing package you use is listed as `Suggests` dependency in DESCRIPTION!
+With webfakes this might mean also listing [optional dependencies](https://r-lib.github.io/webfakes/#optional-dependencies) in DESCRIPTION.
+
+When running HTTP tests on CRAN, be aware of a few things:
+
+- If your tests require any secret environment variables or R options (apart from the "foobar" ones used to fool your package when using a saved response),
+they won't be available on CRAN. In these cases you likely want to skip these
+tests with `testthat::skip_on_cran()`.
+- If your tests have cassettes, mock files or recorded responses with sensitive information in them,
+you probably do not want to have those cassettes on the internet, in which case
+you won't be running vcr enabled tests on CRAN either. In the case of sensitive 
+information, you might want to Rbuildignore the cassettes, mock files or recorded responses (and to gitignore them or make your package development repository private).
+- There is a maximal size for package sources so you will want your cassettes, mock files or recorded responses to not be too big. There are three ways to limit their size
+    - Make requests that do not generate a huge response (e.g. tweak the time range);
+    - Edit the recorded responses (why not even copy-paste responses from the API docs as those are often short) --- see [vcr docs about editing cassettes for pros and cons](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html);
+    - Share cassettes / mock files / recorded responses between tests.
+
+If you are worried at all about problems with HTTP tests on CRAN you can use 
+`testthat::skip_on_cran()` to skip specific tests.
+Make sure your tests run somewhere else (on continuous integration) regularly! 
+
+We'd recommend not running tests making real requests on CRAN, even when interacting with an API without authentication.
+
+To stress-test your package before a CRAN submission, use `rhub::check_for_cran()` without passing any environment variable to the function, and use [WinBuilder](https://blog.r-hub.io/2020/04/01/win-builder/).

@@ -7,7 +7,9 @@ knitr::opts_chunk$set(
 ```
 
 
-# security {#security}
+# security {#vcr-security}
+
+Refer to [the security chapter](#security-chapter) for more general guidance.
 
 ## API keys and such {#api-keys}
 
@@ -54,43 +56,9 @@ implementation.
 
 ## API keys and tests run in varied contexts {#different-api-keys}
 
-When `vcr` enabled tests are run in different contexts (laptops, CI services,
-containers, etc.), and those tests can optionally use authentication you can
-run into problems. An example will best illustrate the issue.
-
-Given an R package `foo`, the package maintainer sets up tests with `vcr`.
-Functions in package `foo` can optionally use an API key supplied by the user.
-For the purposes of this example, the API key when given is included as a
-query parameter (it is not good pratice to pass API keys as query parameter,
-but its not uncommon).
-
-When the maintainer runs tests locally on their own machine they can unset the
-environment variable that holds their API key so its not included in vcr
-cassettes. Additionally, when they run tests on CI systems (e.g., Travis-CI),
-they do not have an API key set. When tests are run in either of these two
-locations, the API key is not included in the requests, and thus not included
-in the cassettes.
-
-Now, consider a contributor that forks the repository and as a first run through
-the package installs the package, then runs tests. If this contributor does not
-have an API key set, the tests should run fine. However, once the contributor
-sets their API key and attempts to run tests (or imagine another contributor that
-already has an API key set), the tests will fail because the URI now contains an
-API key as a query parameter in the URL.
-
-There's various combinations of the above problem.
-
-One option for dealing with this is requiring an API key to be set. If you do
-this you likely want to make sure your actual key is not in the cassettes
-that will be pushed to the public web; see the bit about `filter_sensitive_data`
-above for that. If you do require an API key, then you can ensure that whenever 
-tests are run an API key is required; that way there's no way that tests will 
-be run with AND without a key - which can lead to problems. Requiring an API key
-means you can't run tests in environments where it's not possible to safely set
-a key, e.g., on CRAN (in which case you must skip tests).
-
-There's no magic way around this problem ~ it's a good thing to be aware of,
-especially if other people contribute to your package.
+* For real requests a real API key is needed.
+* For requests using cassettes a fake API key is needed to fool your package. That is 
+why in our [demo of vcr](#vcr) we set a fake API key in a test setup file.
 
 ## Other security
 

@@ -18,7 +18,9 @@ Imports:
     xml2,
     attachment,
     httptest,
-    webfakes
+    webfakes,
+    rhub,
+    gh
 Suggests:
    bookdown,
    bslib,
