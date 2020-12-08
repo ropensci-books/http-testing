@@ -1,7 +1,8 @@
-# CRAN-preparedness for your tests {#cran-preparedness}
+# CRAN- (and Bioconductor) preparedness for your tests {#cran-preparedness}
 
 There is no one right answer to how to manage your tests for CRAN, except that you 
 do want a [clean check result on CRAN at all times](#graceful).
+This probably applies to Bioconductor too.
 The following is a 
 discussion of the various considerations - which should give you enough
 information to make an educated decision. 
@@ -9,7 +10,7 @@ information to make an educated decision.
 You can run vcr/httptest/webfakes enabled tests on CRAN. 
 CRAN is okay with files associated with tests,
 and so in general on CRAN you can run your tests that use cassettes, mock files or recorded responses on CRAN.
-Another aspects is the presence of dependencies: make sure the HTTP testing package you use is listed as `Suggests` dependency in DESCRIPTION!
+Another aspect is the presence of dependencies: make sure the HTTP testing package you use is listed as `Suggests` dependency in DESCRIPTION!
 
 When running HTTP tests on CRAN, be aware of a few things:
 
