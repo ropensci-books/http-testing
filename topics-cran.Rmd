@@ -14,7 +14,7 @@ Another aspect is the presence of dependencies: make sure the HTTP testing packa
 
 When running HTTP tests on CRAN, be aware of a few things:
 
-- If your tests require any (not "foobar") environment variables or R options,
+- If your tests require any secret environment variables or R options (apart from the "foobar" ones used to fool your package when using a saved response),
 they won't be available on CRAN. In these cases you likely want to skip these
 tests with `testthat::skip_on_cran()`.
 - If your tests have cassettes, mock files or recorded responses with sensitive information in them,
