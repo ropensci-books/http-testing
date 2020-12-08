@@ -7,3 +7,4 @@ _bookdown_files
 watch.R
 vcr.log
 docs
+rmd-fragments

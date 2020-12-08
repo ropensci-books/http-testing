@@ -20,7 +20,8 @@ Imports:
     httptest,
     webfakes,
     rhub,
-    gh
+    gh,
+    fs
 Suggests:
    bookdown,
    bslib,

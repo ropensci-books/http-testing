@@ -10,15 +10,21 @@ Check out <https://docs.ropensci.org/vcr/> for documentation on `vcr` functions.
 
 ## Terminology {#terminology}
 
-```{r, results = "asis", echo=FALSE}
+```{r, echo=FALSE}
 get_vcr_doc("man/rmdhunks/glossary.Rmd")
+```
+
+```{r child='rmd-fragments/man/rmdhunks/glossary.Rmd', eval=TRUE} 
 ```
 
 
 ## Basic usage {#vcr-basic-usage}
 
-```{r, results = "asis", echo=FALSE}
+```{r, echo=FALSE}
 get_vcr_doc("man/rmdhunks/basic-usage.Rmd")
+```
+
+```{r child='rmd-fragments/man/rmdhunks/basic-usage.Rmd', eval=TRUE} 
 ```
 
 All components of both the request and response are preserved, so that the HTTP client (in this case `crul`) can reconstruct its own response just as it would if it wasn't using `vcr`.
