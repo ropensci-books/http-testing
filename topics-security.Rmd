@@ -101,7 +101,7 @@ cyphr::decrypt_file(
 
 Now what happens in contexts where `MEETUPR_PWD` is not available?
 Well there should be no tests using it!
-See [our chapter about making real requests](#real-requests-chapte).
+See [our chapter about making real requests](#real-requests-chapter).
 
 ### Do not store secrets in the cassettes, mock files, recorded responses
 
