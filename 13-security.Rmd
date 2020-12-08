@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 Refer to [the security chapter](#security-chapter) for more general guidance.
 
-## API keys and such {#api-keys}
+## API keys and such {#api-keys-security}
 
 The configuration parameter `filter_sensitive_data` accepts a named list.
 
