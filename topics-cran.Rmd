@@ -29,6 +29,8 @@ information, you might want to Rbuildignore the cassettes, mock files or recorde
     - Edit the recorded responses (why not even copy-paste responses from the API docs as those are often short) --- see [vcr docs about editing cassettes for pros and cons](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html);
     - Share cassettes / mock files / recorded responses between tests.
 
+Do [not *compress* cassettes, mock files or recorded responses](https://github.com/nealrichardson/httptest/issues/11#issuecomment-354699342): CRAN submissions are already compressed; compressed files will make git diffs hard to use.
+
 ## Skipping a few tests on CRAN?
 
 If you are worried at all about problems with HTTP tests on CRAN you can use 
