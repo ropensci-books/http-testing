@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Packages for HTTP testing
+# Packages for HTTP testing {#pkgs-testing-chapter}
 
 A brief presentation of packages you'll "meet" again later in this book!
 
