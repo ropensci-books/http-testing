@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-#  (PART) webmockr {-}
+#  (PART) webmockr details {-}
 
 # Mocking HTTP Requests {#mocking}
 
