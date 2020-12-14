@@ -4,7 +4,7 @@ In this chapter we aim at adding HTTP testing infrastructure to exemplighratia u
 For this, we start from the initial state of exemplighratia again. Back to square one!
 
 ::: {.alert .alert-dismissible .alert-warning} 
-Note that the [`httptest::with_mockr_dir()` function as of now only exists in a fork of httptest](https://github.com/nealrichardson/httptest/pull/48).
+Note that the `httptest::with_mockr_dir()` function is only available in httptest version >= 3.3.0.9000, not released on CRAN at the time of writing, so you'll have to install httptest from GitHub via `remotes::install_github("nealrichardson/httptest")`.
 :::
 
 ::: {.alert .alert-dismissible .alert-info} 
