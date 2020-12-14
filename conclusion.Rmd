@@ -12,6 +12,8 @@ What's next? Applying those tools in your package(s), of course!
     * vcr for testing normal behavior, webmockr for testing behavior in case of web resource errors.
     * vcr or httptest for most tests, webfakes for more advanced things like OAuth2.0 flows or slow internet connection.
     
+* Read all the docs of the HTTP testing package(s) you choose -- a very worthy use of your time. For vcr and webmockr you can even stay here in this book and take advantage of the "vcr details" and "webmockr details" sections.
+    
 * Follow developments of the HTTP testing package(s) you choose. As all four packages we presented are developed on GitHub, you could e.g. release-watch their repositories. They are also all distributed on CRAN, so you might use your usual channel for learning about CRAN updates.
 
 * Report any feedback about this book, your experience HTTP testing, tips, etc.
