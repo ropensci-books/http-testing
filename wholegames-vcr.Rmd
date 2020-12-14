@@ -20,7 +20,7 @@ First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which h
 ```r
 library("vcr")
 invisible(vcr::vcr_configure(
-  dir = "../fixtures"
+  dir = vcr::vcr_test_path("fixtures")
 ))
 vcr::check_cassette_names()
 ```
