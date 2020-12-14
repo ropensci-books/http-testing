@@ -11,7 +11,45 @@ knitr::opts_chunk$set(
 
 Refer to [the security chapter](#security-chapter) for more general guidance.
 
-## API keys and such {#api-keys-security}
+## Keeping secrets safe {#api-keys-security}
+
+To keep your secrets safe, you need to use parameters of `vcr::vcr_configure()` that tell vcr either where secrets are (and what to put in their place), or what secrets are (and what to put in their place).
+It is best if you know how secrets are used in requests: e.g. is the API key passed as a header or part of the query string?
+
+In all cases, it is crucial to look at your cassettes before putting them on the public web, just to be sure you got the configuration right!
+
+### If the secret is in a request header
+
+You can use `filter_request_headers`!
+
+There are different ways to use it.
+
+```r
+# Remove one header from the cassettes
+vcr_configure(
+  filter_request_headers = "Authorization"
+)
+
+# Remove two headers from the cassettes
+vcr_configure(
+  filter_request_headers = c("Authorization", "User-Agent")
+)
+
+# Replace one header with a given string
+vcr_configure(
+  filter_request_headers = list(Authorization = "<<<not-my-bearer-token>>>")
+)
+```
+
+### If the secret is in a response header
+
+You can use `filter_response_headers` that works like `filter_request_headers`.
+
+### If the secret is somewhere else
+
+In this case you need to tell vcr what the secret string is via `filter_sensitive_data`. 
+Do not write the secret string directly in the configuration, that'd defeat the purpose of protecting it!
+Have the secret in an environment variable for instance and tell vcr to read it from there.
 
 The configuration parameter `filter_sensitive_data` accepts a named list.
 
@@ -25,10 +63,6 @@ Before recording (writing to a cassette) we do the replacement and then when
 reading from the cassette we do the reverse replacement to get back
 to the real data.
 
-The before record replacement happens in an internal
-function `write_interactions()`, while before playback replacement
-happens in internal function `YAML$deserialize_path()`
-
 ```r
 vcr_configure(
   filter_sensitive_data = list("<<<my_api_key>>>" = Sys.getenv('API_KEY'))
@@ -37,22 +71,6 @@ vcr_configure(
 
 You want to make the string that replaces your sensitive string something that
 won't be easily found elsewhere in the response body/headers/etc.
-
-It's a good idea to not in place of `thing_to_replace` put your actual sensitive
-key thing, because that defeats the purpose of trying to protect your private
-data. This is why we highly recommend setting your API keys as environment
-variables, then you can as seen above just put a call to `Sys.getenv()`,
-which we'll use internally to get your key, find it anywhere in the HTTP
-responses, and replace it with your placeholder string.
-
-The reason you want to do this is because you may on purpose or on accident
-push your cassettes to the public web, and when that happens you don't want
-your private keys in those cassettes.
-
-Note that the way this is implemented in `vcr` is not super elegant and is
-not general with respect to the serializer. We only support YAML serializing
-right now, but when we support other serializers we'll need to change the
-implementation.
 
 ## API keys and tests run in varied contexts {#different-api-keys}
 
