@@ -48,7 +48,7 @@ With webfakes as no authentication is needed at any point, you have less chance 
 
 With httptest only the body of responses is saved, so unless it contains secrets, no further effort is needed. If you _need_ to redact mock files, see [the corresponding vignette](https://enpiar.com/r/httptest/articles/redacting.html).
 
-With vcr as all HTTP interactions, including request URLs and headers, are saved to disk, you will most often have to use the `filter_sensitive_data` argument of `vcr::vcr_configure()`.
+With vcr as all HTTP interactions, including request URLs and headers, are saved to disk, you will most often have to use the `filter_sensitive_data`, `filter_request_header` and/or `filter_response_header` arguments of `vcr::vcr_configure()`.
 
 ### How about making real requests
 

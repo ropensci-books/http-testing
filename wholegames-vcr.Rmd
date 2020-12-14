@@ -33,7 +33,7 @@ When testthat runs tests, [files whose name starts with "setup" are always run f
 
 We had to tweak vcr setup a bit for our needs.
 
-* We do not want our API token to appear in the mock responses so we use the `filter_sensitive_data` argument of `vcr::vcr_configure()`.
+* We do not want our API token to appear in the mock responses, and we know it's used in the Authorization header of the requests, so we use the `filter_request_headers` argument of `vcr::vcr_configure()`. For other secret filtering one can use `filter_response_headers` and `filter_sensitive_data` (for a regular expression purging, on the whole saved interactions).
 
 * We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
@@ -44,7 +44,7 @@ Below is the updated setup file saved under `tests/testthat/setup-exemplighratia
 ```r
 library("vcr")
 
-vcr_dir <- "../fixtures"
+vcr_dir <- vcr::vcr_test_path("fixtures")
 
 if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
   if (dir.exists(vcr_dir)) {
@@ -57,8 +57,9 @@ if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
 
 invisible(vcr::vcr_configure(
   dir = vcr_dir,
-  filter_sensitive_data = list("<<github_api_token>>" = Sys.getenv('GITHUB_PAT'))
+  filter_request_headers = list(Authorization = "My bearer token is safe")
 ))
+
 ```
 
 So this was just setup, now on to adapting our tests!
@@ -211,10 +212,10 @@ http_interactions:
     headers:
       Accept: application/json, text/xml, application/xml, */*
       Content-Type: ''
-      Authorization: token <<github_api_token>>
+      Authorization: My bearer token is safe
 ```
 
-Our API token has been replaced with the string we indicated in `vcr::vcr_configure()`, `<<github_api_token>>`.
+Our API token has been replaced with the string we indicated in `vcr::vcr_configure()`, `My bearer token is safe`.
 
 ## Also testing for real interactions
 
