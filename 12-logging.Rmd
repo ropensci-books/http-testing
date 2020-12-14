@@ -7,77 +7,11 @@ knitr::opts_chunk$set(
 ```
 
 
-# logging {#logging}
+# Debugging your tests that use vcr 
 
-Use logging to set an IO-like object that `vcr` will log output to. This is a 
-useful way to troubleshoot what `vcr` is doing.
-
-## Setup logging {#logging-setup}
-
-To set up logging, see `?vcr_logging` use `vcr_configure()`
-
-```{r eval = FALSE}
-vcr::vcr_configure(
-  log = TRUE, 
-  log_opts = list(file = "vcr.log", log_prefix = "Cassette", date = TRUE)
-)
+```{r, echo=FALSE}
+get_vcr_doc("man/rmdhunks/debugging-vignette.Rmd")
 ```
 
-* The `log` parameter is a boolean to indicate whether `vcr` should log or not
-* The `log_opts` parameter is a named list with various options:
-  * `file`: the log file path (it does not get put in the cassette directory, but is at whatever this path is)
-  * `log_prefix`: prefix to put in each log entry. the default is `Cassette`
-  * `date`: whether to include a time stamp in each log entry or not. format is `YYYY-MM-DD HH:MM:SS`
-
-## The log file
-
-The following is an example log file:
-
-```
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Init. HTTPInteractionList w/ request matchers [method, uri] & 1 interaction(s): { get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1 => ??? [{"AphiaID":297110,"url":"http:\/\/www.marinespecies.org\/aphia.php?p=taxdetails }
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Initialized with options: {name: foobar, record: once, serialize_with: yaml, persist_with: FileSystem, match_requests_on: c("method", "uri"), update_content_length_header: FALSE, allow_playback_repeats: FALSE, preserve_exact_body_bytes: FALSE}
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Handling request: get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1 (disabled: FALSE)
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Checking if {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1} matches {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1} using matchers: [method, uri]
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 -   method matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1]
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 -   uri matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1]
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Identified request type: (stubbed_by_vcr) for get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Checking if {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1} matches {get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1} using matchers: [method, uri]
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 -   method matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1]
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 -   uri matched: current request [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1] vs [get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1]
-[Cassette: 'foobar'] - 2018-04-27 08:36:28 - Found matching interaction for get http://www.marinespecies.org/rest/AphiaChildrenByAphiaID/105706?marine_only=true&offset=1 at index 1: ??? [{"AphiaID":297110,"url":"http:\/\/www.marinespecies.org\/aphia.php?p=taxdetails
-```
-
-Internally `vcr` logs certain actions that we think are important steps in the process, including: 
-
-* initializing an `HTTPInteractionList` object that holds HTTP interactions
-* initializing a `Cassette` with whatever options the user passes in
-* declaring what request is being handled
-* what request is being checked
-* whether there is a match found or not
-* when an interaction is recorded, or pulled from a stub, etc.
-
-If you turn off the date, you won't get date entries:
-
-```{r eval = FALSE}
-vcr::vcr_configure(
-  log = TRUE, 
-  log_opts = list(file = "vcr.log", log_prefix = "Cassette", date = FALSE)
-)
-```
-
-```
-[Cassette: 'foobar'] - {{message}}
-```
-
-And you can change the prefix from `Cassette` to something else:
-
-```{r eval = FALSE}
-vcr::vcr_configure(
-  log = TRUE, 
-  log_opts = list(file = "vcr.log", log_prefix = "Unicorn", date = FALSE)
-)
-```
-
-```
-[Unicorn: 'foobar'] - {{message}}
+```{r child='rmd-fragments/man/rmdhunks/debugging-vignette.Rmd', eval=TRUE} 
 ```
