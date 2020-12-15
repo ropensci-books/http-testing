@@ -16,6 +16,8 @@ What's next? Applying those tools in your package(s), of course!
     
 * Follow developments of the HTTP testing package(s) you choose. As all four packages we presented are developed on GitHub, you could e.g. release-watch their repositories. They are also all distributed on CRAN, so you might use your usual channel for learning about CRAN updates.
 
+* Participate in the development of the HTTP testing package(s) you choose? Your bug reports, feature requests, contributions might be helpful. Make sure to read the contributing guide and to look at current activity in the repositories.
+
 * Report any feedback about this book, your experience HTTP testing, tips, etc.
     * in the [GitHub repository](https://github.com/ropensci-books/http-testing) of the book,
     * or in [rOpenSci forum](https://discuss.ropensci.org/).
