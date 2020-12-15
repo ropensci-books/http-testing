@@ -31,4 +31,5 @@ Remotes:
    rstudio/bookdown,
    rstudio/bslib,
    rstudio/htmltools,
-   r-lib/webfakes
+   r-lib/webfakes,
+   nealrichardson/httptest
