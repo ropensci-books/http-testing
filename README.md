@@ -1,18 +1,15 @@
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-http testing book
-=================
+HTTP testing in R book
+======================
 
-Manual for HTTP testing in R packages, covers the packages:
+This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development. Our aim is to develop an useful guidance to go with the great recent tools that vcr, webmockr, httptest and webfakes are.
 
-* [vcr](https://github.com/ropensci/vcr)
-* [webmockr](https://github.com/ropensci/webmockr)
-* [crul](https://github.com/ropensci/crul)
+## Contributions
 
-## contributions
-
-See [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+Your feedback, documentation requests, fixes are welcome!
+See [contributing guide](.github/CONTRIBUTING.md).
 
 ## Code of Conduct
 
-see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+See [rOpenSci Code of Conduct](ropensci.org/code-of-conduct).
