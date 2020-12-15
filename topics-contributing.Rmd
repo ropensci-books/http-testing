@@ -1,0 +1,18 @@
+# Contributor friendliness {#contributor-friendliness}
+
+How do you make your package wrapping an HTTP resource contributor-friendly?
+
+rOpenSci has some general advice on [contributor-friendliness](https://devguide.ropensci.org/collaboration.html#friendlyfiles).
+
+Now, there are some more aspects when dealing with HTTP testing.
+
+* In your contributing guide, make sure you note how you e.g. created an encrypted token for the tests. Link to a script that one could run to re-create it. Good for future contributors including yourself!
+
+* It might be very neat to provide a **sandbox**, even if just for yourself.
+    * If interacting with say Twitter API you might want to create a Twitter account dedicated to this.
+    * If interacting with some sort of web platform you might want to create an account special for storing test data.
+    * Some web APIs provide a test API key, a test account that one can request access to.
+
+Make sure to take notes on how to create / request access to a sandbox, in your contributing guide.   
+    
+* Contributors to the package might not be familiar with the HTTP testing package(s) you use (this is true of any non-trivial test setup). Make sure your contributing guide mentions pre-requisites and link to resources (maybe even this very book?).
