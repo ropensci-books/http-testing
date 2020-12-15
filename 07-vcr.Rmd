@@ -1,4 +1,4 @@
-#  (PART) vcr {-}
+#  (PART) vcr details {-}
 
 # Caching HTTP requests {#vcr-intro}
 
