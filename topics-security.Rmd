@@ -109,6 +109,8 @@ See [our chapter about making real requests](#real-requests-chapter).
 * With httptest only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about [redacting sensitive information](https://enpiar.com/r/httptest/articles/redacting.html).
 * With webfakes you will be creating recorded responses yourself, make sure this process does not leak secrets. If you test something related to authentication, use fake secrets.
 
+If the API you are interacting with uses OAuth for instance, make sure you are not leaking access tokens nor _refresh tokens_.
+
 ### Escape tests that require secrets
 
 This all depends on your setup for testing [real requests](#real-requests-chapter).
