@@ -1,4 +1,5 @@
 bookdown::bs4_book:
+  md_extensions: +gfm_auto_identifiers
   theme:
     primary: "#1f58a3"
     yellow: "#804600"
