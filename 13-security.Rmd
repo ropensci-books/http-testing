@@ -15,6 +15,7 @@ Refer to [the security chapter](#security-chapter) for more general guidance.
 
 To keep your secrets safe, you need to use parameters of `vcr::vcr_configure()` that tell vcr either where secrets are (and what to put in their place), or what secrets are (and what to put in their place).
 It is best if you know how secrets are used in requests: e.g. is the API key passed as a header or part of the query string?
+Maybe you will need different strategies for the different secrets (e.g. an OAuth2.0 access token will be set as Authorization header but an OAuth2.0 refresh token might be in a query string).
 
 In all cases, it is crucial to look at your cassettes before putting them on the public web, just to be sure you got the configuration right!
 
