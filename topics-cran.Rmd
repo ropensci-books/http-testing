@@ -14,6 +14,7 @@ CRAN is okay with files associated with tests,
 and so in general on CRAN you can run your tests that use cassettes, mock files or recorded responses on CRAN.
 Another aspect is the presence of dependencies: make sure the HTTP testing package you use is listed as `Suggests` dependency in DESCRIPTION!
 With webfakes this might mean also listing [optional dependencies](https://r-lib.github.io/webfakes/#optional-dependencies) in DESCRIPTION.
+With webfakes, your tests if run on CRAN should not assume the availability of a given port.
 
 When running HTTP tests on CRAN, be aware of a few things:
 
