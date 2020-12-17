@@ -110,6 +110,12 @@ Without the HTTP testing infrastructure, testing for behavior of the package in 
 
 Regarding our secret API token, since httptest doesn't save the requests, and since the responses don't contain the token, it is safe without our making any effort.
 
+::: {.alert .alert-dismissible .alert-primary}
+In this demo we used `httptest::with_mock_dir()` but there are other ways to use httptest, e.g. using `httptest::with_mock_api()` that does not require naming a directory (you'd still need to use a separate directory for mocking the error response).
+ 
+Find our more in the [main httptest vignette](https://enpiar.com/r/httptest/articles/httptest.html), especially if you don't find the `httptest::with_mock_dir()` approach enjoyable.
+:::
+
 ## Also testing for real interactions {#httptest-real}
 
 What if the API responses change?
