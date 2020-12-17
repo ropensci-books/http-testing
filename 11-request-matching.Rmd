@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ```
 
 
-# request matching {#request-matching}
+# Request matching {#request-matching}
 
 ```{r, echo=FALSE}
 get_vcr_doc("man/rmdhunks/request-matching-vignette.Rmd")
