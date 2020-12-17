@@ -68,7 +68,7 @@ With webfakes, debugging works this way: load the helper or test file where
 
 Then run your code. To debug _webfakes apps_, follow the [guidance](https://r-lib.github.io/webfakes/dev/articles/how-to.html#how-can-i-debug-an-app-).
 
-With vcr, refer to the [debugging](https://docs.ropensci.org/vcr/articles/debugging.html): you'll have to load the helper file or source the setup file after making sure the paths use in it work both from `tests/testthat/` and the package root (see `?vcr::vcr_test_path`), and then use `vcr::inject_cassette()`; don't forget to run `vcr::eject_cassette()` afterwards.
+With vcr, refer to the [debugging](https://docs.ropensci.org/vcr/articles/debugging.html) vignette: you'll have to load the helper file or source the setup file after making sure the paths use in it work both from `tests/testthat/` and the package root (see `?vcr::vcr_test_path`), and then use `vcr::inject_cassette()`; don't forget to run `vcr::eject_cassette()` afterwards.
 With webmockr debugging is quite natural, run the code that's in the test, in particular `webmockr::enable()` and `webmockr::disable()`. 
 
 With httptest, the process is similar as with vcr except the key functions are
