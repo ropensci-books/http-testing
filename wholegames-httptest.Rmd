@@ -45,7 +45,7 @@ So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-The key function will be `httptest::with_mock_dir("dir", {code-block})` which tells vcr to create mock files under `tests/testthat/dir` to store all API responses for API calls occurring in the code block. 
+The key function will be `httptest::with_mock_dir("dir", {code-block})` which tells httptest to create mock files under `tests/testthat/dir` to store all API responses for API calls occurring in the code block. 
 We are allowed to tweak the mock files by hand, and we will do that in some cases.
 
 Let's tweak the test file for `gh_status_api`, it becomes
@@ -81,8 +81,8 @@ The test file ` tests/testthat/test-organizations.R` is now:
 
 ```r
 with_mock_dir("gh_organizations", {
-test_that("gh_organizations works", {
-  testthat::expect_type(gh_organizations(), "character")
+  test_that("gh_organizations works", {
+    testthat::expect_type(gh_organizations(), "character")
   })
 })
 
@@ -110,6 +110,12 @@ Without the HTTP testing infrastructure, testing for behavior of the package in 
 
 Regarding our secret API token, since httptest doesn't save the requests, and since the responses don't contain the token, it is safe without our making any effort.
 
+::: {.alert .alert-dismissible .alert-primary}
+In this demo we used `httptest::with_mock_dir()` but there are other ways to use httptest, e.g. using `httptest::with_mock_api()` that does not require naming a directory (you'd still need to use a separate directory for mocking the error response).
+ 
+Find out more in the [main httptest vignette](https://enpiar.com/r/httptest/articles/httptest.html).
+:::
+
 ## Also testing for real interactions {#httptest-real}
 
 What if the API responses change?
@@ -121,7 +127,7 @@ As with vcr we setup a [GitHub Actions workflow](https://github.com/maelle/exemp
 The difference is what and where these tests are.
 As some tests with custom made mock files can be more specific (e.g. testing for actual values, whereas the latest responses from the API will have different values), instead of turning off mock files usage, we use our old original tests that we put in a folder called `real-tests`.
 Most of the time `real-tests` is .Rbuildignored but in the scheduled run, before checking the package we replace the content of `tests` with `real-tests`.
-An alternative would be to use `testthat::test_dir()` on that directory but in case of failures we would not get artefacts as we do with `R CMD check` (at least not without further effort).
+An alternative would be to use `testthat::test_dir()` on that directory but in case of failures we would not get artifacts as we do with `R CMD check` (at least not without further effort).
 
 Again, one could imagine other strategies, but in all cases it is important to keep checking the package against the real web service fairly regularly.
 
