@@ -7,6 +7,7 @@ When developing a package that uses secrets (API keys, OAuth tokens) and produce
 
 Your general attitude should be to think about:
 
+* what are my secrets (an API key, an OAuth2.0 access token and the refresh token, etc.) and where/how exactly are there used (in the query part of an URL? as a header) -- packages like httr might abstract some of the complexity for you but you need to really know where secrets are used and could be leaked,
 * what could go wrong (e.g. your token ending up being published), 
 * how to prevent that (save your unedited token outside of your package, make sure it is not printed in logs or present in package check artefacts), 
 * how to fix mistakes (how do you deactivate a token and how do you check no one used it in the meantime).
