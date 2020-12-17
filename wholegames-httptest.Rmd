@@ -113,7 +113,7 @@ Regarding our secret API token, since httptest doesn't save the requests, and si
 ::: {.alert .alert-dismissible .alert-primary}
 In this demo we used `httptest::with_mock_dir()` but there are other ways to use httptest, e.g. using `httptest::with_mock_api()` that does not require naming a directory (you'd still need to use a separate directory for mocking the error response).
  
-Find our more in the [main httptest vignette](https://enpiar.com/r/httptest/articles/httptest.html), especially if you don't find the `httptest::with_mock_dir()` approach enjoyable.
+Find out more in the [main httptest vignette](https://enpiar.com/r/httptest/articles/httptest.html).
 :::
 
 ## Also testing for real interactions {#httptest-real}
