@@ -28,7 +28,7 @@ We expect you to know [package development basics](https://r-pkgs.org/), and [gi
 
 _Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (`{crul}`, `{webmockr}`, `{vcr}`) but its scope has been extended to generalize the explanation of concepts to similar packages._
 
-You can also read the [PDF version](/main.pdf) or [epub version](/main.epub) of this book.
+You can also read the [PDF version](/http-testing/main.pdf) or [epub version](/http-testing/main.epub) of this book.
 
 ```{block, type = "alert alert-dismissible alert-success"}
 Project funded by [rOpenSci](https://ropensci.org`) (Scott Chamberlain's work) & the [R Consortium](https://www.r-consortium.org/projects/awarded-projects/2020-group-1#HTTP+testing+in+R+Book) (Maëlle Salmon's work).
