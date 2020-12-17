@@ -40,7 +40,7 @@ It might seem like more overhead code but being able to share an app between dif
 You can test for an [API sequence of responses (e.g. 502 then 200)](https://r-lib.github.io/webfakes/dev/articles/how-to.html#how-do-i-test-a-sequence-of-requests-) by following an how-to.
 The one thing that's not supported in webfakes yet is a smooth workflow for recording responses, so at the time of writing you might need to write your own workflow for recording responses.
 
-**In general setup&test writing might be easier for packages with mocking (vcr and httptest) but you might be able to replicate more complex behavior with webfakes (such as an OAuth dance).**
+**In general setup&test writing might be easier for packages with mocking (vcr and httptest) but you might be able to replicate more complex behavior with webfakes (such as an [OAuth dance](https://r-lib.github.io/webfakes/articles/oauth.html)).**
 
 ### The special case of secrets
 
