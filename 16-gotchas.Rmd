@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ```
 
 
-# gotchas {#gotchas}
+# Gotchas {#gotchas}
 
 There's a few things to watch out for when using `vcr`. 
 

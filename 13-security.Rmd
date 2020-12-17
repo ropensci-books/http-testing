@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ```
 
 
-# security {#vcr-security}
+# Security with vcr {#vcr-security}
 
 Refer to [the security chapter](#security-chapter) for more general guidance.
 
