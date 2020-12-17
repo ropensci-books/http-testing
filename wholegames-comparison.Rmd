@@ -27,7 +27,7 @@ In all cases having HTTP tests, i.e. tests that work independently from any inte
 
 The difference between packages, the _test writing experience_ depends on how you can provide responses from the API, both real ones and fake ones.
 
-With vcr and httptest for tests testing _normal behavior_, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`).
+With vcr and httptest for tests testing _normal behavior_, after set up (for which there is a helper function), testing is just a function away (`vcr::use_cassette()`, `httptest::with_mock_dir()`, `httptest::with_mock_api()`).
 Recording happens automatically during the first run of tests.
 You might also provide fake recorded response or dumb down the existing ones.
 For creating _API errors_, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or amending mock files, see [vcr](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) and httptest related docs.[^seq-httptest]
