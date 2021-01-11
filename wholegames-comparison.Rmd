@@ -91,4 +91,4 @@ If you are still unsure which one to pick, first try packages out without commit
 >
 > The most dangerous feature about these articles examining cloud lock-in is that they introduce a kind of paralysis into teams that result in applications never being completely fleshed out or finished."
 >
-> Vicky Boykis, "Commit to your lock-in".
+> Vicki Boykis, "Commit to your lock-in".
