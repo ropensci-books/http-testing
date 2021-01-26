@@ -32,4 +32,5 @@ Remotes:
    rstudio/bslib,
    rstudio/htmltools,
    r-lib/webfakes,
-   nealrichardson/httptest
+   nealrichardson/httptest,
+   rstudio/sass
