@@ -4,7 +4,6 @@ bookdown::bs4_book:
     yellow: "#804600"
     h4-font-size: "1.1rem"
   includes:
-    before_body: WIP.html
     in_header: matomo.html
   css: style.css
 

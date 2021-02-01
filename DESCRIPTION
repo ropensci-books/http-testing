@@ -24,6 +24,7 @@ Imports:
     fs
 Suggests:
    bookdown,
+   sass,
    bslib,
    downlit
 Remotes:
@@ -32,4 +33,5 @@ Remotes:
    rstudio/bslib,
    rstudio/htmltools,
    r-lib/webfakes,
-   nealrichardson/httptest
+   nealrichardson/httptest,
+   rstudio/sass
