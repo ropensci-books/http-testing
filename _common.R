@@ -13,3 +13,4 @@ get_vcr_doc <- function(path) {
     file = file.path("rmd-fragments", path)
     )
 }
+options(knitr.duplicate.label = "allow")
