@@ -31,7 +31,7 @@ When testthat runs tests, [files whose name starts with "setup" are always run f
 * indicates where mocked responses are saved (`"../fixtures"` which translates, from the root of the package, to `tests/fixtures`), 
 * and checks that you are not using the same name twice for cassettes (mock files).
 
-We had to tweak vcr setup a bit for our needs.
+We have to tweak vcr setup a bit for our needs.
 
 * We do not want our API token to appear in the mock responses, and we know it's used in the Authorization header of the requests, so we use the `filter_request_headers` argument of `vcr::vcr_configure()`. For other secret filtering one can use `filter_response_headers` and `filter_sensitive_data` (for a regular expression purging, on the whole saved interactions).
 
