@@ -23,7 +23,7 @@ What are the challenges of HTTP testing?
 
 ## webmockr
 
-`{webmockr}` maintained by Scott Chamberlain is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
+`{webmockr}`, maintained by Scott Chamberlain, is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
 
 * You "stub" a request. That is, you set rules for what HTTP request you'd like to respond to with a fake. E.g. a rule might be a method, or an URL.
 * You also can set rules for what fake you'd like to respond with, if anything (if nothing, then we give you `NULL`).
@@ -40,7 +40,7 @@ webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
 
 ## What is vcr? {#what-vcr}
 
-The short version is: vcr maintained by Scott Chamberlain helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
+The short version is `{vcr}`, maintained by Scott Chamberlain, helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
 It uses the power of webmockr, with a higher level interface.
 
 When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
@@ -107,9 +107,9 @@ Now, if you use an alternative like tinytest,
 
 Now that you have an idea of the tools we can use for HTTP testing, we'll now create a minimal package and then amend it in three versions tested with
 
-* vcr and webmockr;
-* httptest;
-* webfakes.
+* `{vcr}` and `{webmockr}`;
+* `{httptest}`;
+* `{webfakes}`.
 
 Our minimal package will use httr. However, it will help you understand concepts even if you end up using crul or curl.[^limits]
 
