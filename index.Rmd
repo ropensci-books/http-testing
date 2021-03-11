@@ -1,6 +1,6 @@
 --- 
 title: "HTTP testing in R"
-date: "`r paste0('built on ', Sys.Date())`"
+date: "`r Sys.Date()`"
 author: "Scott Chamberlain, Maëlle Salmon"
 site: bookdown::bookdown_site
 documentclass: book
