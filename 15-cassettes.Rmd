@@ -48,6 +48,22 @@ There's not a clear use case for why you'd want to add vcr cassettes
 to your `.Rbuildignore` file, but if you do be aware that will affect
 your vcr enabled tests.
 
+## sharing cassettes {#sharing-cassettes}
+
+Sometimes you may want to share or re-use cassettes across tests, 
+for example to [reduce the size for package sources](#cran-preparedness) or 
+to test different functionality of your package functions 
+that make the same query under the hood. 
+
+To do so, you can use the same cassette name for multiple `vcr::use_cassette()`
+calls.
+`vcr::check_cassette_names()` will complain about duplicate cassette 
+names, preventing you from accidentally re-using cassettes, however.
+To allow duplicates, you can provide a character vector of the cassette names 
+you want to re-use to the `allowed_duplicates` argument of 
+`vcr::check_cassette_names()`. 
+That way you can use the same cassette across multiple tests.
+
 ## deleting cassettes
 
 Removing a cassette is as easy as deleting in your file finder,

@@ -28,7 +28,7 @@ information, you might want to Rbuildignore the cassettes, mock files or recorde
 - There is a maximal size for package sources so you will want your cassettes, mock files or recorded responses to not be too big. There are three ways to limit their size
     - Make requests that do not generate a huge response (e.g. tweak the time range);
     - Edit the recorded responses (why not even copy-paste responses from the API docs as those are often short) --- see [vcr docs about editing cassettes for pros and cons](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html);
-    - Share cassettes / mock files / recorded responses between tests.
+    - Share [cassettes](#sharing-cassettes) / mock files / recorded responses between tests.
 
 Do [not *compress* cassettes, mock files or recorded responses](https://github.com/nealrichardson/httptest/issues/11#issuecomment-354699342): CRAN submissions are already compressed; compressed files will make git diffs hard to use.
 
