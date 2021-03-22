@@ -30,6 +30,8 @@ _Note related to previous versions: this book was intended as a detailed guide t
 
 You can also read the [PDF version](/http-testing/main.pdf) or [epub version](/http-testing/main.epub) of this book.
 
+_Thanks to contributors to the book: [Alex Whan](https://github.com/alexwhan), [Aurèle](https://github.com/eaurele), [Christophe Dervieux](https://github.com/cderv), [Daniel Possenriede](https://github.com/dpprdan), [Lluís Revilla Sancho](https://github.com/llrs), [Xavier A](https://github.com/xvrdm)._
+
 ```{block, type = "alert alert-dismissible alert-success"}
 Project funded by [rOpenSci](https://ropensci.org`) (Scott Chamberlain's work) & the [R Consortium](https://www.r-consortium.org/projects/awarded-projects/2020-group-1#HTTP+testing+in+R+Book) (Maëlle Salmon's work).
 ```
