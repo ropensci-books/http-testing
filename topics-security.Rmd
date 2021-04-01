@@ -19,7 +19,7 @@ Your general attitude should be to think about:
 This book is about testing but security starts with how you develop your package.
 To better protect your users' secret,
 
-* It might be best not to let users pass API keys as parameters. It's best to have them save them in `.Renviron` or e.g. using the [keyring package](https://github.com/r-lib/keyring). This way, API keys are not in scripts.
+* It might be best not to let users pass API keys as parameters. It's best to have them save them in `.Renviron` or e.g. using the [keyring package](https://github.com/r-lib/keyring). This way, API keys are not in scripts. The [opencage package](https://docs.ropensci.org/opencage/articles/opencage.html#authentication-1) might provide some inspiration.
 
 * If the API you are working with lets you pass keys either in the request headers or query string, prefer to use request headers.
 
@@ -38,9 +38,23 @@ env:
   PACKAGE_PASSWORD: ${{ secrets.PACKAGE_PASSWORD }}
 ```
 
-#### OAuth tokens
+#### More complex objects
 
-For OAuth tokens that are _files_ (at least with httr), you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. 
+If your secret is an OAuth token, you might be able to re-create it from pieces, where the pieces are strings you can store as repo secrets much like what you'd do for an API key.
+E.g. if your secret is an OAuth token, the [actual secrets](https://blog.r-hub.io/2021/01/25/oauth-2.0/#what-are-your-oauth-20-secret-credentials) are the access token and refresh token.
+
+```yaml
+env:
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+```
+
+Therefore you could re-create it using e.g. the `credentials` argument of `httr::oauth2.0_token()`. 
+The re-creation using environment variables `Sys.getenv("ACCESS_TOKEN")` and  `Sys.getenv("REFRESH_TOKEN")` would happen in a [testthat helper file](https://blog.r-hub.io/2020/11/18/testthat-utility-belt/).
+
+### Secret files
+
+For files, you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions. 
 Read the documentation of the continuous integration service your are using to find out how secrets are protected and how you can use them in your builds.
 
 See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). 
