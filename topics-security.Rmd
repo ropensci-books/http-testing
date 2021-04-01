@@ -28,6 +28,15 @@ To better protect your users' secret,
 You need to share secrets with continuous integration services... for real requests only!
 For tests using vcr, httptest or webfakes, you at most need a fake secret, e.g. "foobar" as API key -- except for recording cassettes and mock files, but that is something you do locally.
 
+::: {.alert .alert-dismissible .alert-primary}
+In GitHub repositories, when storing a new secret, do not save it with quotes.
+I.e. if your secret is "blabla", the field should contain `blabla`, not `"blabla"` nor `'blabla'`.
+```{r secret, fig.alt="Screenshot of the interface for adding secrets in a GitHub repository, showing how the secret is stored without any quote."}
+knitr::include_graphics("secret.png")
+
+```
+:::
+
 #### API keys
 
 For API keys, you can use something like GitHub repo secrets if you use GitHub Actions.
