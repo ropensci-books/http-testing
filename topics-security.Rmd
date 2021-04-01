@@ -122,3 +122,11 @@ You have to be sure no test requiring secrets will be run on [CRAN](#cran-prepar
 In that case you might want to gitignore the cassettes / mock files / recorded responses, 
 and skip the tests using them on continuous integration (e.g. `testthat::skip_on_ci()` or something more involved).
 You'd also [Rbuildignore](https://blog.r-hub.io/2020/05/20/rbuildignore/) the cassettes / mock files / recorded responses, as you do not want to release them to CRAN.
+
+## Further resources
+
+Some tools might help you detect leaks or prevent them.
+
+* [shhgit](https://github.com/eth0izzle/shhgit)'s goal is "Find secrets in your code. Secrets detection for your GitHub, GitLab and Bitbucket repositories".
+* [Yelp's detect-secret](https://github.com/Yelp/detect-secrets) is "An enterprise friendly way of detecting and preventing secrets in code.".
+* [git-secret](https://git-secret.io/)  is a "bash tool to store your private data inside a git repo". 
