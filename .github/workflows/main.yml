@@ -40,6 +40,7 @@ jobs:
         
       - name: Build site
         run: |
+          tinytex::tlmgr(c('option', 'repository', 'https://ctan.math.illinois.edu/systems/texlive/tlnet'))
           bookdown::render_book(".")
         shell: Rscript {0}
         
