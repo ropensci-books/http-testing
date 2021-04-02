@@ -18,7 +18,7 @@ It might be very neat to provide a **sandbox**, even if just for yourself.
 * If interacting with say Twitter API you might want to create a Twitter account dedicated to this.
     
 ```{=html}
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">test</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/1365661250269683713?ref_src=twsrc%5Etfw">February 27, 2021</a></blockquote>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">And this is why you don’t use live API credentials in your tests 🤣. Leaving up for the humorous replies <a href="https://t.co/x0COfvt2QD">https://t.co/x0COfvt2QD</a></p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/1365663264563204101?ref_src=twsrc%5Etfw">February 27, 2021</a></blockquote>
 ```
     
 * If interacting with some sort of web platform you might want to create an account special for storing test data.
