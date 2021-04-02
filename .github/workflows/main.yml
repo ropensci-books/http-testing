@@ -23,7 +23,11 @@ jobs:
       - uses: r-lib/actions/setup-tinytex@v1
       
       - name: latexstuff
-        run: tlmgr install sourcesanspro
+        run: |
+          tlmgr update --self --all
+          tlmgr path add
+          fmtutil-sys --all
+          tlmgr install sourcesanspro
       
       - name: Cache R packages
         uses: actions/cache@v1
