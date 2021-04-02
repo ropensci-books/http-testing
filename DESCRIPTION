@@ -26,7 +26,8 @@ Suggests:
    bookdown,
    sass,
    bslib,
-   downlit
+   downlit,
+   tinytex (>= 0.31)
 Remotes:
    r-lib/downlit,
    rstudio/bookdown,
