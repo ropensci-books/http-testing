@@ -21,6 +21,10 @@ jobs:
           pandoc-version: '2.9.2.1'
 
       - uses: r-lib/actions/setup-tinytex@v1
+      
+      - name: latexstuff
+        run: tlmgr install sourcesanspro
+      
       - name: Cache R packages
         uses: actions/cache@v1
         with:
