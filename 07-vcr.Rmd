@@ -17,6 +17,14 @@ get_vcr_doc("man/rmdhunks/glossary.Rmd")
 ```{r child='rmd-fragments/man/rmdhunks/glossary.Rmd', eval=TRUE} 
 ```
 
+## Design {#design}
+
+```{r, echo=FALSE}
+get_vcr_doc("man/rmdhunks/vcr-design.Rmd")
+```
+
+```{r child='rmd-fragments/man/rmdhunks/vcr-design.Rmd', eval=TRUE}
+```
 
 ## Basic usage {#vcr-basic-usage}
 
