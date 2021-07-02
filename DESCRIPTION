@@ -23,7 +23,7 @@ Imports:
     gh,
     fs
 Suggests:
-   bookdown,
+   bookdown (>= 0.22.8),
    sass,
    bslib,
    downlit,

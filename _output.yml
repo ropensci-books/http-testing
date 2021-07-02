@@ -1,4 +1,7 @@
 bookdown::bs4_book:
+  repo:
+    base: https://github.com/ropensci-books/http-testing
+    branch: main
   theme:
     primary: "#1f58a3"
     yellow: "#804600"
