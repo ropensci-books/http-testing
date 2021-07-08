@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: macOS-latest
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.MINE }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
@@ -21,6 +21,7 @@ jobs:
           pandoc-version: '2.9.2.1'
 
       - uses: r-lib/actions/setup-tinytex@v1
+      
       - name: Cache R packages
         uses: actions/cache@v1
         with:
@@ -39,6 +40,7 @@ jobs:
         
       - name: Build site
         run: |
+          tinytex::tlmgr(c('option', 'repository', 'https://ctan.math.illinois.edu/systems/texlive/tlnet'))
           bookdown::render_book(".")
         shell: Rscript {0}
         

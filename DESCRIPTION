@@ -23,12 +23,14 @@ Imports:
     gh,
     fs
 Suggests:
-   bookdown,
+   bookdown (>= 0.22.8),
    sass,
    bslib,
-   downlit
+   downlit,
+   tinytex (>= 0.31)
 Remotes:
    r-lib/downlit,
+   r-lib/rlang,
    rstudio/bookdown,
    rstudio/bslib,
    rstudio/htmltools,

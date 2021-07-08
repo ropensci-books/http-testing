@@ -74,7 +74,7 @@ Therefore tests work independently of an internet connection.
 
 vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 
-vcr works for packages using httr or curl.
+vcr works for packages using httr or crul.
 
 ::: {.alert .alert-dismissible .alert-info} 
 [Direct link to vcr (& webmockr) demo](#vcr)

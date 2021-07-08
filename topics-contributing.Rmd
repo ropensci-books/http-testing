@@ -6,13 +6,68 @@ rOpenSci has some general advice on [contributor-friendliness](https://devguide.
 
 Now, there are some more aspects when dealing with HTTP testing.
 
-* In your contributing guide, make sure you note how you e.g. created an encrypted token for the tests. Link to a script that one could run to re-create it. Good for future contributors including yourself!
+## Taking notes about encryption
 
-* It might be very neat to provide a **sandbox**, even if just for yourself.
-    * If interacting with say Twitter API you might want to create a Twitter account dedicated to this.
-    * If interacting with some sort of web platform you might want to create an account special for storing test data.
-    * Some web APIs provide a test API key, a test account that one can request access to.
+In your contributing guide, make sure you note how you e.g. created an encrypted token for the tests. Link to a script that one could run to re-create it. Good for future contributors including yourself!
+
+## Providing a sandbox
+
+It might be very neat to provide a **sandbox**, even if just for yourself.
+
+
+* If interacting with say Twitter API you might want to create a Twitter account dedicated to this.
+    
+```{=html}
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">And this is why you don’t use live API credentials in your tests 🤣. Leaving up for the humorous replies <a href="https://t.co/x0COfvt2QD">https://t.co/x0COfvt2QD</a></p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/1365663264563204101?ref_src=twsrc%5Etfw">February 27, 2021</a></blockquote>
+```
+    
+* If interacting with some sort of web platform you might want to create an account special for storing test data.
+
+* Some web APIs provide a test API key, a test account that one can request access to.
 
 Make sure to take notes on how to create / request access to a sandbox, in your contributing guide.   
-    
-* Contributors to the package might not be familiar with the HTTP testing package(s) you use (this is true of any non-trivial test setup). Make sure your contributing guide mentions pre-requisites and link to resources (maybe even this very book?).
+
+## Switching between accounts depending on the development mode
+
+Your package might have some behaviour to load a default token for instance, placed in an app dir.
+Now, for testing, you might want it to load another token, and you probably also want the token choice to be as automatic as possible.
+
+The [rtweet package](https://github.com/ropensci/rtweet) has such logic.
+
+* It [detects testing/dev mode](https://github.com/ropensci/rtweet/blob/f46bc98f9ac8433c7681d48ed778358bc22a552c/R/utils.R#L132).
+
+```r
+is_testing <- function() {
+  identical(Sys.getenv("TESTTHAT"), "true")  
+}
+is_dev_mode <- function() {
+  exists(".__DEVTOOLS__", .getNamespace("rtweet"))
+}
+```
+
+* If some environment variables are present it is able to [create a testing token](https://github.com/ropensci/rtweet/blob/270733c6bf46b2be794d7492d4a4e31d384db0b7/R/auth.R#L281).
+
+
+```r
+rtweet_test <- function() {
+  access_token <- Sys.getenv("RTWEET_ACCESS_TOKEN")
+  access_secret <- Sys.getenv("RTWEET_ACCESS_SECRET")
+  
+  if (identical(access_token, "") || identical(access_secret, "")) {
+    return()
+  }
+
+  rtweet_bot(
+    "7rX1CfEYOjrtZenmBhjljPzO3",
+    "rM3HOLDqmjWzr9UN4cvscchlkFprPNNg99zJJU5R8iYtpC0P0q",
+    access_token,
+    access_secret
+  )
+}
+```
+
+* The [testing token or a default token is loaded depending on the development mode](https://github.com/ropensci/rtweet/blob/270733c6bf46b2be794d7492d4a4e31d384db0b7/R/auth.R#L234).
+
+## Documenting HTTP testing
+
+Contributors to the package might not be familiar with the HTTP testing package(s) you use (this is true of any non-trivial test setup). Make sure your contributing guide mentions pre-requisites and link to resources (maybe even this very book?).
