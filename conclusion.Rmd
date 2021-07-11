@@ -1,5 +1,3 @@
-#  (PART) Conclusion {-}
-
 # Conclusion
 
 Once you get here you will have read about basic HTTP (testing) concepts in R,

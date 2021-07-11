@@ -1,0 +1,172 @@
+#  (PART) Conclusion {-}
+
+# Tradeoffs
+
+::: {.alert .alert-success} 
+This somewhat opinionated discussion was added by [Max Held](https://www.maxheld.de).
+Your mileage may vary.
+:::
+
+Test doubles such as mocks or fakes can help you isolate your tests from the state of external HTTP API.
+This can be a good thing, because it allows you to test your code against a rare responses, or when the API is not available.
+
+Unfortunately, mocking and faking add their own complexity to a project.
+Respectively, you have to carry expected responses or even (rudimentary) API behavior in your code base.
+You now have two relationships to keep in mind: your code must pass your mocked/faked tests, and your mocks/fakes must correspond to the live API.
+
+This tradeoff cannot be resolved, but it is eased considerably by decoupled (or modular) code.
+Much as with other side effects, it can help to concentrate your API calls in as few functions as possible and test these with mocks or fakes, where necessary.
+All other functions can then be tested without dependence on the API.
+Conversely, if you find yourself requiring these test doubles in a lot of places, you may want to [consider a refactoring](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a).
+
+## Unit vs Integration Testing
+
+Test doubles also benefit from a clean separation of concerns.
+
+On the one hand, [*unit tests*](https://en.wikipedia.org/wiki/Unit_testing) should only test the behavior of your code, not the behavior of the API.
+Otherwise a failed test could be ambiguous: Was it your code, or a errant API behavior?
+Unit tests will typically cover simple, but user facing behavior, such as whether an API response is parsed correctly, or whether an HTTP error code is handled appropriately.
+Mocks, especially, can help you write isolated unit tests.
+
+On the other hand, [*integration tests*](https://en.wikipedia.org/wiki/Integration_testing) should test how your code interacts with other software or services.
+["Narrow" integration tests](https://martinfowler.com/bliki/IntegrationTest.html) are run against test doubles, typically fakes.
+This may be most helpful to test more complex, perhaps stateful, interactions between your code and the API, which relies on internal logic of the API rather than a one-off response.
+For example, you may want to test whether if you submit a string to a translation service, you get back a result in the appropriate language.
+Such test duplication of external business logic may be hard to get right and maintain, and should rarely be necessary.
+
+["Broad" integration tests](https://martinfowler.com/bliki/IntegrationTest.html) are run against live services, and thus require no test doubles.
+
+Neither unit nor integration tests need to cover an API specification comprehensively.
+Testing the API is not your concern, but merely the narrow interface between the API and your code.
+As a rule of thumb, your code should handle, and your tests should cover the failure *modes* of the API, including HTTP response codes, API response codes or incorrect response formats.
+Perhaps you can additionally test some API requests against some known outputs, but this will always remain a sample.
+There's always a chance that some deeply nested JSON response will break your code.
+You may not be able to cover all such errors from an errand or changed API, and that's okay.
+
+## Example
+
+To illustrate these tradeoffs, consider the [biblids](http://subugoe.github.io/biblids/) package, which wraps the [DOI resolution proxy server REST API](https://www.doi.org/factsheets/DOIProxy.html#rest-api) at doi.org.
+Digital object identifiers (DOIs) are used to persistently identify scientific publications such as `10.1038/nature14236` for an article in the journal Nature.
+The doi.org system lets institutions register such (persistent) DOIs, and update (non-persistent) URLs where full texsts can currently be found.
+It might be helpful to query this API from R.
+
+Happily, the doi.org API is unauthenticated, highly performant and gives simple responses.
+For any given `GET` request, there are only these outcomes:
+
+1. A DOI cannot be found DOI.org (HTTP status code 402).
+2. A DOI can be found (HTTP status code 200).
+    a. The queried value can be found (API response code 1).
+    b. The queried value cannot be found (API response code 200).
+       For example, a DOI is registered but has no URL to resolve to.
+       Rare but theoretically possible.
+3. Something unspecified went wrong on the server end (HTTP status code 500).
+
+Omitting some bells and whistles from biblids, we can minimally wrap the API thus:
+
+```{r minimal-wrapper}
+# unexported helper
+# this is not tested, b/c the implementation could change
+verb_doi_handle <- function(doi, ...) {
+  httr::VERB(
+    url = "https://doi.org/",
+    # better to use curl::curl_escape() here
+    path = paste0("api/handles/", doi),
+    ...
+  )
+}
+
+# exported function
+# this is tested
+get_doi_handle <- function(doi, ...) {
+  resp <- verb_doi_handle(doi = doi, verb = "GET", ...)
+  httr::stop_for_status(resp) # covers outcomes 1 *and* 3 from above list
+  if (httr::content(resp)$responseCode == 200) {
+    # covers outcome 2b
+    stop("The handle exists, but the queried value(s) could not be found.")
+  }
+  # this must be outcome 2a
+  resp
+}
+
+# still missing: a way to disambiguate between outcomes 1 and 3
+# exported function, this is tested
+is_doi_found <- function(doi) {
+  # HEAD is more idiomatic, and marginally more efficient
+  resp <- verb_doi_handle(doi = doi, verb = "HEAD")
+  if (httr::status_code(resp) == 200) return(TRUE)
+  if (httr::status_code(resp) == 404) return(FALSE)
+  httr::stop_for_status(resp)
+}
+```
+
+A minimal interface between exported functions and the API is desirable, because it simplifies the below tests.
+`get_doi_handle()` would be the absolute minimum, but it alone cannot distinguish between API failure modes 1 from 3:
+`httr::stop_for_status()` could be thrown either because a DOI does not exist or because of some other HTTP error code.
+The differences between 1 and 3 are important for users and the downstream logic in the biblids package.
+We thus need an additional function at this interface, `is_doi_found()`, which checks explicity for failure mode 1.
+
+We can test most API failure modes of `get_doi_handle()` and `is_doi_found()` thus:
+
+```{r test-minimal-wrapper}
+library(testthat)
+skip_if_offline()
+# outcome 1
+test_that("Non-existent DOIs error out", {
+  expect_error(get_doi_handle("10.1000/I_DO_NOT_EXIST"))
+  expect_false(is_doi_found("10.1000/I_DO_NOT_EXIST"))
+})
+# outcome 2a
+test_that("Existing DOIs are found", {
+  testthat::local_edition(3)
+  # this snapshot will also capture some change in the API output
+  expect_snapshot_output(get_doi_handle("10.1038/nature14236"))
+  expect_true(is_doi_found("10.1038/nature14236"))
+})
+# outcome 2b
+test_that("Non-existing values error out", {
+  expect_error(
+    get_doi_handle(
+      doi = "10.1038/nature14236",
+      query = list(type = "I_DO_NOT_EXIST")
+    )
+  )
+})
+```
+
+One might think that these tests should be mocked, rather than running against the live API.
+However, because DOI.org is stable, performant and requires no authentication, the added complexity is not worth it in this case.
+Moreover, `get_doi_handle()` and `is_doi_found()` perform minimal work and are essentially I/O functions.
+They may thus require *only* (broad) integration testing against a live API.
+
+We do, however, need a mock to test the remaining outcome 3, which cannot readily be retrieved from the live API.
+
+```{r mock-minimal}
+library(httptest)
+test_that("Other http error codes are captured", {
+  expect_error(without_internet(is_doi_found("10.1038/nature14236")))
+  expect_error(without_internet(get_doi_handle("10.1038/nature14236")))
+})
+```
+
+Happily, we can cheat a little, and simply create *some* sure HTTP status error, without actually reproducing API behavior in any detail.
+The simplest HTTP error to create is just by cutting the internect connection.
+Users and the downstream logic in biblids do not care what the HTTP status error is beyond outcome 1, so this error is as good as any.
+
+We can now build additional exported functions on top of these primitives, such as `get_doi_url()` to resolve a DOI to a URL, but we won't need to test these against the live or mocked API, because that interface is already fully covered.
+Of course, if `get_doi_url()` did some very complicated parsing of the API response (it doesn't), we might want to test that behavior, too.
+But in that case, we should let it accept the API response as a parameter and test that as we would any other function free of side effects.
+
+## Use Your Judgement
+
+Balancing the tradeoff of API isolation and increased complexity is perhaps more of a craft than science.
+
+Above any hard and fast rules, test coverage and isolation should be treated not as an end in itself.
+Rather, [test-driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development) serves best as a lense to improve the design of your code:
+
+> The process of learning effective TDD is the process of learning how to build more modular applications.
+> -- [Eric Elliot](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a)
+
+Well-structured code is easy to test and vice versa.
+And code that is easy to test requires little, if any, mocking and faking.
+
+You can learn more about decoupled design in the [tidyverse design guide](https://design.tidyverse.org), the [unix philosophy](https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html) and the [pragmatic programmer](https://pragprog.com/).

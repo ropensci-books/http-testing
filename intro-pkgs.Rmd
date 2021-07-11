@@ -21,31 +21,6 @@ What are the challenges of HTTP testing?
 * Having tests depend on having secrets for authentication at hand is not ideal.
 * Having tests for situations that are hard to trigger (e.g. the failure of a remote server) is tricky.
 
-## Tradeoffs
-
-The below packages help you meet these challenges by faking web servers or mocking their responses.
-Both approaches let you run your tests against a state of an external HTTP API which you fully control.
-This can be a good thing, because it allows you to test against all theoretically possible behavior of the API, as opposed to just the current behavior of the live API.
-
-More fundamentally, by taking control of the API behavior, your can test your code, and only your code.
-If you are testing against a live API, a failed test may be either due to your code, or the errant behavior of the API.
-This ambiguity is undesirable.
-[Unit tests](https://en.wikipedia.org/wiki/Unit_testing) should test the behavior of your code, and [integration tests](https://en.wikipedia.org/wiki/Integration_testing) should test how your code interacts with other software or services, in this case, the API [].
-^[Integration tests are sometimes further differentiated in [narrow and broad tests](https://martinfowler.com/bliki/IntegrationTest.html), where only the latter run against live services. `{vcr}` has a handy facility to switch between live and pre-recorded responses.]
-
-Unfortunately, mocking and faking add their own complexity to a project.
-Respectively, you have to carry expected responses or even (rudimentary) API behavior in your code base.
-You now have two relationships to keep in mind: your code must pass your mocked/faked tests, and your mocks/fakes must correspond to the live API.
-
-This tradeoff cannot be resolved, but it is eased considerably by decoupled (or modular) code.
-Much as with other side effects, it can help to concentrate your API calls in as few functions as possible and test these with mocks or fakes, where necessary.
-All other functions can then be tested without dependence on the API.
-Conversely, if you find yourself requiring these test doubles in a lot of places, you may want to [consider a refactoring](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a).
-
-In APIs as elsewhere, test coverage or [test-driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development) perhaps serve best not as an end in itself, but as a lense to improve the design of your code.
-Well-structured code is easy to test and vice versa.
-You can learn more about decoupled design in the [tidyverse design guide](https://design.tidyverse.org), the [unix philosophy](https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html) and the [pragmatic programmer](https://pragprog.com/).
-
 ## webmockr
 
 `{webmockr}`, maintained by Scott Chamberlain, is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
@@ -138,5 +113,8 @@ Now that you have an idea of the tools we can use for HTTP testing, we'll now cr
 
 Our minimal package will use httr. However, it will help you understand concepts even if you end up using crul or curl.[^limits]
 
+Test doubles such as mocks and fakes are helpful tools, but they also introduce their own complexity.
+Adding too many of them can be a "[code smell](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a)" pointing to underlying problems in the programs design.
+You can learn more about the pros and cons of of test doubles in the chapter on [/tradeoffs]().
 
 [^limits]:  If you end up using crul, you can use vcr and webmockr; or webfakes; but not httptest. If you end up using curl you can only use webfakes.
