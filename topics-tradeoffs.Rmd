@@ -14,7 +14,7 @@ Respectively, you have to carry expected responses or even (rudimentary) API beh
 You now have two relationships to keep in mind: your code must pass your mocked/faked tests, and your mocks/fakes must correspond to the live API.
 
 This tradeoff cannot be resolved, but it is eased considerably by decoupled (or modular) code.
-Much as with other side effects, it can help to concentrate your API calls in as few functions as possible and test these with mocks or fakes, where necessary.
+Much as with other side effects, it can help to concentrate your API calls in as few functions as possible and test these with mocks or fakes, where necessary, as discussed in the chapter on [graceful code](#graceful).
 All other functions can then be tested without dependence on the API.
 Conversely, if you find yourself requiring these test doubles in a lot of places, you may want to [consider a refactoring](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a).
 The below example illustrates a set of functions with a minimal interface to the API.
