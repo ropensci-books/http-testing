@@ -114,7 +114,7 @@ Now that you have an idea of the tools we can use for HTTP testing, we'll now cr
 Our minimal package will use httr. However, it will help you understand concepts even if you end up using crul or curl.[^limits]
 
 Test doubles such as mocks and fakes are helpful tools, but they also introduce their own complexity.
-Adding too many of them can be a "[code smell](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a)" pointing to underlying problems in the programs design.
+Adding too many of them can be a "[code smell](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a)" pointing to flaws in the structure of your code.
 You can learn more about the pros and cons of of test doubles in the chapter on [/tradeoffs]().
 
 [^limits]:  If you end up using crul, you can use vcr and webmockr; or webfakes; but not httptest. If you end up using curl you can only use webfakes.

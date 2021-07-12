@@ -1,5 +1,3 @@
-#  (PART) Conclusion {-}
-
 # Tradeoffs
 
 ::: {.alert .alert-success} 
@@ -8,7 +6,8 @@ Your mileage may vary.
 :::
 
 Test doubles such as mocks or fakes can help you isolate your tests from the state of external HTTP API.
-This can be a good thing, because it allows you to test your code against a rare responses, or when the API is not available.
+This can be a good thing, because it allows you to test your code against a rare responses, or when the API is not available, as discussed in an [earlier chapter](#pkgs-testing-chapter)
+This can be a good thing, because it allows you to test your code against a rare responses, or when the API is not available, as discussed in an [earlier chapter](https://books.ropensci.org/http-testing/pkgs-testing-chapter.html#why-do-we-need-special-packages-for-http-testing)
 
 Unfortunately, mocking and faking add their own complexity to a project.
 Respectively, you have to carry expected responses or even (rudimentary) API behavior in your code base.
@@ -18,6 +17,7 @@ This tradeoff cannot be resolved, but it is eased considerably by decoupled (or 
 Much as with other side effects, it can help to concentrate your API calls in as few functions as possible and test these with mocks or fakes, where necessary.
 All other functions can then be tested without dependence on the API.
 Conversely, if you find yourself requiring these test doubles in a lot of places, you may want to [consider a refactoring](https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a).
+The below example illustrates a set of functions with a minimal interface to the API.
 
 ## Unit vs Integration Testing
 
@@ -34,7 +34,7 @@ This may be most helpful to test more complex, perhaps stateful, interactions be
 For example, you may want to test whether if you submit a string to a translation service, you get back a result in the appropriate language.
 Such test duplication of external business logic may be hard to get right and maintain, and should rarely be necessary.
 
-["Broad" integration tests](https://martinfowler.com/bliki/IntegrationTest.html) are run against live services, and thus require no test doubles.
+["Broad" integration tests](https://martinfowler.com/bliki/IntegrationTest.html) are run against live services, and thus require no test doubles (see Chapter on [real requests](#real-requests-chapter)).
 
 Neither unit nor integration tests need to cover an API specification comprehensively.
 Testing the API is not your concern, but merely the narrow interface between the API and your code.
@@ -64,12 +64,11 @@ For any given `GET` request, there are only these outcomes:
 Omitting some bells and whistles from biblids, we can minimally wrap the API thus:
 
 ```{r minimal-wrapper}
-# unexported helper
-# this is not tested, b/c the implementation could change
+# this is an internal function, and thus there's no test for it
+# instead, the exported functions calling this are tested
 verb_doi_handle <- function(doi, ...) {
   httr::VERB(
     url = "https://doi.org/",
-    # better to use curl::curl_escape() here
     path = paste0("api/handles/", doi),
     ...
   )
@@ -117,9 +116,7 @@ test_that("Non-existent DOIs error out", {
 })
 # outcome 2a
 test_that("Existing DOIs are found", {
-  testthat::local_edition(3)
-  # this snapshot will also capture some change in the API output
-  expect_snapshot_output(get_doi_handle("10.1038/nature14236"))
+  expect_true(is.list(get_doi_handle("10.1038/nature14236")))
   expect_true(is_doi_found("10.1038/nature14236"))
 })
 # outcome 2b
