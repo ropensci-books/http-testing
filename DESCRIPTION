@@ -21,13 +21,13 @@ Imports:
     webfakes,
     rhub,
     gh,
-    fs
+    fs,
+    bookdown (>= 0.22.15)
 Suggests:
-   bookdown (>= 0.22.8),
-   sass,
-   bslib,
-   downlit,
-   tinytex (>= 0.31)
+    sass,
+    bslib,
+    downlit,
+    tinytex (>= 0.31)
 Remotes:
    r-lib/downlit,
    r-lib/rlang,
