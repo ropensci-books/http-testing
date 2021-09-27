@@ -10,7 +10,7 @@ First of all, your life and the life of your package's users will be easier if t
 
 ## User-facing grace (how your package actually works)
 
-0.  If you can, do not request the API every time the user asks for something but cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out [memoise](<https://github.com/r-lib/memoise>). To remember answers across sessions, see [webmiddens](https://sckott.github.io/webmiddens/), and approaches presented in the R-hub blog post ["Persistent config and data for R packages"](<https://blog.r-hub.io/2020/03/12/user-preferences/>). Caching behavior should be well documented for users, and there should probably be an expiration time for caches that's based on how often data is updated on the remote service.
+0.  If you can, do not request the API every time the user asks for something but cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out [memoise](<https://github.com/r-lib/memoise>). To remember answers across sessions, see approaches presented in the R-hub blog post ["Persistent config and data for R packages"](<https://blog.r-hub.io/2020/03/12/user-preferences/>). Caching behavior should be well documented for users, and there should probably be an expiration time for caches that's based on how often data is updated on the remote service.
 
 1.  Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate. 
   * For instance, don't even try interacting with a web API requiring authentication if the user does not provide authentication information. 
