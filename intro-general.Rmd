@@ -45,22 +45,25 @@ How do you get started with interacting with HTTP in R?
 
 ## HTTP requests in R: what package?
 
-In R, to interact with web resources, it is recommended to use `{curl}`; or its higher-level interfaces `{httr}` ([pronounced _hitter_ or _h-t-t-r_](https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15)) or `{crul}`.
+In R, to interact with web resources, it is recommended to use `{curl}`; or its higher-level interfaces `{httr}` ([pronounced _hitter_ or _h-t-t-r_](https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15)), `{httr2}` or `{crul}`.
 
 Do not use RCurl, because it is not actively maintained!
 
-When writing a package interacting with web resources, you will probably use either `{httr}` or `{crul}`.
+When writing a package interacting with web resources, you will probably use either `{httr2}` , `{httr}` or `{crul}`.
 
 * httr is the most popular and oldest of the two, and supports OAuth. 
 httr docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
+
+* httr2 _"is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)"_ so it might be a good idea to adopt it rather than httr for a new package. It has a vignette about [Wrapping APIs](https://httr2.r-lib.org/articles/wrapping-apis.html).
 
 * crul does not support OAuth but it uses an object-oriented interface, which you might like.
 crul has a set of [clients, or ways to perform requests](https://docs.ropensci.org/crul/articles/choosing-a-client.html), that might be handy. crul also has a vignette about [API package best practices
 ](https://docs.ropensci.org/crul/articles/best-practices-api-packages.html).
 
 Below we will try to programmatically access the [status of GitHub](https://www.githubstatus.com/api/#status), the open-source platfrom provided by the company of the same name.
-We will access the same information with httr and crul.
+We will access the same information with httr2 and crul.
 If you decide for the low-level curl, feel free to contribute an example.
+The internet has enough examples for httr.
 
 ```{r}
 github_url <- "https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"
@@ -68,22 +71,24 @@ github_url <- "https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"
 
 The URL above leaves no doubt as to what format the data is provided in, JSON!
 
-Let's first use httr.
+Let's first use httr2.
 
 ```{r}
-response <- httr::GET(github_url)
+library("magrittr")
+response <- httr2::request("https://google.com") %>%
+  httr2::req_perform()
 
 # Check the response status
-httr::http_status(response)
+httr2::resp_status(response)
 
 # Or in a package you'd just write
-httr::stop_for_status(response)
+httr2::resp_check_status(response)
 
 # Parse the content
-httr::content(response)
+httr2::resp_body_html(response)
 
 # In case you wonder, the format was obtained from a header
-httr::headers(response)$`content-type`
+httr2::resp_header(response, "content-type")
 ```
 
 Now, the same with crul.
