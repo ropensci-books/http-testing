@@ -1,0 +1,161 @@
+# Use httptest2 {#httptest2}
+
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2.
+For this, we start from the initial state of exemplighratia2 again. Back to square one!
+
+
+::: {.alert .alert-dismissible .alert-info} 
+[Corresponding pull request to exemplighratia2](https://github.com/maelle/exemplighratia2/pull/1/files) Feel free to fork the repository to experiment yourself!
+:::
+
+## Setup
+
+Before working on all this, we need to install `{httptest2}`.
+
+First, we need to run `httptest2::use_httptest2()` which has a few effects:
+
+* Adding httptest2 as a dependency to `DESCRIPTION`, under Suggests just like testthat.
+* Creating a setup file under `tests/testthat/setup`,
+
+```r
+library(httptest2)
+```
+
+When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files).
+The setup file added by httptest2 loads httptest2.
+
+We shall tweak it a bit to fool our package into believing there is an API token around in contexts where there is not. Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need `gh_organizations()` to not stop because `Sys.getenv("GITHUB_PAT")` returns nothing.
+
+```r
+library(httptest2)
+
+# for contexts where the package needs to be fooled
+# (CRAN, forks)
+# this is ok because the package will used recorded responses
+# so no need for a real secret
+if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
+  Sys.setenv(GITHUB_PAT = "foobar")
+}
+```
+
+So this was just setup, now on to adapting our tests!
+
+## Actual testing
+
+The key function will be `httptest2::with_mock_dir("dir", {code-block})` which tells httptest to create mock files under `tests/testthat/dir` to store all API responses for API calls occurring in the code block. 
+We are allowed to tweak the mock files by hand, and we will do that in some cases.
+
+Let's tweak the test file for `gh_status_api`, it becomes
+
+```r
+with_mock_dir("gh_api_status", {
+  test_that("gh_api_status() works", {
+    testthat::expect_type(gh_api_status(), "character")
+    testthat::expect_equal(gh_api_status(), "operational")
+  })
+})
+```
+
+We only had to wrap the whole test in `httptest2::with_mock_dir()`.
+
+If we run this test (in RStudio clicking on "Run test"), 
+
+* the first time, httptest2 creates a mock file under `tests/testthat/gh_api_status/kctbh9vrtdwd.statuspage.io/api/v2/components.json.json` where it stores the API response.
+We however dumbed it down by hand, to
+
+```json
+{"components":[{"name":"API Requests","status":"operational"}]}
+```
+
+* all the times after that, httptest simply uses the mock file instead of actually calling the API.
+
+Let's tweak our other test, of `gh_organizations()`. 
+
+Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
+This inspired us to change error behavior a bit with a slightly more specific error message i.e. `httr2::resp_check_status(response)` became `httr2::resp_check_status(response, info = "Oops, try again later?")`. 
+
+The test file ` tests/testthat/test-organizations.R` is now:
+
+```r
+with_mock_dir("gh_organizations", {
+  test_that("gh_organizations works", {
+    testthat::expect_type(gh_organizations(), "character")
+  })
+})
+
+with_mock_dir("gh_organizations_error", {
+  test_that("gh_organizations errors if the API doesn't behave", {
+    testthat::expect_snapshot_error(gh_organizations())
+  })
+},
+simplify = FALSE)
+```
+
+The first test is similar to what we did for `gh_api_status()` except we didn't touch the mock file this time, out of laziness.
+In the second test there is more to unpack: how do we get a mock file corresponding to an error?
+
+* We first run the test as is. It fails because there is no error, which we expected. Note the `simplify = FALSE` that means the mock file also contains headers for the response.
+* We replaced `200L` with `502L` and removed the body, to end up with a simpler mock file under ` tests/testthat/gh_organizations_error/api.github.com/organizations-5377e8.R`
+
+```r
+structure(list(method = "GET", url = "https://api.github.com/organizations?since=1",
+    status_code = 502L, headers = structure(list(server = "GitHub.com",
+        date = "Thu, 17 Feb 2022 12:40:29 GMT", `content-type` = "application/json; charset=utf-8",
+        `cache-control` = "private, max-age=60, s-maxage=60",
+        vary = "Accept, Authorization, Cookie, X-GitHub-OTP",
+        etag = "W/\"d56e867402a909d66653b6cb53d83286ba9a16eef993dc8f3cb64c43b66389f4\"",
+        `x-oauth-scopes` = "gist, repo, user, workflow", `x-accepted-oauth-scopes` = "",
+        `x-github-media-type` = "github.v3; format=json", link = "<https://api.github.com/organizations?since=3428>; rel=\"next\", <https://api.github.com/organizations{?since}>; rel=\"first\"",
+        `x-ratelimit-limit` = "5000", `x-ratelimit-remaining` = "4986",
+        `x-ratelimit-reset` = "1645104327", `x-ratelimit-used` = "14",
+        `x-ratelimit-resource` = "core", `access-control-expose-headers` = "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+        `access-control-allow-origin` = "*", `strict-transport-security` = "max-age=31536000; includeSubdomains; preload",
+        `x-frame-options` = "deny", `x-content-type-options` = "nosniff",
+        `x-xss-protection` = "0", `referrer-policy` = "origin-when-cross-origin, strict-origin-when-cross-origin",
+        `content-security-policy` = "default-src 'none'", vary = "Accept-Encoding, Accept, X-Requested-With",
+        `content-encoding` = "gzip", `x-github-request-id` = "A4BA:12D5C:178438:211160:620E423C"), class = "httr2_headers"),
+    body = charToRaw("")), class = "httr2_response")
+
+```
+* We re-run the tests. We got the expected error message.
+
+Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
+
+Regarding our secret API token, since httptest2 doesn't save the requests, and since the responses don't contain the token, it is safe without our making any effort.
+
+::: {.alert .alert-dismissible .alert-primary}
+In this demo we used `httptest2::with_mock_dir()` but there are other ways to use httptest2, e.g. using `httptest2::with_mock_api()` that does not require naming a directory (you'd still need to use a separate directory for mocking the error response).
+ 
+Find out more in the [main httptest2 vignette](https://enpiar.com/httptest2/articles/httptest2.html).
+:::
+
+## Also testing for real interactions {#httptest2-real}
+
+What if the API responses change?
+Hopefully we'd notice that thanks to following API news.
+However, sometimes web APIs change without any notice.
+Therefore it is important to run tests against the real web service once in a while.
+
+One could use the same strategy as the one [we exemplified for httptest](#httptest2-real) i.e. with a different test folder.
+
+Again, one could imagine other strategies, but in all cases it is important to keep checking the package against the real web service fairly regularly.
+
+## Summary
+
+* We set up httptest2 usage in our package exemplighratia by running `use_httptest2()` and tweaking the setup file to fool our own package that needs an API token.
+* We wrapped `test_that()` into `httptest2::with_mock_dir()` and ran the tests a first time to generate mock files that hold all information about the API responses. In some cases we modified these mock files to make them smaller or to make them correspond to an API error.
+
+Now, how do we make sure this works?
+
+* Turn off wifi, run the tests again. It works! Turn on wifi again.
+* Open .Renviron (`usethis::edit_r_environ()`), edit "GITHUB_PAT" into "byeGITHUB_PAT", re-start R, run the tests again. It works! Fix your "GITHUB_PAT" token in .Renviron.
+
+So we now have tests that no longer rely on an internet connection nor on having API credentials.
+
+We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
+
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/9/files).
+
+::: {.alert .alert-dismissible .alert-primary} 
+How do we get there with yet another package? We'll try webfakes but first let's compare vcr and httptest as they both use mocking.
+:::

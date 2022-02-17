@@ -7,7 +7,7 @@ When developing a package that uses secrets (API keys, OAuth tokens) and produce
 
 Your general attitude should be to think about:
 
-* what are my secrets (an API key, an OAuth2.0 access token and the refresh token, etc.) and where/how exactly are there used (in the query part of an URL? as a header? which header, Authentication or something else?) -- packages like httr might abstract some of the complexity for you but you need to really know where secrets are used and could be leaked,
+* what are my secrets (an API key, an OAuth2.0 access token and the refresh token, etc.) and where/how exactly are there used (in the query part of an URL? as a header? which header, Authentication or something else?) -- packages like httr or httr2 might abstract some of the complexity for you but you need to really know where secrets are used and could be leaked,
 * what could go wrong (e.g. your token ending up being published), 
 * how to prevent that (save your unedited token outside of your package, make sure it is not printed in logs or present in package check artefacts), 
 * how to fix mistakes (how do you deactivate a token and how do you check no one used it in the meantime).
@@ -26,7 +26,7 @@ To better protect your users' secret,
 ### Share secrets with continuous integration services
 
 You need to share secrets with continuous integration services... for real requests only!
-For tests using vcr, httptest or webfakes, you at most need a fake secret, e.g. "foobar" as API key -- except for recording cassettes and mock files, but that is something you do locally.
+For tests using vcr, httptest, httptest2 or webfakes, you at most need a fake secret, e.g. "foobar" as API key -- except for recording cassettes and mock files, but that is something you do locally.
 
 ::: {.alert .alert-dismissible .alert-primary}
 In GitHub repositories, when storing a new secret, do not save it with quotes.
@@ -130,7 +130,7 @@ See [our chapter about making real requests](#real-requests-chapter).
 ### Do not store secrets in the cassettes, mock files, recorded responses
 
 * With vcr make sure to [configure vcr correctly](#vcr-security).
-* With httptest only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about [redacting sensitive information](https://enpiar.com/r/httptest/articles/redacting.html).
+* With httptest and httptest2 only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about [redacting sensitive information](https://enpiar.com/r/httptest/articles/redacting.html) ([for httptest2](https://enpiar.com/httptest2/articles/redacting.html)).
 * With webfakes you will be creating recorded responses yourself, make sure this process does not leak secrets. If you test something related to authentication, use fake secrets.
 
 If the API you are interacting with uses OAuth for instance, make sure you are not leaking access tokens nor _refresh tokens_.
