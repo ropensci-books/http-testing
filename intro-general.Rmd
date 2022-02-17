@@ -75,7 +75,7 @@ Let's first use httr2.
 
 ```{r}
 library("magrittr")
-response <- httr2::request("https://google.com") %>%
+response <- httr2::request(github_url) %>%
   httr2::req_perform()
 
 # Check the response status
@@ -85,7 +85,7 @@ httr2::resp_status(response)
 httr2::resp_check_status(response)
 
 # Parse the content
-httr2::resp_body_html(response)
+httr2::resp_body_json(response)
 
 # In case you wonder, the format was obtained from a header
 httr2::resp_header(response, "content-type")
