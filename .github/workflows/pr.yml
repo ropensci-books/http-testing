@@ -7,7 +7,7 @@ jobs:
     name: Render Book
     env:
       GITHUB_PAT: ${{ secrets.MINE }}
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Is this a fork
         run: |

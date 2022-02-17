@@ -32,12 +32,3 @@ Suggests:
     downlit,
     sass,
     tinytex (>= 0.31)
-Remotes:
-    nealrichardson/httptest,
-    r-lib/downlit,
-    r-lib/rlang,
-    r-lib/webfakes,
-    rstudio/bookdown,
-    rstudio/bslib,
-    rstudio/htmltools,
-    rstudio/sass
