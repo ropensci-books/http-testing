@@ -70,11 +70,20 @@ httptest works for packages using httr.
 
 The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
 
+## What is httptest2?
+
+`{httptest2}` maintained by Neal Richardson is like `{httptest}`, but for `{httr2}`.
+
+
+::: {.alert .alert-dismissible .alert-info} 
+[Direct link to httptest2 demo](#httptest2)
+:::
+
 ::: {.alert .alert-dismissible .alert-primary} 
-With both vcr and httptest the tests will use some sort of fake API responses.
+With vcr, httptest and httptest2 the tests will use some sort of fake API responses.
 
 In vcr they are called **fixtures** or **cassettes**.
-In httptest they are called **mock files**.
+In httptest and httptest2 they are called **mock files**.
 :::
 
 ## What is webfakes?
@@ -109,9 +118,10 @@ Now that you have an idea of the tools we can use for HTTP testing, we'll now cr
 
 * `{vcr}` and `{webmockr}`;
 * `{httptest}`;
+* `{httptest2}`;
 * `{webfakes}`.
 
-Our minimal package will use httr. However, it will help you understand concepts even if you end up using crul or curl.[^limits]
+Our minimal package will use httr (except for httptest2, where we'll use httr2). However, it will help you understand concepts even if you end up using crul or curl.[^limits]
 
 
 [^limits]:  If you end up using crul, you can use vcr and webmockr; or webfakes; but not httptest. If you end up using curl you can only use webfakes.

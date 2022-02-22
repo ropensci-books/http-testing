@@ -10,13 +10,13 @@ What's next? Applying those tools in your package(s), of course!
 
 * Pick one or several HTTP testing package(s) for your package. Examples of combinations: 
     * vcr for testing normal behavior, webmockr for testing behavior in case of web resource errors.
-    * vcr or httptest for most tests, webfakes for more advanced things like OAuth2.0 flows or slow internet connection.
+    * vcr or httptest2 for most tests, webfakes for more advanced things like OAuth2.0 flows or slow internet connection.
     
 * Read all the docs of the HTTP testing package(s) you choose -- a very worthy use of your time. For vcr and webmockr you can even stay here in this book and take advantage of the "vcr details" and "webmockr details" sections.
 
 * For more examples, you could also look at the reverse dependencies of the HTTP testing package(s) you use to see how they are used by other developers.
     
-* Follow developments of the HTTP testing package(s) you choose. As all four packages we presented are developed on GitHub, you could e.g. release-watch their repositories. They are also all distributed on CRAN, so you might use your usual channel for learning about CRAN updates.
+* Follow developments of the HTTP testing package(s) you choose. As all five packages we presented are developed on GitHub, you could e.g. release-watch their repositories. They are also all distributed on CRAN, so you might use your usual channel for learning about CRAN updates.
 
 * Participate in the development of the HTTP testing package(s) you choose? Your bug reports, feature requests, contributions might be helpful. Make sure to read the contributing guide and to look at current activity in the repositories.
 

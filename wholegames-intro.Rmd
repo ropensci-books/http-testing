@@ -7,15 +7,15 @@ However, we will do it _three_ times to present alternative approaches: with [vc
 After that exercise, we shall compare approaches: we will compare both packages that involve mocking i.e. [vcr vs. httptest](#mocking-pkgs-comparison); and all three HTTP packages in a [last chapter](#pkgs-comparison).
 The next section will then present single topics such as "how to deal with authentication" in further details.
 
-## Our example package
+## Our example packages
 
-Our minimal package, [`exemplighratia`](https://github.com/maelle/exemplighratia), accesses the GitHub status API and one endpoint of GitHub V3 REST API.
-It is named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
+Our minimal packages, [`exemplighratia`](https://github.com/maelle/exemplighratia) and [`exemplighratia2`](https://github.com/maelle/exemplighratia2), access the GitHub status API and one endpoint of GitHub V3 REST API.
+They are named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
 If you really need to interact with GitHub V3 API, we recommend the [gh package](https://gh.r-lib.org/).
 We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).
 
 ::: {.alert .alert-dismissible .alert-info} 
-Our example package calls web _APIs_ but the tools and concepts are applicable to packages wrapping any web resource, even poorly documented ones.[^undocumented]
+Our example packages call web _APIs_ but the tools and concepts are applicable to packages wrapping any web resource, even poorly documented ones.[^undocumented]
 :::
 
 GitHub V3 API works without authentication too, but at a lower rate.
@@ -26,10 +26,12 @@ GitHub Status API, on the contrary, does not necessitate authentication at all.
 
 So we shall create two functions, one that works without authentication, one that works with authentication.
 
-How did we create the package?
+How did we create the packages?
 You are obviously free to use your own favorite workflow tools, but below we share our workflow using the [usethis package](https://r-pkgs.org/whole-game.html).
 
 * We followed [usethis setup article](https://usethis.r-lib.org/articles/articles/usethis-setup.html).
+
+### exemplighratia (httr)
 
 Then we ran
 
@@ -145,8 +147,128 @@ test_that("gh_organizations works", {
 
 ```
 
+
+### exemplighratia2 (httr2)
+
+Then we ran
+
+* `usethis::create_package("path/to/folder/exemplighratia2")` to create and open the package project;
+* `usethis::use_mit_license()` to add an MIT license;
+* `usethis::use_package("httr2")` to add a dependency on httr2;
+* `usethis::use_package("purrr")` to add a dependency on purrr;
+* `use_r("api-status.R")` to add the first function whose code is written below;
+
+```r
+status_url <- function() {
+  "https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"
+}
+
+#' GitHub APIs status
+#'
+#' @description Get the status of requests to GitHub APIs
+#'
+#' @importFrom magrittr `%>%`
+#'
+#' @return A character vector, one of "operational", "degraded_performance",
+#' "partial_outage", or "major_outage."
+#'
+#' @details See details in https://www.githubstatus.com/api#components.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' gh_api_status()
+#' }
+gh_api_status <- function() {
+  response <- status_url() %>%
+    httr2::request() %>%
+    httr2::req_perform()
+
+  # Check status
+  httr2::resp_check_status(response)
+
+  # Parse the content
+  content <- httr2::resp_body_json(response)
+
+  # Extract the part about the API status
+  components <- content$components
+  api_status <- components[purrr::map_chr(components, "name") == "API Requests"][[1]]
+
+  # Return status
+  api_status$status
+
+}
+```
+
+* `use_test("api-status")` (and using [testthat latest edition](https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/#3rd-edition) so setting `Config/testthat/edition: 3` in `DESCRIPTION`) to add a simple test whose code is below.
+
+```r
+test_that("gh_api_status() works", {
+  testthat::expect_type(gh_api_status(), "character")
+})
+```
+
+* `use_r("organizations.R")` to add a second function. Note that an ideal version of this function would have some sort of callback in the retry, to call the `gh_api_status()` function (maybe with `httr2::req_retry()`'s `is_transient` argument).
+
+```r
+gh_v3_url <- function() {
+  "https://api.github.com/"
+}
+
+#' GitHub organizations
+#'
+#' @description Get logins of GitHub organizations.
+#'
+#' @param since The integer ID of the last organization that you've seen.
+#'
+#' @return A character vector of at most 30 elements.
+#' @export
+#'
+#' @details Refer to https://developer.github.com/v3/orgs/#list-organizations
+#'
+#' @examples
+#' \dontrun{
+#' gh_organizations(since = 42)
+#' }
+gh_organizations <- function(since = 1) {
+
+  token <- Sys.getenv("GITHUB_PAT")
+
+  if (!nchar(token)) {
+    stop("No token provided! Set up the GITHUB_PAT environment variable please.")
+  }
+
+  response <- httr2::request(gh_v3_url()) %>%
+    httr2::req_url_path_append("organizations") %>%
+    httr2::req_url_query(since = since) %>%
+    httr2::req_headers("Authorization" = paste("token", token)) %>%
+    httr2::req_retry(max_tries = 3, max_seconds = 120) %>%
+    httr2::req_perform()
+
+  httr2::resp_check_status(response)
+
+  content <- httr2::resp_body_json(response)
+
+  purrr::map_chr(content, "login")
+
+}
+
+
+```
+
+* `use_test("organizations")` to add a simple test.
+
+```r
+test_that("gh_organizations works", {
+  testthat::expect_type(gh_organizations(), "character")
+})
+
+```
+
+## Conclusion
+
 All good, now our package has 100% test coverage and passes R CMD Check (granted, our tests could be more thorough, but remember this is a minimal example). 
 But what if we try working without a connection?
-In the following chapters, we'll add more robust testing infrastructure to this minimal package, and we will do that _three_ times to compare packages/approaches: once with [vcr](#vcr), once with [httptest](#httptest), and once with [webfakes](#webfakes).
+In the following chapters, we'll add more robust testing infrastructure to this minimal package, and we will do that _four_ times to compare packages/approaches: once with [vcr](#vcr), once with [httptest](#httptest), once with [httptest2](#httptest2), and once with [webfakes](#webfakes).
 
 [^undocumented]: An interesting post to read about an R package wrapping an undocumented web API is ["One-Hour Package"](https://enpiar.com/2017/08/11/one-hour-package/) by Neal Richardson.

@@ -1,39 +1,34 @@
-Package: httptestingbook
 Type: Book
+Package: httptestingbook
 Title: HTTP testing with R packages.
 Version: 0.3
-Authors@R: person("Scott", "Chamberlain", "myrmecocystus@gmail.com", c("aut", "cre"))
-Depends: R (>= 3.4.3)
+Authors@R: 
+    person(c("Scott", "myrmecocystus@gmail.com"), "Chamberlain", , c("aut", "cre"))
 URL: https://github.com/ropensci-books/http-testing
 BugReports: https://github.com/ropensci-books/http-testing/issues
+Depends: 
+    R (>= 3.4.3)
 Imports:
-    crul,
-    vcr,
-    webmockr,
-    testthat,
-    httr,
-    urltools,
-    sessioninfo,
-    purrr,
-    xml2,
     attachment,
-    httptest,
-    webfakes,
-    rhub,
-    gh,
+    bookdown (>= 0.22.15),
+    crul,
     fs,
-    bookdown (>= 0.22.15)
+    gh,
+    httptest,
+    httptest2,
+    httr,
+    httr2,
+    purrr,
+    rhub,
+    sessioninfo,
+    testthat,
+    urltools,
+    vcr,
+    webfakes,
+    webmockr,
+    xml2
 Suggests:
-    sass,
     bslib,
     downlit,
+    sass,
     tinytex (>= 0.31)
-Remotes:
-   r-lib/downlit,
-   r-lib/rlang,
-   rstudio/bookdown,
-   rstudio/bslib,
-   rstudio/htmltools,
-   r-lib/webfakes,
-   nealrichardson/httptest,
-   rstudio/sass

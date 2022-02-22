@@ -22,7 +22,7 @@ Having tests fail due to resources being down or slow, during development or on 
 Although some packages accessing remote resources are well tested, there is a lack of resources around best practices.
 
 This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development.
-Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}` and `{webfakes}` are.
+Our aim is to develop an useful guidance to go with the great recent tools that `{vcr}`, `{webmockr}`, `{httptest}`, `{httptest2}` and `{webfakes}` are.
 
 We expect you to know [package development basics](https://r-pkgs.org/), and [git](https://happygitwithr.com/).
 

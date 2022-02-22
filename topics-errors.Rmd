@@ -9,7 +9,7 @@ Different possibilities:
 
 * Use webmockr as in [our demo](#vcr).
 * [Edit a vcr cassette](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html); be careful to skip this test when vcr is off with `vcr::skip_if_vcr_is_off()`.
-* With httptest, edit a mock file as in [our demo](#httptest), or create it from scratch.
+* With httptest or httptest2, edit a mock file as in [our demo](#httptest2), or create it from scratch.
 * With webfakes, choose what to return, have a specific app for the test, see [our demo](#webfakes).
 
 ## How to test for sequence of responses (e.g. 503 then 200)
@@ -18,5 +18,5 @@ Different possibilities:
 
 * Use [webmockr](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html#the-same-thing-with-webmockr-3).
 * [Edit a vcr cassette](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html#example-2-test-using-an-edited-cassette-with-a-503-then-a-200-1); be careful to skip this test when vcr is off with `vcr::skip_if_vcr_is_off()`
-* With httptest, this is [not easy yet](https://github.com/nealrichardson/httptest/issues/49)
+* With httptest, this is [not easy yet](https://github.com/nealrichardson/httptest/issues/49) ([httptest2 issue](https://github.com/nealrichardson/httptest2/issues/18))
 * With webfakes, follow [the docs](https://r-lib.github.io/webfakes/articles/how-to.html#how-do-i-test-a-sequence-of-requests-). Also have a specific app for the test as this is not the behavior you want in all your tests.
