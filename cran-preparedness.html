@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 13 CRAN- (and Bioconductor) preparedness for your tests | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="There is no one right answer to how to manage your tests for CRAN, except that you do want a clean check result on CRAN at all times. This probably applies to Bioconductor too. The following is a...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 13 CRAN- (and Bioconductor) preparedness for your tests | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/cran-preparedness.html">
+<meta property="og:description" content="There is no one right answer to how to manage your tests for CRAN, except that you do want a clean check result on CRAN at all times. This probably applies to Bioconductor too. The following is a...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 13 CRAN- (and Bioconductor) preparedness for your tests | HTTP testing in R">
+<meta name="twitter:description" content="There is no one right answer to how to manage your tests for CRAN, except that you do want a clean check result on CRAN at all times. This probably applies to Bioconductor too. The following is a...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="active" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="cran-preparedness" class="section level1" number="13">
+<h1>
+<span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests<a class="anchor" aria-label="anchor" href="#cran-preparedness"><i class="fas fa-link"></i></a>
+</h1>
+<p>There is no one right answer to how to manage your tests for CRAN, except that you
+do want a <a href="graceful.html#graceful">clean check result on CRAN at all times</a>.
+This probably applies to Bioconductor too.
+The following is a
+discussion of the various considerations - which should give you enough
+information to make an educated decision.</p>
+<div id="running-tests-on-cran" class="section level2" number="13.1">
+<h2>
+<span class="header-section-number">13.1</span> Running tests on CRAN?<a class="anchor" aria-label="anchor" href="#running-tests-on-cran"><i class="fas fa-link"></i></a>
+</h2>
+<p>You can run vcr/httptest/httptest2/webfakes enabled tests on CRAN.
+CRAN is okay with files associated with tests,
+and so in general on CRAN you can run your tests that use cassettes, mock files or recorded responses on CRAN.
+Another aspect is the presence of dependencies: make sure the HTTP testing package you use is listed as <code>Suggests</code> dependency in DESCRIPTION!
+With webfakes this might mean also listing <a href="https://r-lib.github.io/webfakes/#optional-dependencies">optional dependencies</a> in DESCRIPTION.
+With webfakes, your tests if run on CRAN should not assume the availability of a given port.</p>
+<p>When running HTTP tests on CRAN, be aware of a few things:</p>
+<ul>
+<li>If your tests require any secret environment variables or R options (apart from the “foobar” ones used to fool your package when using a saved response),
+they won’t be available on CRAN. In these cases you likely want to skip these
+tests with <code><a href="https://testthat.r-lib.org/reference/skip.html">testthat::skip_on_cran()</a></code>.</li>
+<li>If your tests have cassettes, mock files or recorded responses with sensitive information in them,
+you probably do not want to have those cassettes on the internet, in which case
+you won’t be running vcr enabled tests on CRAN either. In the case of sensitive
+information, you might want to Rbuildignore the cassettes, mock files or recorded responses (and to gitignore them or make your package development repository private).</li>
+<li>There is a maximal size for package sources so you will want your cassettes, mock files or recorded responses to not be too big. There are three ways to limit their size
+<ul>
+<li>Make requests that do not generate a huge response (e.g. tweak the time range);</li>
+<li>Edit the recorded responses (why not even copy-paste responses from the API docs as those are often short) — see <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html">vcr docs about editing cassettes for pros and cons</a>;</li>
+<li>Share <a href="managing-cassettes.html#sharing-cassettes">cassettes</a> / mock files / recorded responses between tests.</li>
+</ul>
+</li>
+</ul>
+<p>Do <a href="https://github.com/nealrichardson/httptest/issues/11#issuecomment-354699342">not <em>compress</em> cassettes, mock files or recorded responses</a>: CRAN submissions are already compressed; compressed files will make git diffs hard to use.</p>
+</div>
+<div id="skipping-a-few-tests-on-cran" class="section level2" number="13.2">
+<h2>
+<span class="header-section-number">13.2</span> Skipping a few tests on CRAN?<a class="anchor" aria-label="anchor" href="#skipping-a-few-tests-on-cran"><i class="fas fa-link"></i></a>
+</h2>
+<p>If you are worried at all about problems with HTTP tests on CRAN you can use
+<code><a href="https://testthat.r-lib.org/reference/skip.html">testthat::skip_on_cran()</a></code> to skip specific tests.
+Make sure your tests run somewhere else (on continuous integration) regularly!</p>
+<p>We’d recommend not running tests making real requests on CRAN, even when interacting with an API without authentication.</p>
+</div>
+<div id="skipping-all-tests-on-cran" class="section level2" number="13.3">
+<h2>
+<span class="header-section-number">13.3</span> Skipping all tests on CRAN?<a class="anchor" aria-label="anchor" href="#skipping-all-tests-on-cran"><i class="fas fa-link"></i></a>
+</h2>
+<p>If you have a good continuous integration setup (several operating systems, scheduled runs, etc.) why not skip all tests on CRAN?</p>
+</div>
+<div id="stress-test-your-package" class="section level2" number="13.4">
+<h2>
+<span class="header-section-number">13.4</span> Stress-test your package<a class="anchor" aria-label="anchor" href="#stress-test-your-package"><i class="fas fa-link"></i></a>
+</h2>
+<p>To stress-test your package before a CRAN submission, use <code><a href="https://r-hub.github.io/rhub/reference/check_for_cran.html">rhub::check_for_cran()</a></code> without passing any environment variable to the function, and use <a href="https://blog.r-hub.io/2020/04/01/win-builder/">WinBuilder</a>.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></div>
+<div class="next"><a href="security-chapter.html"><span class="header-section-number">14</span> Security</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#cran-preparedness"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="nav-link" href="#running-tests-on-cran"><span class="header-section-number">13.1</span> Running tests on CRAN?</a></li>
+<li><a class="nav-link" href="#skipping-a-few-tests-on-cran"><span class="header-section-number">13.2</span> Skipping a few tests on CRAN?</a></li>
+<li><a class="nav-link" href="#skipping-all-tests-on-cran"><span class="header-section-number">13.3</span> Skipping all tests on CRAN?</a></li>
+<li><a class="nav-link" href="#stress-test-your-package"><span class="header-section-number">13.4</span> Stress-test your package</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/topics-cran.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/topics-cran.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

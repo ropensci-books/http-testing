@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 22 Caching HTTP requests | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="Record HTTP calls and replay them  22.1 Package documentation Check out https://docs.ropensci.org/vcr/ for documentation on vcr functions.  22.2 Terminology  vcr: the name comes from the idea that...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 22 Caching HTTP requests | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/vcr-intro.html">
+<meta property="og:description" content="Record HTTP calls and replay them  22.1 Package documentation Check out https://docs.ropensci.org/vcr/ for documentation on vcr functions.  22.2 Terminology  vcr: the name comes from the idea that...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 22 Caching HTTP requests | HTTP testing in R">
+<meta name="twitter:description" content="Record HTTP calls and replay them  22.1 Package documentation Check out https://docs.ropensci.org/vcr/ for documentation on vcr functions.  22.2 Terminology  vcr: the name comes from the idea that...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="active" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="vcr-intro" class="section level1" number="22">
+<h1>
+<span class="header-section-number">22</span> Caching HTTP requests<a class="anchor" aria-label="anchor" href="#vcr-intro"><i class="fas fa-link"></i></a>
+</h1>
+<p>Record HTTP calls and replay them</p>
+<div id="vcr-pkgdown" class="section level2" number="22.1">
+<h2>
+<span class="header-section-number">22.1</span> Package documentation<a class="anchor" aria-label="anchor" href="#vcr-pkgdown"><i class="fas fa-link"></i></a>
+</h2>
+<p>Check out <a href="https://docs.ropensci.org/vcr/" class="uri">https://docs.ropensci.org/vcr/</a> for documentation on <code>vcr</code> functions.</p>
+</div>
+<div id="terminology" class="section level2" number="22.2">
+<h2>
+<span class="header-section-number">22.2</span> Terminology<a class="anchor" aria-label="anchor" href="#terminology"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>
+<em>vcr</em>: the name comes from the idea that we want to record something and play it back later, like a vcr</li>
+<li>
+<em>cassette</em>: A <em>thing</em> to record HTTP interactions to. Right now the only option is the file system (writing to files), but in the future could be other things, e.g. a key-value store like Redis</li>
+<li>
+<em>fixture</em>: A fixture is something used to consistently test a piece of software. In this case, a cassette (just defined above) is a fixture - used in unit tests. If you use our setup function <code>vcr_setup()</code> the default directory created to hold cassettes is called <code>fixtures/</code> as a signal as to what the folder contains.</li>
+<li>Persisters: how to save requests - currently only option is the file system</li>
+<li>
+<em>serialize</em>: translating data into a format that can be stored; here, translate HTTP request and response data into a representation on disk to read back later</li>
+<li>Serializers: how to serialize the HTTP response - currently only option is YAML; other options in the future could include e.g. JSON</li>
+<li>
+<em>insert cassette</em>: create a cassette (all HTTP interactions will be recorded to this cassette)</li>
+<li>
+<em>eject cassette</em>: eject the cassette (no longer recording to that cassette)</li>
+<li>
+<em>replay</em>: refers to using a cached result of an http request that was recorded earlier</li>
+</ul>
+</div>
+<div id="design" class="section level2" number="22.3">
+<h2>
+<span class="header-section-number">22.3</span> Design<a class="anchor" aria-label="anchor" href="#design"><i class="fas fa-link"></i></a>
+</h2>
+<p>This section explains <code>vcr</code>’s internal design and architecture.</p>
+<div id="where-vcr-comes-from-and-why-r6" class="section level3" number="22.3.1">
+<h3>
+<span class="header-section-number">22.3.1</span> Where vcr comes from and why R6<a class="anchor" aria-label="anchor" href="#where-vcr-comes-from-and-why-r6"><i class="fas fa-link"></i></a>
+</h3>
+<p><code>vcr</code> was “ported” from the Ruby gem (aka, library) of the same name<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The first version of Ruby’s vcr was released in February 2010
+&lt;a href="https://rubygems.org/gems/vcr/versions/0.1.0" class="uri"&gt;https://rubygems.org/gems/vcr/versions/0.1.0&lt;/a&gt;. Ruby vcr source code:
+&lt;a href="https://github.com/vcr/vcr/" class="uri"&gt;https://github.com/vcr/vcr/&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a>.
+Because it was ported from Ruby, an object-oriented programming language
+I thought it would be easier to use an object system in R that most
+closely resemble that used in Ruby (at least in my opinion). This
+thinking lead to choosing <a href="https://adv-r.hadley.nz/r6.html">R6</a>. The exported functions users interact
+with are not R6 classes, but are rather normal R functions. However,
+most of the internal code in the package uses R6. Thus, familiarity
+with R6 is important for people that may want to contribute to <code>vcr</code>,
+but not required at all for <code>vcr</code> users.</p>
+</div>
+<div id="principles" class="section level3" number="22.3.2">
+<h3>
+<span class="header-section-number">22.3.2</span> Principles<a class="anchor" aria-label="anchor" href="#principles"><i class="fas fa-link"></i></a>
+</h3>
+<div id="an-easy-to-use-interface-hides-complexity" class="section level4" number="22.3.2.1">
+<h4>
+<span class="header-section-number">22.3.2.1</span> An easy to use interface hides complexity<a class="anchor" aria-label="anchor" href="#an-easy-to-use-interface-hides-complexity"><i class="fas fa-link"></i></a>
+</h4>
+<p>As described above, <code>vcr</code> uses R6 internally, but users interact with
+normal R functions. Internal functions that are quite complicated are
+largely R6 while exported, simpler functions users interact with are
+normal R functions.</p>
+</div>
+<div id="classfunction-names-are-inherited-from-ruby-vcr" class="section level4" number="22.3.2.2">
+<h4>
+<span class="header-section-number">22.3.2.2</span> Class/function names are inherited from Ruby vcr<a class="anchor" aria-label="anchor" href="#classfunction-names-are-inherited-from-ruby-vcr"><i class="fas fa-link"></i></a>
+</h4>
+<p>Since R <code>vcr</code> was ported from Ruby, we kept most of the names of
+functions/classes and variables. So if you’re wondering about why
+a function, class, or variable has a particular name, its derivation
+can not be found out in this package, for the most part that is.</p>
+</div>
+<div id="hooks-into-http-clients" class="section level4" number="22.3.2.3">
+<h4>
+<span class="header-section-number">22.3.2.3</span> Hooks into HTTP clients<a class="anchor" aria-label="anchor" href="#hooks-into-http-clients"><i class="fas fa-link"></i></a>
+</h4>
+<p>Perhaps the most fundamental thing about that this package work is
+how it knows what HTTP requests are being made. This stumped me for
+quite a long time. When looking at Ruby vcr, at first I thought it
+must be “listening” for HTTP requests somehow. Then I found out about
+<a href="https://en.wikipedia.org/wiki/Monkey_patch">monkey patching</a> (see also <a href="https://culttt.com/2015/06/17/what-is-monkey-patching-in-ruby/">this blog post as a good
+summary</a>); that’s how it’s achieved in Ruby. That is, the Ruby
+vcr package literally overrides certain methods in Ruby HTTP clients,
+hijacking internals of the HTTP clients.</p>
+<p>However, monkey patching is not allowed in R. Thus, in R we have to
+somehow have “hooks” into HTTP clients in R. Fortunately, Scott is the
+maintainer of one of the HTTP clients, <code>crul</code>, so was able to quickly
+create a hook. Very fortunately, there was already a hook mechanism
+in the <code>httr</code> package.</p>
+<p>The actual hooks are not in <code>vcr</code>, but in <code>webmockr</code>. <code>vcr</code> depends on
+<code>webmockr</code> for hooking into HTTP clients <code>httr</code> and <code>crul</code>.</p>
+</div>
+</div>
+<div id="internal-classes" class="section level3" number="22.3.3">
+<h3>
+<span class="header-section-number">22.3.3</span> Internal classes<a class="anchor" aria-label="anchor" href="#internal-classes"><i class="fas fa-link"></i></a>
+</h3>
+<p>An overview of some of the more important aspects of vcr.</p>
+<div id="configuration" class="section level4" number="22.3.3.1">
+<h4>
+<span class="header-section-number">22.3.3.1</span> Configuration<a class="anchor" aria-label="anchor" href="#configuration"><i class="fas fa-link"></i></a>
+</h4>
+<p>An internal object (<code>vcr_c</code>) is created when <code>vcr</code> is loaded with
+the default vcr configuration options inside of an R6 class <code>VCRConfig</code> -
+see <a href="https://github.com/ropensci/vcr/blob/master/R/onLoad.R" class="uri">https://github.com/ropensci/vcr/blob/master/R/onLoad.R</a>. This
+class is keeps track of default and user specified configuration options.
+You can access <code>vcr_c</code> using triple namespace <code>:::</code>, though it is not
+intended for general use. Whenever you make calls to <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code>
+or other configuration functions, <code>vcr_c</code> is affected.</p>
+</div>
+<div id="cassette-class" class="section level4" number="22.3.3.2">
+<h4>
+<span class="header-section-number">22.3.3.2</span> Cassette class<a class="anchor" aria-label="anchor" href="#cassette-class"><i class="fas fa-link"></i></a>
+</h4>
+<p><code>Cassette</code> is an R6 class that handles internals/state for each cassette.
+Each time you run <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> this class is used. The class has quite
+a few methods in it, so there’s a lot going on in the class. Ideally
+the class would be separated into subclasses to handle similar sets
+of logic, but there’s not an easy way to do that with R6.</p>
+<p>Of note in <code>Cassette</code> is that when called, within the <code>initialize()</code>
+call <code>webmockr</code> is used to create webmockr stubs.</p>
+</div>
+<div id="how-http-requests-are-handled" class="section level4" number="22.3.3.3">
+<h4>
+<span class="header-section-number">22.3.3.3</span> How HTTP requests are handled<a class="anchor" aria-label="anchor" href="#how-http-requests-are-handled"><i class="fas fa-link"></i></a>
+</h4>
+<p>Within <code>webmockr</code>, there are calls to the vcr class <code>RequestHandler</code>, which
+has child classes <code>RequestHandlerCrul</code> and <code>RequestHandlerHttr</code> for
+<code>crul</code> and <code>httr</code>, respectively. These classes determine what to do with
+each HTTP request. The options for each HTTP request include:</p>
+<ul>
+<li>
+<strong>Ignored</strong> You can ignore HTTP requests under certain rules using the
+configuration options <code>ignore_hosts</code> and <code>ignore_localhost</code>
+</li>
+<li>
+<strong>Stubbed by vcr</strong> This is an HTTP request for which a match is found
+in the cassette defined in the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code>/<code><a href="https://docs.ropensci.org/vcr/reference/insert_cassette.html">insert_cassette()</a></code> call.
+In this case the matching request/response from the cassette is returned
+with no real HTTP request allowed.</li>
+<li>
+<strong>Recordable</strong> This is an HTTP request for which no match is found
+in the cassette defined in the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code>/<code><a href="https://docs.ropensci.org/vcr/reference/insert_cassette.html">insert_cassette()</a></code> call.
+In this case a real HTTP request is allowed, and the request/response is
+recorded to the cassette.</li>
+<li>
+<strong>Unhandled</strong> This is a group of cases, all of which cause an error
+to be thrown with a message trying to help the user figure out how to
+fix the problem.</li>
+</ul>
+<p>If you use <a href="https://docs.ropensci.org/vcr/articles/debugging.html?q=logging#logging-1">vcr logging</a> you’ll see these categories in your logs.</p>
+</div>
+<div id="serializers" class="section level4" number="22.3.3.4">
+<h4>
+<span class="header-section-number">22.3.3.4</span> Serializers<a class="anchor" aria-label="anchor" href="#serializers"><i class="fas fa-link"></i></a>
+</h4>
+<p>Serializers handle in what format cassettes are written to files on disk.
+The current options are YAML (default) and JSON. YAML was implemented first
+in <code>vcr</code> because that’s the default option in Ruby vcr.</p>
+<p>An R6 class <code>Serializer</code> is the parent class for all serializer types;
+<code>YAML</code> and <code>JSON</code> are both R6 classes that inherit from <code>Serializer</code>. Both
+<code>YAML</code> and <code>JSON</code> define just two methods: <code><a href="https://rdrr.io/r/base/serialize.html">serialize()</a></code> and <code>deserialize()</code>
+for converting R structures to yaml or json, and converting yaml or json back
+to R structures, respectively.</p>
+</div>
+</div>
+<div id="environments" class="section level3" number="22.3.4">
+<h3>
+<span class="header-section-number">22.3.4</span> Environments<a class="anchor" aria-label="anchor" href="#environments"><i class="fas fa-link"></i></a>
+</h3>
+<div id="logging" class="section level4" number="22.3.4.1">
+<h4>
+<span class="header-section-number">22.3.4.1</span> Logging<a class="anchor" aria-label="anchor" href="#logging"><i class="fas fa-link"></i></a>
+</h4>
+<p>An internal environment (<code>vcr_log_env</code>) is used when you use logging.
+At this point it only keeps track of one variable - <code>file</code> - to be able
+to refer to what file is used for logging across many classes/functions
+that need to write to the log file.</p>
+</div>
+<div id="a-bit-of-housekeeping" class="section level4" number="22.3.4.2">
+<h4>
+<span class="header-section-number">22.3.4.2</span> A bit of housekeeping<a class="anchor" aria-label="anchor" href="#a-bit-of-housekeeping"><i class="fas fa-link"></i></a>
+</h4>
+<p>Another internal environment (<code>vcr__env</code>) is used to keep track of a
+few items, including the current cassette in use, and the last vcr error.</p>
+</div>
+<div id="lightswitch" class="section level4" number="22.3.4.3">
+<h4>
+<span class="header-section-number">22.3.4.3</span> Lightswitch<a class="anchor" aria-label="anchor" href="#lightswitch"><i class="fas fa-link"></i></a>
+</h4>
+<p>Another internal environment (<code>light_switch</code>) is used to keep track of users
+turning on and off <code>vcr</code>. See <code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">?lightswitch</a></code>.</p>
+</div>
+</div>
+</div>
+<div id="vcr-basic-usage" class="section level2" number="22.4">
+<h2>
+<span class="header-section-number">22.4</span> Basic usage<a class="anchor" aria-label="anchor" href="#vcr-basic-usage"><i class="fas fa-link"></i></a>
+</h2>
+<div id="in-tests" class="section level3" number="22.4.1">
+<h3>
+<span class="header-section-number">22.4.1</span> In tests<a class="anchor" aria-label="anchor" href="#in-tests"><i class="fas fa-link"></i></a>
+</h3>
+<p>In your tests, for whichever tests you want to use <code>vcr</code>, wrap them in a <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> call like:</p>
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span>
+<span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span>
+  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span>
+    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span>
+
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_is.html">expect_is</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"character"</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>OR put the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> block on the inside, but put <code>testthat</code> expectations outside of
+the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> block:</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span>
+<span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span>
+  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span>
+    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+
+  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_is.html">expect_is</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"character"</span><span class="op">)</span>
+  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span>
+  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>Don’t wrap the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block inside your <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block with <code>testthat</code> expectations inside the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block, as you’ll only get the line number that the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block starts on on failures.</p>
+<p>The first time you run the tests, a “cassette” i.e. a file with recorded HTTP interactions, is created at <code>tests/fixtures/rl_citation.yml</code>.
+The times after that, the cassette will be used.
+If you change your code and more HTTP interactions are needed in the code wrapped by <code>vcr::use_cassette("rl_citation"</code>, delete <code>tests/fixtures/rl_citation.yml</code> and run the tests again for re-recording the cassette.</p>
+</div>
+<div id="outside-of-tests" class="section level3" number="22.4.2">
+<h3>
+<span class="header-section-number">22.4.2</span> Outside of tests<a class="anchor" aria-label="anchor" href="#outside-of-tests"><i class="fas fa-link"></i></a>
+</h3>
+<p>If you want to get a feel for how vcr works, although you don’t need too.</p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/crul/">crul</a></span><span class="op">)</span>
+
+<span class="va">cli</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span>
+    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span>
+    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP response - thus, your tests run faster.</p>
+<p>The cached response looks something like (condensed for brevity):</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb99-1"><a href="vcr-intro.html#cb99-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>
+<span id="cb99-2"><a href="vcr-intro.html#cb99-2"></a><span class="kw">-</span><span class="at"> </span><span class="fu">request</span><span class="kw">:</span></span>
+<span id="cb99-3"><a href="vcr-intro.html#cb99-3"></a><span class="at">    </span><span class="fu">method</span><span class="kw">:</span><span class="at"> get</span></span>
+<span id="cb99-4"><a href="vcr-intro.html#cb99-4"></a><span class="at">    </span><span class="fu">uri</span><span class="kw">:</span><span class="at"> https://eu.httpbin.org/get</span></span>
+<span id="cb99-5"><a href="vcr-intro.html#cb99-5"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
+<span id="cb99-6"><a href="vcr-intro.html#cb99-6"></a><span class="at">      </span><span class="fu">encoding</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
+<span id="cb99-7"><a href="vcr-intro.html#cb99-7"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
+<span id="cb99-8"><a href="vcr-intro.html#cb99-8"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
+<span id="cb99-9"><a href="vcr-intro.html#cb99-9"></a><span class="at">      </span><span class="fu">User-Agent</span><span class="kw">:</span><span class="at"> libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span></span>
+<span id="cb99-10"><a href="vcr-intro.html#cb99-10"></a><span class="at">  </span><span class="fu">response</span><span class="kw">:</span></span>
+<span id="cb99-11"><a href="vcr-intro.html#cb99-11"></a><span class="at">    </span><span class="fu">status</span><span class="kw">:</span></span>
+<span id="cb99-12"><a href="vcr-intro.html#cb99-12"></a><span class="at">      </span><span class="fu">status_code</span><span class="kw">:</span><span class="at"> </span><span class="st">'200'</span></span>
+<span id="cb99-13"><a href="vcr-intro.html#cb99-13"></a><span class="at">      </span><span class="fu">message</span><span class="kw">:</span><span class="at"> OK</span></span>
+<span id="cb99-14"><a href="vcr-intro.html#cb99-14"></a><span class="at">      </span><span class="fu">explanation</span><span class="kw">:</span><span class="at"> Request fulfilled, document follows</span></span>
+<span id="cb99-15"><a href="vcr-intro.html#cb99-15"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
+<span id="cb99-16"><a href="vcr-intro.html#cb99-16"></a><span class="at">      </span><span class="fu">status</span><span class="kw">:</span><span class="at"> HTTP/1.1 200 OK</span></span>
+<span id="cb99-17"><a href="vcr-intro.html#cb99-17"></a><span class="at">      </span><span class="fu">connection</span><span class="kw">:</span><span class="at"> keep-alive</span></span>
+<span id="cb99-18"><a href="vcr-intro.html#cb99-18"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
+<span id="cb99-19"><a href="vcr-intro.html#cb99-19"></a><span class="at">      </span><span class="fu">encoding</span><span class="kw">:</span><span class="at"> UTF-8</span></span>
+<span id="cb99-20"><a href="vcr-intro.html#cb99-20"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> </span><span class="st">"{</span><span class="sc">\n</span><span class="st">  </span><span class="sc">\"</span><span class="st">args</span><span class="sc">\"</span><span class="st">: {}, </span><span class="sc">\n</span><span class="st">  </span><span class="sc">\"</span><span class="st">headers</span><span class="sc">\"</span><span class="st">: {</span><span class="sc">\n</span><span class="st">    </span><span class="sc">\"</span><span class="st">Accept</span><span class="sc">\"</span><span class="st">: </span><span class="sc">\"</span><span class="st">application/json,</span></span>
+<span id="cb99-21"><a href="vcr-intro.html#cb99-21"></a><span class="st">        text/xml, application/xml, */*</span><span class="sc">\"</span><span class="st">, </span><span class="sc">\n</span><span class="st">    </span><span class="sc">\"</span><span class="st">Accept-Encoding</span><span class="sc">\"</span><span class="st">: </span><span class="sc">\"</span><span class="st">gzip, deflate</span><span class="sc">\"</span><span class="st">,</span></span>
+<span id="cb99-22"><a href="vcr-intro.html#cb99-22"></a><span class="st">        </span><span class="sc">\n</span><span class="st">    </span><span class="sc">\"</span><span class="st">Connection</span><span class="sc">\"</span><span class="st">: </span><span class="sc">\"</span><span class="st">close</span><span class="sc">\"</span><span class="st">, </span><span class="sc">\n</span><span class="st">    </span><span class="sc">\"</span><span class="st">Host</span><span class="sc">\"</span><span class="st">: </span><span class="sc">\"</span><span class="st">httpbin.org</span><span class="sc">\"</span><span class="st">, </span><span class="sc">\n</span><span class="st">    </span><span class="sc">\"</span><span class="st">User-Agent</span><span class="sc">\"</span><span class="st">:</span></span>
+<span id="cb99-23"><a href="vcr-intro.html#cb99-23"></a><span class="st">        </span><span class="sc">\"</span><span class="st">libcurl/7.54.0 r-curl/3.2 crul/0.5.2</span><span class="sc">\"\n</span><span class="st">  }, </span><span class="sc">\n</span><span class="st">  </span><span class="sc">\"</span><span class="st">origin</span><span class="sc">\"</span><span class="st">: </span><span class="sc">\"</span><span class="st">111.222.333.444</span><span class="sc">\"</span><span class="st">,</span></span>
+<span id="cb99-24"><a href="vcr-intro.html#cb99-24"></a><span class="st">        </span><span class="sc">\n</span><span class="st">  </span><span class="sc">\"</span><span class="st">url</span><span class="sc">\"</span><span class="st">: </span><span class="sc">\"</span><span class="st">https://eu.httpbin.org/get</span><span class="sc">\"\n</span><span class="st">}</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb99-25"><a href="vcr-intro.html#cb99-25"></a><span class="at">  </span><span class="fu">recorded_at</span><span class="kw">:</span><span class="at"> 2018-04-03 22:55:02 GMT</span></span>
+<span id="cb99-26"><a href="vcr-intro.html#cb99-26"></a><span class="at">  </span><span class="fu">recorded_with</span><span class="kw">:</span><span class="at"> vcr/0.1.0, webmockr/0.2.4, crul/0.5.2</span></span></code></pre></div>
+<p>All components of both the request and response are preserved, so that the HTTP client (in this case <code>crul</code>) can reconstruct its own response just as it would if it wasn’t using <code>vcr</code>.</p>
+</div>
+<div id="less-basic-usage" class="section level3" number="22.4.3">
+<h3>
+<span class="header-section-number">22.4.3</span> Less basic usage<a class="anchor" aria-label="anchor" href="#less-basic-usage"><i class="fas fa-link"></i></a>
+</h3>
+<p>For tweaking things to your needs, make sure to read the docs about <a href="https://docs.ropensci.org/vcr/articles/configuration.html">configuration</a> (e.g., where are the fixtures saved? can they be re-recorded automatically regulary?) and <a href="https://docs.ropensci.org/vcr/articles/request_matching.html">request matching</a> (how does vcr match a request to a recorded interaction?)</p>
+<p>All components of both the request and response are preserved, so that the HTTP client (in this case <code>crul</code>) can reconstruct its own response just as it would if it wasn’t using <code>vcr</code>.</p>
+</div>
+</div>
+<div id="vcr-enabled-testing" class="section level2" number="22.5">
+<h2>
+<span class="header-section-number">22.5</span> vcr enabled testing<a class="anchor" aria-label="anchor" href="#vcr-enabled-testing"><i class="fas fa-link"></i></a>
+</h2>
+<div id="check-vs-test" class="section level3" number="22.5.1">
+<h3>
+<span class="header-section-number">22.5.1</span> check vs. test<a class="anchor" aria-label="anchor" href="#check-vs-test"><i class="fas fa-link"></i></a>
+</h3>
+<blockquote>
+<p>TLDR: Run <code>devtools::test()</code> before running <code>devtools::check()</code> for recording your cassettes.</p>
+</blockquote>
+<p>When running tests or checks of your whole package, note that you’ll get different results with
+<code>devtools::check()</code> (check button of RStudio build pane) vs. <code>devtools::test()</code> (test button of RStudio build pane). This arises because <code>devtools::check()</code> runs in a
+temporary directory and files created (vcr cassettes) are only in that temporary directory and
+thus don’t persist after <code>devtools::check()</code> exits.</p>
+<p>However, <code>devtools::test()</code> does not run in a temporary directory, so files created (vcr
+cassettes) are in whatever directory you’re running it in.</p>
+<p>Alternatively, you can run <code>devtools::test_file()</code> (or the “Run test” button in RStudio) to create your vcr cassettes one test file at a time.</p>
+</div>
+<div id="vcr-ci" class="section level3" number="22.5.2">
+<h3>
+<span class="header-section-number">22.5.2</span> CI sites: GitHub Actions, Appveyor, etc.<a class="anchor" aria-label="anchor" href="#vcr-ci"><i class="fas fa-link"></i></a>
+</h3>
+<p>Refer to <a href="vcr-security.html#vcr-security">the security chapter</a>.</p>
+
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></div>
+<div class="next"><a href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#vcr-intro"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="nav-link" href="#vcr-pkgdown"><span class="header-section-number">22.1</span> Package documentation</a></li>
+<li><a class="nav-link" href="#terminology"><span class="header-section-number">22.2</span> Terminology</a></li>
+<li>
+<a class="nav-link" href="#design"><span class="header-section-number">22.3</span> Design</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#where-vcr-comes-from-and-why-r6"><span class="header-section-number">22.3.1</span> Where vcr comes from and why R6</a></li>
+<li><a class="nav-link" href="#principles"><span class="header-section-number">22.3.2</span> Principles</a></li>
+<li><a class="nav-link" href="#internal-classes"><span class="header-section-number">22.3.3</span> Internal classes</a></li>
+<li><a class="nav-link" href="#environments"><span class="header-section-number">22.3.4</span> Environments</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#vcr-basic-usage"><span class="header-section-number">22.4</span> Basic usage</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#in-tests"><span class="header-section-number">22.4.1</span> In tests</a></li>
+<li><a class="nav-link" href="#outside-of-tests"><span class="header-section-number">22.4.2</span> Outside of tests</a></li>
+<li><a class="nav-link" href="#less-basic-usage"><span class="header-section-number">22.4.3</span> Less basic usage</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#vcr-enabled-testing"><span class="header-section-number">22.5</span> vcr enabled testing</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#check-vs-test"><span class="header-section-number">22.5.1</span> check vs. test</a></li>
+<li><a class="nav-link" href="#vcr-ci"><span class="header-section-number">22.5.2</span> CI sites: GitHub Actions, Appveyor, etc.</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/07-vcr.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/07-vcr.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

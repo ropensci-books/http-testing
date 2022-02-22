@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 10 Use webfakes | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.  10.1 Setup Before working on all this, we need to install {webfakes}, with...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 10 Use webfakes | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/webfakes.html">
+<meta property="og:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.  10.1 Setup Before working on all this, we need to install {webfakes}, with...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 10 Use webfakes | HTTP testing in R">
+<meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.  10.1 Setup Before working on all this, we need to install {webfakes}, with...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="active" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="webfakes" class="section level1" number="10">
+<h1>
+<span class="header-section-number">10</span> Use webfakes<a class="anchor" aria-label="anchor" href="#webfakes"><i class="fas fa-link"></i></a>
+</h1>
+<p>In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.</p>
+<div id="setup-3" class="section level2" number="10.1">
+<h2>
+<span class="header-section-number">10.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup-3"><i class="fas fa-link"></i></a>
+</h2>
+<p>Before working on all this, we need to install <a href="https://webfakes.r-lib.org/">webfakes</a>, with <code>install.packages("webfakes")</code>.</p>
+<p>Then, we need to add webfakes as a Suggests dependency of our package, potentially via running <code>usethis::use_package("webfakes", type = "Suggests")</code>.</p>
+<p>Last but not least, we create a setup file at <code>tests/testthat/setup.R</code>.
+When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name starts with “setup” are always run first</a>.
+We need to ensure that we set up a fake API key when there is no API token around.
+Why? Because if you remember well, the code of our function <code>gh_organizations()</code> checks for the presence of a token.
+When using our own fake web service, we obviously don’t really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span> <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>The setup file could also load webfakes, but in our demo we will namespace webfakes functions instead.</p>
+</div>
+<div id="actual-testing-3" class="section level2" number="10.2">
+<h2>
+<span class="header-section-number">10.2</span> Actual testing<a class="anchor" aria-label="anchor" href="#actual-testing-3"><i class="fas fa-link"></i></a>
+</h2>
+<p>With webfakes we will be spinning local fake web services that we will want our package to interact with instead of the real APIs.
+Therefore, we first need to amend the code of functions returning URLs to services to be able to change them via an environment variable.
+They become:</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">status_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
+
+  <span class="va">env_url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"EXEMPLIGHRATIA_GITHUB_STATUS_URL"</span><span class="op">)</span>
+
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="va">env_url</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">env_url</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"</span>
+<span class="op">}</span></code></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gh_v3_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
+
+  <span class="va">api_url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"EXEMPLIGHRATIA_GITHUB_API_URL"</span><span class="op">)</span>
+
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="va">api_url</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">api_url</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="st">"https://api.github.com/"</span>
+<span class="op">}</span></code></pre></div>
+<p>Having these two switches is crucial.</p>
+<p>Then, let’s tweak our test of <code>gh_api_status()</code>.</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+   <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span>
+      <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">res</span><span class="op">$</span><span class="fu">send_json</span><span class="op">(</span>
+          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> components <span class="op">=</span>
+          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+            <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+            name <span class="op">=</span> <span class="st">"API Requests"</span>,
+            status <span class="op">=</span> <span class="st">"operational"</span>
+            <span class="op">)</span>
+          <span class="op">)</span>
+          <span class="op">)</span>,
+          auto_unbox <span class="op">=</span> <span class="cn">TRUE</span>
+        <span class="op">)</span>
+      <span class="op">}</span><span class="op">)</span>
+    <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="va">web</span><span class="op">$</span><span class="fu">local_env</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>EXEMPLIGHRATIA_GITHUB_STATUS_URL <span class="op">=</span> <span class="st">"{url}"</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>So what’s happening here?</p>
+<ul>
+<li>When we’re not asking for requests to the real service to be made (<code>Sys.getenv("REAL_REQUESTS")</code>), we prepare a new app via <code><a href="https://r-lib.github.io/webfakes/reference/new_app.html">webfakes::new_app()</a></code>. It’s a very simple one, that returns, for GET requests, a list corresponding to what we’re used to getting out of the status API, except that a) it’s much smaller and b) the “operational” status is hard-coded.</li>
+<li>When then create a local app process via <code>webfakes::local_app_process(, start = TRUE)</code>. It will start right away thanks to <code>start=TRUE</code> but we could have chosen to start it later via calling e.g. <code>web$url()</code> (see <code><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">?webfakes::local_app_process</a></code>); and most importantly it will be stopped automatically after the test. No mess made!</li>
+<li>We set the <code>EXEMPLIGHRATIA_GITHUB_STATUS_URL</code> variable to the URL of the local app process. This is what connects our code to our fake web service.</li>
+</ul>
+<p>It might seem like a lot of overhead code but</p>
+<ul>
+<li>It means no real requests are made which is our ultimate goal.</li>
+<li>We will get used to it.</li>
+<li>We can write helper code in a testthat helper file to not repeat ourselves in further test files; there could even be an app shared between all test files depending on your package.</li>
+</ul>
+<p>Now, let’s add a test for error behavior.
+This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr::stop_for_status(response)</code> became <code>httr::stop_for_status(response, task = "get API status, ouch!")</code>.</p>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() errors when the API does not behave"</span>, <span class="op">{</span>
+  <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">res</span><span class="op">$</span><span class="fu">send_status</span><span class="op">(</span><span class="fl">502L</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+  <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="va">web</span><span class="op">$</span><span class="fu">local_env</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>EXEMPLIGHRATIA_GITHUB_STATUS_URL <span class="op">=</span> <span class="st">"{url}"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html">expect_error</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"ouch"</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>It’s a similar process to the earlier test:</p>
+<ul>
+<li>setting up a new app;</li>
+<li>having it return something we chose, in this case a 502 status;</li>
+<li>launching a local app process;</li>
+<li>connecting our code to it via setting the <code>EXEMPLIGHRATIA_GITHUB_STATUS_URL</code> environment variable to the URL of the fake service;</li>
+<li>test.</li>
+</ul>
+<p>Last but not least let’s convert our test of <code>gh_organizations()</code>,</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span>
+
+  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/organizations"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span>
+      <span class="va">res</span><span class="op">$</span><span class="fu">send_json</span><span class="op">(</span>
+        <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">read_json</a></span><span class="op">(</span>
+          <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span>
+            <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"responses"</span>, <span class="st">"organizations.json"</span><span class="op">)</span>
+          <span class="op">)</span>
+        <span class="op">)</span>,
+        auto_unbox <span class="op">=</span> <span class="cn">TRUE</span>
+        <span class="op">)</span>
+    <span class="op">}</span><span class="op">)</span>
+    <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="va">web</span><span class="op">$</span><span class="fu">local_env</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>EXEMPLIGHRATIA_GITHUB_API_URL <span class="op">=</span> <span class="st">"{url}"</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>As before we</p>
+<ul>
+<li>create a new app;</li>
+<li>have it returned something we chose for a GET request of the <code>/organizations</code> endpoint. In this case, we have it return the content of a JSON file we created at <code>tests/testthat/responses/organizations.json</code> by copy-pasting a real response from the API;</li>
+<li>launch a local app process;</li>
+<li>set its URL as the <code>EXEMPLIGHRATIA_GITHUB_API_URL</code> environment variable;</li>
+<li>test.</li>
+</ul>
+</div>
+<div id="also-testing-for-real-interactions-1" class="section level2" number="10.3">
+<h2>
+<span class="header-section-number">10.3</span> Also testing for real interactions<a class="anchor" aria-label="anchor" href="#also-testing-for-real-interactions-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>What if the API responses change?
+Hopefully we’d notice that thanks to following API news.
+However, sometimes web APIs change without any notice.
+Therefore it is important to run tests against the real web service once in a while.</p>
+<p>In our tests we have used the condition</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="webfakes.html#cb54-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">nzchar</span>(<span class="kw">Sys.getenv</span>(<span class="st">"REAL_REQUESTS"</span>))) {</span></code></pre></div>
+<p>before launching the app and using its URL as URL for the service.
+So if our tests are generic enough, we can add a CI build where the environment variable <code>REAL_REQUESTS</code> is set to true.
+If they are not generic enough, we can use the<a href="httptest.html#httptest-real">approach exemplified in the chapter about httptest</a>.</p>
+<ul>
+<li>set up a folder real-tests with tests interacting with the real web service;</li>
+<li>add it to Rbuildignore;</li>
+<li>in a CI build, delete tests/testthat and replace it with real-tests, before running R CMD check.</li>
+</ul>
+</div>
+<div id="summary-3" class="section level2" number="10.4">
+<h2>
+<span class="header-section-number">10.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary-3"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>We set up webfakes usage in our package exemplighratia by adding a dependency on webfakes and by adding a setup file to fool our own package that needs an API token.</li>
+<li>We created and launched fake apps in our test files.</li>
+</ul>
+<p>Now, how do we make sure this works?</p>
+<ul>
+<li>Turn off wifi, run the tests again. It works! Turn on wifi again.</li>
+<li>Open .Renviron (<code>usethis::edit_r_environ()</code>), edit “GITHUB_PAT” into “byeGITHUB_PAT”, re-start R, run the tests again. It works! Fix your “GITHUB_PAT” token in .Renviron.</li>
+</ul>
+<p>So we now have tests that no longer rely on an internet connection nor on having API credentials.</p>
+<p>For the full list of changes applied to exemplighratia in this chapter, see <a href="https://github.com/maelle/exemplighratia/pull/4/files">the pull request diff on GitHub</a>.</p>
+<div class="alert alert-dismissible alert-primary">
+<p>In the next chapter, we shall compare the three approaches to HTTP testing we’ve demo-ed.</p>
+</div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></div>
+<div class="next"><a href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#webfakes"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="nav-link" href="#setup-3"><span class="header-section-number">10.1</span> Setup</a></li>
+<li><a class="nav-link" href="#actual-testing-3"><span class="header-section-number">10.2</span> Actual testing</a></li>
+<li><a class="nav-link" href="#also-testing-for-real-interactions-1"><span class="header-section-number">10.3</span> Also testing for real interactions</a></li>
+<li><a class="nav-link" href="#summary-3"><span class="header-section-number">10.4</span> Summary</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/wholegames-presser.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/wholegames-presser.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

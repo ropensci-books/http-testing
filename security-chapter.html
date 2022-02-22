@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 14 Security | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data), You want the secrets to be usable by you, collaborators and CI services,...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 14 Security | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/security-chapter.html">
+<meta property="og:description" content="When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data), You want the secrets to be usable by you, collaborators and CI services,...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 14 Security | HTTP testing in R">
+<meta name="twitter:description" content="When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data), You want the secrets to be usable by you, collaborators and CI services,...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="active" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="security-chapter" class="section level1" number="14">
+<h1>
+<span class="header-section-number">14</span> Security<a class="anchor" aria-label="anchor" href="#security-chapter"><i class="fas fa-link"></i></a>
+</h1>
+<p>When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data),</p>
+<ul>
+<li>You want the secrets to be usable by you, collaborators and CI services, without being readable by anyone else;</li>
+<li>You want tests and checks (e.g. vignette building) that use the secrets to be turned off in environments where secrets won’t be available (CRAN, forks of your development repository).</li>
+</ul>
+<p>Your general attitude should be to think about:</p>
+<ul>
+<li>what are my secrets (an API key, an OAuth2.0 access token and the refresh token, etc.) and where/how exactly are there used (in the query part of an URL? as a header? which header, Authentication or something else?) – packages like httr or httr2 might abstract some of the complexity for you but you need to really know where secrets are used and could be leaked,</li>
+<li>what could go wrong (e.g. your token ending up being published),</li>
+<li>how to prevent that (save your unedited token outside of your package, make sure it is not printed in logs or present in package check artefacts),</li>
+<li>how to fix mistakes (how do you deactivate a token and how do you check no one used it in the meantime).</li>
+</ul>
+<div id="managing-secrets-securely" class="section level2" number="14.1">
+<h2>
+<span class="header-section-number">14.1</span> Managing secrets securely<a class="anchor" aria-label="anchor" href="#managing-secrets-securely"><i class="fas fa-link"></i></a>
+</h2>
+<div id="follow-best-practice-when-developing-your-package" class="section level3" number="14.1.1">
+<h3>
+<span class="header-section-number">14.1.1</span> Follow best practice when developing your package<a class="anchor" aria-label="anchor" href="#follow-best-practice-when-developing-your-package"><i class="fas fa-link"></i></a>
+</h3>
+<p>This book is about testing but security starts with how you develop your package.
+To better protect your users’ secret,</p>
+<ul>
+<li><p>It might be best not to let users pass API keys as parameters. It’s best to have them save them in <code>.Renviron</code> or e.g. using the <a href="https://github.com/r-lib/keyring">keyring package</a>. This way, API keys are not in scripts. The <a href="https://docs.ropensci.org/opencage/articles/opencage.html#authentication-1">opencage package</a> might provide some inspiration.</p></li>
+<li><p>If the API you are working with lets you pass keys either in the request headers or query string, prefer to use request headers.</p></li>
+</ul>
+</div>
+<div id="share-secrets-with-continuous-integration-services" class="section level3" number="14.1.2">
+<h3>
+<span class="header-section-number">14.1.2</span> Share secrets with continuous integration services<a class="anchor" aria-label="anchor" href="#share-secrets-with-continuous-integration-services"><i class="fas fa-link"></i></a>
+</h3>
+<p>You need to share secrets with continuous integration services… for real requests only!
+For tests using vcr, httptest, httptest2 or webfakes, you at most need a fake secret, e.g. “foobar” as API key – except for recording cassettes and mock files, but that is something you do locally.</p>
+<div class="alert alert-dismissible alert-primary">
+<p>In GitHub repositories, when storing a new secret, do not save it with quotes.
+I.e. if your secret is “blabla”, the field should contain <code>blabla</code>, not <code>"blabla"</code> nor <code>'blabla'</code>.</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="st">"secret.png"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="secret.png" title="Screenshot of the interface for adding secrets in a GitHub repository, showing how the secret is stored without any quote." alt="Screenshot of the interface for adding secrets in a GitHub repository, showing how the secret is stored without any quote."></div>
+</div>
+<div id="api-keys" class="section level4" number="14.1.2.1">
+<h4>
+<span class="header-section-number">14.1.2.1</span> API keys<a class="anchor" aria-label="anchor" href="#api-keys"><i class="fas fa-link"></i></a>
+</h4>
+<p>For API keys, you can use something like GitHub repo secrets if you use GitHub Actions.
+Then for the secret to be accessible as environment variable from your workflow in GitHub Actions <a href="https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html#provide-environment-variable-to-other-services-1">as explained in gargle docs</a> you need to add a line like</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb56-1"><a href="security-chapter.html#cb56-1"></a><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb56-2"><a href="security-chapter.html#cb56-2"></a><span class="at">  </span><span class="fu">PACKAGE_PASSWORD</span><span class="kw">:</span><span class="at"> ${{ secrets.PACKAGE_PASSWORD }}</span></span></code></pre></div>
+</div>
+<div id="more-complex-objects" class="section level4" number="14.1.2.2">
+<h4>
+<span class="header-section-number">14.1.2.2</span> More complex objects<a class="anchor" aria-label="anchor" href="#more-complex-objects"><i class="fas fa-link"></i></a>
+</h4>
+<p>If your secret is an OAuth token, you might be able to re-create it from pieces, where the pieces are strings you can store as repo secrets much like what you’d do for an API key.
+E.g. if your secret is an OAuth token, the <a href="https://blog.r-hub.io/2021/01/25/oauth-2.0/#what-are-your-oauth-20-secret-credentials">actual secrets</a> are the access token and refresh token.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb57-1"><a href="security-chapter.html#cb57-1"></a><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb57-2"><a href="security-chapter.html#cb57-2"></a><span class="at">  </span><span class="fu">ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.ACCESS_TOKEN }}</span></span>
+<span id="cb57-3"><a href="security-chapter.html#cb57-3"></a><span class="at">  </span><span class="fu">REFRESH_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.REFRESH_TOKEN }}</span></span></code></pre></div>
+<p>Therefore you could re-create it using e.g. the <code>credentials</code> argument of <code><a href="https://httr.r-lib.org/reference/oauth2.0_token.html">httr::oauth2.0_token()</a></code>.
+The re-creation using environment variables <code>Sys.getenv("ACCESS_TOKEN")</code> and <code>Sys.getenv("REFRESH_TOKEN")</code> would happen in a <a href="https://blog.r-hub.io/2020/11/18/testthat-utility-belt/">testthat helper file</a>.</p>
+</div>
+</div>
+<div id="secret-files" class="section level3" number="14.1.3">
+<h3>
+<span class="header-section-number">14.1.3</span> Secret files<a class="anchor" aria-label="anchor" href="#secret-files"><i class="fas fa-link"></i></a>
+</h3>
+<p>For files, you will need to use encryption and to store a text-version of the encryption key/passwords as GitHub repo secret if you use GitHub Actions.
+Read the documentation of the continuous integration service your are using to find out how secrets are protected and how you can use them in your builds.</p>
+<p>See <a href="https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html">gargle vignette about securely managing tokens</a>.</p>
+<p>The approach is:</p>
+<ul>
+<li>Create your OAuth token locally, either outside of your package folder, or inside of it if you really want to, but <strong>gitignored and Rbuildignored</strong>.</li>
+<li>Encrypt it using e.g. the <a href="https://docs.ropensci.org/cyphr/">user-friendly cyphr package</a>. Save the code for this and for the step before in a file e.g. inst/secrets.R for when you need to re-create a token as even refresh tokens expire.</li>
+<li>For encrypting you need some sort of password. You will want to save it securely as <em>text</em> in your <a href="https://rstats.wtf/r-startup.html#renviron">user-level .Renviron</a> and in your GitHub repo secrets (or equivalent secret place for other CI services). E.g. create a key via <code>sodium_key &lt;- sodium::keygen()</code> and get its text equivalent via <code>sodium::bin2hex(sodium_key)</code>. E.g. the latter command might give me <code>e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2</code> and I will save this in .Renviron</li>
+</ul>
+<pre><code>MEETUPR_PWD="e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2"</code></pre>
+<p>Example of a script creating and encrypting an OAuth token (for the Meetup API).</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># thanks Jenny Bryan https://github.com/r-lib/gargle/blob/4fcf142fde43d107c6a20f905052f24859133c30/R/secret.R</span>
+
+<span class="va">token_path</span> <span class="op">&lt;-</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">".meetup_token.rds"</span><span class="op">)</span>
+<span class="fu">use_build_ignore</span><span class="op">(</span><span class="va">token_path</span><span class="op">)</span>
+<span class="fu">use_git_ignore</span><span class="op">(</span><span class="va">token_path</span><span class="op">)</span>
+
+<span class="fu">meetupr</span><span class="fu">::</span><span class="fu">meetup_auth</span><span class="op">(</span>
+  token <span class="op">=</span> <span class="cn">NULL</span>,
+  cache <span class="op">=</span> <span class="cn">TRUE</span>,
+  set_renv <span class="op">=</span> <span class="cn">FALSE</span>,
+  token_path <span class="op">=</span> <span class="va">token_path</span>
+<span class="op">)</span>
+
+<span class="co"># sodium_key &lt;- sodium::keygen()</span>
+<span class="co"># set_renv("MEETUPR_PWD" = sodium::bin2hex(sodium_key))</span>
+<span class="co"># set_renv being an internal function taken from rtweet</span>
+<span class="co"># that saves something to .Renviron</span>
+
+<span class="co"># get key from environment variable</span>
+<span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu">cyphr</span><span class="fu">::</span><span class="fu">encrypt_file</span><span class="op">(</span>
+  <span class="va">token_path</span>,
+  key <span class="op">=</span> <span class="va">key</span>,
+  dest <span class="op">=</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<ul>
+<li>In tests you have a setup file with code like below.</li>
+</ul>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">temptoken</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".rds"</span><span class="op">)</span>
+
+<span class="fu">cyphr</span><span class="fu">::</span><span class="fu">decrypt_file</span><span class="op">(</span>
+  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span>,
+  key <span class="op">=</span> <span class="va">key</span>,
+  dest <span class="op">=</span> <span class="va">temptoken</span>
+<span class="op">)</span></code></pre></div>
+<p>Now what happens in contexts where <code>MEETUPR_PWD</code> is not available?
+Well there should be no tests using it!
+See <a href="real-requests-chapter.html#real-requests-chapter">our chapter about making real requests</a>.</p>
+</div>
+<div id="do-not-store-secrets-in-the-cassettes-mock-files-recorded-responses" class="section level3" number="14.1.4">
+<h3>
+<span class="header-section-number">14.1.4</span> Do not store secrets in the cassettes, mock files, recorded responses<a class="anchor" aria-label="anchor" href="#do-not-store-secrets-in-the-cassettes-mock-files-recorded-responses"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>With vcr make sure to <a href="vcr-security.html#vcr-security">configure vcr correctly</a>.</li>
+<li>With httptest and httptest2 only the response body (and headers, but not by default) are recorded. If those contains secrets, refer to the documentation about <a href="https://enpiar.com/r/httptest/articles/redacting.html">redacting sensitive information</a> (<a href="https://enpiar.com/httptest2/articles/redacting.html">for httptest2</a>).</li>
+<li>With webfakes you will be creating recorded responses yourself, make sure this process does not leak secrets. If you test something related to authentication, use fake secrets.</li>
+</ul>
+<p>If the API you are interacting with uses OAuth for instance, make sure you are not leaking access tokens nor <em>refresh tokens</em>.</p>
+</div>
+<div id="escape-tests-that-require-secrets" class="section level3" number="14.1.5">
+<h3>
+<span class="header-section-number">14.1.5</span> Escape tests that require secrets<a class="anchor" aria-label="anchor" href="#escape-tests-that-require-secrets"><i class="fas fa-link"></i></a>
+</h3>
+<p>This all depends on your setup for testing <a href="real-requests-chapter.html#real-requests-chapter">real requests</a>.
+You have to be sure no test requiring secrets will be run on <a href="cran-preparedness.html#cran-preparedness">CRAN</a> for instance.</p>
+</div>
+</div>
+<div id="sensitive-recorded-responses" class="section level2" number="14.2">
+<h2>
+<span class="header-section-number">14.2</span> Sensitive recorded responses?<a class="anchor" aria-label="anchor" href="#sensitive-recorded-responses"><i class="fas fa-link"></i></a>
+</h2>
+<p>In that case you might want to gitignore the cassettes / mock files / recorded responses,
+and skip the tests using them on continuous integration (e.g. <code><a href="https://testthat.r-lib.org/reference/skip.html">testthat::skip_on_ci()</a></code> or something more involved).
+You’d also <a href="https://blog.r-hub.io/2020/05/20/rbuildignore/">Rbuildignore</a> the cassettes / mock files / recorded responses, as you do not want to release them to CRAN.</p>
+</div>
+<div id="further-resources" class="section level2" number="14.3">
+<h2>
+<span class="header-section-number">14.3</span> Further resources<a class="anchor" aria-label="anchor" href="#further-resources"><i class="fas fa-link"></i></a>
+</h2>
+<p>Some tools might help you detect leaks or prevent them.</p>
+<ul>
+<li>
+<a href="https://github.com/eth0izzle/shhgit">shhgit</a>’s goal is “Find secrets in your code. Secrets detection for your GitHub, GitLab and Bitbucket repositories”.</li>
+<li>
+<a href="https://github.com/Yelp/detect-secrets">Yelp’s detect-secret</a> is “An enterprise friendly way of detecting and preventing secrets in code.”.</li>
+<li>
+<a href="https://git-secret.io/">git-secret</a> is a “bash tool to store your private data inside a git repo”.</li>
+</ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></div>
+<div class="next"><a href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#security-chapter"><span class="header-section-number">14</span> Security</a></li>
+<li>
+<a class="nav-link" href="#managing-secrets-securely"><span class="header-section-number">14.1</span> Managing secrets securely</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#follow-best-practice-when-developing-your-package"><span class="header-section-number">14.1.1</span> Follow best practice when developing your package</a></li>
+<li><a class="nav-link" href="#share-secrets-with-continuous-integration-services"><span class="header-section-number">14.1.2</span> Share secrets with continuous integration services</a></li>
+<li><a class="nav-link" href="#secret-files"><span class="header-section-number">14.1.3</span> Secret files</a></li>
+<li><a class="nav-link" href="#do-not-store-secrets-in-the-cassettes-mock-files-recorded-responses"><span class="header-section-number">14.1.4</span> Do not store secrets in the cassettes, mock files, recorded responses</a></li>
+<li><a class="nav-link" href="#escape-tests-that-require-secrets"><span class="header-section-number">14.1.5</span> Escape tests that require secrets</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#sensitive-recorded-responses"><span class="header-section-number">14.2</span> Sensitive recorded responses?</a></li>
+<li><a class="nav-link" href="#further-resources"><span class="header-section-number">14.3</span> Further resources</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/topics-security.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/topics-security.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

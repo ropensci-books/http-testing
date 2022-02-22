@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 32 Session info | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content='32.1 Session info library("magrittr") dependencies &lt;- attachment::att_from_rmds(".") dependencies &lt;- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]...'>
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 32 Session info | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/session-info.html">
+<meta property="og:description" content='32.1 Session info library("magrittr") dependencies &lt;- attachment::att_from_rmds(".") dependencies &lt;- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]...'>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 32 Session info | HTTP testing in R">
+<meta name="twitter:description" content='32.1 Session info library("magrittr") dependencies &lt;- attachment::att_from_rmds(".") dependencies &lt;- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]...'>
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="active" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="session-info" class="section level1" number="32">
+<h1>
+<span class="header-section-number">32</span> Session info<a class="anchor" aria-label="anchor" href="#session-info"><i class="fas fa-link"></i></a>
+</h1>
+<div id="session-info-1" class="section level2" number="32.1">
+<h2>
+<span class="header-section-number">32.1</span> Session info<a class="anchor" aria-label="anchor" href="#session-info-1"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org">"magrittr"</a></span><span class="op">)</span>
+
+<span class="va">dependencies</span> <span class="op">&lt;-</span> <span class="fu">attachment</span><span class="fu">::</span><span class="fu"><a href="https://thinkr-open.github.io/attachment//reference/att_from_rmds.html">att_from_rmds</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span>
+<span class="va">dependencies</span> <span class="op">&lt;-</span> <span class="va">dependencies</span><span class="op">[</span><span class="op">!</span><span class="va">dependencies</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"attachment"</span>, <span class="st">"bookdown"</span>, <span class="st">"knitr"</span><span class="op">)</span><span class="op">]</span>
+
+<span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/package_info.html">package_info</a></span><span class="op">(</span>
+  pkgs <span class="op">=</span> <span class="va">dependencies</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="va">.</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"package"</span>, <span class="st">"ondiskversion"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">package</th>
+<th align="left">ondiskversion</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">askpass</td>
+<td align="left">askpass</td>
+<td align="left">1.1</td>
+</tr>
+<tr class="even">
+<td align="left">base64enc</td>
+<td align="left">base64enc</td>
+<td align="left">0.1-3</td>
+</tr>
+<tr class="odd">
+<td align="left">brio</td>
+<td align="left">brio</td>
+<td align="left">1.1.3</td>
+</tr>
+<tr class="even">
+<td align="left">callr</td>
+<td align="left">callr</td>
+<td align="left">3.7.0</td>
+</tr>
+<tr class="odd">
+<td align="left">cli</td>
+<td align="left">cli</td>
+<td align="left">3.2.0</td>
+</tr>
+<tr class="even">
+<td align="left">cpp11</td>
+<td align="left">cpp11</td>
+<td align="left">0.4.2</td>
+</tr>
+<tr class="odd">
+<td align="left">crayon</td>
+<td align="left">crayon</td>
+<td align="left">1.5.0</td>
+</tr>
+<tr class="even">
+<td align="left">crul</td>
+<td align="left">crul</td>
+<td align="left">1.2.0</td>
+</tr>
+<tr class="odd">
+<td align="left">curl</td>
+<td align="left">curl</td>
+<td align="left">4.3.2</td>
+</tr>
+<tr class="even">
+<td align="left">desc</td>
+<td align="left">desc</td>
+<td align="left">1.4.0</td>
+</tr>
+<tr class="odd">
+<td align="left">diffobj</td>
+<td align="left">diffobj</td>
+<td align="left">0.3.5</td>
+</tr>
+<tr class="even">
+<td align="left">digest</td>
+<td align="left">digest</td>
+<td align="left">0.6.29</td>
+</tr>
+<tr class="odd">
+<td align="left">ellipsis</td>
+<td align="left">ellipsis</td>
+<td align="left">0.3.2</td>
+</tr>
+<tr class="even">
+<td align="left">evaluate</td>
+<td align="left">evaluate</td>
+<td align="left">0.15</td>
+</tr>
+<tr class="odd">
+<td align="left">fansi</td>
+<td align="left">fansi</td>
+<td align="left">1.0.2</td>
+</tr>
+<tr class="even">
+<td align="left">fauxpas</td>
+<td align="left">fauxpas</td>
+<td align="left">0.5.0</td>
+</tr>
+<tr class="odd">
+<td align="left">fs</td>
+<td align="left">fs</td>
+<td align="left">1.5.2</td>
+</tr>
+<tr class="even">
+<td align="left">gh</td>
+<td align="left">gh</td>
+<td align="left">1.3.0</td>
+</tr>
+<tr class="odd">
+<td align="left">gitcreds</td>
+<td align="left">gitcreds</td>
+<td align="left">0.1.1</td>
+</tr>
+<tr class="even">
+<td align="left">glue</td>
+<td align="left">glue</td>
+<td align="left">1.6.1</td>
+</tr>
+<tr class="odd">
+<td align="left">httpcode</td>
+<td align="left">httpcode</td>
+<td align="left">0.3.0</td>
+</tr>
+<tr class="even">
+<td align="left">httr</td>
+<td align="left">httr</td>
+<td align="left">1.4.2</td>
+</tr>
+<tr class="odd">
+<td align="left">httr2</td>
+<td align="left">httr2</td>
+<td align="left">0.1.1</td>
+</tr>
+<tr class="even">
+<td align="left">ini</td>
+<td align="left">ini</td>
+<td align="left">0.3.1</td>
+</tr>
+<tr class="odd">
+<td align="left">jsonlite</td>
+<td align="left">jsonlite</td>
+<td align="left">1.7.3</td>
+</tr>
+<tr class="even">
+<td align="left">lifecycle</td>
+<td align="left">lifecycle</td>
+<td align="left">1.0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">magrittr</td>
+<td align="left">magrittr</td>
+<td align="left">2.0.2</td>
+</tr>
+<tr class="even">
+<td align="left">mime</td>
+<td align="left">mime</td>
+<td align="left">0.12</td>
+</tr>
+<tr class="odd">
+<td align="left">openssl</td>
+<td align="left">openssl</td>
+<td align="left">1.4.6</td>
+</tr>
+<tr class="even">
+<td align="left">pillar</td>
+<td align="left">pillar</td>
+<td align="left">1.7.0</td>
+</tr>
+<tr class="odd">
+<td align="left">pkgconfig</td>
+<td align="left">pkgconfig</td>
+<td align="left">2.0.3</td>
+</tr>
+<tr class="even">
+<td align="left">pkgload</td>
+<td align="left">pkgload</td>
+<td align="left">1.2.4</td>
+</tr>
+<tr class="odd">
+<td align="left">praise</td>
+<td align="left">praise</td>
+<td align="left">1.0.0</td>
+</tr>
+<tr class="even">
+<td align="left">processx</td>
+<td align="left">processx</td>
+<td align="left">3.5.2</td>
+</tr>
+<tr class="odd">
+<td align="left">ps</td>
+<td align="left">ps</td>
+<td align="left">1.6.0</td>
+</tr>
+<tr class="even">
+<td align="left">R6</td>
+<td align="left">R6</td>
+<td align="left">2.5.1</td>
+</tr>
+<tr class="odd">
+<td align="left">rappdirs</td>
+<td align="left">rappdirs</td>
+<td align="left">0.3.3</td>
+</tr>
+<tr class="even">
+<td align="left">Rcpp</td>
+<td align="left">Rcpp</td>
+<td align="left">1.0.8</td>
+</tr>
+<tr class="odd">
+<td align="left">rematch2</td>
+<td align="left">rematch2</td>
+<td align="left">2.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">rlang</td>
+<td align="left">rlang</td>
+<td align="left">1.0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">rprojroot</td>
+<td align="left">rprojroot</td>
+<td align="left">2.0.2</td>
+</tr>
+<tr class="even">
+<td align="left">rstudioapi</td>
+<td align="left">rstudioapi</td>
+<td align="left">0.13</td>
+</tr>
+<tr class="odd">
+<td align="left">sessioninfo</td>
+<td align="left">sessioninfo</td>
+<td align="left">1.2.2</td>
+</tr>
+<tr class="even">
+<td align="left">sys</td>
+<td align="left">sys</td>
+<td align="left">3.4</td>
+</tr>
+<tr class="odd">
+<td align="left">testthat</td>
+<td align="left">testthat</td>
+<td align="left">3.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">tibble</td>
+<td align="left">tibble</td>
+<td align="left">3.1.6</td>
+</tr>
+<tr class="odd">
+<td align="left">triebeard</td>
+<td align="left">triebeard</td>
+<td align="left">0.3.0</td>
+</tr>
+<tr class="even">
+<td align="left">urltools</td>
+<td align="left">urltools</td>
+<td align="left">1.7.3</td>
+</tr>
+<tr class="odd">
+<td align="left">utf8</td>
+<td align="left">utf8</td>
+<td align="left">1.2.2</td>
+</tr>
+<tr class="even">
+<td align="left">vcr</td>
+<td align="left">vcr</td>
+<td align="left">1.0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">vctrs</td>
+<td align="left">vctrs</td>
+<td align="left">0.3.8</td>
+</tr>
+<tr class="even">
+<td align="left">waldo</td>
+<td align="left">waldo</td>
+<td align="left">0.3.1</td>
+</tr>
+<tr class="odd">
+<td align="left">webmockr</td>
+<td align="left">webmockr</td>
+<td align="left">0.8.0</td>
+</tr>
+<tr class="even">
+<td align="left">whisker</td>
+<td align="left">whisker</td>
+<td align="left">0.4</td>
+</tr>
+<tr class="odd">
+<td align="left">withr</td>
+<td align="left">withr</td>
+<td align="left">2.4.3</td>
+</tr>
+<tr class="even">
+<td align="left">yaml</td>
+<td align="left">yaml</td>
+<td align="left">2.3.5</td>
+</tr>
+</tbody>
+</table></div>
+<p>None of crul, webmockr, vcr, httptest have compiled code, but an underlying dependency of all of them, <code>curl</code> does. See <a href="https://github.com/jeroen/curl/#installation">curl’s README</a> for installation instructions in case you run into curl related problems. webfakes has compiled code.</p>
+</div>
+<div id="full-session-info" class="section level2" number="32.2">
+<h2>
+<span class="header-section-number">32.2</span> Full session info<a class="anchor" aria-label="anchor" href="#full-session-info"><i class="fas fa-link"></i></a>
+</h2>
+<p>Session info for this book</p>
+<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────
+#&gt;  setting  value
+#&gt;  version  R version 4.1.2 (2021-11-01)
+#&gt;  os       macOS Big Sur 10.16
+#&gt;  system   x86_64, darwin17.0
+#&gt;  ui       X11
+#&gt;  language (EN)
+#&gt;  collate  en_US.UTF-8
+#&gt;  ctype    en_US.UTF-8
+#&gt;  tz       UTC
+#&gt;  date     2022-02-22
+#&gt;  pandoc   2.9.2.1 @ /usr/local/bin/ (via rmarkdown)
+#&gt; 
+#&gt; ─ Packages ───────────────────────────────────────────────────────────────────
+#&gt;  package     * version date (UTC) lib source
+#&gt;  attachment    0.2.4   2021-11-16 [1] CRAN (R 4.1.0)
+#&gt;  base64enc     0.1-3   2015-07-28 [1] CRAN (R 4.1.0)
+#&gt;  bookdown      0.24    2021-09-02 [1] CRAN (R 4.1.0)
+#&gt;  brio          1.1.3   2021-11-30 [1] CRAN (R 4.1.0)
+#&gt;  bslib         0.3.1   2021-10-06 [1] CRAN (R 4.1.0)
+#&gt;  cachem        1.0.6   2021-08-19 [1] CRAN (R 4.1.0)
+#&gt;  cli           3.2.0   2022-02-14 [1] CRAN (R 4.1.2)
+#&gt;  crayon        1.5.0   2022-02-14 [1] CRAN (R 4.1.2)
+#&gt;  crul        * 1.2.0   2021-11-22 [1] CRAN (R 4.1.0)
+#&gt;  curl          4.3.2   2021-06-23 [1] CRAN (R 4.1.0)
+#&gt;  desc          1.4.0   2021-09-28 [1] CRAN (R 4.1.0)
+#&gt;  digest        0.6.29  2021-12-01 [1] CRAN (R 4.1.0)
+#&gt;  downlit       0.4.0   2021-10-29 [1] CRAN (R 4.1.0)
+#&gt;  evaluate      0.15    2022-02-18 [1] CRAN (R 4.1.2)
+#&gt;  fastmap       1.1.0   2021-01-25 [1] CRAN (R 4.1.0)
+#&gt;  fauxpas       0.5.0   2020-04-13 [1] CRAN (R 4.1.0)
+#&gt;  fs            1.5.2   2021-12-08 [1] CRAN (R 4.1.0)
+#&gt;  gh            1.3.0   2021-04-30 [1] CRAN (R 4.1.0)
+#&gt;  gitcreds      0.1.1   2020-12-04 [1] CRAN (R 4.1.0)
+#&gt;  glue          1.6.1   2022-01-22 [1] CRAN (R 4.1.2)
+#&gt;  highr         0.9     2021-04-16 [1] CRAN (R 4.1.0)
+#&gt;  htmltools     0.5.2   2021-08-25 [1] CRAN (R 4.1.0)
+#&gt;  httpcode      0.3.0   2020-04-10 [1] CRAN (R 4.1.0)
+#&gt;  httr        * 1.4.2   2020-07-20 [1] CRAN (R 4.1.0)
+#&gt;  httr2         0.1.1   2021-09-28 [1] CRAN (R 4.1.0)
+#&gt;  jquerylib     0.1.4   2021-04-26 [1] CRAN (R 4.1.0)
+#&gt;  jsonlite      1.7.3   2022-01-17 [1] CRAN (R 4.1.2)
+#&gt;  knitr         1.37    2021-12-16 [1] CRAN (R 4.1.0)
+#&gt;  magrittr    * 2.0.2   2022-01-26 [1] CRAN (R 4.1.2)
+#&gt;  memoise       2.0.1   2021-11-26 [1] CRAN (R 4.1.0)
+#&gt;  pkgload       1.2.4   2021-11-30 [1] CRAN (R 4.1.0)
+#&gt;  R6            2.5.1   2021-08-19 [1] CRAN (R 4.1.0)
+#&gt;  rappdirs      0.3.3   2021-01-31 [1] CRAN (R 4.1.0)
+#&gt;  Rcpp          1.0.8   2022-01-13 [1] CRAN (R 4.1.2)
+#&gt;  rlang         1.0.1   2022-02-03 [1] CRAN (R 4.1.2)
+#&gt;  rmarkdown     2.11    2021-09-14 [1] CRAN (R 4.1.0)
+#&gt;  rprojroot     2.0.2   2020-11-15 [1] CRAN (R 4.1.0)
+#&gt;  rstudioapi    0.13    2020-11-12 [1] CRAN (R 4.1.0)
+#&gt;  sass          0.4.0   2021-05-12 [1] CRAN (R 4.1.0)
+#&gt;  sessioninfo   1.2.2   2021-12-06 [1] CRAN (R 4.1.0)
+#&gt;  stringi       1.7.6   2021-11-29 [1] CRAN (R 4.1.0)
+#&gt;  stringr       1.4.0   2019-02-10 [1] CRAN (R 4.1.0)
+#&gt;  testthat    * 3.1.2   2022-01-20 [1] CRAN (R 4.1.2)
+#&gt;  tinytex       0.37    2022-02-16 [1] CRAN (R 4.1.2)
+#&gt;  triebeard     0.3.0   2016-08-04 [1] CRAN (R 4.1.0)
+#&gt;  urltools      1.7.3   2019-04-14 [1] CRAN (R 4.1.0)
+#&gt;  vcr         * 1.0.2   2021-05-31 [1] CRAN (R 4.1.0)
+#&gt;  webmockr    * 0.8.0   2021-03-14 [1] CRAN (R 4.1.0)
+#&gt;  whisker       0.4     2019-08-28 [1] CRAN (R 4.1.0)
+#&gt;  withr         2.4.3   2021-11-30 [1] CRAN (R 4.1.0)
+#&gt;  xfun          0.29    2021-12-14 [1] CRAN (R 4.1.0)
+#&gt;  xml2          1.3.3   2021-11-30 [1] CRAN (R 4.1.0)
+#&gt;  yaml          2.3.5   2022-02-21 [1] CRAN (R 4.1.2)
+#&gt; 
+#&gt;  [1] /Users/runner/work/_temp/Library
+#&gt;  [2] /Library/Frameworks/R.framework/Versions/4.1/Resources/library
+#&gt; 
+#&gt; ──────────────────────────────────────────────────────────────────────────────</code></pre>
+
+<p>Page not found. Use the table of contents or the search bar to find your way back.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#session-info"><span class="header-section-number">32</span> Session info</a></li>
+<li><a class="nav-link" href="#session-info-1"><span class="header-section-number">32.1</span> Session info</a></li>
+<li><a class="nav-link" href="#full-session-info"><span class="header-section-number">32.2</span> Full session info</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/18-session-info.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/18-session-info.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 2 HTTP in R 101 | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="2.1 What is HTTP? HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation. HTTP is a way for you to exchange information with a remote...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 2 HTTP in R 101 | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/http-in-r-101.html">
+<meta property="og:description" content="2.1 What is HTTP? HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation. HTTP is a way for you to exchange information with a remote...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 2 HTTP in R 101 | HTTP testing in R">
+<meta name="twitter:description" content="2.1 What is HTTP? HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation. HTTP is a way for you to exchange information with a remote...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="active" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="http-in-r-101" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> HTTP in R 101<a class="anchor" aria-label="anchor" href="#http-in-r-101"><i class="fas fa-link"></i></a>
+</h1>
+<div id="what-is-http" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> What is HTTP?<a class="anchor" aria-label="anchor" href="#what-is-http"><i class="fas fa-link"></i></a>
+</h2>
+<p>HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation.
+HTTP is a way for you to exchange information with a remote server.
+In your package, if information is going back and forth between the R session and internet, you are using some sort of HTTP tooling.
+Your package is making <em>requests</em> and receives <em>responses</em>.</p>
+<div id="http-requests" class="section level3" number="2.1.1">
+<h3>
+<span class="header-section-number">2.1.1</span> HTTP requests<a class="anchor" aria-label="anchor" href="#http-requests"><i class="fas fa-link"></i></a>
+</h3>
+<p>The HTTP request is what your package makes.
+It has a method (are you fetching information via <code>GET</code>? are you sending information via <code>POST</code>?), different parts of an URL (domain, endpoint, query string), headers (containing e.g. your secret identifiers).
+It can contain a body, for instance you might be sending data as JSON.
+In that case one of the header will describe the content.</p>
+<p>How do you know what request to make from your package?
+Hopefully you are interacting with a well documented web resource that will explain to you what methods are associated with what endpoints.</p>
+</div>
+<div id="http-responses" class="section level3" number="2.1.2">
+<h3>
+<span class="header-section-number">2.1.2</span> HTTP responses<a class="anchor" aria-label="anchor" href="#http-responses"><i class="fas fa-link"></i></a>
+</h3>
+<p>The HTTP response is what the remote server provides, and what your package parses.
+A response has a status code indicating whether the request succeeded, response headers, and (optionally) a response body.</p>
+<p>Hopefully the documentation of the web API or web resource you are working with shows good examples of responses.
+In any case you’ll find yourself experimenting with different requests to see what the response “looks like”.</p>
+</div>
+<div id="more-resources-about-http" class="section level3" number="2.1.3">
+<h3>
+<span class="header-section-number">2.1.3</span> More resources about HTTP<a class="anchor" aria-label="anchor" href="#more-resources-about-http"><i class="fas fa-link"></i></a>
+</h3>
+<p>How do you get started with interacting with HTTP in R?</p>
+<div id="general-http-resources" class="section level4" number="2.1.3.1">
+<h4>
+<span class="header-section-number">2.1.3.1</span> General HTTP resources<a class="anchor" aria-label="anchor" href="#general-http-resources"><i class="fas fa-link"></i></a>
+</h4>
+<ul>
+<li>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">Mozilla Developer Network docs about HTTP</a> (recommended in the zine mentioned thereafter)</li>
+<li>(<em>not free</em>) <a href="https://wizardzines.com/zines/http/">Julia Evans’ Zine “HTTP: Learn your browser’s language!”</a>
+</li>
+<li>The docs of the web API you are aiming to work with, and a search engine to understand the words that are new.</li>
+</ul>
+</div>
+</div>
+<div id="http-with-r" class="section level3" number="2.1.4">
+<h3>
+<span class="header-section-number">2.1.4</span> HTTP with R<a class="anchor" aria-label="anchor" href="#http-with-r"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>The docs of the R package you end up choosing!</li>
+<li>Digging into the source code of another package that does similar things.</li>
+</ul>
+</div>
+</div>
+<div id="http-requests-in-r-what-package" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> HTTP requests in R: what package?<a class="anchor" aria-label="anchor" href="#http-requests-in-r-what-package"><i class="fas fa-link"></i></a>
+</h2>
+<p>In R, to interact with web resources, it is recommended to use <a href="https://github.com/jeroen/curl">curl</a>; or its higher-level interfaces <a href="https://httr.r-lib.org/">httr</a> (<a href="https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15">pronounced <em>hitter</em> or <em>h-t-t-r</em></a>), <a href="https://httr2.r-lib.org">httr2</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
+<p>Do not use RCurl, because it is not actively maintained!</p>
+<p>When writing a package interacting with web resources, you will probably use either <a href="https://httr2.r-lib.org">httr2</a>, <a href="https://httr.r-lib.org/">httr</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
+<ul>
+<li><p>httr is the most popular and oldest of the two, and supports OAuth.
+httr docs feature a vignette called <a href="https://httr.r-lib.org/articles/api-packages.html">Best practices for API packages</a></p></li>
+<li><p>httr2 <em>“is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)”</em> so it might be a good idea to adopt it rather than httr for a new package. It has a vignette about <a href="https://httr2.r-lib.org/articles/wrapping-apis.html">Wrapping APIs</a>.</p></li>
+<li><p>crul does not support OAuth but it uses an object-oriented interface, which you might like.
+crul has a set of <a href="https://docs.ropensci.org/crul/articles/choosing-a-client.html">clients, or ways to perform requests</a>, that might be handy. crul also has a vignette about <a href="https://docs.ropensci.org/crul/articles/best-practices-api-packages.html">API package best practices</a>.</p></li>
+</ul>
+<p>Below we will try to programmatically access the <a href="https://www.githubstatus.com/api/#status">status of GitHub</a>, the open-source platfrom provided by the company of the same name.
+We will access the same information with httr2 and crul.
+If you decide for the low-level curl, feel free to contribute an example.
+The internet has enough examples for httr.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">github_url</span> <span class="op">&lt;-</span> <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"</span></code></pre></div>
+<p>The URL above leaves no doubt as to what format the data is provided in, JSON!</p>
+<p>Let’s first use httr2.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org">"magrittr"</a></span><span class="op">)</span>
+<span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Check the response status</span>
+<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 200</code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Or in a package you'd just write</span>
+<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
+
+<span class="co"># Parse the content</span>
+<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></code></pre></div>
+<pre><code>## $page
+## $page$id
+## [1] "kctbh9vrtdwd"
+## 
+## $page$name
+## [1] "GitHub"
+## 
+## $page$url
+## [1] "https://www.githubstatus.com"
+## 
+## $page$time_zone
+## [1] "Etc/UTC"
+## 
+## $page$updated_at
+## [1] "2022-02-22T08:41:17.505Z"
+## 
+## 
+## $status
+## $status$indicator
+## [1] "none"
+## 
+## $status$description
+## [1] "All Systems Operational"</code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># In case you wonder, the format was obtained from a header</span>
+<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_headers.html">resp_header</a></span><span class="op">(</span><span class="va">response</span>, <span class="st">"content-type"</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "application/json; charset=utf-8"</code></pre>
+<p>Now, the same with crul.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create a client and get a response</span>
+<span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span>
+<span class="va">response</span> <span class="op">&lt;-</span> <span class="va">client</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
+
+
+<span class="co"># Check the response status</span>
+<span class="va">response</span><span class="op">$</span><span class="fu">status_http</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## &lt;Status code: 200&gt;
+##   Message: OK
+##   Explanation: Request fulfilled, document follows</code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Or in a package you'd just write</span>
+<span class="va">response</span><span class="op">$</span><span class="fu">raise_for_status</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Parse the content</span>
+<span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
+<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-02-22T08:41:17.505Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
+<pre><code>## $page
+## $page$id
+## [1] "kctbh9vrtdwd"
+## 
+## $page$name
+## [1] "GitHub"
+## 
+## $page$url
+## [1] "https://www.githubstatus.com"
+## 
+## $page$time_zone
+## [1] "Etc/UTC"
+## 
+## $page$updated_at
+## [1] "2022-02-22T08:41:17.505Z"
+## 
+## 
+## $status
+## $status$indicator
+## [1] "none"
+## 
+## $status$description
+## [1] "All Systems Operational"</code></pre>
+<p>Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of those packages.</p>
+<p>Note that the choice of a package will constrain the HTTP testing tools you can use.
+However, the general ideas will remain the same.
+You could switch your package backend from say crul to httr <em>without changing your tests</em>, if your tests do not test too many specifities of internals.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html"><span class="header-section-number">1</span> Preamble</a></div>
+<div class="next"><a href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#http-in-r-101"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li>
+<a class="nav-link" href="#what-is-http"><span class="header-section-number">2.1</span> What is HTTP?</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#http-requests"><span class="header-section-number">2.1.1</span> HTTP requests</a></li>
+<li><a class="nav-link" href="#http-responses"><span class="header-section-number">2.1.2</span> HTTP responses</a></li>
+<li><a class="nav-link" href="#more-resources-about-http"><span class="header-section-number">2.1.3</span> More resources about HTTP</a></li>
+<li><a class="nav-link" href="#http-with-r"><span class="header-section-number">2.1.4</span> HTTP with R</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#http-requests-in-r-what-package"><span class="header-section-number">2.2</span> HTTP requests in R: what package?</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/intro-general.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/intro-general.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 3 Graceful HTTP R packages | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="Based on the previous chapter, your package interacting with a web resource has a dependency on {curl}, {httr}, {httr2} or {crul}. You have hopefully read the docs of the dependency you chose,...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 3 Graceful HTTP R packages | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/graceful.html">
+<meta property="og:description" content="Based on the previous chapter, your package interacting with a web resource has a dependency on {curl}, {httr}, {httr2} or {crul}. You have hopefully read the docs of the dependency you chose,...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 3 Graceful HTTP R packages | HTTP testing in R">
+<meta name="twitter:description" content="Based on the previous chapter, your package interacting with a web resource has a dependency on {curl}, {httr}, {httr2} or {crul}. You have hopefully read the docs of the dependency you chose,...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="active" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="graceful" class="section level1" number="3">
+<h1>
+<span class="header-section-number">3</span> Graceful HTTP R packages<a class="anchor" aria-label="anchor" href="#graceful"><i class="fas fa-link"></i></a>
+</h1>
+<p>Based on the previous chapter, your package interacting with a web resource has a dependency on <a href="https://github.com/jeroen/curl">curl</a>, <a href="https://httr.r-lib.org/">httr</a>, <a href="https://httr2.r-lib.org">httr2</a> or <a href="https://docs.ropensci.org/crul/">crul</a>. You have hopefully read the docs of the dependency you chose, including, in the case of httr, httr2 and crul, the vignette about best practice for HTTP packages. Now, in this chapter we want to give more tips aimed at making your HTTP R package graceful, part of which you’ll learn more about in this very book!</p>
+<p><strong>Why</strong> write a <em>graceful</em> HTTP R package? First of all, graceful is a nice adjective. 💃🕺Then, graceful is the adjective used in <a href="https://cran.r-project.org/web/packages/policies.html">CRAN repository policy</a> <em>“Packages which use Internet resources should fail gracefully with an informative message if the resource is not available or has changed (and not give a check warning nor error).”</em> Therefore, let’s review how to make your R package graceful from this day forward, in success and in failure.</p>
+<div id="choose-the-http-resource-wisely" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Choose the HTTP resource wisely<a class="anchor" aria-label="anchor" href="#choose-the-http-resource-wisely"><i class="fas fa-link"></i></a>
+</h2>
+<p>First of all, your life and the life of your package’s users will be easier if the web service you’re wrapping is well maintained and well documented. When you have a choice, try not to rely on a fragile web service. Moreover, if you can, try to communicate with the API providers (telling them about your package; reporting feature requests and bug reports in their preferred way).</p>
+</div>
+<div id="user-facing-grace-how-your-package-actually-works" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> User-facing grace (how your package actually works)<a class="anchor" aria-label="anchor" href="#user-facing-grace-how-your-package-actually-works"><i class="fas fa-link"></i></a>
+</h2>
+<ol start="0" style="list-style-type: decimal">
+<li><p>If you can, do not request the API every time the user asks for something but cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out <a href="https://github.com/r-lib/memoise">memoise</a>. To remember answers across sessions, see approaches presented in the R-hub blog post <a href="https://blog.r-hub.io/2020/03/12/user-preferences/">“Persistent config and data for R packages”</a>. Caching behavior should be well documented for users, and there should probably be an expiration time for caches that’s based on how often data is updated on the remote service.</p></li>
+<li><p>Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate.</p></li>
+</ol>
+<ul>
+<li>For instance, don’t even try interacting with a web API requiring authentication if the user does not provide authentication information.</li>
+<li>For limiting rate i.e. not sending too many requests, automatically wait or, if the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the <a href="https://github.com/tarakc02/ratelimitr">ratelimitr</a> package, or for httr2 <code><a href="https://httr2.r-lib.org/reference/req_throttle.html">httr2::req_throttle()</a></code>.</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><p>If there’s a status API i.e. a separate API indicating whether the web resource is up or down, use it. If it tells you the API is down, <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> (or <code><a href="https://rlang.r-lib.org/reference/abort.html">rlang::abort()</a></code>) with an informative error message.</p></li>
+<li>
+<p>If the API indicates an error, depending on the actual error,</p>
+<ul>
+<li><p>If the <em>server</em> seems to be having issues, <a href="https://blog.r-hub.io/2020/04/07/retry-wheel/">re-try with an exponential back-off</a>. In httr2 there is <code><a href="https://httr2.r-lib.org/reference/req_retry.html">httr2::req_retry()</a></code>.</p></li>
+<li><p>Otherwise, <a href="https://httr2.r-lib.org/articles/wrapping-apis.html#error-handling-1">transform the error into an useful error</a>.</p></li>
+<li><p>If you used retry and nothing was sent after the maximal number of retries, have an informative error message.</p></li>
+</ul>
+</li>
+</ol>
+<p>That was it for aspects the user will care about. Now, what might be more problematic for your package’s fate on CRAN are the automatic checks that happen there at submission and then <a href="https://blog.r-hub.io/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-101">regularly</a>.</p>
+</div>
+<div id="graceful-vignettes-and-examples" class="section level2" number="3.3">
+<h2>
+<span class="header-section-number">3.3</span> Graceful vignettes and examples<a class="anchor" aria-label="anchor" href="#graceful-vignettes-and-examples"><i class="fas fa-link"></i></a>
+</h2>
+<ol start="4" style="list-style-type: decimal">
+<li>
+<a href="https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette">Pre-compute vignettes</a> in some way. Don’t use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the <a href="https://devtools.r-lib.org/reference/release.html#details">unexported <code>release_questions()</code> function</a>). Don’t let vignettes run on a system where a failure has bad consequences.</li>
+<li>Don’t run <a href="https://blog.r-hub.io/2020/01/27/examples/">examples</a> on CRAN. Now, for a first submission, CRAN maintainers might complain if there is no example. In that case, you might want to add some minimal example, e.g.</li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">"some-url"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu">foo_bar</span><span class="op">(</span><span class="op">)</span> <span class="co"># some eg that uses some-url</span>
+<span class="op">}</span></code></pre></div>
+<p>These two precautions ensure that CRAN checks won’t end with some WARNINGs e.g. because an example failed when the API was down.</p>
+</div>
+<div id="graceful-code" class="section level2" number="3.4">
+<h2>
+<span class="header-section-number">3.4</span> Graceful code<a class="anchor" aria-label="anchor" href="#graceful-code"><i class="fas fa-link"></i></a>
+</h2>
+<p>For simplifying your own life and those of contributors, make sure to re-use code in your package by e.g. defining helper functions for making requests, handling responses etc.
+It will make it easier for you to support interactions with more parts of the web API.
+Writing DRY (don’t repeat yourself) code means less lines of code to test, less API calls to make or fake!</p>
+<p>Also, were you to export a function à la <code><a href="https://gh.r-lib.org/reference/gh.html">gh::gh()</a></code>, you’ll help users call any endpoint of the web API even if you haven’t written any high-level helper for it yet.</p>
+</div>
+<div id="graceful-tests" class="section level2" number="3.5">
+<h2>
+<span class="header-section-number">3.5</span> Graceful tests<a class="anchor" aria-label="anchor" href="#graceful-tests"><i class="fas fa-link"></i></a>
+</h2>
+<p>We’re getting closer to the actual topic of this book!</p>
+<ol start="6" style="list-style-type: decimal">
+<li>Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. <code><a href="https://testthat.r-lib.org/reference/skip.html">testthat::skip_on_cran()</a></code> will ensure that.</li>
+<li>Do not only test success behavior! Test for the behavior of your package in case of API errors, which shall also be covered later in the book.</li>
+</ol>
+</div>
+<div id="conclusion" class="section level2" number="3.6">
+<h2>
+<span class="header-section-number">3.6</span> Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"><i class="fas fa-link"></i></a>
+</h2>
+<p>In summary, to have a graceful HTTP package, make the most of current best practice for the user interface; escape examples and vignettes on CRAN; make tests independent of actual HTTP requests. Do not forget CRAN’s “graceful failure” policy is mostly about ensuring a clean R CMD check result on CRAN platforms (0 ERROR, 0 WARNING, 0 NOTE) even when the web service you’re wrapping has some hiccups.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></div>
+<div class="next"><a href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#graceful"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="nav-link" href="#choose-the-http-resource-wisely"><span class="header-section-number">3.1</span> Choose the HTTP resource wisely</a></li>
+<li><a class="nav-link" href="#user-facing-grace-how-your-package-actually-works"><span class="header-section-number">3.2</span> User-facing grace (how your package actually works)</a></li>
+<li><a class="nav-link" href="#graceful-vignettes-and-examples"><span class="header-section-number">3.3</span> Graceful vignettes and examples</a></li>
+<li><a class="nav-link" href="#graceful-code"><span class="header-section-number">3.4</span> Graceful code</a></li>
+<li><a class="nav-link" href="#graceful-tests"><span class="header-section-number">3.5</span> Graceful tests</a></li>
+<li><a class="nav-link" href="#conclusion"><span class="header-section-number">3.6</span> Conclusion</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/intro-graceful.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/intro-graceful.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

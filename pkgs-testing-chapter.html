@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 4 Packages for HTTP testing | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="A brief presentation of packages you’ll “meet” again later in this book!  4.1 Why do we need special packages for HTTP testing? Packages for HTTP testing are useful because there are challenges to...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 4 Packages for HTTP testing | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/pkgs-testing-chapter.html">
+<meta property="og:description" content="A brief presentation of packages you’ll “meet” again later in this book!  4.1 Why do we need special packages for HTTP testing? Packages for HTTP testing are useful because there are challenges to...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 4 Packages for HTTP testing | HTTP testing in R">
+<meta name="twitter:description" content="A brief presentation of packages you’ll “meet” again later in this book!  4.1 Why do we need special packages for HTTP testing? Packages for HTTP testing are useful because there are challenges to...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="active" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="pkgs-testing-chapter" class="section level1" number="4">
+<h1>
+<span class="header-section-number">4</span> Packages for HTTP testing<a class="anchor" aria-label="anchor" href="#pkgs-testing-chapter"><i class="fas fa-link"></i></a>
+</h1>
+<p>A brief presentation of packages you’ll “meet” again later in this book!</p>
+<div id="why-do-we-need-special-packages-for-http-testing" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Why do we need special packages for HTTP testing?<a class="anchor" aria-label="anchor" href="#why-do-we-need-special-packages-for-http-testing"><i class="fas fa-link"></i></a>
+</h2>
+<p>Packages for HTTP testing are useful because there are challenges to HTTP testing.
+Packages for HTTP testing help you solve these challenges, rather than letting you solve them with some homegrown solutions (you can still choose to do that, of course).</p>
+<p>What are the challenges of HTTP testing?</p>
+<ul>
+<li>Having tests depend on an internet connection is not ideal.</li>
+<li>Having tests depend on having secrets for authentication at hand is not ideal.</li>
+<li>Having tests for situations that are hard to trigger (e.g. the failure of a remote server) is tricky.</li>
+</ul>
+</div>
+<div id="webmockr" class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> webmockr<a class="anchor" aria-label="anchor" href="#webmockr"><i class="fas fa-link"></i></a>
+</h2>
+<p><a href="https://docs.ropensci.org/webmockr">webmockr</a>, maintained by Scott Chamberlain, is an R package to help you “mock” HTTP requests. What does mock mean? Mock refers to the fact that we’re faking the response. Here is how it works:</p>
+<ul>
+<li>You “stub” a request. That is, you set rules for what HTTP request you’d like to respond to with a fake. E.g. a rule might be a method, or an URL.</li>
+<li>You also can set rules for what fake you’d like to respond with, if anything (if nothing, then we give you <code>NULL</code>).</li>
+<li>Then you make HTTP requests, and those that match your stub i.e. set of rules will return what you requested be returned.</li>
+<li>While webmockr is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You’ll get error messages for HTTP requests not covered by any stub.</li>
+<li>There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.</li>
+</ul>
+<p>webmockr works with both the crul package and the httr package.</p>
+<p>webmockr is quite low-level and not the first tool you’ll use directly in your day-to-day HTTP testing.
+You may never use it directly but if you use vcr it’s one of its foundations.</p>
+<p>webmockr was inspired by <a href="https://github.com/bblimke/webmock">Ruby webmock gem</a>.</p>
+</div>
+<div id="what-vcr" class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> What is vcr?<a class="anchor" aria-label="anchor" href="#what-vcr"><i class="fas fa-link"></i></a>
+</h2>
+<p>The short version is <a href="https://docs.ropensci.org/vcr">vcr</a>, maintained by Scott Chamberlain, helps you stub HTTP requests so you don’t have to repeat HTTP requests, mostly in your unit tests.
+It uses the power of webmockr, with a higher level interface.</p>
+<p>When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
+All subsequent runs of the test use that local file instead of really calling the API.
+Therefore tests work independently of an internet connection.</p>
+<p>vcr was inspired by <a href="https://relishapp.com/vcr/vcr/docs">Ruby vcr gem</a>.</p>
+<p>vcr works for packages using httr or crul.</p>
+<div class="alert alert-dismissible alert-info">
+<p><a href="vcr.html#vcr">Direct link to vcr (&amp; webmockr) demo</a></p>
+</div>
+</div>
+<div id="what-is-httptest" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> What is httptest?<a class="anchor" aria-label="anchor" href="#what-is-httptest"><i class="fas fa-link"></i></a>
+</h2>
+<p><a href="https://enpiar.com/r/httptest/">httptest</a> maintained by Neal Richardson, like <a href="https://docs.ropensci.org/vcr">vcr</a>, uses mocked API responses.
+It <em>“enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service.”</em></p>
+<p>Contrary to <a href="https://docs.ropensci.org/vcr">vcr</a>, <a href="https://enpiar.com/r/httptest/">httptest</a> also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions (although you can choose to <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html">edit vcr mock files</a> after recording).</p>
+<p>httptest works for packages using httr.</p>
+<div class="alert alert-dismissible alert-info">
+<p><a href="httptest.html#httptest">Direct link to httptest demo</a></p>
+</div>
+<p>The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.</p>
+</div>
+<div id="what-is-httptest2" class="section level2" number="4.5">
+<h2>
+<span class="header-section-number">4.5</span> What is httptest2?<a class="anchor" aria-label="anchor" href="#what-is-httptest2"><i class="fas fa-link"></i></a>
+</h2>
+<p><a href="https://enpiar.com/httptest2/">httptest2</a> maintained by Neal Richardson is like <a href="https://enpiar.com/r/httptest/">httptest</a>, but for <a href="https://httr2.r-lib.org">httr2</a>.</p>
+<div class="alert alert-dismissible alert-info">
+<p><a href="httptest2.html#httptest2">Direct link to httptest2 demo</a></p>
+</div>
+<div class="alert alert-dismissible alert-primary">
+<p>With vcr, httptest and httptest2 the tests will use some sort of fake API responses.</p>
+<p>In vcr they are called <strong>fixtures</strong> or <strong>cassettes</strong>.
+In httptest and httptest2 they are called <strong>mock files</strong>.</p>
+</div>
+</div>
+<div id="what-is-webfakes" class="section level2" number="4.6">
+<h2>
+<span class="header-section-number">4.6</span> What is webfakes?<a class="anchor" aria-label="anchor" href="#what-is-webfakes"><i class="fas fa-link"></i></a>
+</h2>
+<p><a href="https://webfakes.r-lib.org/">webfakes</a>, maintained by Gábor Csárdi, provides an alternative (complementary?) tool for HTTP testing.
+It will let you fake a whole web service, potentially outputting responses from mock files you’ll have created.
+It does not help with recording fake responses.
+Because it runs a fake web service, you can even interact with said web service in your browser or with curl in the command line.</p>
+<p>webfakes works with packages using any HTTP package i.e. it works with curl, crul, httr.</p>
+<div class="alert alert-dismissible alert-info">
+<p><a href="webfakes.html#webfakes">Direct link to webfakes demo</a></p>
+</div>
+</div>
+<div id="testthat" class="section level2" number="4.7">
+<h2>
+<span class="header-section-number">4.7</span> testthat<a class="anchor" aria-label="anchor" href="#testthat"><i class="fas fa-link"></i></a>
+</h2>
+<p><a href="https://testthat.r-lib.org">testthat</a> maintained by Hadley Wickham is not a package specifically for HTTP testing, it is a package for general purpose unit testing of R packages.
+In this book we will assume that is what you use, because of its popularity.</p>
+<p>Now, if you use an alternative like tinytest,</p>
+<ul>
+<li><p>httptest won’t work as it’s specifically designed as a complement to testthat;</p></li>
+<li><p>vcr might work;</p></li>
+<li><p>webfakes can work.</p></li>
+</ul>
+</div>
+<div id="conclusion-1" class="section level2" number="4.8">
+<h2>
+<span class="header-section-number">4.8</span> Conclusion<a class="anchor" aria-label="anchor" href="#conclusion-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>Now that you have an idea of the tools we can use for HTTP testing, we’ll now create a minimal package and then amend it in three versions tested with</p>
+<ul>
+<li>
+<a href="https://docs.ropensci.org/vcr">vcr</a> and <a href="https://docs.ropensci.org/webmockr">webmockr</a>;</li>
+<li>
+<a href="https://enpiar.com/r/httptest/">httptest</a>;</li>
+<li>
+<a href="https://enpiar.com/httptest2/">httptest2</a>;</li>
+<li>
+<a href="https://webfakes.r-lib.org/">webfakes</a>.</li>
+</ul>
+<p>Our minimal package will use httr (except for httptest2, where we’ll use httr2). However, it will help you understand concepts even if you end up using crul or curl.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;If you end up using crul, you can use vcr and webmockr; or webfakes; but not httptest. If you end up using curl you can only use webfakes.&lt;/p&gt;"><sup>1</sup></a></p>
+
+</div>
+</div>
+
+
+
+
+  <div class="chapter-nav">
+<div class="prev"><a href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></div>
+<div class="next"><a href="introduction.html"><span class="header-section-number">5</span> Introduction</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#pkgs-testing-chapter"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li><a class="nav-link" href="#why-do-we-need-special-packages-for-http-testing"><span class="header-section-number">4.1</span> Why do we need special packages for HTTP testing?</a></li>
+<li><a class="nav-link" href="#webmockr"><span class="header-section-number">4.2</span> webmockr</a></li>
+<li><a class="nav-link" href="#what-vcr"><span class="header-section-number">4.3</span> What is vcr?</a></li>
+<li><a class="nav-link" href="#what-is-httptest"><span class="header-section-number">4.4</span> What is httptest?</a></li>
+<li><a class="nav-link" href="#what-is-httptest2"><span class="header-section-number">4.5</span> What is httptest2?</a></li>
+<li><a class="nav-link" href="#what-is-webfakes"><span class="header-section-number">4.6</span> What is webfakes?</a></li>
+<li><a class="nav-link" href="#testthat"><span class="header-section-number">4.7</span> testthat</a></li>
+<li><a class="nav-link" href="#conclusion-1"><span class="header-section-number">4.8</span> Conclusion</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/intro-pkgs.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/intro-pkgs.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 9 vcr and httptest | HTTP testing in R</title>
+<meta name="author" content="Scott Chamberlain, Maëlle Salmon">
+<meta name="description" content="We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia Adding a package as a Suggests dependency; Creating a helper file that in...">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="Chapter 9 vcr and httptest | HTTP testing in R">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://books.ropensci.org/http-testing/mocking-pkgs-comparison.html">
+<meta property="og:description" content="We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia Adding a package as a Suggests dependency; Creating a helper file that in...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 9 vcr and httptest | HTTP testing in R">
+<meta name="twitter:description" content="We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia Adding a package as a Suggests dependency; Creating a helper file that in...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">HTTP testing in R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Preamble</a></li>
+<li class="book-part">Introduction</li>
+<li><a class="" href="http-in-r-101.html"><span class="header-section-number">2</span> HTTP in R 101</a></li>
+<li><a class="" href="graceful.html"><span class="header-section-number">3</span> Graceful HTTP R packages</a></li>
+<li><a class="" href="pkgs-testing-chapter.html"><span class="header-section-number">4</span> Packages for HTTP testing</a></li>
+<li class="book-part">Whole Game(s)</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
+<li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
+<li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
+<li><a class="active" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
+<li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
+<li class="book-part">Advanced Topics</li>
+<li><a class="" href="real-requests-chapter.html"><span class="header-section-number">12</span> Making real requests</a></li>
+<li><a class="" href="cran-preparedness.html"><span class="header-section-number">13</span> CRAN- (and Bioconductor) preparedness for your tests</a></li>
+<li><a class="" href="security-chapter.html"><span class="header-section-number">14</span> Security</a></li>
+<li><a class="" href="errors-chapter.html"><span class="header-section-number">15</span> Faking HTTP errors</a></li>
+<li><a class="" href="contributor-friendliness.html"><span class="header-section-number">16</span> Contributor friendliness</a></li>
+<li class="book-part">Conclusion</li>
+<li><a class="" href="conclusion-5.html"><span class="header-section-number">17</span> Conclusion</a></li>
+<li class="book-part">webmockr details</li>
+<li><a class="" href="mocking.html"><span class="header-section-number">18</span> Mocking HTTP Requests</a></li>
+<li><a class="" href="webmockr-stubs.html"><span class="header-section-number">19</span> stubs</a></li>
+<li><a class="" href="webmockr-testing.html"><span class="header-section-number">20</span> testing</a></li>
+<li><a class="" href="webmockr-utilities.html"><span class="header-section-number">21</span> utilities</a></li>
+<li class="book-part">vcr details</li>
+<li><a class="" href="vcr-intro.html"><span class="header-section-number">22</span> Caching HTTP requests</a></li>
+<li><a class="" href="vcr-usage.html"><span class="header-section-number">23</span> Advanced vcr usage</a></li>
+<li><a class="" href="vcr-configuration.html"><span class="header-section-number">24</span> Configure vcr</a></li>
+<li><a class="" href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></li>
+<li><a class="" href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></li>
+<li><a class="" href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
+<li><a class="" href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></li>
+<li><a class="" href="lightswitch.html"><span class="header-section-number">29</span> Turning vcr on and off</a></li>
+<li><a class="" href="managing-cassettes.html"><span class="header-section-number">30</span> Managing cassettes</a></li>
+<li><a class="" href="gotchas.html"><span class="header-section-number">31</span> Gotchas</a></li>
+<li><a class="" href="session-info.html"><span class="header-section-number">32</span> Session info</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/ropensci-books/http-testing">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="mocking-pkgs-comparison" class="section level1" number="9">
+<h1>
+<span class="header-section-number">9</span> vcr and httptest<a class="anchor" aria-label="anchor" href="#mocking-pkgs-comparison"><i class="fas fa-link"></i></a>
+</h1>
+<p>We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia</p>
+<ul>
+<li>Adding a package as a Suggests dependency;</li>
+<li>Creating a helper file that in particular loads this package before each test;</li>
+<li>Tweaking tests, in some cases wrapping our tests into functions that allows to record API responses in mock files and to play them back from said mock files; in other cases (only with httptest), creating mock files ourselves.</li>
+</ul>
+<p>Now, there were a few differences.
+We won’t end up advocating for one package in particular since both have their merits, but we do hope to help you differentiate the two packages.</p>
+<div id="setting-up-the-infrastructure" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Setting up the infrastructure<a class="anchor" aria-label="anchor" href="#setting-up-the-infrastructure"><i class="fas fa-link"></i></a>
+</h2>
+<p>To set up the HTTP testing infrastructure, in one case you need to run <code><a href="https://docs.ropensci.org/vcr/reference/use_vcr.html">vcr::use_vcr()</a></code> and in another case you need to run <code><a href="https://enpiar.com/r/httptest/reference/use_httptest.html">httptest::use_httptest()</a></code>. Not too hard to remember.</p>
+</div>
+<div id="calling-mock-files" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Calling mock files<a class="anchor" aria-label="anchor" href="#calling-mock-files"><i class="fas fa-link"></i></a>
+</h2>
+<p>As mentioned before, vcr and httptest both use mock files but they call them differently.</p>
+<p>In vcr they are called both <strong>fixtures</strong> and <strong>cassettes</strong>.
+In httptest they are called <strong>mock files</strong>.
+Note that fixtures is not as specific as cassettes and mock files: cassettes and mock files are fixtures, but anything (a csv file of input for instance) you use to consistently test your package is a fixture.</p>
+</div>
+<div id="naming-mock-files" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Naming mock files<a class="anchor" aria-label="anchor" href="#naming-mock-files"><i class="fas fa-link"></i></a>
+</h2>
+<p>With vcr the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> call needs to include a name that will be used to create the filename of the mock file.
+The help of <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">?use_cassette</a></code> explains some criteria for naming them, such as the fact that cassette names need to be unique.
+Now if you wrap your whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block in them you might just as well use a name similar to the test name, and you already make those meaningful, right?</p>
+<p>With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body.
+If you use <code><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir()</a></code> you need a name for the directory under which the mock files are saved, and you can make it meaningful.</p>
+<p>Also note that with vcr one file can (but does not have to) contain several HTTP interactions (requests and responses) whereas with httptest one file contains one response only (and the filename helps matching it to a request).</p>
+</div>
+<div id="matching-requests" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> Matching requests<a class="anchor" aria-label="anchor" href="#matching-requests"><i class="fas fa-link"></i></a>
+</h2>
+<p>With httptest as the mock file name includes everything that’s potentially varying about a request, each mock file corresponds to one request only.</p>
+<p>With vcr, there are different possible <a href="https://docs.ropensci.org/vcr/articles/request_matching.html">configurations for matching a request to a saved interaction</a> but by default you can mostly expect that one saved interaction corresponds to one request only.</p>
+</div>
+<div id="handling-secrets" class="section level2" number="9.5">
+<h2>
+<span class="header-section-number">9.5</span> Handling secrets<a class="anchor" aria-label="anchor" href="#handling-secrets"><i class="fas fa-link"></i></a>
+</h2>
+<p>With vcr, since everything from the HTTP interactions is recorded, you always need to add some sort of configuration to be sure to wipe your API tokens from the mock files.</p>
+<p>With httptest, only responses are saved, and most often, only their bodies.
+Most often, responses don’t contain secrets e.g. they don’t contain your API token.
+If the response contains secrets, refer to httptest’s article about <a href="https://enpiar.com/r/httptest/articles/redacting.html">“Redacting sensitive information”</a>.</p>
+</div>
+<div id="recording-playing-back" class="section level2" number="9.6">
+<h2>
+<span class="header-section-number">9.6</span> Recording, playing back<a class="anchor" aria-label="anchor" href="#recording-playing-back"><i class="fas fa-link"></i></a>
+</h2>
+<p>When using mock files for testing, first you need to record responses in mock files; and then you want to use the mock files instead of real HTTP interactions (that’s the whole point).</p>
+<p>With vcr, the recording vs playing back modes happen automatically depending on the existence of the cassette. If you write <code>vcr::use_cassette("blabla", )</code> and there’s no cassette called blabla, vcr will create it. Note that if you change the HTTP interactions in the code block, you’ll have to re-record the cassette which is as simple as deleting it then running the test. <em>Note that you can also change the way vcr behaves by looking into <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">?vcr::vcr_configure</a></code>’s “Cassette Options”.</em></p>
+<p>With httptest, there is a lot of flexibility around how to record mock files. It is because httptest doesn’t assume that every API mock came from a real request to a real server; maybe you copy some of the mocks directly from the API docs.</p>
+<p><strong>Note that nothing prevents you from editing vcr cassettes by hand, but you’ll have to be careful not re-recording them by mistake.</strong></p>
+<div class="alert alert-dismissible alert-info">
+<p>httptest flexiblity comes from <a href="https://github.com/nealrichardson/httptest/issues/40#issuecomment-708672654">original design principles of httptest</a></p>
+<blockquote>
+<p><em>"[httptest] doesn’t assume that every API mock came from a real request to a real server, and it is designed so that you are able to see and modify test fixtures.
+Among the considerations:</em></p>
+<p><em>1. In many cases, API responses contain way more content than is necessary to test your R code around them: 100 records when 2 will suffice, request metadata that you don’t care about and can’t meaningfully assert things about, and so on. In the interest of minimally reproducible examples, and of making tests readable, it often makes sense to take an actual API response and delete a lot of its content, or even to fabricate one entirely.</em></p>
+<p><em>2. And then it’s good to keep that API mock fixed so you know exactly what is in it. If I re-recorded a Twitter API response of, say, the most recent 10 tweets with #rstats, the specific content will change every time I record it, so my tests can’t say much about what is in the response without having to rewrite them every time too.</em></p>
+<p><em>3. Some conditions (rate limiting, server errors, e.g.) are difficult to test with real responses, but if you can hand-create a API mock with, say, a 503 response status code and test how your code handles it, you can have confidence of how your package will respond when that rare event happens with the real API.</em></p>
+<p><em>4. Re-recording all responses can make for a huge code diff, which can blow up your repository size and make code review harder."</em></p>
+</blockquote>
+</div>
+<p>Now, creating mock files by hand (or inventing some custom scripts to create them) involves more elbow grease, so it’s a compromise.</p>
+</div>
+<div id="testing-for-api-errors" class="section level2" number="9.7">
+<h2>
+<span class="header-section-number">9.7</span> Testing for API errors<a class="anchor" aria-label="anchor" href="#testing-for-api-errors"><i class="fas fa-link"></i></a>
+</h2>
+<p>In your test suite you probably want to check how things go if the server returns 502 or so, and you cannot trigger such a response to record it.</p>
+<p>With httptest, to test for API errors, you need to create one or several fake mock file(s).
+The easiest way to do that might be to use <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">httptest::with_mock_dir()</a></code> that will create mock files with the expected filenames and locations, that you can then tweak.
+Or reading the error message of <code>httptest::with_mock_ap()</code> helps you know where to create a mock file.</p>
+<p>With vcr, you either</p>
+<ul>
+<li>use webmockr as we showed in our demo. On the one hand it’s more compact than creating a fake mock file, on the other hand it’s a way to test that’s different from the vcr cassette.</li>
+</ul>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations errors when the API doesn't behave"</span>, <span class="op">{</span>
+  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">enable</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span>
+  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span>
+  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html">expect_error</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"oops"</span><span class="op">)</span>
+  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">disable</a></span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<ul>
+<li>or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you’d need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>.</li>
+</ul>
+</div>
+<div id="conclusion-3" class="section level2" number="9.8">
+<h2>
+<span class="header-section-number">9.8</span> Conclusion<a class="anchor" aria-label="anchor" href="#conclusion-3"><i class="fas fa-link"></i></a>
+</h2>
+<p>Both vcr and httptest are similar packages in that they use mock files for allowing easier HTTP testing.
+They are a bit different in their design philosophy and features, which might help you choose one of them.</p>
+<p>And now, to make things even more complex, or fun, we shall explore a third HTTP testing package that does not <em>mock</em> requests but instead spins up a local fake web service.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></div>
+<div class="next"><a href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#mocking-pkgs-comparison"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="nav-link" href="#setting-up-the-infrastructure"><span class="header-section-number">9.1</span> Setting up the infrastructure</a></li>
+<li><a class="nav-link" href="#calling-mock-files"><span class="header-section-number">9.2</span> Calling mock files</a></li>
+<li><a class="nav-link" href="#naming-mock-files"><span class="header-section-number">9.3</span> Naming mock files</a></li>
+<li><a class="nav-link" href="#matching-requests"><span class="header-section-number">9.4</span> Matching requests</a></li>
+<li><a class="nav-link" href="#handling-secrets"><span class="header-section-number">9.5</span> Handling secrets</a></li>
+<li><a class="nav-link" href="#recording-playing-back"><span class="header-section-number">9.6</span> Recording, playing back</a></li>
+<li><a class="nav-link" href="#testing-for-api-errors"><span class="header-section-number">9.7</span> Testing for API errors</a></li>
+<li><a class="nav-link" href="#conclusion-3"><span class="header-section-number">9.8</span> Conclusion</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/ropensci-books/http-testing/blob/main/wholegames-mocking.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/ropensci-books/http-testing/edit/main/wholegames-mocking.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-02-22.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
