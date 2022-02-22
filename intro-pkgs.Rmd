@@ -74,7 +74,6 @@ The differences and similarities between httptest and vcr will become clearer in
 
 `{httptest2}` maintained by Neal Richardson is like `{httptest}`, but for `{httr2}`.
 
-httptest works for packages using httr2.
 
 ::: {.alert .alert-dismissible .alert-info} 
 [Direct link to httptest2 demo](#httptest2)

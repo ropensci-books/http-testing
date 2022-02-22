@@ -49,7 +49,7 @@ In R, to interact with web resources, it is recommended to use `{curl}`; or its 
 
 Do not use RCurl, because it is not actively maintained!
 
-When writing a package interacting with web resources, you will probably use either `{httr2}` , `{httr}` or `{crul}`.
+When writing a package interacting with web resources, you will probably use either `{httr2}`, `{httr}` or `{crul}`.
 
 * httr is the most popular and oldest of the two, and supports OAuth. 
 httr docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
