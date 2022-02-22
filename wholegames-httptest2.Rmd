@@ -121,7 +121,9 @@ structure(list(method = "GET", url = "https://api.github.com/organizations?since
 
 Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
 
-Regarding our secret API token, since httptest2 doesn't save the requests, and since the responses don't contain the token, it is safe without our making any effort.
+Regarding our secret API token, since httptest2 doesn't save the requests[^save], and since the responses don't contain the token, it is safe without our making any effort.
+
+[^save]: `httr2_response` objects, unlike the equivalent in httr, don't include the request.
 
 ::: {.alert .alert-dismissible .alert-primary}
 In this demo we used `httptest2::with_mock_dir()` but there are other ways to use httptest2, e.g. using `httptest2::with_mock_api()` that does not require naming a directory (you'd still need to use a separate directory for mocking the error response).
