@@ -5,8 +5,6 @@ name: PR-workflow
 jobs:
   bookdown:
     name: Render Book
-    env:
-      GITHUB_PAT: ${{ secrets.MINE }}
     runs-on: ubuntu-latest
     steps:
       - name: Is this a fork
