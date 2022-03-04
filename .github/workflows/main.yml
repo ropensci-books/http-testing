@@ -6,9 +6,7 @@ name: bookdown
 
 jobs:
   build:
-    runs-on: macOS-latest
-    env:
-      GITHUB_PAT: ${{ secrets.MINE }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
