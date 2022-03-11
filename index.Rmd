@@ -40,5 +40,5 @@ _Thanks to contributors to the book:
 [Xavier A](https://github.com/xvrdm)._
 
 ```{block, type = "alert alert-dismissible alert-success"}
-Project funded by [rOpenSci](https://ropensci.org`) (Scott Chamberlain's work) & the [R Consortium](https://www.r-consortium.org/projects/awarded-projects/2020-group-1#HTTP+testing+in+R+Book) (Maëlle Salmon's work).
+Project funded by [rOpenSci](https://ropensci.org) (Scott Chamberlain's work) & the [R Consortium](https://www.r-consortium.org/projects/awarded-projects/2020-group-1#HTTP+testing+in+R+Book) (Maëlle Salmon's work).
 ```
