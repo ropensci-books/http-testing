@@ -7,7 +7,7 @@
 <title>Chapter 23 Advanced vcr usage | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content='Now that we’ve covered basic vcr usage, it’s time for some more advanced usage topics. library("vcr")  23.1 Mocking writing to disk If you have http requests for which you write the response to...'>
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="Chapter 23 Advanced vcr usage | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/vcr-usage.html">
@@ -15,12 +15,16 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 23 Advanced vcr usage | HTTP testing in R">
 <meta name="twitter:description" content='Now that we’ve covered basic vcr usage, it’s time for some more advanced usage topics. library("vcr")  23.1 Mocking writing to disk If you have http requests for which you write the response to...'>
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.13/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
-<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -51,8 +55,8 @@
 <li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
 <li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
 <li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
-<li><a class="" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
-<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">8</span> vcr and httptest</a></li>
+<li><a class="" href="httptest2.html"><span class="header-section-number">9</span> Use httptest2</a></li>
 <li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
 <li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
 <li class="book-part">Advanced Topics</li>
@@ -109,7 +113,7 @@ the <a href="#write-disk-path">write_disk_path configuration option</a>.</p>
   write_disk_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmpdir</span>, <span class="st">"files"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: /tmp/RtmpmsEIhT/fixtures
+#&gt;   Cassette Dir: /tmp/RtmpFdJj4y/fixtures
 #&gt;   Record: once
 #&gt;   Serialize with: yaml
 #&gt;   URI Parser: crul::url_parse
@@ -118,7 +122,7 @@ the <a href="#write-disk-path">write_disk_path configuration option</a>.</p>
 #&gt;   Logging?: FALSE
 #&gt;   ignored hosts: 
 #&gt;   ignore localhost?: FALSE
-#&gt;   Write disk path: /tmp/RtmpmsEIhT/files</code></pre>
+#&gt;   Write disk path: /tmp/RtmpFdJj4y/files</code></pre>
 <p>Then pass a file path (that doesn’t exist yet) to crul’s <code>disk</code> parameter.
 <code>vcr</code> will take care of handling writing the response to that file in
 addition to the cassette.</p>
@@ -134,7 +138,7 @@ addition to the cassette.</p>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/7.68.0 r-curl/4.3.2 crul/1.2.0\", \n    \"X-Amzn-Trace-Id\": \"Root=1-622ed730-1a51313b68634f226bb766e6\"\n  }, \n  \"origin\": \"20.228.193.27\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
+<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/7.68.0 r-curl/4.3.2 crul/1.2.0\", \n    \"X-Amzn-Trace-Id\": \"Root=1-626bdf1b-309e1158270fa7e83cab8687\"\n  }, \n  \"origin\": \"20.110.0.157\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
 <p>This also works with <code>httr</code>. The only difference is that you write to disk
 with a function <code>httr::write_disk(path)</code> rather than a parameter.</p>
 <p>Note that when you write to disk when using <code>vcr</code>, the cassette is slightly
@@ -193,7 +197,7 @@ yaml field above:</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-03-14.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-04-29.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

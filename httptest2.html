@@ -4,23 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 8 Use httptest2 | HTTP testing in R</title>
+<title>Chapter 9 Use httptest2 | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2. For this, we start from the initial state of exemplighratia2 again. Back to square one!...">
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
-<meta property="og:title" content="Chapter 8 Use httptest2 | HTTP testing in R">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta property="og:title" content="Chapter 9 Use httptest2 | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/httptest2.html">
 <meta property="og:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2. For this, we start from the initial state of exemplighratia2 again. Back to square one!...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 8 Use httptest2 | HTTP testing in R">
+<meta name="twitter:title" content="Chapter 9 Use httptest2 | HTTP testing in R">
 <meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2. For this, we start from the initial state of exemplighratia2 again. Back to square one!...">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.13/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
-<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+<!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -51,8 +55,8 @@
 <li><a class="" href="introduction.html"><span class="header-section-number">5</span> Introduction</a></li>
 <li><a class="" href="vcr.html"><span class="header-section-number">6</span> Use vcr (&amp; webmockr)</a></li>
 <li><a class="" href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></li>
-<li><a class="active" href="httptest2.html"><span class="header-section-number">8</span> Use httptest2</a></li>
-<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></li>
+<li><a class="" href="mocking-pkgs-comparison.html"><span class="header-section-number">8</span> vcr and httptest</a></li>
+<li><a class="active" href="httptest2.html"><span class="header-section-number">9</span> Use httptest2</a></li>
 <li><a class="" href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></li>
 <li><a class="" href="pkgs-comparison.html"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
 <li class="book-part">Advanced Topics</li>
@@ -87,18 +91,18 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="httptest2" class="section level1" number="8">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="httptest2" class="section level1" number="9">
 <h1>
-<span class="header-section-number">8</span> Use httptest2<a class="anchor" aria-label="anchor" href="#httptest2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9</span> Use httptest2<a class="anchor" aria-label="anchor" href="#httptest2"><i class="fas fa-link"></i></a>
 </h1>
 <p>In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2.
 For this, we start from the initial state of exemplighratia2 again. Back to square one!</p>
 <div class="alert alert-dismissible alert-info">
 <p><a href="https://github.com/maelle/exemplighratia2/pull/1/files">Corresponding pull request to exemplighratia2</a> Feel free to fork the repository to experiment yourself!</p>
 </div>
-<div id="setup-2" class="section level2" number="8.1">
+<div id="setup-2" class="section level2" number="9.1">
 <h2>
-<span class="header-section-number">8.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup-2"><i class="fas fa-link"></i></a>
 </h2>
 <p>Before working on all this, we need to install <a href="https://enpiar.com/httptest2/">httptest2</a>.</p>
 <p>First, we need to run <code><a href="https://enpiar.com/httptest2/reference/use_httptest2.html">httptest2::use_httptest2()</a></code> which has a few effects:</p>
@@ -106,12 +110,12 @@ For this, we start from the initial state of exemplighratia2 again. Back to squa
 <li>Adding httptest2 as a dependency to <code>DESCRIPTION</code>, under Suggests just like testthat.</li>
 <li>Creating a setup file under <code>tests/testthat/setup</code>,</li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/httptest2/">httptest2</a></span><span class="op">)</span></code></pre></div>
 <p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name starts with “setup” are always run first</a>.
 The setup file added by httptest2 loads httptest2.</p>
 <p>We shall tweak it a bit to fool our package into believing there is an API token around in contexts where there is not. Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need <code>gh_organizations()</code> to not stop because <code>Sys.getenv("GITHUB_PAT")</code> returns nothing.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/httptest2/">httptest2</a></span><span class="op">)</span>
 
 <span class="co"># for contexts where the package needs to be fooled</span>
@@ -123,14 +127,14 @@ The setup file added by httptest2 loads httptest2.</p>
 <span class="op">}</span></code></pre></div>
 <p>So this was just setup, now on to adapting our tests!</p>
 </div>
-<div id="actual-testing-2" class="section level2" number="8.2">
+<div id="actual-testing-2" class="section level2" number="9.2">
 <h2>
-<span class="header-section-number">8.2</span> Actual testing<a class="anchor" aria-label="anchor" href="#actual-testing-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.2</span> Actual testing<a class="anchor" aria-label="anchor" href="#actual-testing-2"><i class="fas fa-link"></i></a>
 </h2>
 <p>The key function will be <code>httptest2::with_mock_dir("dir", {code-block})</code> which tells httptest to create mock files under <code>tests/testthat/dir</code> to store all API responses for API calls occurring in the code block.
 We are allowed to tweak the mock files by hand, and we will do that in some cases.</p>
 <p>Let’s tweak the test file for <code>gh_status_api</code>, it becomes</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span>
   <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span>
     <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
@@ -143,7 +147,7 @@ We are allowed to tweak the mock files by hand, and we will do that in some case
 <li>the first time, httptest2 creates a mock file under <code>tests/testthat/gh_api_status/kctbh9vrtdwd.statuspage.io/api/v2/components.json.json</code> where it stores the API response.
 We however dumbed it down by hand, to</li>
 </ul>
-<div class="sourceCode" id="cb44"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb44-1"><a href="httptest2.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"components"</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span><span class="st">"API Requests"</span><span class="fu">,</span><span class="dt">"status"</span><span class="fu">:</span><span class="st">"operational"</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb45-1"><a href="httptest2.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"components"</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span><span class="st">"API Requests"</span><span class="fu">,</span><span class="dt">"status"</span><span class="fu">:</span><span class="st">"operational"</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
 <ul>
 <li>all the times after that, httptest2 simply uses the mock file instead of actually calling the API.</li>
 </ul>
@@ -151,7 +155,7 @@ We however dumbed it down by hand, to</li>
 <p>Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr2::resp_check_status(response)</code> became <code>httr2::resp_check_status(response, info = "Oops, try again later?")</code>.</p>
 <p>The test file <code>tests/testthat/test-organizations.R</code> is now:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span>
   <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span>
     <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
@@ -171,7 +175,7 @@ In the second test there is more to unpack: how do we get a mock file correspond
 <li>We replaced <code>200L</code> with <code>502L</code> and removed the body, to end up with a simpler mock file under <code>tests/testthat/gh_organizations_error/api.github.com/organizations-5377e8.R</code>
 </li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"GET"</span>, url <span class="op">=</span> <span class="st">"https://api.github.com/organizations?since=1"</span>,
     status_code <span class="op">=</span> <span class="fl">502L</span>, headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>server <span class="op">=</span> <span class="st">"GitHub.com"</span>,
         date <span class="op">=</span> <span class="st">"Thu, 17 Feb 2022 12:40:29 GMT"</span>, `content-type` <span class="op">=</span> <span class="st">"application/json; charset=utf-8"</span>,
@@ -199,9 +203,9 @@ In the second test there is more to unpack: how do we get a mock file correspond
 <p>Find out more in the <a href="https://enpiar.com/httptest2/articles/httptest2.html">main httptest2 vignette</a>.</p>
 </div>
 </div>
-<div id="httptest2-real" class="section level2" number="8.3">
+<div id="httptest2-real" class="section level2" number="9.3">
 <h2>
-<span class="header-section-number">8.3</span> Also testing for real interactions<a class="anchor" aria-label="anchor" href="#httptest2-real"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.3</span> Also testing for real interactions<a class="anchor" aria-label="anchor" href="#httptest2-real"><i class="fas fa-link"></i></a>
 </h2>
 <p>What if the API responses change?
 Hopefully we’d notice that thanks to following API news.
@@ -210,9 +214,9 @@ Therefore it is important to run tests against the real web service once in a wh
 <p>One could use the same strategy as the one <a href="httptest2.html#httptest2-real">we demonstrated for httptest</a> i.e. with a different test folder.</p>
 <p>Again, one could imagine other strategies, but in all cases it is important to keep checking the package against the real web service fairly regularly.</p>
 </div>
-<div id="summary-2" class="section level2" number="8.4">
+<div id="summary-2" class="section level2" number="9.4">
 <h2>
-<span class="header-section-number">8.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary-2"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li>We set up httptest2 usage in our package exemplighratia by running <code><a href="https://enpiar.com/httptest2/reference/use_httptest2.html">use_httptest2()</a></code> and tweaking the setup file to fool our own package that needs an API token.</li>
@@ -227,23 +231,23 @@ Therefore it is important to run tests against the real web service once in a wh
 <p>We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.</p>
 <p>For the full list of changes applied to exemplighratia in this chapter, see <a href="https://github.com/maelle/exemplighratia/pull/9/files">the pull request diff on GitHub</a>.</p>
 <div class="alert alert-dismissible alert-primary">
-<p>How do we get there with yet another package? We’ll try webfakes but first let’s compare vcr and httptest as they both use mocking.</p>
+<p>How do we get there with yet another package? We’ll try webfakes.</p>
 </div>
 
 </div>
 </div>
 
   <div class="chapter-nav">
-<div class="prev"><a href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></div>
-<div class="next"><a href="mocking-pkgs-comparison.html"><span class="header-section-number">9</span> vcr and httptest</a></div>
+<div class="prev"><a href="mocking-pkgs-comparison.html"><span class="header-section-number">8</span> vcr and httptest</a></div>
+<div class="next"><a href="webfakes.html"><span class="header-section-number">10</span> Use webfakes</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#httptest2"><span class="header-section-number">8</span> Use httptest2</a></li>
-<li><a class="nav-link" href="#setup-2"><span class="header-section-number">8.1</span> Setup</a></li>
-<li><a class="nav-link" href="#actual-testing-2"><span class="header-section-number">8.2</span> Actual testing</a></li>
-<li><a class="nav-link" href="#httptest2-real"><span class="header-section-number">8.3</span> Also testing for real interactions</a></li>
-<li><a class="nav-link" href="#summary-2"><span class="header-section-number">8.4</span> Summary</a></li>
+<li><a class="nav-link" href="#httptest2"><span class="header-section-number">9</span> Use httptest2</a></li>
+<li><a class="nav-link" href="#setup-2"><span class="header-section-number">9.1</span> Setup</a></li>
+<li><a class="nav-link" href="#actual-testing-2"><span class="header-section-number">9.2</span> Actual testing</a></li>
+<li><a class="nav-link" href="#httptest2-real"><span class="header-section-number">9.3</span> Also testing for real interactions</a></li>
+<li><a class="nav-link" href="#summary-2"><span class="header-section-number">9.4</span> Summary</a></li>
 </ul>
 
       <div class="book-extra">
@@ -261,7 +265,7 @@ Therefore it is important to run tests against the real web service once in a wh
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-03-14.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-04-29.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

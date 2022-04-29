@@ -39,11 +39,6 @@ setup-1
 actual-testing-1
 httptest-real
 summary-1
-httptest2
-setup-2
-actual-testing-2
-httptest2-real
-summary-2
 mocking-pkgs-comparison
 setting-up-the-infrastructure
 calling-mock-files
@@ -53,6 +48,11 @@ handling-secrets
 recording-playing-back
 testing-for-api-errors
 conclusion-3
+httptest2
+setup-2
+actual-testing-2
+httptest2-real
+summary-2
 webfakes
 setup-3
 actual-testing-3
