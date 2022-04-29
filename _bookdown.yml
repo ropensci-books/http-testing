@@ -6,8 +6,8 @@ language:
 delete_merged_file: true
 rmd_files: ["index.Rmd", 
            "intro-general.Rmd", "intro-graceful.Rmd", "intro-pkgs.Rmd", 
-           "wholegames-intro.Rmd", "wholegames-vcr.Rmd", "wholegames-httptest.Rmd", "wholegames-httptest2.Rmd",
-           "wholegames-mocking.Rmd", "wholegames-presser.Rmd", "wholegames-comparison.Rmd",
+           "wholegames-intro.Rmd", "wholegames-vcr.Rmd", "wholegames-httptest.Rmd", "wholegames-mocking.Rmd", 
+           "wholegames-httptest2.Rmd", "wholegames-presser.Rmd", "wholegames-comparison.Rmd",
            "topics-real.Rmd","topics-cran.Rmd","topics-security.Rmd","topics-errors.Rmd",
            "topics-contributing.Rmd",
            "conclusion.Rmd",
