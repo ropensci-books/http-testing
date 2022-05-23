@@ -18,6 +18,8 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-pandoc@v2
+      
+      - uses: r-lib/actions/setup-tinytex@v2
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -39,6 +41,15 @@ jobs:
 
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
+        
+      - name: Render book PDF
+        run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::pdf_book", output_dir = "pdfbook")'
+
+      - name: Render book EPUB
+        run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::epub_book", output_dir = "epubbook")'
+
+      - name: Move files around
+        run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
 
       - name: Deploy to GitHub Pages
         if: contains(env.isExtPR, 'false')
