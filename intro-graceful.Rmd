@@ -1,6 +1,6 @@
 # Graceful HTTP R packages {#graceful}
 
-Based on the previous chapter, your package interacting with a web resource has a dependency on `{curl}`, `{httr}`, `{httr2}` or `{crul}`. You have hopefully read the docs of the dependency you chose, including, in the case of httr, httr2 and crul, the vignette about best practices for HTTP packages. Now, in this chapter we want to give more tips aimed at making your HTTP R package graceful, part of which you'll learn more about in this very book!
+Based on the previous chapter, your package interacting with a web resource has a dependency on `{curl}`, `{httr}`, `{httr2}` or `{crul}`. You have hopefully read the docs of the dependency you chose, including, in the case of `{httr}`, `{httr2}` and `{crul}`, the vignette about best practices for HTTP packages. Now, in this chapter we want to give more tips aimed at making your HTTP R package graceful, part of which you'll learn more about in this very book!
 
 **Why** write a *graceful* HTTP R package? First of all, graceful is a nice adjective. 💃🕺Second, graceful is the adjective used in [CRAN repository policy](https://cran.r-project.org/web/packages/policies.html) *"Packages which use Internet resources should fail gracefully with an informative message if the resource is not available or has changed (and not give a check warning nor error)."* Therefore, let's review how to make your R package graceful from this day forward, in success and in failure.
 
@@ -14,13 +14,13 @@ First of all, your life and the life of your package's users will be easier if t
 
 1.  Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate. 
   * For instance, don't even try interacting with a web API requiring authentication if the user does not provide authentication information. 
-  * For limiting rate (not sending too many requests), automatically wait. If the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the [ratelimitr](https://github.com/tarakc02/ratelimitr) package (or, with httr2, `httr2::req_throttle()`).
+  * For limiting rate (not sending too many requests), automatically wait. If the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the [ratelimitr](https://github.com/tarakc02/ratelimitr) package (or, with `{httr2}`, `httr2::req_throttle()`).
 
 2.  If there's a status API (a separate API indicating whether the web resource is up or down), use it. If it tells you the API is down, `stop()` (or `rlang::abort()`) with an informative error message.
 
 3.  If the API indicates an error, depending on the actual error,
 
-    -   If the *server* seems to be having issues, [re-try with an exponential back-off](<https://blog.r-hub.io/2020/04/07/retry-wheel/>). In httr2 there is `httr2::req_retry()`.
+    -   If the *server* seems to be having issues, [re-try with an exponential back-off](<https://blog.r-hub.io/2020/04/07/retry-wheel/>). In `{httr2}` there is `httr2::req_retry()`.
 
     -    Otherwise, [transform the error into a useful error](https://httr2.r-lib.org/articles/wrapping-apis.html#error-handling-1).
 
