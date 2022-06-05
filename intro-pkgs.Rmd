@@ -52,7 +52,7 @@ Therefore tests work independently of an internet connection.
 `{vcr}` works for packages using `{httr}` or `{crul}`.
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to vcr (& webmockr) demo](#vcr)
+[Direct link to `{vcr}` (& `{webmockr}`) demo](#vcr)
 :::
 
 ## What is httptest?
@@ -65,7 +65,7 @@ Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copyi
 `{httptest}` works for packages using `{httr}`.
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to httptest demo](#httptest)
+[Direct link to `{httptest}` demo](#httptest)
 :::
 
 The differences and similarities between `{httptest}` and `{vcr}` will become clearer in the chapters where we provide the whole games for each of them.
@@ -76,7 +76,7 @@ The differences and similarities between `{httptest}` and `{vcr}` will become cl
 
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to httptest2 demo](#httptest2)
+[Direct link to `{httptest2}` demo](#httptest2)
 :::
 
 ::: {.alert .alert-dismissible .alert-primary} 
@@ -96,7 +96,7 @@ Because it runs a fake web service, you can even interact with said web service 
 `{webfakes}` works with packages using any HTTP package (i.e. it works with `{curl}`, `{crul}`, `{httr}`, or `{httr2}`).
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to webfakes demo](#webfakes)
+[Direct link to `{webfakes}` demo](#webfakes)
 :::
 
 ## testthat 
