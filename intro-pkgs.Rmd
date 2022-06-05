@@ -60,7 +60,7 @@ Therefore tests work independently of an internet connection.
 `{httptest}`, maintained by Neal Richardson, uses mocked API responses (like `{vcr}`).
 It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
 
-Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with `{vcr}` all mock files come from recording real interactions (although you can choose to [edit vcr mock files](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) after recording).
+Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with `{vcr}` all mock files come from recording real interactions (although you can choose to [edit `{vcr}` mock files](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) after recording).
 
 `{httptest}` works for packages using `{httr}`.
 
