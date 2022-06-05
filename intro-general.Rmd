@@ -47,7 +47,7 @@ How do you get started with interacting with HTTP in R?
 
 In R, to interact with web resources, it is recommended to use `{curl}`; or its higher-level interfaces `{httr}` ([pronounced _hitter_ or _h-t-t-r_](https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15)), `{httr2}` or `{crul}`.
 
-Do not use `{RCurl}`, because it is not actively maintained!
+Do not use RCurl, because it is not actively maintained!
 
 When writing a package interacting with web resources, you will probably use `{httr2}`, `{httr}` or `{crul}`.
 
