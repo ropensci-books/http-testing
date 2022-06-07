@@ -36,6 +36,7 @@ _Thanks to contributors to the book:
 [Christophe Dervieux](https://github.com/cderv), 
 [Daniel Possenriede](https://github.com/dpprdan), 
 [Hugo Gruson](https://github.com/Bisaloo), 
+[Jon Harmon](https://github.com/jonthegeek/),
 [Lluís Revilla Sancho](https://github.com/llrs), 
 [Xavier A](https://github.com/xvrdm)._
 
