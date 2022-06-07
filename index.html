@@ -95,16 +95,16 @@
 <h1>
 <span class="header-section-number">1</span> Preamble<a class="anchor" aria-label="anchor" href="#preamble"><i class="fas fa-link"></i></a>
 </h1>
-<p>Are you working on a R package accessing resources on the web, be it a cat facts API, a scientific data source or your system for Customer relationship management?
-As for all other packages, appropriate unit testing can make your code more robust.
+<p>Are you working on an R package accessing resources on the web, be it a cat facts API, a scientific data source or your system for Customer relationship management?
+As with all other packages, appropriate unit testing can make your code more robust.
 The unit testing of a package interacting with web resources, however, brings special challenges:
 dependence of tests on a good internet connection, testing in the absence of authentication secrets, etc.
 Having tests fail due to resources being down or slow, during development or on CRAN, means a time loss for everyone involved (slower development, messages from CRAN).
 Although some packages accessing remote resources are well tested, there is a lack of resources around best practices.</p>
 <p>This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development.
-Our aim is to develop an useful guidance to go with the great recent tools that <a href="https://docs.ropensci.org/vcr">vcr</a>, <a href="https://docs.ropensci.org/webmockr">webmockr</a>, <a href="https://enpiar.com/r/httptest/">httptest</a>, <a href="https://enpiar.com/httptest2/">httptest2</a> and <a href="https://webfakes.r-lib.org/">webfakes</a> are.</p>
+Our aim is to develop a useful guide to go with the great recent tools <a href="https://docs.ropensci.org/vcr">vcr</a>, <a href="https://docs.ropensci.org/webmockr">webmockr</a>, <a href="https://enpiar.com/r/httptest/">httptest</a>, <a href="https://enpiar.com/httptest2/">httptest2</a> and <a href="https://webfakes.r-lib.org/">webfakes</a>.</p>
 <p>We expect you to know <a href="https://r-pkgs.org/">package development basics</a>, and <a href="https://happygitwithr.com/">git</a>.</p>
-<p><em>Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (<a href="https://docs.ropensci.org/crul/">crul</a>, <a href="https://docs.ropensci.org/webmockr">webmockr</a>, <a href="https://docs.ropensci.org/vcr">vcr</a>) but its scope has been extended to generalize the explanation of concepts to similar packages.</em></p>
+<p><em>Note related to previous versions: this book was intended as a detailed guide to using a particular suite of packages for HTTP mocking and testing in R code and/or packages, namely those maintained by Scott Chamberlain (<a href="https://docs.ropensci.org/crul/">crul</a>, <a href="https://docs.ropensci.org/webmockr">webmockr</a>, <a href="https://docs.ropensci.org/vcr">vcr</a>), but its scope has been extended to generalize the explanation of concepts to similar packages.</em></p>
 <p>You can also read the <a href="/http-testing/main.pdf">PDF version</a> or <a href="/http-testing/main.epub">epub version</a> of this book.</p>
 <p><em>Thanks to contributors to the book:
 <a href="https://github.com/alexwhan">Alex Whan</a>,
@@ -112,6 +112,7 @@ Our aim is to develop an useful guidance to go with the great recent tools that 
 <a href="https://github.com/cderv">Christophe Dervieux</a>,
 <a href="https://github.com/dpprdan">Daniel Possenriede</a>,
 <a href="https://github.com/Bisaloo">Hugo Gruson</a>,
+<a href="https://github.com/jonthegeek/">Jon Harmon</a>,
 <a href="https://github.com/llrs">Lluís Revilla Sancho</a>,
 <a href="https://github.com/xvrdm">Xavier A</a>.</em></p>
 <div class="alert alert-dismissible alert-success">
@@ -146,7 +147,7 @@ Project funded by <a href="https://ropensci.org">rOpenSci</a> (Scott Chamberlain
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-05-23.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

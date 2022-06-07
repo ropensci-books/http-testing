@@ -101,16 +101,16 @@
 </h2>
 <p>HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation.
 HTTP is a way for you to exchange information with a remote server.
-In your package, if information is going back and forth between the R session and internet, you are using some sort of HTTP tooling.
+In your package, if information is going back and forth between the R session and the internet, you are using some sort of HTTP tooling.
 Your package is making <em>requests</em> and receives <em>responses</em>.</p>
 <div id="http-requests" class="section level3" number="2.1.1">
 <h3>
 <span class="header-section-number">2.1.1</span> HTTP requests<a class="anchor" aria-label="anchor" href="#http-requests"><i class="fas fa-link"></i></a>
 </h3>
 <p>The HTTP request is what your package makes.
-It has a method (are you fetching information via <code>GET</code>? are you sending information via <code>POST</code>?), different parts of an URL (domain, endpoint, query string), headers (containing e.g. your secret identifiers).
-It can contain a body, for instance you might be sending data as JSON.
-In that case one of the header will describe the content.</p>
+It has a method (are you fetching information via <code>GET</code>? are you sending information via <code>POST</code>?), different parts of a URL (domain, endpoint, query string), and headers (containing e.g. your secret identifiers).
+It can contain a body. For instance, you might be sending data as JSON.
+In that case one of the headers will describe the content.</p>
 <p>How do you know what request to make from your package?
 Hopefully you are interacting with a well documented web resource that will explain to you what methods are associated with what endpoints.</p>
 </div>
@@ -134,21 +134,21 @@ In any case you’ll find yourself experimenting with different requests to see 
 </h4>
 <ul>
 <li>
-<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">Mozilla Developer Network docs about HTTP</a> (recommended in the zine mentioned thereafter)</li>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">Mozilla Developer Network docs about HTTP</a> (recommended in the zine mentioned hereafter)</li>
 <li>(<em>not free</em>) <a href="https://wizardzines.com/zines/http/">Julia Evans’ Zine “HTTP: Learn your browser’s language!”</a>
 </li>
 <li>The docs of the web API you are aiming to work with, and a search engine to understand the words that are new.</li>
 </ul>
 </div>
-</div>
-<div id="http-with-r" class="section level3" number="2.1.4">
-<h3>
-<span class="header-section-number">2.1.4</span> HTTP with R<a class="anchor" aria-label="anchor" href="#http-with-r"><i class="fas fa-link"></i></a>
-</h3>
+<div id="http-with-r" class="section level4" number="2.1.3.2">
+<h4>
+<span class="header-section-number">2.1.3.2</span> HTTP with R<a class="anchor" aria-label="anchor" href="#http-with-r"><i class="fas fa-link"></i></a>
+</h4>
 <ul>
 <li>The docs of the R package you end up choosing!</li>
 <li>Digging into the source code of another package that does similar things.</li>
 </ul>
+</div>
 </div>
 </div>
 <div id="http-requests-in-r-what-package" class="section level2" number="2.2">
@@ -157,22 +157,22 @@ In any case you’ll find yourself experimenting with different requests to see 
 </h2>
 <p>In R, to interact with web resources, it is recommended to use <a href="https://github.com/jeroen/curl">curl</a>; or its higher-level interfaces <a href="https://httr.r-lib.org/">httr</a> (<a href="https://community.rstudio.com/t/pronunciations-of-common-r-terms/1810/15">pronounced <em>hitter</em> or <em>h-t-t-r</em></a>), <a href="https://httr2.r-lib.org">httr2</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
 <p>Do not use RCurl, because it is not actively maintained!</p>
-<p>When writing a package interacting with web resources, you will probably use either <a href="https://httr2.r-lib.org">httr2</a>, <a href="https://httr.r-lib.org/">httr</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
+<p>When writing a package interacting with web resources, you will probably use <a href="https://httr2.r-lib.org">httr2</a>, <a href="https://httr.r-lib.org/">httr</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
 <ul>
-<li><p>httr is the most popular and oldest of the two, and supports OAuth.
-httr docs feature a vignette called <a href="https://httr.r-lib.org/articles/api-packages.html">Best practices for API packages</a></p></li>
-<li><p>httr2 <em>“is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)”</em> so it might be a good idea to adopt it rather than httr for a new package. It has a vignette about <a href="https://httr2.r-lib.org/articles/wrapping-apis.html">Wrapping APIs</a>.</p></li>
-<li><p>crul does not support OAuth but it uses an object-oriented interface, which you might like.
-crul has a set of <a href="https://docs.ropensci.org/crul/articles/choosing-a-client.html">clients, or ways to perform requests</a>, that might be handy. crul also has a vignette about <a href="https://docs.ropensci.org/crul/articles/best-practices-api-packages.html">API package best practices</a>.</p></li>
+<li><p><a href="https://httr.r-lib.org/">httr</a> is the most popular and oldest of the two httr packages, and supports OAuth.
+<a href="https://httr.r-lib.org/">httr</a> docs feature a vignette called <a href="https://httr.r-lib.org/articles/api-packages.html">Best practices for API packages</a></p></li>
+<li><p><a href="https://httr2.r-lib.org">httr2</a> <em>“is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)”</em> so it might be a good idea to adopt it rather than <a href="https://httr.r-lib.org/">httr</a> for a new package. It has a vignette about <a href="https://httr2.r-lib.org/articles/wrapping-apis.html">Wrapping APIs</a>.</p></li>
+<li><p><a href="https://docs.ropensci.org/crul/">crul</a> does not support OAuth but it uses an object-oriented interface, which you might like.
+<a href="https://docs.ropensci.org/crul/">crul</a> has a set of <a href="https://docs.ropensci.org/crul/articles/choosing-a-client.html">clients, or ways to perform requests</a>, that might be handy. <a href="https://docs.ropensci.org/crul/">crul</a> also has a vignette about <a href="https://docs.ropensci.org/crul/articles/best-practices-api-packages.html">API package best practices</a>.</p></li>
 </ul>
-<p>Below we will try to programmatically access the <a href="https://www.githubstatus.com/api/#status">status of GitHub</a>, the open-source platfrom provided by the company of the same name.
-We will access the same information with httr2 and crul.
-If you decide for the low-level curl, feel free to contribute an example.
+<p>Below we will try to programmatically access the <a href="https://www.githubstatus.com/api/#status">status of GitHub</a>, the open-source platform provided by the company of the same name.
+We will access the same information with <a href="https://httr2.r-lib.org">httr2</a> and <a href="https://docs.ropensci.org/crul/">crul</a>
+If you decide to try the low-level curl, feel free to contribute an example.
 The internet has enough examples for httr.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">github_url</span> <span class="op">&lt;-</span> <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"</span></code></pre></div>
 <p>The URL above leaves no doubt as to what format the data is provided in, JSON!</p>
-<p>Let’s first use httr2.</p>
+<p>Let’s first use <a href="https://httr2.r-lib.org">httr2</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org">"magrittr"</a></span><span class="op">)</span>
 <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
@@ -182,7 +182,7 @@ The internet has enough examples for httr.</p>
 <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 200</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Or in a package you'd just write</span>
+<code class="sourceCode R"><span class="co"># Or in a package you'd write</span>
 <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
 
 <span class="co"># Parse the content</span>
@@ -201,7 +201,7 @@ The internet has enough examples for httr.</p>
 ## [1] "Etc/UTC"
 ## 
 ## $page$updated_at
-## [1] "2022-05-23T01:29:59.943Z"
+## [1] "2022-06-06T01:38:19.486Z"
 ## 
 ## 
 ## $status
@@ -214,12 +214,11 @@ The internet has enough examples for httr.</p>
 <code class="sourceCode R"><span class="co"># In case you wonder, the format was obtained from a header</span>
 <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_headers.html">resp_header</a></span><span class="op">(</span><span class="va">response</span>, <span class="st">"content-type"</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "application/json; charset=utf-8"</code></pre>
-<p>Now, the same with crul.</p>
+<p>Now, the same with <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create a client and get a response</span>
 <span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span>
 <span class="va">response</span> <span class="op">&lt;-</span> <span class="va">client</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-
 
 <span class="co"># Check the response status</span>
 <span class="va">response</span><span class="op">$</span><span class="fu">status_http</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -227,13 +226,13 @@ The internet has enough examples for httr.</p>
 ##   Message: OK
 ##   Explanation: Request fulfilled, document follows</code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Or in a package you'd just write</span>
+<code class="sourceCode R"><span class="co"># Or in a package you'd write</span>
 <span class="va">response</span><span class="op">$</span><span class="fu">raise_for_status</span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Parse the content</span>
 <span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-05-23T01:29:59.943Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
+<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-06-06T01:38:19.486Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
@@ -251,7 +250,7 @@ The internet has enough examples for httr.</p>
 ## [1] "Etc/UTC"
 ## 
 ## $page$updated_at
-## [1] "2022-05-23T01:29:59.943Z"
+## [1] "2022-06-06T01:38:19.486Z"
 ## 
 ## 
 ## $status
@@ -260,10 +259,10 @@ The internet has enough examples for httr.</p>
 ## 
 ## $status$description
 ## [1] "All Systems Operational"</code></pre>
-<p>Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of those packages.</p>
+<p>Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of these packages.</p>
 <p>Note that the choice of a package will constrain the HTTP testing tools you can use.
 However, the general ideas will remain the same.
-You could switch your package backend from say crul to httr <em>without changing your tests</em>, if your tests do not test too many specifities of internals.</p>
+You could switch your package backend from, say, <a href="https://docs.ropensci.org/crul/">crul</a> to <a href="https://httr.r-lib.org/">httr</a> <em>without changing your tests</em>, if your tests do not test too many specificities of internals.</p>
 
 </div>
 </div>
@@ -279,7 +278,6 @@ You could switch your package backend from say crul to httr <em>without changing
 <li><a class="nav-link" href="#http-requests"><span class="header-section-number">2.1.1</span> HTTP requests</a></li>
 <li><a class="nav-link" href="#http-responses"><span class="header-section-number">2.1.2</span> HTTP responses</a></li>
 <li><a class="nav-link" href="#more-resources-about-http"><span class="header-section-number">2.1.3</span> More resources about HTTP</a></li>
-<li><a class="nav-link" href="#http-with-r"><span class="header-section-number">2.1.4</span> HTTP with R</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#http-requests-in-r-what-package"><span class="header-section-number">2.2</span> HTTP requests in R: what package?</a></li>
@@ -300,7 +298,7 @@ You could switch your package backend from say crul to httr <em>without changing
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-05-23.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

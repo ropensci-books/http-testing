@@ -95,8 +95,8 @@
 <h1>
 <span class="header-section-number">3</span> Graceful HTTP R packages<a class="anchor" aria-label="anchor" href="#graceful"><i class="fas fa-link"></i></a>
 </h1>
-<p>Based on the previous chapter, your package interacting with a web resource has a dependency on <a href="https://github.com/jeroen/curl">curl</a>, <a href="https://httr.r-lib.org/">httr</a>, <a href="https://httr2.r-lib.org">httr2</a> or <a href="https://docs.ropensci.org/crul/">crul</a>. You have hopefully read the docs of the dependency you chose, including, in the case of httr, httr2 and crul, the vignette about best practice for HTTP packages. Now, in this chapter we want to give more tips aimed at making your HTTP R package graceful, part of which you’ll learn more about in this very book!</p>
-<p><strong>Why</strong> write a <em>graceful</em> HTTP R package? First of all, graceful is a nice adjective. 💃🕺Then, graceful is the adjective used in <a href="https://cran.r-project.org/web/packages/policies.html">CRAN repository policy</a> <em>“Packages which use Internet resources should fail gracefully with an informative message if the resource is not available or has changed (and not give a check warning nor error).”</em> Therefore, let’s review how to make your R package graceful from this day forward, in success and in failure.</p>
+<p>Based on the previous chapter, your package interacting with a web resource has a dependency on <a href="https://github.com/jeroen/curl">curl</a>, <a href="https://httr.r-lib.org/">httr</a>, <a href="https://httr2.r-lib.org">httr2</a> or <a href="https://docs.ropensci.org/crul/">crul</a>. You have hopefully read the docs of the dependency you chose, including, in the case of <a href="https://httr.r-lib.org/">httr</a>, <a href="https://httr2.r-lib.org">httr2</a> and <a href="https://docs.ropensci.org/crul/">crul</a>, the vignette about best practices for HTTP packages. Now, in this chapter we want to give more tips aimed at making your HTTP R package graceful, part of which you’ll learn more about in this very book!</p>
+<p><strong>Why</strong> write a <em>graceful</em> HTTP R package? First of all, graceful is a nice adjective. 💃🕺Second, graceful is the adjective used in <a href="https://cran.r-project.org/web/packages/policies.html">CRAN repository policy</a> <em>“Packages which use Internet resources should fail gracefully with an informative message if the resource is not available or has changed (and not give a check warning nor error).”</em> Therefore, let’s review how to make your R package graceful from this day forward, in success and in failure.</p>
 <div id="choose-the-http-resource-wisely" class="section level2" number="3.1">
 <h2>
 <span class="header-section-number">3.1</span> Choose the HTTP resource wisely<a class="anchor" aria-label="anchor" href="#choose-the-http-resource-wisely"><i class="fas fa-link"></i></a>
@@ -108,21 +108,21 @@
 <span class="header-section-number">3.2</span> User-facing grace (how your package actually works)<a class="anchor" aria-label="anchor" href="#user-facing-grace-how-your-package-actually-works"><i class="fas fa-link"></i></a>
 </h2>
 <ol start="0" style="list-style-type: decimal">
-<li><p>If you can, do not request the API every time the user asks for something but cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out <a href="https://github.com/r-lib/memoise">memoise</a>. To remember answers across sessions, see approaches presented in the R-hub blog post <a href="https://blog.r-hub.io/2020/03/12/user-preferences/">“Persistent config and data for R packages”</a>. Caching behavior should be well documented for users, and there should probably be an expiration time for caches that’s based on how often data is updated on the remote service.</p></li>
+<li><p>If you can, do not request the API every time the user asks for something; cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out <a href="https://github.com/r-lib/memoise">memoise</a>. To remember answers across sessions, see approaches presented in the R-hub blog post <a href="https://blog.r-hub.io/2020/03/12/user-preferences/">“Persistent config and data for R packages”</a>. Caching behavior should be well documented for users, and there should probably be an expiration time for caches that’s based on how often data is updated on the remote service.</p></li>
 <li><p>Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate.</p></li>
 </ol>
 <ul>
 <li>For instance, don’t even try interacting with a web API requiring authentication if the user does not provide authentication information.</li>
-<li>For limiting rate i.e. not sending too many requests, automatically wait or, if the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the <a href="https://github.com/tarakc02/ratelimitr">ratelimitr</a> package, or for httr2 <code><a href="https://httr2.r-lib.org/reference/req_throttle.html">httr2::req_throttle()</a></code>.</li>
+<li>For limiting rate (not sending too many requests), automatically wait. If the API docs allow you to define an ideal or maximal rate, set the request rate in advance using the <a href="https://github.com/tarakc02/ratelimitr">ratelimitr</a> package (or, with <a href="https://httr2.r-lib.org">httr2</a>, <code><a href="https://httr2.r-lib.org/reference/req_throttle.html">httr2::req_throttle()</a></code>).</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li><p>If there’s a status API i.e. a separate API indicating whether the web resource is up or down, use it. If it tells you the API is down, <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> (or <code><a href="https://rlang.r-lib.org/reference/abort.html">rlang::abort()</a></code>) with an informative error message.</p></li>
+<li><p>If there’s a status API (a separate API indicating whether the web resource is up or down), use it. If it tells you the API is down, <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> (or <code><a href="https://rlang.r-lib.org/reference/abort.html">rlang::abort()</a></code>) with an informative error message.</p></li>
 <li>
 <p>If the API indicates an error, depending on the actual error,</p>
 <ul>
-<li><p>If the <em>server</em> seems to be having issues, <a href="https://blog.r-hub.io/2020/04/07/retry-wheel/">re-try with an exponential back-off</a>. In httr2 there is <code><a href="https://httr2.r-lib.org/reference/req_retry.html">httr2::req_retry()</a></code>.</p></li>
-<li><p>Otherwise, <a href="https://httr2.r-lib.org/articles/wrapping-apis.html#error-handling-1">transform the error into an useful error</a>.</p></li>
-<li><p>If you used retry and nothing was sent after the maximal number of retries, have an informative error message.</p></li>
+<li><p>If the <em>server</em> seems to be having issues, <a href="https://blog.r-hub.io/2020/04/07/retry-wheel/">re-try with an exponential back-off</a>. In <a href="https://httr2.r-lib.org">httr2</a> there is <code><a href="https://httr2.r-lib.org/reference/req_retry.html">httr2::req_retry()</a></code>.</p></li>
+<li><p>Otherwise, <a href="https://httr2.r-lib.org/articles/wrapping-apis.html#error-handling-1">transform the error into a useful error</a>.</p></li>
+<li><p>If you used retry and nothing was sent after the maximal number of retries, show an informative error message.</p></li>
 </ul>
 </li>
 </ol>
@@ -134,14 +134,14 @@
 </h2>
 <ol start="4" style="list-style-type: decimal">
 <li>
-<a href="https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette">Pre-compute vignettes</a> in some way. Don’t use them as tests, they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the <a href="https://devtools.r-lib.org/reference/release.html#details">unexported <code>release_questions()</code> function</a>). Don’t let vignettes run on a system where a failure has bad consequences.</li>
+<a href="https://blog.r-hub.io/2020/06/03/vignettes/#how-to-include-a-compute-intensive--authentication-dependent-vignette">Pre-compute vignettes</a> in some way. Don’t use them as tests; they are a showcase. Of course have a system to prevent them from going stale, maybe even simple reminders (potentially in the <a href="https://devtools.r-lib.org/reference/release.html#details">unexported <code>release_questions()</code> function</a>). Don’t let vignettes run on a system where a failure has bad consequences.</li>
 <li>Don’t run <a href="https://blog.r-hub.io/2020/01/27/examples/">examples</a> on CRAN. Now, for a first submission, CRAN maintainers might complain if there is no example. In that case, you might want to add some minimal example, e.g.</li>
 </ol>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">"some-url"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">foo_bar</span><span class="op">(</span><span class="op">)</span> <span class="co"># some eg that uses some-url</span>
+  <span class="fu">my_fun</span><span class="op">(</span><span class="op">)</span> <span class="co"># some eg that uses some-url</span>
 <span class="op">}</span></code></pre></div>
-<p>These two precautions ensure that CRAN checks won’t end with some WARNINGs e.g. because an example failed when the API was down.</p>
+<p>These two precautions ensure that CRAN checks won’t end with some WARNINGs, e.g. because an example failed when the API was down.</p>
 </div>
 <div id="graceful-code" class="section level2" number="3.4">
 <h2>
@@ -149,7 +149,7 @@
 </h2>
 <p>For simplifying your own life and those of contributors, make sure to re-use code in your package by e.g. defining helper functions for making requests, handling responses etc.
 It will make it easier for you to support interactions with more parts of the web API.
-Writing DRY (don’t repeat yourself) code means less lines of code to test, less API calls to make or fake!</p>
+Writing DRY (don’t repeat yourself) code means less lines of code to test, and less API calls to make or fake!</p>
 <p>Also, were you to export a function à la <code><a href="https://gh.r-lib.org/reference/gh.html">gh::gh()</a></code>, you’ll help users call any endpoint of the web API even if you haven’t written any high-level helper for it yet.</p>
 </div>
 <div id="graceful-tests" class="section level2" number="3.5">
@@ -159,7 +159,7 @@ Writing DRY (don’t repeat yourself) code means less lines of code to test, les
 <p>We’re getting closer to the actual topic of this book!</p>
 <ol start="6" style="list-style-type: decimal">
 <li>Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. <code><a href="https://testthat.r-lib.org/reference/skip.html">testthat::skip_on_cran()</a></code> will ensure that.</li>
-<li>Do not only test success behavior! Test for the behavior of your package in case of API errors, which shall also be covered later in the book.</li>
+<li>Do not only test “success” behavior! Test for the behavior of your package in case of API errors, which shall also be covered later in the book.</li>
 </ol>
 </div>
 <div id="conclusion" class="section level2" number="3.6">
@@ -200,7 +200,7 @@ Writing DRY (don’t repeat yourself) code means less lines of code to test, les
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-05-23.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

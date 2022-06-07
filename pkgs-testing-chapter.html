@@ -113,59 +113,59 @@ Packages for HTTP testing help you solve these challenges, rather than letting y
 <h2>
 <span class="header-section-number">4.2</span> webmockr<a class="anchor" aria-label="anchor" href="#webmockr"><i class="fas fa-link"></i></a>
 </h2>
-<p><a href="https://docs.ropensci.org/webmockr">webmockr</a>, maintained by Scott Chamberlain, is an R package to help you “mock” HTTP requests. What does mock mean? Mock refers to the fact that we’re faking the response. Here is how it works:</p>
+<p><a href="https://docs.ropensci.org/webmockr">webmockr</a>, maintained by Scott Chamberlain, is an R package to help you “mock” HTTP requests. What does “mock” mean? Mock refers to the fact that we’re faking the response. Here is how it works:</p>
 <ul>
-<li>You “stub” a request. That is, you set rules for what HTTP request you’d like to respond to with a fake. E.g. a rule might be a method, or an URL.</li>
-<li>You also can set rules for what fake you’d like to respond with, if anything (if nothing, then we give you <code>NULL</code>).</li>
+<li>You “stub” a request. That is, you set rules for what HTTP request you’d like to respond to with a fake response. E.g. a rule might be a method, or a URL.</li>
+<li>You also can set rules for what fake response you’d like to respond with, if anything (if nothing, then we give you <code>NULL</code>).</li>
 <li>Then you make HTTP requests, and those that match your stub i.e. set of rules will return what you requested be returned.</li>
-<li>While webmockr is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You’ll get error messages for HTTP requests not covered by any stub.</li>
+<li>While <a href="https://docs.ropensci.org/webmockr">webmockr</a> is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You’ll get error messages for HTTP requests not covered by any stub.</li>
 <li>There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.</li>
 </ul>
-<p>webmockr works with both the crul package and the httr package.</p>
-<p>webmockr is quite low-level and not the first tool you’ll use directly in your day-to-day HTTP testing.
-You may never use it directly but if you use vcr it’s one of its foundations.</p>
-<p>webmockr was inspired by <a href="https://github.com/bblimke/webmock">Ruby webmock gem</a>.</p>
+<p><a href="https://docs.ropensci.org/webmockr">webmockr</a> works with both the <a href="https://docs.ropensci.org/crul/">crul</a> package and the <a href="https://httr.r-lib.org/">httr</a> package.</p>
+<p><a href="https://docs.ropensci.org/webmockr">webmockr</a> is quite low-level and not the first tool you’ll use directly in your day-to-day HTTP testing.
+You may never use it directly but if you use <a href="https://docs.ropensci.org/vcr">vcr</a> it’s one of its foundations.</p>
+<p><a href="https://docs.ropensci.org/webmockr">webmockr</a> was inspired by the <a href="https://github.com/bblimke/webmock">Ruby webmock gem</a>.</p>
 </div>
 <div id="what-vcr" class="section level2" number="4.3">
 <h2>
 <span class="header-section-number">4.3</span> What is vcr?<a class="anchor" aria-label="anchor" href="#what-vcr"><i class="fas fa-link"></i></a>
 </h2>
 <p>The short version is <a href="https://docs.ropensci.org/vcr">vcr</a>, maintained by Scott Chamberlain, helps you stub HTTP requests so you don’t have to repeat HTTP requests, mostly in your unit tests.
-It uses the power of webmockr, with a higher level interface.</p>
-<p>When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
+It uses the power of <a href="https://docs.ropensci.org/webmockr">webmockr</a>, with a higher level interface.</p>
+<p>When using <a href="https://docs.ropensci.org/vcr">vcr</a> in tests, the first time you run a test, the API response is stored in a YAML file.
 All subsequent runs of the test use that local file instead of really calling the API.
 Therefore tests work independently of an internet connection.</p>
-<p>vcr was inspired by <a href="https://relishapp.com/vcr/vcr/docs">Ruby vcr gem</a>.</p>
-<p>vcr works for packages using httr or crul.</p>
+<p><a href="https://docs.ropensci.org/vcr">vcr</a> was inspired by the <a href="https://relishapp.com/vcr/vcr/docs">Ruby vcr gem</a>.</p>
+<p><a href="https://docs.ropensci.org/vcr">vcr</a> works for packages using <a href="https://httr.r-lib.org/">httr</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
 <div class="alert alert-dismissible alert-info">
-<p><a href="vcr.html#vcr">Direct link to vcr (&amp; webmockr) demo</a></p>
+<p><a href="vcr.html#vcr">Direct link to <code>{vcr}</code> (&amp; <code>{webmockr}</code>) demo</a></p>
 </div>
 </div>
 <div id="what-is-httptest" class="section level2" number="4.4">
 <h2>
 <span class="header-section-number">4.4</span> What is httptest?<a class="anchor" aria-label="anchor" href="#what-is-httptest"><i class="fas fa-link"></i></a>
 </h2>
-<p><a href="https://enpiar.com/r/httptest/">httptest</a> maintained by Neal Richardson, like <a href="https://docs.ropensci.org/vcr">vcr</a>, uses mocked API responses.
+<p><a href="https://enpiar.com/r/httptest/">httptest</a>, maintained by Neal Richardson, uses mocked API responses (like <a href="https://docs.ropensci.org/vcr">vcr</a>).
 It <em>“enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service.”</em></p>
-<p>Contrary to <a href="https://docs.ropensci.org/vcr">vcr</a>, <a href="https://enpiar.com/r/httptest/">httptest</a> also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions (although you can choose to <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html">edit vcr mock files</a> after recording).</p>
-<p>httptest works for packages using httr.</p>
+<p>Contrary to <a href="https://docs.ropensci.org/vcr">vcr</a>, <a href="https://enpiar.com/r/httptest/">httptest</a> also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with <a href="https://docs.ropensci.org/vcr">vcr</a> all mock files come from recording real interactions (although you can choose to <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html">edit <code>{vcr}</code> mock files</a> after recording).</p>
+<p><a href="https://enpiar.com/r/httptest/">httptest</a> works for packages using <a href="https://httr.r-lib.org/">httr</a>.</p>
 <div class="alert alert-dismissible alert-info">
-<p><a href="httptest.html#httptest">Direct link to httptest demo</a></p>
+<p><a href="httptest.html#httptest">Direct link to <code>{httptest}</code> demo</a></p>
 </div>
-<p>The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.</p>
+<p>The differences and similarities between <a href="https://enpiar.com/r/httptest/">httptest</a> and <a href="https://docs.ropensci.org/vcr">vcr</a> will become clearer in the chapters where we provide the whole games for each of them.</p>
 </div>
 <div id="what-is-httptest2" class="section level2" number="4.5">
 <h2>
 <span class="header-section-number">4.5</span> What is httptest2?<a class="anchor" aria-label="anchor" href="#what-is-httptest2"><i class="fas fa-link"></i></a>
 </h2>
-<p><a href="https://enpiar.com/httptest2/">httptest2</a> maintained by Neal Richardson is like <a href="https://enpiar.com/r/httptest/">httptest</a>, but for <a href="https://httr2.r-lib.org">httr2</a>.</p>
+<p><a href="https://enpiar.com/httptest2/">httptest2</a>, maintained by Neal Richardson, is like <a href="https://enpiar.com/r/httptest/">httptest</a>, but for <a href="https://httr2.r-lib.org">httr2</a>.</p>
 <div class="alert alert-dismissible alert-info">
-<p><a href="httptest2.html#httptest2">Direct link to httptest2 demo</a></p>
+<p><a href="httptest2.html#httptest2">Direct link to <code>{httptest2}</code> demo</a></p>
 </div>
 <div class="alert alert-dismissible alert-primary">
-<p>With vcr, httptest and httptest2 the tests will use some sort of fake API responses.</p>
-<p>In vcr they are called <strong>fixtures</strong> or <strong>cassettes</strong>.
-In httptest and httptest2 they are called <strong>mock files</strong>.</p>
+<p>With <a href="https://docs.ropensci.org/vcr">vcr</a>, <a href="https://enpiar.com/r/httptest/">httptest</a> and <a href="https://enpiar.com/httptest2/">httptest2</a> the tests will use some sort of fake API responses.</p>
+<p>In <a href="https://docs.ropensci.org/vcr">vcr</a> they are called <strong>fixtures</strong> or <strong>cassettes</strong>.
+In <a href="https://enpiar.com/r/httptest/">httptest</a> and <a href="https://enpiar.com/httptest2/">httptest2</a> they are called <strong>mock files</strong>.</p>
 </div>
 </div>
 <div id="what-is-webfakes" class="section level2" number="4.6">
@@ -176,22 +176,22 @@ In httptest and httptest2 they are called <strong>mock files</strong>.</p>
 It will let you fake a whole web service, potentially outputting responses from mock files you’ll have created.
 It does not help with recording fake responses.
 Because it runs a fake web service, you can even interact with said web service in your browser or with curl in the command line.</p>
-<p>webfakes works with packages using any HTTP package i.e. it works with curl, crul, httr.</p>
+<p><a href="https://webfakes.r-lib.org/">webfakes</a> works with packages using any HTTP package (i.e. it works with <a href="https://github.com/jeroen/curl">curl</a>, <a href="https://docs.ropensci.org/crul/">crul</a>, <a href="https://httr.r-lib.org/">httr</a>, or <a href="https://httr2.r-lib.org">httr2</a>).</p>
 <div class="alert alert-dismissible alert-info">
-<p><a href="webfakes.html#webfakes">Direct link to webfakes demo</a></p>
+<p><a href="webfakes.html#webfakes">Direct link to <code>{webfakes}</code> demo</a></p>
 </div>
 </div>
 <div id="testthat" class="section level2" number="4.7">
 <h2>
 <span class="header-section-number">4.7</span> testthat<a class="anchor" aria-label="anchor" href="#testthat"><i class="fas fa-link"></i></a>
 </h2>
-<p><a href="https://testthat.r-lib.org">testthat</a> maintained by Hadley Wickham is not a package specifically for HTTP testing, it is a package for general purpose unit testing of R packages.
+<p><a href="https://testthat.r-lib.org">testthat</a>, maintained by Hadley Wickham, is not a package specifically for HTTP testing; it is a package for general-purpose unit testing of R packages.
 In this book we will assume that is what you use, because of its popularity.</p>
-<p>Now, if you use an alternative like tinytest,</p>
+<p>If you use an alternative like <a href="https://github.com/markvanderloo/tinytest">tinytest</a>,</p>
 <ul>
-<li><p>httptest won’t work as it’s specifically designed as a complement to testthat;</p></li>
-<li><p>vcr might work;</p></li>
-<li><p>webfakes can work.</p></li>
+<li><p><a href="https://enpiar.com/r/httptest/">httptest</a> won’t work as it’s specifically designed as a complement to <a href="https://testthat.r-lib.org">testthat</a>;</p></li>
+<li><p><a href="https://docs.ropensci.org/vcr">vcr</a> might work;</p></li>
+<li><p><a href="https://webfakes.r-lib.org/">webfakes</a> can work.</p></li>
 </ul>
 </div>
 <div id="conclusion-1" class="section level2" number="4.8">
@@ -209,7 +209,7 @@ In this book we will assume that is what you use, because of its popularity.</p>
 <li>
 <a href="https://webfakes.r-lib.org/">webfakes</a>.</li>
 </ul>
-<p>Our minimal package will use httr (except for httptest2, where we’ll use httr2). However, it will help you understand concepts even if you end up using crul or curl.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;If you end up using crul, you can use vcr and webmockr; or webfakes; but not httptest. If you end up using curl you can only use webfakes.&lt;/p&gt;"><sup>1</sup></a></p>
+<p>Our minimal package will use <a href="https://httr.r-lib.org/">httr</a> (except for <a href="https://enpiar.com/httptest2/">httptest2</a>, where we’ll use <a href="https://httr2.r-lib.org">httr2</a>). However, it will help you understand concepts even if you end up using <a href="https://docs.ropensci.org/crul/">crul</a> or <a href="https://github.com/jeroen/curl">curl</a>.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;If you end up using &lt;code&gt;{crul}&lt;/code&gt;, you can use &lt;code&gt;{vcr}&lt;/code&gt; and &lt;code&gt;{webmockr}&lt;/code&gt;; or &lt;code&gt;{webfakes}&lt;/code&gt;; but not &lt;code&gt;{httptest}&lt;/code&gt;. If you end up using &lt;code&gt;{curl}&lt;/code&gt; you can only use &lt;code&gt;{webfakes}&lt;/code&gt;.&lt;/p&gt;"><sup>1</sup></a></p>
 
 </div>
 </div>
@@ -249,7 +249,7 @@ In this book we will assume that is what you use, because of its popularity.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-05-23.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
