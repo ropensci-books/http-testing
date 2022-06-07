@@ -23,67 +23,67 @@ What are the challenges of HTTP testing?
 
 ## webmockr
 
-`{webmockr}`, maintained by Scott Chamberlain, is an R package to help you "mock" HTTP requests. What does mock mean? Mock refers to the fact that we're faking the response. Here is how it works:
+`{webmockr}`, maintained by Scott Chamberlain, is an R package to help you "mock" HTTP requests. What does "mock" mean? Mock refers to the fact that we're faking the response. Here is how it works:
 
-* You "stub" a request. That is, you set rules for what HTTP request you'd like to respond to with a fake. E.g. a rule might be a method, or an URL.
-* You also can set rules for what fake you'd like to respond with, if anything (if nothing, then we give you `NULL`).
+* You "stub" a request. That is, you set rules for what HTTP request you'd like to respond to with a fake response. E.g. a rule might be a method, or a URL.
+* You also can set rules for what fake response you'd like to respond with, if anything (if nothing, then we give you `NULL`).
 * Then you make HTTP requests, and those that match your stub i.e. set of rules will return what you requested be returned.
-* While webmockr is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You'll get error messages for HTTP requests not covered by any stub.
+* While `{webmockr}` is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You'll get error messages for HTTP requests not covered by any stub.
 * There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.
 
-webmockr works with both the crul package and the httr package.
+`{webmockr}` works with both the `{crul}` package and the `{httr}` package.
 
-webmockr is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
-You may never use it directly but if you use vcr it's one of its foundations.
+`{webmockr}` is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
+You may never use it directly but if you use `{vcr}` it's one of its foundations.
 
-webmockr was inspired by [Ruby webmock gem](https://github.com/bblimke/webmock).
+`{webmockr}` was inspired by the [Ruby webmock gem](https://github.com/bblimke/webmock).
 
 ## What is vcr? {#what-vcr}
 
 The short version is `{vcr}`, maintained by Scott Chamberlain, helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
-It uses the power of webmockr, with a higher level interface.
+It uses the power of `{webmockr}`, with a higher level interface.
 
-When using vcr in tests, the first time you run a test, the API response is stored in a YAML file.
+When using `{vcr}` in tests, the first time you run a test, the API response is stored in a YAML file.
 All subsequent runs of the test use that local file instead of really calling the API.
 Therefore tests work independently of an internet connection.
 
-vcr was inspired by [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
+`{vcr}` was inspired by the [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 
-vcr works for packages using httr or crul.
+`{vcr}` works for packages using `{httr}` or `{crul}`.
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to vcr (& webmockr) demo](#vcr)
+[Direct link to `{vcr}` (& `{webmockr}`) demo](#vcr)
 :::
 
 ## What is httptest?
 
-`{httptest}` maintained by Neal Richardson, like `{vcr}`, uses mocked API responses.
+`{httptest}`, maintained by Neal Richardson, uses mocked API responses (like `{vcr}`).
 It _"enables one to test all of the logic on the R sides of the API in your package without requiring access to the remote service."_
 
-Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with vcr all mock files come from recording real interactions (although you can choose to [edit vcr mock files](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) after recording).
+Contrary to `{vcr}`, `{httptest}` also lets you define mock files by hand (copying from API docs, or dumbing down real responses), whereas with `{vcr}` all mock files come from recording real interactions (although you can choose to [edit `{vcr}` mock files](https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html) after recording).
 
-httptest works for packages using httr.
+`{httptest}` works for packages using `{httr}`.
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to httptest demo](#httptest)
+[Direct link to `{httptest}` demo](#httptest)
 :::
 
-The differences and similarities between httptest and vcr will become clearer in the chapters where we provide the whole games for both of them.
+The differences and similarities between `{httptest}` and `{vcr}` will become clearer in the chapters where we provide the whole games for each of them.
 
 ## What is httptest2?
 
-`{httptest2}` maintained by Neal Richardson is like `{httptest}`, but for `{httr2}`.
+`{httptest2}`, maintained by Neal Richardson, is like `{httptest}`, but for `{httr2}`.
 
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to httptest2 demo](#httptest2)
+[Direct link to `{httptest2}` demo](#httptest2)
 :::
 
 ::: {.alert .alert-dismissible .alert-primary} 
-With vcr, httptest and httptest2 the tests will use some sort of fake API responses.
+With `{vcr}`, `{httptest}` and `{httptest2}` the tests will use some sort of fake API responses.
 
-In vcr they are called **fixtures** or **cassettes**.
-In httptest and httptest2 they are called **mock files**.
+In `{vcr}` they are called **fixtures** or **cassettes**.
+In `{httptest}` and `{httptest2}` they are called **mock files**.
 :::
 
 ## What is webfakes?
@@ -93,24 +93,24 @@ It will let you fake a whole web service, potentially outputting responses from 
 It does not help with recording fake responses.
 Because it runs a fake web service, you can even interact with said web service in your browser or with curl in the command line.
 
-webfakes works with packages using any HTTP package i.e. it works with curl, crul, httr.
+`{webfakes}` works with packages using any HTTP package (i.e. it works with `{curl}`, `{crul}`, `{httr}`, or `{httr2}`).
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Direct link to webfakes demo](#webfakes)
+[Direct link to `{webfakes}` demo](#webfakes)
 :::
 
 ## testthat 
 
-`{testthat}` maintained by Hadley Wickham is not a package specifically for HTTP testing, it is a package for general purpose unit testing of R packages.
+`{testthat}`, maintained by Hadley Wickham, is not a package specifically for HTTP testing; it is a package for general-purpose unit testing of R packages.
 In this book we will assume that is what you use, because of its popularity.
 
-Now, if you use an alternative like tinytest, 
+If you use an alternative like `{tinytest}`, 
 
-* httptest won't work as it's specifically designed as a complement to testthat;
+* `{httptest}` won't work as it's specifically designed as a complement to `{testthat}`;
 
-* vcr might work;
+* `{vcr}` might work;
 
-* webfakes can work.
+* `{webfakes}` can work.
 
 ## Conclusion
 
@@ -121,7 +121,7 @@ Now that you have an idea of the tools we can use for HTTP testing, we'll now cr
 * `{httptest2}`;
 * `{webfakes}`.
 
-Our minimal package will use httr (except for httptest2, where we'll use httr2). However, it will help you understand concepts even if you end up using crul or curl.[^limits]
+Our minimal package will use `{httr}` (except for `{httptest2}`, where we'll use `{httr2}`). However, it will help you understand concepts even if you end up using `{crul}` or `{curl}`.[^limits]
 
 
-[^limits]:  If you end up using crul, you can use vcr and webmockr; or webfakes; but not httptest. If you end up using curl you can only use webfakes.
+[^limits]:  If you end up using `{crul}`, you can use `{vcr}` and `{webmockr}`; or `{webfakes}`; but not `{httptest}`. If you end up using `{curl}` you can only use `{webfakes}`.

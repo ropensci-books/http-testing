@@ -6,15 +6,15 @@
 
 HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation.
 HTTP is a way for you to exchange information with a remote server.
-In your package, if information is going back and forth between the R session and internet, you are using some sort of HTTP tooling.
+In your package, if information is going back and forth between the R session and the internet, you are using some sort of HTTP tooling.
 Your package is making _requests_ and receives _responses_.
 
 ### HTTP requests
 
 The HTTP request is what your package makes.
-It has a method (are you fetching information via `GET`? are you sending information via `POST`?), different parts of an URL (domain, endpoint, query string), headers (containing e.g. your secret identifiers).
-It can contain a body, for instance you might be sending data as JSON. 
-In that case one of the header will describe the content.
+It has a method (are you fetching information via `GET`? are you sending information via `POST`?), different parts of a URL (domain, endpoint, query string), and headers (containing e.g. your secret identifiers).
+It can contain a body. For instance, you might be sending data as JSON. 
+In that case one of the headers will describe the content.
 
 How do you know what request to make from your package?
 Hopefully you are interacting with a well documented web resource that will explain to you what methods are associated with what endpoints.
@@ -33,11 +33,11 @@ How do you get started with interacting with HTTP in R?
 
 #### General HTTP resources
 
-* [Mozilla Developer Network docs about HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) (recommended in the zine mentioned thereafter)
+* [Mozilla Developer Network docs about HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) (recommended in the zine mentioned hereafter)
 * (_not free_) [Julia Evans' Zine "HTTP: Learn your browser's language!"](https://wizardzines.com/zines/http/) 
 * The docs of the web API you are aiming to work with, and a search engine to understand the words that are new.
 
-### HTTP with R
+#### HTTP with R
 
 * The docs of the R package you end up choosing!
 * Digging into the source code of another package that does similar things.
@@ -49,20 +49,20 @@ In R, to interact with web resources, it is recommended to use `{curl}`; or its 
 
 Do not use RCurl, because it is not actively maintained!
 
-When writing a package interacting with web resources, you will probably use either `{httr2}`, `{httr}` or `{crul}`.
+When writing a package interacting with web resources, you will probably use `{httr2}`, `{httr}` or `{crul}`.
 
-* httr is the most popular and oldest of the two, and supports OAuth. 
-httr docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
+* `{httr}` is the most popular and oldest of the two httr packages, and supports OAuth. 
+`{httr}` docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
 
-* httr2 _"is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)"_ so it might be a good idea to adopt it rather than httr for a new package. It has a vignette about [Wrapping APIs](https://httr2.r-lib.org/articles/wrapping-apis.html).
+* `{httr2}` _"is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)"_ so it might be a good idea to adopt it rather than `{httr}` for a new package. It has a vignette about [Wrapping APIs](https://httr2.r-lib.org/articles/wrapping-apis.html).
 
-* crul does not support OAuth but it uses an object-oriented interface, which you might like.
-crul has a set of [clients, or ways to perform requests](https://docs.ropensci.org/crul/articles/choosing-a-client.html), that might be handy. crul also has a vignette about [API package best practices
+* `{crul}` does not support OAuth but it uses an object-oriented interface, which you might like.
+`{crul}` has a set of [clients, or ways to perform requests](https://docs.ropensci.org/crul/articles/choosing-a-client.html), that might be handy. `{crul}` also has a vignette about [API package best practices
 ](https://docs.ropensci.org/crul/articles/best-practices-api-packages.html).
 
-Below we will try to programmatically access the [status of GitHub](https://www.githubstatus.com/api/#status), the open-source platfrom provided by the company of the same name.
-We will access the same information with httr2 and crul.
-If you decide for the low-level curl, feel free to contribute an example.
+Below we will try to programmatically access the [status of GitHub](https://www.githubstatus.com/api/#status), the open-source platform provided by the company of the same name.
+We will access the same information with `{httr2}` and `{crul}`
+If you decide to try the low-level curl, feel free to contribute an example.
 The internet has enough examples for httr.
 
 ```{r}
@@ -71,7 +71,7 @@ github_url <- "https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"
 
 The URL above leaves no doubt as to what format the data is provided in, JSON!
 
-Let's first use httr2.
+Let's first use `{httr2}`.
 
 ```{r}
 library("magrittr")
@@ -81,7 +81,7 @@ response <- httr2::request(github_url) %>%
 # Check the response status
 httr2::resp_status(response)
 
-# Or in a package you'd just write
+# Or in a package you'd write
 httr2::resp_check_status(response)
 
 # Parse the content
@@ -91,18 +91,17 @@ httr2::resp_body_json(response)
 httr2::resp_header(response, "content-type")
 ```
 
-Now, the same with crul.
+Now, the same with `{crul}`.
 
 ```{r}
 # Create a client and get a response
 client <- crul::HttpClient$new(github_url)
 response <- client$get()
 
-
 # Check the response status
 response$status_http()
 
-# Or in a package you'd just write
+# Or in a package you'd write
 response$raise_for_status()
 
 # Parse the content
@@ -110,8 +109,8 @@ response$parse()
 jsonlite::fromJSON(response$parse())
 ```
 
-Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of those packages.
+Hopefully these very short snippets give you an idea of what syntax to expect when choosing one of these packages.
 
 Note that the choice of a package will constrain the HTTP testing tools you can use.
 However, the general ideas will remain the same.
-You could switch your package backend from say crul to httr _without changing your tests_, if your tests do not test too many specifities of internals.
+You could switch your package backend from, say, `{crul}` to `{httr}` _without changing your tests_, if your tests do not test too many specificities of internals.
