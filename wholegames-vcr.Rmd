@@ -15,7 +15,7 @@ First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which h
 * Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
 * Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.
 * Adding a `.gitattributes` file with the line `tests/fixtures/**/* -diff` which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. [^secrets]
-* Creating a setup file under `tests/testthat/helper-vcr`,
+* Creating a setup file under `tests/testthat/helper-vcr.R`,
 
 ```r
 library("vcr")
