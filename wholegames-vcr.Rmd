@@ -15,7 +15,7 @@ First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which h
 * Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
 * Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.
 * Adding a `.gitattributes` file with the line `tests/fixtures/**/* -diff` which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. [^secrets]
-* Creating a setup file under `tests/testthat/setup-exemplighratia`,
+* Creating a setup file under `tests/testthat/helper-vcr`,
 
 ```r
 library("vcr")
@@ -25,13 +25,16 @@ invisible(vcr::vcr_configure(
 vcr::check_cassette_names()
 ```
 
-When testthat runs tests, [files whose name starts with "setup" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). The setup file created by vcr
+When testthat runs tests, [files whose name start with "helper" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). 
+They are also loaded by `devtools::load_all()`, so the vcr setup is loaded when developing and testing interactively. 
+
+The helper file created by vcr
 
 * loads vcr, 
 * indicates where mocked responses are saved (`"../fixtures"` which translates, from the root of the package, to `tests/fixtures`), 
 * and checks that you are not using the same name twice for cassettes (mock files).
 
-We have to tweak vcr setup a bit for our needs.
+We have to tweak the vcr setup a bit for our needs.
 
 * We do not want our API token to appear in the mock responses, and we know it's used in the Authorization header of the requests, so we use the `filter_request_headers` argument of `vcr::vcr_configure()`. For other secret filtering one can use `filter_response_headers` and `filter_sensitive_data` (for a regular expression purging, on the whole saved interactions).
 
@@ -39,7 +42,7 @@ We have to tweak vcr setup a bit for our needs.
 Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
 With mock responses around, we don't need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
 
-Below is the updated setup file saved under `tests/testthat/setup-exemplighratia`.
+Below is the updated setup file saved under `tests/testthat/helper-vcr.R`.
 
 ```r
 library("vcr")
