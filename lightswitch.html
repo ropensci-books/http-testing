@@ -7,7 +7,7 @@
 <title>Chapter 29 Turning vcr on and off | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="Sometimes you may need to turn off vcr, either for individual function calls, individual test blocks, whole test files, or for the entire package. The following attempts to break down all the...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 29 Turning vcr on and off | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/lightswitch.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="Sometimes you may need to turn off vcr, either for individual function calls, individual test blocks, whole test files, or for the entire package. The following attempts to break down all the...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -144,29 +144,29 @@ turn <code>vcr</code> back on - such that <code>vcr</code> is only turned off fo
 code block. Even if your code block errors, <code>vcr</code> will be turned back on
 due to use of <code>on.exit(turn_on())</code></p>
 <div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/crul/">crul</a></span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_off</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="va">con</span> <span class="op">&lt;-</span> <span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://httpbin.org/get"</span><span class="op">)</span>
-  <span class="va">con</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/crul/">crul</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_off</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">con</span> <span class="op">&lt;-</span> <span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://httpbin.org/get"</span><span class="op">)</span></span>
+<span>  <span class="va">con</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#&gt; &lt;crul response&gt;</span>
-<span class="co">#&gt;   url: https://httpbin.org/get</span>
-<span class="co">#&gt;   request_headers:</span>
-<span class="co">#&gt;     User-Agent: libcurl/7.54.0 r-curl/4.3 crul/0.9.0</span>
-<span class="co">#&gt;     Accept-Encoding: gzip, deflate</span>
-<span class="co">#&gt;     Accept: application/json, text/xml, application/xml, */*</span>
-<span class="co">#&gt;   response_headers:</span>
-<span class="co">#&gt;     status: HTTP/1.1 200 OK</span>
-<span class="co">#&gt;     date: Fri, 14 Feb 2020 19:44:46 GMT</span>
-<span class="co">#&gt;     content-type: application/json</span>
-<span class="co">#&gt;     content-length: 365</span>
-<span class="co">#&gt;     connection: keep-alive</span>
-<span class="co">#&gt;     server: gunicorn/19.9.0</span>
-<span class="co">#&gt;     access-control-allow-origin: *</span>
-<span class="co">#&gt;     access-control-allow-credentials: true</span>
-<span class="co">#&gt;   status: 200</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#&gt; &lt;crul response&gt;</span></span>
+<span><span class="co">#&gt;   url: https://httpbin.org/get</span></span>
+<span><span class="co">#&gt;   request_headers:</span></span>
+<span><span class="co">#&gt;     User-Agent: libcurl/7.54.0 r-curl/4.3 crul/0.9.0</span></span>
+<span><span class="co">#&gt;     Accept-Encoding: gzip, deflate</span></span>
+<span><span class="co">#&gt;     Accept: application/json, text/xml, application/xml, */*</span></span>
+<span><span class="co">#&gt;   response_headers:</span></span>
+<span><span class="co">#&gt;     status: HTTP/1.1 200 OK</span></span>
+<span><span class="co">#&gt;     date: Fri, 14 Feb 2020 19:44:46 GMT</span></span>
+<span><span class="co">#&gt;     content-type: application/json</span></span>
+<span><span class="co">#&gt;     content-length: 365</span></span>
+<span><span class="co">#&gt;     connection: keep-alive</span></span>
+<span><span class="co">#&gt;     server: gunicorn/19.9.0</span></span>
+<span><span class="co">#&gt;     access-control-allow-origin: *</span></span>
+<span><span class="co">#&gt;     access-control-allow-credentials: true</span></span>
+<span><span class="co">#&gt;   status: 200</span></span></code></pre></div>
 </div>
 <div id="turn-off-on" class="section level2" number="29.2">
 <h2>
@@ -181,29 +181,29 @@ run as if they were not wrapped in <code>vcr</code> code - so that all you have 
 your tests with cached requests/responses AND with real HTTP requests is toggle
 a single R function or environment variable.</p>
 <div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># real HTTP request works - vcr is not engaged here</span>
-<span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="co"># wrap HTTP request in use_cassette() - vcr is engaged here</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span>
-  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="co"># turn off &amp; ignore cassettes - use_cassette is ignored, real HTTP request made</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_off</a></span><span class="op">(</span>ignore_cassettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span>
-  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="co"># if you turn off and don't ignore cassettes, error thrown</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_off</a></span><span class="op">(</span>ignore_cassettes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span>
-  <span class="va">res2</span><span class="op">=</span><span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="co"># vcr back on - now use_cassette behaves as before</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_on</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar3"</span>, <span class="op">{</span>
-  <span class="va">res2</span><span class="op">=</span><span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># real HTTP request works - vcr is not engaged here</span></span>
+<span><span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># wrap HTTP request in use_cassette() - vcr is engaged here</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co"># turn off &amp; ignore cassettes - use_cassette is ignored, real HTTP request made</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_off</a></span><span class="op">(</span>ignore_cassettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co"># if you turn off and don't ignore cassettes, error thrown</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_off</a></span><span class="op">(</span>ignore_cassettes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span></span>
+<span>  <span class="va">res2</span><span class="op">=</span><span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co"># vcr back on - now use_cassette behaves as before</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_on</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar3"</span>, <span class="op">{</span></span>
+<span>  <span class="va">res2</span><span class="op">=</span><span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="turned-on" class="section level2" number="29.3">
 <h2>
@@ -212,13 +212,13 @@ a single R function or environment variable.</p>
 <p><code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_on()</a></code> does what it says on the tin - it tells you if <code>vcr</code> is turned on
 or not.</p>
 <div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_on</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_on</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_on</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_on</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_on</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turn_off</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">turned_on</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; [1] FALSE</code></pre>
 </div>
 <div id="lightswitch-env-vars" class="section level2" number="29.4">
@@ -232,8 +232,8 @@ line in the root of your package:</p>
 <pre><code>VCR_TURN_OFF=true Rscript -e "devtools::test()"</code></pre>
 <p>Or, similarly within R:</p>
 <div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>VCR_TURN_OFF <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>VCR_TURN_OFF <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>VCR_TURNED_OFF</code> and <code>VCR_IGNORE_CASSETTES</code> environment variables can be used
 in combination to achieve the same thing as <code>VCR_TURN_OFF</code>:</p>
 <pre><code>VCR_TURNED_OFF=true VCR_IGNORE_CASSETTES=true Rscript -e "devtools::test()"</code></pre>
@@ -268,7 +268,7 @@ in combination to achieve the same thing as <code>VCR_TURN_OFF</code>:</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -7,7 +7,7 @@
 <title>Chapter 9 Use httptest2 | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2. For this, we start from the initial state of exemplighratia2 again. Back to square one!...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 9 Use httptest2 | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/httptest2.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using httptest2. For this, we start from the initial state of exemplighratia2 again. Back to square one!...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -111,20 +111,20 @@ For this, we start from the initial state of exemplighratia2 again. Back to squa
 <li>Creating a setup file under <code>tests/testthat/setup</code>,</li>
 </ul>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/httptest2/">httptest2</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/httptest2/">httptest2</a></span><span class="op">)</span></span></code></pre></div>
 <p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name starts with “setup” are always run first</a>.
 The setup file added by httptest2 loads httptest2.</p>
 <p>We shall tweak it a bit to fool our package into believing there is an API token around in contexts where there is not. Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need <code>gh_organizations()</code> to not stop because <code>Sys.getenv("GITHUB_PAT")</code> returns nothing.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/httptest2/">httptest2</a></span><span class="op">)</span>
-
-<span class="co"># for contexts where the package needs to be fooled</span>
-<span class="co"># (CRAN, forks)</span>
-<span class="co"># this is ok because the package will used recorded responses</span>
-<span class="co"># so no need for a real secret</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/httptest2/">httptest2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># for contexts where the package needs to be fooled</span></span>
+<span><span class="co"># (CRAN, forks)</span></span>
+<span><span class="co"># this is ok because the package will used recorded responses</span></span>
+<span><span class="co"># so no need for a real secret</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>So this was just setup, now on to adapting our tests!</p>
 </div>
 <div id="actual-testing-2" class="section level2" number="9.2">
@@ -135,12 +135,12 @@ The setup file added by httptest2 loads httptest2.</p>
 We are allowed to tweak the mock files by hand, and we will do that in some cases.</p>
 <p>Let’s tweak the test file for <code>gh_status_api</code>, it becomes</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span>
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span>
-    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
-    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"operational"</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
+<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"operational"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>We only had to wrap the whole test in <code><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">httptest2::with_mock_dir()</a></code>.</p>
 <p>If we run this test (in RStudio clicking on “Run test”),</p>
 <ul>
@@ -156,18 +156,18 @@ We however dumbed it down by hand, to</li>
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr2::resp_check_status(response)</code> became <code>httr2::resp_check_status(response, info = "Oops, try again later?")</code>.</p>
 <p>The test file <code>tests/testthat/test-organizations.R</code> is now:</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span>
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span>
-    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations_error"</span>, <span class="op">{</span>
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations errors if the API doesn't behave"</span>, <span class="op">{</span>
-    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_snapshot.html">expect_snapshot_error</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>,
-simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
+<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://enpiar.com/httptest2/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations_error"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations errors if the API doesn't behave"</span>, <span class="op">{</span></span>
+<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_snapshot_output.html">expect_snapshot_error</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span>,</span>
+<span>simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>The first test is similar to what we did for <code>gh_api_status()</code> except we didn’t touch the mock file this time, out of laziness.
 In the second test there is more to unpack: how do we get a mock file corresponding to an error?</p>
 <ul>
@@ -176,23 +176,23 @@ In the second test there is more to unpack: how do we get a mock file correspond
 </li>
 </ul>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"GET"</span>, url <span class="op">=</span> <span class="st">"https://api.github.com/organizations?since=1"</span>,
-    status_code <span class="op">=</span> <span class="fl">502L</span>, headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>server <span class="op">=</span> <span class="st">"GitHub.com"</span>,
-        date <span class="op">=</span> <span class="st">"Thu, 17 Feb 2022 12:40:29 GMT"</span>, `content-type` <span class="op">=</span> <span class="st">"application/json; charset=utf-8"</span>,
-        `cache-control` <span class="op">=</span> <span class="st">"private, max-age=60, s-maxage=60"</span>,
-        vary <span class="op">=</span> <span class="st">"Accept, Authorization, Cookie, X-GitHub-OTP"</span>,
-        etag <span class="op">=</span> <span class="st">"W/\"d56e867402a909d66653b6cb53d83286ba9a16eef993dc8f3cb64c43b66389f4\""</span>,
-        `x-oauth-scopes` <span class="op">=</span> <span class="st">"gist, repo, user, workflow"</span>, `x-accepted-oauth-scopes` <span class="op">=</span> <span class="st">""</span>,
-        `x-github-media-type` <span class="op">=</span> <span class="st">"github.v3; format=json"</span>, link <span class="op">=</span> <span class="st">"&lt;https://api.github.com/organizations?since=3428&gt;; rel=\"next\", &lt;https://api.github.com/organizations{?since}&gt;; rel=\"first\""</span>,
-        `x-ratelimit-limit` <span class="op">=</span> <span class="st">"5000"</span>, `x-ratelimit-remaining` <span class="op">=</span> <span class="st">"4986"</span>,
-        `x-ratelimit-reset` <span class="op">=</span> <span class="st">"1645104327"</span>, `x-ratelimit-used` <span class="op">=</span> <span class="st">"14"</span>,
-        `x-ratelimit-resource` <span class="op">=</span> <span class="st">"core"</span>, `access-control-expose-headers` <span class="op">=</span> <span class="st">"ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset"</span>,
-        `access-control-allow-origin` <span class="op">=</span> <span class="st">"*"</span>, `strict-transport-security` <span class="op">=</span> <span class="st">"max-age=31536000; includeSubdomains; preload"</span>,
-        `x-frame-options` <span class="op">=</span> <span class="st">"deny"</span>, `x-content-type-options` <span class="op">=</span> <span class="st">"nosniff"</span>,
-        `x-xss-protection` <span class="op">=</span> <span class="st">"0"</span>, `referrer-policy` <span class="op">=</span> <span class="st">"origin-when-cross-origin, strict-origin-when-cross-origin"</span>,
-        `content-security-policy` <span class="op">=</span> <span class="st">"default-src 'none'"</span>, vary <span class="op">=</span> <span class="st">"Accept-Encoding, Accept, X-Requested-With"</span>,
-        `content-encoding` <span class="op">=</span> <span class="st">"gzip"</span>, `x-github-request-id` <span class="op">=</span> <span class="st">"A4BA:12D5C:178438:211160:620E423C"</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"httr2_headers"</span><span class="op">)</span>,
-    body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">charToRaw</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"httr2_response"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"GET"</span>, url <span class="op">=</span> <span class="st">"https://api.github.com/organizations?since=1"</span>,</span>
+<span>    status_code <span class="op">=</span> <span class="fl">502L</span>, headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>server <span class="op">=</span> <span class="st">"GitHub.com"</span>,</span>
+<span>        date <span class="op">=</span> <span class="st">"Thu, 17 Feb 2022 12:40:29 GMT"</span>, `content-type` <span class="op">=</span> <span class="st">"application/json; charset=utf-8"</span>,</span>
+<span>        `cache-control` <span class="op">=</span> <span class="st">"private, max-age=60, s-maxage=60"</span>,</span>
+<span>        vary <span class="op">=</span> <span class="st">"Accept, Authorization, Cookie, X-GitHub-OTP"</span>,</span>
+<span>        etag <span class="op">=</span> <span class="st">"W/\"d56e867402a909d66653b6cb53d83286ba9a16eef993dc8f3cb64c43b66389f4\""</span>,</span>
+<span>        `x-oauth-scopes` <span class="op">=</span> <span class="st">"gist, repo, user, workflow"</span>, `x-accepted-oauth-scopes` <span class="op">=</span> <span class="st">""</span>,</span>
+<span>        `x-github-media-type` <span class="op">=</span> <span class="st">"github.v3; format=json"</span>, link <span class="op">=</span> <span class="st">"&lt;https://api.github.com/organizations?since=3428&gt;; rel=\"next\", &lt;https://api.github.com/organizations{?since}&gt;; rel=\"first\""</span>,</span>
+<span>        `x-ratelimit-limit` <span class="op">=</span> <span class="st">"5000"</span>, `x-ratelimit-remaining` <span class="op">=</span> <span class="st">"4986"</span>,</span>
+<span>        `x-ratelimit-reset` <span class="op">=</span> <span class="st">"1645104327"</span>, `x-ratelimit-used` <span class="op">=</span> <span class="st">"14"</span>,</span>
+<span>        `x-ratelimit-resource` <span class="op">=</span> <span class="st">"core"</span>, `access-control-expose-headers` <span class="op">=</span> <span class="st">"ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset"</span>,</span>
+<span>        `access-control-allow-origin` <span class="op">=</span> <span class="st">"*"</span>, `strict-transport-security` <span class="op">=</span> <span class="st">"max-age=31536000; includeSubdomains; preload"</span>,</span>
+<span>        `x-frame-options` <span class="op">=</span> <span class="st">"deny"</span>, `x-content-type-options` <span class="op">=</span> <span class="st">"nosniff"</span>,</span>
+<span>        `x-xss-protection` <span class="op">=</span> <span class="st">"0"</span>, `referrer-policy` <span class="op">=</span> <span class="st">"origin-when-cross-origin, strict-origin-when-cross-origin"</span>,</span>
+<span>        `content-security-policy` <span class="op">=</span> <span class="st">"default-src 'none'"</span>, vary <span class="op">=</span> <span class="st">"Accept-Encoding, Accept, X-Requested-With"</span>,</span>
+<span>        `content-encoding` <span class="op">=</span> <span class="st">"gzip"</span>, `x-github-request-id` <span class="op">=</span> <span class="st">"A4BA:12D5C:178438:211160:620E423C"</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"httr2_headers"</span><span class="op">)</span>,</span>
+<span>    body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">charToRaw</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"httr2_response"</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>We re-run the tests. We got the expected error message.</li>
 </ul>
@@ -265,7 +265,7 @@ Therefore it is important to run tests against the real web service once in a wh
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

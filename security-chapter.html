@@ -7,7 +7,7 @@
 <title>Chapter 14 Security | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data), You want the secrets to be usable by you, collaborators and CI services,...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 14 Security | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/security-chapter.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data), You want the secrets to be usable by you, collaborators and CI services,...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -132,8 +132,8 @@ For tests using vcr, httptest, httptest2 or webfakes, you at most need a fake se
 <p>In GitHub repositories, when storing a new secret, do not save it with quotes.
 I.e. if your secret is “blabla”, the field should contain <code>blabla</code>, not <code>"blabla"</code> nor <code>'blabla'</code>.</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="st">"secret.png"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="secret.png" title="Screenshot of the interface for adding secrets in a GitHub repository, showing how the secret is stored without any quote." alt="Screenshot of the interface for adding secrets in a GitHub repository, showing how the secret is stored without any quote."></div>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="st">"secret.png"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="secret.png" alt="Screenshot of the interface for adding secrets in a GitHub repository, showing how the secret is stored without any quote."></div>
 </div>
 <div id="api-keys" class="section level4" number="14.1.2.1">
 <h4>
@@ -173,45 +173,45 @@ Read the documentation of the continuous integration service your are using to f
 <pre><code>MEETUPR_PWD="e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2"</code></pre>
 <p>Example of a script creating and encrypting an OAuth token (for the Meetup API).</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># thanks Jenny Bryan https://github.com/r-lib/gargle/blob/4fcf142fde43d107c6a20f905052f24859133c30/R/secret.R</span>
-
-<span class="va">token_path</span> <span class="op">&lt;-</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">".meetup_token.rds"</span><span class="op">)</span>
-<span class="fu">use_build_ignore</span><span class="op">(</span><span class="va">token_path</span><span class="op">)</span>
-<span class="fu">use_git_ignore</span><span class="op">(</span><span class="va">token_path</span><span class="op">)</span>
-
-<span class="fu">meetupr</span><span class="fu">::</span><span class="fu">meetup_auth</span><span class="op">(</span>
-  token <span class="op">=</span> <span class="cn">NULL</span>,
-  cache <span class="op">=</span> <span class="cn">TRUE</span>,
-  set_renv <span class="op">=</span> <span class="cn">FALSE</span>,
-  token_path <span class="op">=</span> <span class="va">token_path</span>
-<span class="op">)</span>
-
-<span class="co"># sodium_key &lt;- sodium::keygen()</span>
-<span class="co"># set_renv("MEETUPR_PWD" = sodium::bin2hex(sodium_key))</span>
-<span class="co"># set_renv being an internal function taken from rtweet</span>
-<span class="co"># that saves something to .Renviron</span>
-
-<span class="co"># get key from environment variable</span>
-<span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">cyphr</span><span class="fu">::</span><span class="fu">encrypt_file</span><span class="op">(</span>
-  <span class="va">token_path</span>,
-  key <span class="op">=</span> <span class="va">key</span>,
-  dest <span class="op">=</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># thanks Jenny Bryan https://github.com/r-lib/gargle/blob/4fcf142fde43d107c6a20f905052f24859133c30/R/secret.R</span></span>
+<span></span>
+<span><span class="va">token_path</span> <span class="op">&lt;-</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">".meetup_token.rds"</span><span class="op">)</span></span>
+<span><span class="fu">use_build_ignore</span><span class="op">(</span><span class="va">token_path</span><span class="op">)</span></span>
+<span><span class="fu">use_git_ignore</span><span class="op">(</span><span class="va">token_path</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">meetupr</span><span class="fu">::</span><span class="fu">meetup_auth</span><span class="op">(</span></span>
+<span>  token <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  set_renv <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  token_path <span class="op">=</span> <span class="va">token_path</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># sodium_key &lt;- sodium::keygen()</span></span>
+<span><span class="co"># set_renv("MEETUPR_PWD" = sodium::bin2hex(sodium_key))</span></span>
+<span><span class="co"># set_renv being an internal function taken from rtweet</span></span>
+<span><span class="co"># that saves something to .Renviron</span></span>
+<span></span>
+<span><span class="co"># get key from environment variable</span></span>
+<span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cyphr</span><span class="fu">::</span><span class="fu">encrypt_file</span><span class="op">(</span></span>
+<span>  <span class="va">token_path</span>,</span>
+<span>  key <span class="op">=</span> <span class="va">key</span>,</span>
+<span>  dest <span class="op">=</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>In tests you have a setup file with code like below.</li>
 </ul>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">temptoken</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".rds"</span><span class="op">)</span>
-
-<span class="fu">cyphr</span><span class="fu">::</span><span class="fu">decrypt_file</span><span class="op">(</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span>,
-  key <span class="op">=</span> <span class="va">key</span>,
-  dest <span class="op">=</span> <span class="va">temptoken</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">temptoken</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".rds"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cyphr</span><span class="fu">::</span><span class="fu">decrypt_file</span><span class="op">(</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span>,</span>
+<span>  key <span class="op">=</span> <span class="va">key</span>,</span>
+<span>  dest <span class="op">=</span> <span class="va">temptoken</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now what happens in contexts where <code>MEETUPR_PWD</code> is not available?
 Well there should be no tests using it!
 See <a href="real-requests-chapter.html#real-requests-chapter">our chapter about making real requests</a>.</p>
@@ -293,7 +293,7 @@ You’d also <a href="https://blog.r-hub.io/2020/05/20/rbuildignore/">Rbuildigno
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

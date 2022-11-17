@@ -7,7 +7,7 @@
 <title>Chapter 5 Introduction | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="Similar to the Whole Game chapter in the R packages book by Hadley Wickham and Jenny Bryan, we shall go through how to add HTTP tests to a minimal package. However, we will do it three times to...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 5 Introduction | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/introduction.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="Similar to the Whole Game chapter in the R packages book by Hadley Wickham and Jenny Bryan, we shall go through how to add HTTP tests to a minimal package. However, we will do it three times to...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -138,107 +138,107 @@ You are obviously free to use your own favorite workflow tools, but below we sha
 <code>use_r("api-status.R")</code> to add the first function whose code is written below;</li>
 </ul>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">status_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"</span>
-<span class="op">}</span>
-
-<span class="co">#' GitHub APIs status</span>
-<span class="co">#'</span>
-<span class="co">#' @description Get the status of requests to GitHub APIs</span>
-<span class="co">#'</span>
-<span class="co">#' @return A character vector, one of "operational", "degraded_performance",</span>
-<span class="co">#' "partial_outage", or "major_outage."</span>
-<span class="co">#'</span>
-<span class="co">#' @details See details in https://www.githubstatus.com/api#components.</span>
-<span class="co">#' @export</span>
-<span class="co">#'</span>
-<span class="co">#' @examples</span>
-<span class="co">#' \dontrun{</span>
-<span class="co">#' gh_api_status()</span>
-<span class="co">#' }</span>
-<span class="va">gh_api_status</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span><span class="fu">status_url</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co"># Check status</span>
-  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/stop_for_status.html">stop_for_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="co"># Parse the content</span>
-  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="co"># Extract the part about the API status</span>
-  <span class="va">components</span> <span class="op">&lt;-</span> <span class="va">content</span><span class="op">$</span><span class="va">components</span>
-  <span class="va">api_status</span> <span class="op">&lt;-</span> <span class="va">components</span><span class="op">[</span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">components</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">==</span> <span class="st">"API Requests"</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-
-  <span class="co"># Return status</span>
-  <span class="va">api_status</span><span class="op">$</span><span class="va">status</span>
-
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">status_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">#' GitHub APIs status</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @description Get the status of requests to GitHub APIs</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return A character vector, one of "operational", "degraded_performance",</span></span>
+<span><span class="co">#' "partial_outage", or "major_outage."</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @details See details in https://www.githubstatus.com/api#components.</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' \dontrun{</span></span>
+<span><span class="co">#' gh_api_status()</span></span>
+<span><span class="co">#' }</span></span>
+<span><span class="va">gh_api_status</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span><span class="fu">status_url</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Check status</span></span>
+<span>  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/stop_for_status.html">stop_for_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Parse the content</span></span>
+<span>  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Extract the part about the API status</span></span>
+<span>  <span class="va">components</span> <span class="op">&lt;-</span> <span class="va">content</span><span class="op">$</span><span class="va">components</span></span>
+<span>  <span class="va">api_status</span> <span class="op">&lt;-</span> <span class="va">components</span><span class="op">[</span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">components</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">==</span> <span class="st">"API Requests"</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co"># Return status</span></span>
+<span>  <span class="va">api_status</span><span class="op">$</span><span class="va">status</span></span>
+<span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <ul>
 <li>
 <code>use_test("api-status")</code> (and using <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/#3rd-edition">testthat latest edition</a> so setting <code>Config/testthat/edition: 3</code> in <code>DESCRIPTION</code>) to add a simple test whose code is below.</li>
 </ul>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>
 <code>use_r("organizations.R")</code> to add a second function. Note that an ideal version of this function would have some sort of callback in the retry, to call the <code>gh_api_status()</code> function (which seems easier to implement with <a href="https://blog.r-hub.io/2020/04/07/retry-wheel/#retry-in-crul">crul’s retry method</a>).</li>
 </ul>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gh_v3_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="st">"https://api.github.com/"</span>
-<span class="op">}</span>
-
-<span class="co">#' GitHub organizations</span>
-<span class="co">#'</span>
-<span class="co">#' @description Get logins of GitHub organizations.</span>
-<span class="co">#'</span>
-<span class="co">#' @param since The integer ID of the last organization that you've seen.</span>
-<span class="co">#'</span>
-<span class="co">#' @return A character vector of at most 30 elements.</span>
-<span class="co">#' @export</span>
-<span class="co">#'</span>
-<span class="co">#' @details Refer to https://developer.github.com/v3/orgs/#list-organizations</span>
-<span class="co">#'</span>
-<span class="co">#' @examples</span>
-<span class="co">#' \dontrun{</span>
-<span class="co">#' gh_organizations(since = 42)</span>
-<span class="co">#' }</span>
-<span class="va">gh_organizations</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">since</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">url</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/modify_url.html">modify_url</a></span><span class="op">(</span>
-    <span class="fu">gh_v3_url</span><span class="op">(</span><span class="op">)</span>,
-    path <span class="op">=</span> <span class="st">"organizations"</span>,
-    query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>since <span class="op">=</span> <span class="va">since</span><span class="op">)</span>
-    <span class="op">)</span>
-
-  <span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span>
-
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">token</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No token provided! Set up the GITHUB_PAT environment variable please."</span><span class="op">)</span>
-  <span class="op">}</span>
-
-  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/RETRY.html">RETRY</a></span><span class="op">(</span>
-    <span class="st">"GET"</span>,
-    <span class="va">url</span>,
-    <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/add_headers.html">add_headers</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"token"</span>, <span class="va">token</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-
-  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/stop_for_status.html">stop_for_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">content</span>, <span class="st">"login"</span><span class="op">)</span>
-
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gh_v3_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="st">"https://api.github.com/"</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">#' GitHub organizations</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @description Get logins of GitHub organizations.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param since The integer ID of the last organization that you've seen.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return A character vector of at most 30 elements.</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @details Refer to https://developer.github.com/v3/orgs/#list-organizations</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' \dontrun{</span></span>
+<span><span class="co">#' gh_organizations(since = 42)</span></span>
+<span><span class="co">#' }</span></span>
+<span><span class="va">gh_organizations</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">since</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">url</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/modify_url.html">modify_url</a></span><span class="op">(</span></span>
+<span>    <span class="fu">gh_v3_url</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    path <span class="op">=</span> <span class="st">"organizations"</span>,</span>
+<span>    query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>since <span class="op">=</span> <span class="va">since</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">token</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No token provided! Set up the GITHUB_PAT environment variable please."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/RETRY.html">RETRY</a></span><span class="op">(</span></span>
+<span>    <span class="st">"GET"</span>,</span>
+<span>    <span class="va">url</span>,</span>
+<span>    <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/add_headers.html">add_headers</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"token"</span>, <span class="va">token</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/stop_for_status.html">stop_for_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">content</span>, <span class="st">"login"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <ul>
 <li>
 <code>use_test("organizations")</code> to add a simple test.</li>
 </ul>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="exemplighratia2-httr2" class="section level3" number="5.1.2">
 <h3>
@@ -258,108 +258,107 @@ You are obviously free to use your own favorite workflow tools, but below we sha
 <code>use_r("api-status.R")</code> to add the first function whose code is written below;</li>
 </ul>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">status_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"</span>
-<span class="op">}</span>
-
-<span class="co">#' GitHub APIs status</span>
-<span class="co">#'</span>
-<span class="co">#' @description Get the status of requests to GitHub APIs</span>
-<span class="co">#'</span>
-<span class="co">#' @importFrom magrittr `%&gt;%`</span>
-<span class="co">#'</span>
-<span class="co">#' @return A character vector, one of "operational", "degraded_performance",</span>
-<span class="co">#' "partial_outage", or "major_outage."</span>
-<span class="co">#'</span>
-<span class="co">#' @details See details in https://www.githubstatus.com/api#components.</span>
-<span class="co">#' @export</span>
-<span class="co">#'</span>
-<span class="co">#' @examples</span>
-<span class="co">#' \dontrun{</span>
-<span class="co">#' gh_api_status()</span>
-<span class="co">#' }</span>
-<span class="va">gh_api_status</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">status_url</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span>
-
-  <span class="co"># Check status</span>
-  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="co"># Parse the content</span>
-  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="co"># Extract the part about the API status</span>
-  <span class="va">components</span> <span class="op">&lt;-</span> <span class="va">content</span><span class="op">$</span><span class="va">components</span>
-  <span class="va">api_status</span> <span class="op">&lt;-</span> <span class="va">components</span><span class="op">[</span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">components</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">==</span> <span class="st">"API Requests"</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-
-  <span class="co"># Return status</span>
-  <span class="va">api_status</span><span class="op">$</span><span class="va">status</span>
-
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">status_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">#' GitHub APIs status</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @description Get the status of requests to GitHub APIs</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @importFrom magrittr `%&gt;%`</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return A character vector, one of "operational", "degraded_performance",</span></span>
+<span><span class="co">#' "partial_outage", or "major_outage."</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @details See details in https://www.githubstatus.com/api#components.</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' \dontrun{</span></span>
+<span><span class="co">#' gh_api_status()</span></span>
+<span><span class="co">#' }</span></span>
+<span><span class="va">gh_api_status</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">status_url</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Check status</span></span>
+<span>  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Parse the content</span></span>
+<span>  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Extract the part about the API status</span></span>
+<span>  <span class="va">components</span> <span class="op">&lt;-</span> <span class="va">content</span><span class="op">$</span><span class="va">components</span></span>
+<span>  <span class="va">api_status</span> <span class="op">&lt;-</span> <span class="va">components</span><span class="op">[</span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">components</span>, <span class="st">"name"</span><span class="op">)</span> <span class="op">==</span> <span class="st">"API Requests"</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co"># Return status</span></span>
+<span>  <span class="va">api_status</span><span class="op">$</span><span class="va">status</span></span>
+<span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <ul>
 <li>
 <code>use_test("api-status")</code> (and using <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/#3rd-edition">testthat latest edition</a> so setting <code>Config/testthat/edition: 3</code> in <code>DESCRIPTION</code>) to add a simple test whose code is below.</li>
 </ul>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>
 <code>use_r("organizations.R")</code> to add a second function. Note that an ideal version of this function would have some sort of callback in the retry, to call the <code>gh_api_status()</code> function (maybe with <code><a href="https://httr2.r-lib.org/reference/req_retry.html">httr2::req_retry()</a></code>’s <code>is_transient</code> argument).</li>
 </ul>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gh_v3_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="st">"https://api.github.com/"</span>
-<span class="op">}</span>
-
-<span class="co">#' GitHub organizations</span>
-<span class="co">#'</span>
-<span class="co">#' @description Get logins of GitHub organizations.</span>
-<span class="co">#'</span>
-<span class="co">#' @param since The integer ID of the last organization that you've seen.</span>
-<span class="co">#'</span>
-<span class="co">#' @return A character vector of at most 30 elements.</span>
-<span class="co">#' @export</span>
-<span class="co">#'</span>
-<span class="co">#' @details Refer to https://developer.github.com/v3/orgs/#list-organizations</span>
-<span class="co">#'</span>
-<span class="co">#' @examples</span>
-<span class="co">#' \dontrun{</span>
-<span class="co">#' gh_organizations(since = 42)</span>
-<span class="co">#' }</span>
-<span class="va">gh_organizations</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">since</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span>
-
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">token</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No token provided! Set up the GITHUB_PAT environment variable please."</span><span class="op">)</span>
-  <span class="op">}</span>
-
-  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="fu">gh_v3_url</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_path_append</a></span><span class="op">(</span><span class="st">"organizations"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_query</a></span><span class="op">(</span>since <span class="op">=</span> <span class="va">since</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_headers.html">req_headers</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"token"</span>, <span class="va">token</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_retry.html">req_retry</a></span><span class="op">(</span>max_tries <span class="op">=</span> <span class="fl">3</span>, max_seconds <span class="op">=</span> <span class="fl">120</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span>
-
-  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">content</span>, <span class="st">"login"</span><span class="op">)</span>
-
-<span class="op">}</span>
-</code></pre></div>
+<code class="sourceCode R"><span><span class="va">gh_v3_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="st">"https://api.github.com/"</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">#' GitHub organizations</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @description Get logins of GitHub organizations.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param since The integer ID of the last organization that you've seen.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return A character vector of at most 30 elements.</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @details Refer to https://developer.github.com/v3/orgs/#list-organizations</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' \dontrun{</span></span>
+<span><span class="co">#' gh_organizations(since = 42)</span></span>
+<span><span class="co">#' }</span></span>
+<span><span class="va">gh_organizations</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">since</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">token</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No token provided! Set up the GITHUB_PAT environment variable please."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="fu">gh_v3_url</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_path_append</a></span><span class="op">(</span><span class="st">"organizations"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_query</a></span><span class="op">(</span>since <span class="op">=</span> <span class="va">since</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_headers.html">req_headers</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"token"</span>, <span class="va">token</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_retry.html">req_retry</a></span><span class="op">(</span>max_tries <span class="op">=</span> <span class="fl">3</span>, max_seconds <span class="op">=</span> <span class="fl">120</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">content</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="va">content</span>, <span class="st">"login"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <ul>
 <li>
 <code>use_test("organizations")</code> to add a simple test.</li>
 </ul>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div id="conclusion-2" class="section level2" number="5.2">
@@ -404,7 +403,7 @@ In the following chapters, we’ll add more robust testing infrastructure to thi
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

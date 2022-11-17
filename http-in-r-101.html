@@ -7,7 +7,7 @@
 <title>Chapter 2 HTTP in R 101 | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="2.1 What is HTTP? HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation. HTTP is a way for you to exchange information with a remote...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 2 HTTP in R 101 | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/http-in-r-101.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="2.1 What is HTTP? HTTP means HyperText Transport Protocol, but you were probably not just looking for a translation of the abbreviation. HTTP is a way for you to exchange information with a remote...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -170,23 +170,23 @@ We will access the same information with <a href="https://httr2.r-lib.org">httr2
 If you decide to try the low-level curl, feel free to contribute an example.
 The internet has enough examples for httr.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">github_url</span> <span class="op">&lt;-</span> <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">github_url</span> <span class="op">&lt;-</span> <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/status.json"</span></span></code></pre></div>
 <p>The URL above leaves no doubt as to what format the data is provided in, JSON!</p>
 <p>Let’s first use <a href="https://httr2.r-lib.org">httr2</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org">"magrittr"</a></span><span class="op">)</span>
-<span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Check the response status</span>
-<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://magrittr.tidyverse.org">"magrittr"</a></span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check the response status</span></span>
+<span><span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 200</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Or in a package you'd write</span>
-<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span>
-
-<span class="co"># Parse the content</span>
-<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Or in a package you'd write</span></span>
+<span><span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_status.html">resp_check_status</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Parse the content</span></span>
+<span><span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_json</a></span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## $page
 ## $page$id
 ## [1] "kctbh9vrtdwd"
@@ -201,7 +201,7 @@ The internet has enough examples for httr.</p>
 ## [1] "Etc/UTC"
 ## 
 ## $page$updated_at
-## [1] "2022-06-06T01:38:19.486Z"
+## [1] "2022-11-17T08:06:18.753Z"
 ## 
 ## 
 ## $status
@@ -211,30 +211,30 @@ The internet has enough examples for httr.</p>
 ## $status$description
 ## [1] "All Systems Operational"</code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># In case you wonder, the format was obtained from a header</span>
-<span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_headers.html">resp_header</a></span><span class="op">(</span><span class="va">response</span>, <span class="st">"content-type"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># In case you wonder, the format was obtained from a header</span></span>
+<span><span class="fu">httr2</span><span class="fu">::</span><span class="fu"><a href="https://httr2.r-lib.org/reference/resp_headers.html">resp_header</a></span><span class="op">(</span><span class="va">response</span>, <span class="st">"content-type"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] "application/json; charset=utf-8"</code></pre>
 <p>Now, the same with <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Create a client and get a response</span>
-<span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span>
-<span class="va">response</span> <span class="op">&lt;-</span> <span class="va">client</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Check the response status</span>
-<span class="va">response</span><span class="op">$</span><span class="fu">status_http</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Create a client and get a response</span></span>
+<span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">github_url</span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="va">client</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check the response status</span></span>
+<span><span class="va">response</span><span class="op">$</span><span class="fu">status_http</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## &lt;Status code: 200&gt;
 ##   Message: OK
 ##   Explanation: Request fulfilled, document follows</code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Or in a package you'd write</span>
-<span class="va">response</span><span class="op">$</span><span class="fu">raise_for_status</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Parse the content</span>
-<span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Or in a package you'd write</span></span>
+<span><span class="va">response</span><span class="op">$</span><span class="fu">raise_for_status</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Parse the content</span></span>
+<span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-06-06T01:38:19.486Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
+<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-11-17T08:06:18.753Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
 <pre><code>## $page
 ## $page$id
@@ -250,7 +250,7 @@ The internet has enough examples for httr.</p>
 ## [1] "Etc/UTC"
 ## 
 ## $page$updated_at
-## [1] "2022-06-06T01:38:19.486Z"
+## [1] "2022-11-17T08:06:18.753Z"
 ## 
 ## 
 ## $status
@@ -298,7 +298,7 @@ You could switch your package backend from, say, <a href="https://docs.ropensci.
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -7,7 +7,7 @@
 <title>Chapter 22 Caching HTTP requests | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="Record HTTP calls and replay them  22.1 Package documentation Check out https://docs.ropensci.org/vcr/ for documentation on vcr functions.  22.2 Terminology  vcr: the name comes from the idea that...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 22 Caching HTTP requests | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/vcr-intro.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="Record HTTP calls and replay them  22.1 Package documentation Check out https://docs.ropensci.org/vcr/ for documentation on vcr functions.  22.2 Terminology  vcr: the name comes from the idea that...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -176,8 +176,7 @@ can not be found out in this package, for the most part that is.</p>
 how it knows what HTTP requests are being made. This stumped me for
 quite a long time. When looking at Ruby vcr, at first I thought it
 must be “listening” for HTTP requests somehow. Then I found out about
-<a href="https://en.wikipedia.org/wiki/Monkey_patch">monkey patching</a> (see also <a href="https://culttt.com/2015/06/17/what-is-monkey-patching-in-ruby/">this blog post as a good
-summary</a>); that’s how it’s achieved in Ruby. That is, the Ruby
+<a href="https://en.wikipedia.org/wiki/Monkey_patch">monkey patching</a>; that’s how it’s achieved in Ruby. That is, the Ruby
 vcr package literally overrides certain methods in Ruby HTTP clients,
 hijacking internals of the HTTP clients.</p>
 <p>However, monkey patching is not allowed in R. Thus, in R we have to
@@ -200,7 +199,7 @@ in the <code>httr</code> package.</p>
 </h4>
 <p>An internal object (<code>vcr_c</code>) is created when <code>vcr</code> is loaded with
 the default vcr configuration options inside of an R6 class <code>VCRConfig</code> -
-see <a href="https://github.com/ropensci/vcr/blob/master/R/onLoad.R" class="uri">https://github.com/ropensci/vcr/blob/master/R/onLoad.R</a>. This
+see <a href="https://github.com/ropensci/vcr/blob/main/R/onLoad.R" class="uri">https://github.com/ropensci/vcr/blob/main/R/onLoad.R</a>. This
 class is keeps track of default and user specified configuration options.
 You can access <code>vcr_c</code> using triple namespace <code>:::</code>, though it is not
 intended for general use. Whenever you make calls to <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code>
@@ -301,29 +300,29 @@ turning on and off <code>vcr</code>. See <code><a href="https://docs.ropensci.or
 </h3>
 <p>In your tests, for whichever tests you want to use <code>vcr</code>, wrap them in a <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> call like:</p>
 <div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span>
-<span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span>
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span>
-    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span>
-
-    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_is.html">expect_is</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"character"</span><span class="op">)</span>
-    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span>
-    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span></span>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span></span>
+<span>    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_is.html">expect_is</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>OR put the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> block on the inside, but put <code>testthat</code> expectations outside of
 the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> block:</p>
 <div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span>
-<span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span>
-  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span>
-    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_is.html">expect_is</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"character"</span><span class="op">)</span>
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span>
-  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span></span>
+<span>    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_is.html">expect_is</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Don’t wrap the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block inside your <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block with <code>testthat</code> expectations inside the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block, as you’ll only get the line number that the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block starts on on failures.</p>
 <p>The first time you run the tests, a “cassette” i.e. a file with recorded HTTP interactions, is created at <code>tests/fixtures/rl_citation.yml</code>.
 The times after that, the cassette will be used.
@@ -335,22 +334,22 @@ If you change your code and more HTTP interactions are needed in the code wrappe
 </h3>
 <p>If you want to get a feel for how vcr works, although you don’t need too.</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/crul/">crul</a></span><span class="op">)</span>
-
-<span class="va">cli</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span>
-    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/crul/">crul</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cli</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span></span>
+<span>    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span>
-    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span></span>
+<span>    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Importantly, your unit test deals with the same inputs and the same outputs - but behind the scenes you use a cached HTTP response - thus, your tests run faster.</p>
 <p>The cached response looks something like (condensed for brevity):</p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb99-1"><a href="vcr-intro.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>
@@ -465,7 +464,7 @@ cassettes) are in whatever directory you’re running it in.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

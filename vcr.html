@@ -7,7 +7,7 @@
 <title>Chapter 6 Use vcr (&amp; webmockr) | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr). Corresponding pull request to exemplighratia. Feel free to fork the repository to experiment...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 6 Use vcr (&amp; webmockr) | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/vcr.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr). Corresponding pull request to exemplighratia. Feel free to fork the repository to experiment...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -110,50 +110,52 @@
 <li>Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.</li>
 <li>Adding a <code>.gitattributes</code> file with the line <code>tests/fixtures/**/* -diff</code> which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;However, if you change something related to handling secrets in your code or tests, please check again your new cassettes do not include secrets.&lt;/p&gt;"><sup>3</sup></a>
 </li>
-<li>Creating a setup file under <code>tests/testthat/setup-exemplighratia</code>,</li>
+<li>Creating a setup file under <code>tests/testthat/helper-vcr.R</code>,</li>
 </ul>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name starts with “setup” are always run first</a>. The setup file created by vcr</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name start with “helper” are always run first</a>.
+They are also loaded by <code>devtools::load_all()</code>, so the vcr setup is loaded when developing and testing interactively.</p>
+<p>The helper file created by vcr</p>
 <ul>
 <li>loads vcr,</li>
 <li>indicates where mocked responses are saved (<code>"../fixtures"</code> which translates, from the root of the package, to <code>tests/fixtures</code>),</li>
 <li>and checks that you are not using the same name twice for cassettes (mock files).</li>
 </ul>
-<p>We have to tweak vcr setup a bit for our needs.</p>
+<p>We have to tweak the vcr setup a bit for our needs.</p>
 <ul>
 <li><p>We do not want our API token to appear in the mock responses, and we know it’s used in the Authorization header of the requests, so we use the <code>filter_request_headers</code> argument of <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code>. For other secret filtering one can use <code>filter_response_headers</code> and <code>filter_sensitive_data</code> (for a regular expression purging, on the whole saved interactions).</p></li>
 <li><p>We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function <code>gh_organizations()</code> checks for the presence of a token.
 With mock responses around, we don’t need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).</p></li>
 </ul>
-<p>Below is the updated setup file saved under <code>tests/testthat/setup-exemplighratia</code>.</p>
+<p>Below is the updated setup file saved under <code>tests/testthat/helper-vcr.R</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span>
-
-<span class="va">vcr_dir</span> <span class="op">&lt;-</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span><span class="op">(</span><span class="va">vcr_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="co"># Fake API token to fool our package</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span> <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="co"># If there's no mock files nor API token, impossible to run tests</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No API key nor cassettes, tests cannot be run."</span>,
-         call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  dir <span class="op">=</span> <span class="va">vcr_dir</span>,
-  <span class="co"># Filter the request header where the token is sent, make sure you know</span>
-  <span class="co"># how authentication works in your case and read the Security chapter :-)</span>
-  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Authorization <span class="op">=</span> <span class="st">"My bearer token is safe"</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">vcr_dir</span> <span class="op">&lt;-</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span><span class="op">(</span><span class="va">vcr_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># Fake API token to fool our package</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span> <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="co"># If there's no mock files nor API token, impossible to run tests</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No API key nor cassettes, tests cannot be run."</span>,</span>
+<span>         call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="va">vcr_dir</span>,</span>
+<span>  <span class="co"># Filter the request header where the token is sent, make sure you know</span></span>
+<span>  <span class="co"># how authentication works in your case and read the Security chapter :-)</span></span>
+<span>  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Authorization <span class="op">=</span> <span class="st">"My bearer token is safe"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>So this was just setup, now on to adapting our tests!</p>
 </div>
 <div id="actual-testing" class="section level2" number="6.2">
@@ -163,12 +165,12 @@ With mock responses around, we don’t need a token but we still need to fool ou
 <p>The most important function will be <code>vcr::use_cassette("cassette-informative-and-unique-name", {code-block})</code> which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.</p>
 <p>Let’s tweak the test for <code>gh_api_status</code>, it now becomes</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span>
-  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span>
-    <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">status</span>, <span class="st">"character"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span></span>
+<span>    <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">status</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>We only had to wrap the code involving interactions with the API, <code>status &lt;- gh_api_status()</code>, in <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>.</p>
 <p>If we run this test (in RStudio clicking on “Run test”),</p>
 <ul>
@@ -240,20 +242,20 @@ Here things get more exciting or complicated, as we also set out to adding a tes
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr::stop_for_status(response)</code> became <code>httr::stop_for_status(response, task = "get data from the API, oops")</code>.</p>
 <p>The test file <code>tests/testthat/test-organizations.R</code> is now:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span>
-  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span>
-    <span class="va">orgs</span> <span class="op">&lt;-</span> <span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">orgs</span>, <span class="st">"character"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations errors when the API doesn't behave"</span>, <span class="op">{</span>
-  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">enable</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span>
-  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span>
-  <span class="fu">expect_error</span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"oops"</span><span class="op">)</span>
-  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">disable</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span></span>
+<span>    <span class="va">orgs</span> <span class="op">&lt;-</span> <span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">orgs</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations errors when the API doesn't behave"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">enable</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span></span>
+<span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_error</span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"oops"</span><span class="op">)</span></span>
+<span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">disable</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>The first test is similar to what we did for <code>gh_api_status()</code>.
 In the second test there is more to unpack.</p>
 <ul>
@@ -261,8 +263,8 @@ In the second test there is more to unpack.</p>
 <li>We explicitly write that a request to <code>https://api.github.com/organizations?since=1</code> should return a status of 502.</li>
 </ul>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R">  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span>
-  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span>  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span></span>
+<span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>We then test for the error message with <code>expect_error(gh_organizations(), "oops")</code>.</li>
 <li>We disable webmockr with <code><a href="https://docs.ropensci.org/webmockr/reference/enable.html">webmockr::disable()</a></code>.</li>
@@ -341,31 +343,31 @@ What’s correct?</p>
 <li>Wrapping the whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> call;</li>
 </ul>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span>
-  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span>
-    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span>
-    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>Wrapping a few lines inside <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> <strong>excluding the expectactions <code>expect_blabla()</code></strong>
 </li>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span>
-  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span>
-    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>What’s incorrect?</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span>
-  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span>
-    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span>
-    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>We used the solution of only wrapping the lines containing API calls in <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>, but it is up to you to choose what you prefer.</p>
 
 </div>
@@ -400,7 +402,7 @@ What’s correct?</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

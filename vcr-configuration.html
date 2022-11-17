@@ -7,7 +7,7 @@
 <title>Chapter 24 Configure vcr | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content='library("vcr") You can also get the default configuration variables via vcr_config_defaults() vcr_config_defaults() #&gt; $warn_on_empty_cassette #&gt; [1] TRUE #&gt; #&gt; $quiet #&gt; [1] TRUE #&gt; #&gt;...'>
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.30 with bs4_book()">
 <meta property="og:title" content="Chapter 24 Configure vcr | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/vcr-configuration.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content='library("vcr") You can also get the default configuration variables via vcr_config_defaults() vcr_config_defaults() #&gt; $warn_on_empty_cassette #&gt; [1] TRUE #&gt; #&gt; $quiet #&gt; [1] TRUE #&gt; #&gt;...'>
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -96,10 +96,10 @@
 <span class="header-section-number">24</span> Configure vcr<a class="anchor" aria-label="anchor" href="#vcr-configuration"><i class="fas fa-link"></i></a>
 </h1>
 <div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span></code></pre></div>
 <p>You can also get the default configuration variables via <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_config_defaults()</a></code></p>
 <div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_config_defaults</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_config_defaults</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; $warn_on_empty_cassette
 #&gt; [1] TRUE
 #&gt; 
@@ -202,9 +202,9 @@
 <p>Use <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code> to set configuration variables.</p>
 <p>For example, set a single variable:</p>
 <div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  dir <span class="op">=</span> <span class="st">"foobar/vcr_cassettes"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="st">"foobar/vcr_cassettes"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: foobar/vcr_cassettes
 #&gt;   Record: once
@@ -218,10 +218,10 @@
 #&gt;   Write disk path:</code></pre>
 <p>Or many at once:</p>
 <div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  dir <span class="op">=</span> <span class="st">"foobar/vcr_cassettes"</span>,
-  record <span class="op">=</span> <span class="st">"all"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="st">"foobar/vcr_cassettes"</span>,</span>
+<span>  record <span class="op">=</span> <span class="st">"all"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: foobar/vcr_cassettes
 #&gt;   Record: all
@@ -239,7 +239,7 @@
 <span class="header-section-number">24.2</span> Re-set to defaults<a class="anchor" aria-label="anchor" href="#re-set-to-defaults"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure_reset</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure_reset</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="details-on-some-of-the-config-options" class="section level2" number="24.3">
 <h2>
@@ -251,7 +251,7 @@
 </h3>
 <p>Directory where cassettes are stored</p>
 <div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"new/path"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="st">"new/path"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: once
@@ -271,7 +271,7 @@
 <p>The record mode</p>
 <p>One of: ‘all’, ‘none’, ‘new_episodes’, ‘once’. See <code><a href="https://docs.ropensci.org/vcr/reference/recording.html">?recording</a></code> for info on the options</p>
 <div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>record <span class="op">=</span> <span class="st">"new_episodes"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>record <span class="op">=</span> <span class="st">"new_episodes"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -290,7 +290,7 @@
 </h3>
 <p>Customize how <code>vcr</code> matches requests</p>
 <div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>match_requests_on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'query'</span>, <span class="st">'headers'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>match_requests_on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'query'</span>, <span class="st">'headers'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -312,7 +312,7 @@
 can set to <code>FALSE</code> in which case vcr errors when a cassette is ejected and
 not all http interactions have been used.</p>
 <div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>allow_unused_http_interactions <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>allow_unused_http_interactions <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -331,7 +331,7 @@ not all http interactions have been used.</p>
 </h3>
 <p>Which serializer to use. Right now only option is “yaml”</p>
 <div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>serialize_with <span class="op">=</span> <span class="st">"yaml"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>serialize_with <span class="op">=</span> <span class="st">"yaml"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -350,7 +350,7 @@ not all http interactions have been used.</p>
 </h3>
 <p>Which persister to use. Right now only option is “FileSystem”</p>
 <div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>persist_with <span class="op">=</span> <span class="st">"FileSystem"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>persist_with <span class="op">=</span> <span class="st">"FileSystem"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -372,7 +372,7 @@ not all http interactions have been used.</p>
 real HTTP requests to the ignored host will be allowed to occur, while
 all others will not.</p>
 <div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>ignore_hosts <span class="op">=</span> <span class="st">"google.com"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>ignore_hosts <span class="op">=</span> <span class="st">"google.com"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -387,7 +387,7 @@ all others will not.</p>
 <p><strong>ignore_localhost</strong></p>
 <p>Ignore all localhost requests</p>
 <div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>ignore_localhost <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>ignore_localhost <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -404,11 +404,11 @@ all others will not.</p>
 <p><strong>How to ignore requests</strong></p>
 <p>For ignoring requests, you can for example, have real http requests go through (ignored by <code>vcr</code>) while other requests are handled by <code>vcr</code>. For example, let’s say you want requests to <code>google.com</code> to be ignored:</p>
 <div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>ignore_hosts <span class="op">=</span> <span class="st">"google.com"</span><span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span>
-  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://google.com"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>ignore_hosts <span class="op">=</span> <span class="st">"google.com"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"foo_bar"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://google.com"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>The request to httpbin.org will be handled by <code>vcr</code>, a cassette created for the request/response to that url, while the google.com request will be ignored and not cached at all.</p>
 <p>Note: ignoring requests only works for the <code>crul</code> package for now; it should work for <code>httr</code> in a later <code>vcr</code> version.</p>
 </div>
@@ -420,7 +420,7 @@ all others will not.</p>
 <p>By default we use <code><a href="https://docs.ropensci.org/crul/reference/url_build.html">crul::url_parse</a></code>, but you can use a different one. Remember
 to pass in the function quoted, and namespaced.</p>
 <div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>uri_parser <span class="op">=</span> <span class="st">"urltools::url_parse"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>uri_parser <span class="op">=</span> <span class="st">"urltools::url_parse"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -443,7 +443,7 @@ order to preserve the bytes exactly as-is. <code>vcr</code> does not do this by
 default, since base64-encoding the string removes the human readability
 of the cassette.</p>
 <div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>preserve_exact_body_bytes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>preserve_exact_body_bytes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
 #&gt;   Cassette Dir: new/path
 #&gt;   Record: new_episodes
@@ -467,9 +467,9 @@ share with the world.</p>
 reading from the cassette we do the reverse replacement to get back
 to the real data.</p>
 <div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_sensitive_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"&lt;some_api_key&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">'MY_API_KEY'</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_sensitive_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"&lt;some_api_key&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">'MY_API_KEY'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Before recording to disk, the env var <code>MY_API_KEY</code> is retrieved from your machine,
 and we find instances of it, and replace with <code>&lt;some_api_key&gt;</code>. When replaying
 to create the HTTP response object we put the real value of the env var
@@ -492,15 +492,15 @@ your crul or httr response objects on a real request that creates the
 cassette.</p>
 <p>Examples:</p>
 <div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_request_headers <span class="op">=</span> <span class="st">"Authorization"</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Authorization"</span>, <span class="st">"User-Agent"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Authorization <span class="op">=</span> <span class="st">"&lt;&lt;&lt;not-my-bearer-token&gt;&gt;&gt;"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_request_headers <span class="op">=</span> <span class="st">"Authorization"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Authorization"</span>, <span class="st">"User-Agent"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Authorization <span class="op">=</span> <span class="st">"&lt;&lt;&lt;not-my-bearer-token&gt;&gt;&gt;"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="filter_response_headers" class="section level3" number="24.3.12">
 <h3>
@@ -517,15 +517,15 @@ your crul or httr response objects on a real request that creates the
 cassette.</p>
 <p>Examples:</p>
 <div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_response_headers <span class="op">=</span> <span class="st">"server"</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_response_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"server"</span>, <span class="st">"date"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_response_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>server <span class="op">=</span> <span class="st">"fake-server"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_response_headers <span class="op">=</span> <span class="st">"server"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_response_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"server"</span>, <span class="st">"date"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_response_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>server <span class="op">=</span> <span class="st">"fake-server"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="filter_query_parameters" class="section level3" number="24.3.13">
 <h3>
@@ -552,28 +552,28 @@ those values with values from environment variables so that you obscure
 the real values if your code is public.</p>
 <p>Examples:</p>
 <div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># completely drop parameter "user"</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_query_parameters <span class="op">=</span> <span class="st">"user"</span>
-<span class="op">)</span>
-<span class="co"># completely drop parameters "user" and "api_key"</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_query_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"user"</span>, <span class="st">"api_key"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co"># replace the value of parameter "api_key" with "fake-api-key"</span>
-<span class="co"># NOTE: in this case there's no way to put back any value on</span>
-<span class="co"># subsequent requests, so we have to match by dropping this</span>
-<span class="co"># parameter value before comparing URIs</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_query_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"fake-api-key"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co"># replace the value found at Sys.getenv("MY_API_KEY") of parameter</span>
-<span class="co"># "api_key" with the value "foo". When using a cassette on subsequent</span>
-<span class="co"># requests, we can replace "foo" with the value at Sys.getenv("MY_API_KEY")</span>
-<span class="co"># before doing the URI comparison</span>
-<span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span>
-  filter_query_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MY_API_KEY"</span><span class="op">)</span>, <span class="st">"foo"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># completely drop parameter "user"</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_query_parameters <span class="op">=</span> <span class="st">"user"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># completely drop parameters "user" and "api_key"</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_query_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"user"</span>, <span class="st">"api_key"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># replace the value of parameter "api_key" with "fake-api-key"</span></span>
+<span><span class="co"># NOTE: in this case there's no way to put back any value on</span></span>
+<span><span class="co"># subsequent requests, so we have to match by dropping this</span></span>
+<span><span class="co"># parameter value before comparing URIs</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_query_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"fake-api-key"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># replace the value found at Sys.getenv("MY_API_KEY") of parameter</span></span>
+<span><span class="co"># "api_key" with the value "foo". When using a cassette on subsequent</span></span>
+<span><span class="co"># requests, we can replace "foo" with the value at Sys.getenv("MY_API_KEY")</span></span>
+<span><span class="co"># before doing the URI comparison</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  filter_query_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MY_API_KEY"</span><span class="op">)</span>, <span class="st">"foo"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 
 </div>
 </div>
@@ -621,7 +621,7 @@ the real values if your code is public.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-06-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
