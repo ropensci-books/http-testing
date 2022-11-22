@@ -341,7 +341,7 @@ Compared to continuous integration builds where vcr is turned on, this one build
 Well, as written in the manual page of that function, <em>There’s a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:</em>
 What’s correct?</p>
 <ul>
-<li>Wrapping the whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> call (do not do that if your test contains for instance `skip_on_cran()``);</li>
+<li>Wrapping the whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> call (do not do that if your test contains for instance <code>skip_on_cran()</code>);</li>
 </ul>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
@@ -351,7 +351,7 @@ What’s correct?</p>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>Wrapping a few lines inside <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> <strong>excluding the expectations <code>expect_blabla()</code></strong>
+<li>Wrapping a few lines inside <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> <strong>excluding the expectactions <code>expect_blabla()</code></strong>
 </li>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
