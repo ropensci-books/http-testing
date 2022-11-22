@@ -10,7 +10,7 @@ First of all, your life and the life of your package's users will be easier if t
 
 ## User-facing grace (how your package actually works)
 
-0.  If you can, do not request the API every time the user asks for something; cache data instead. No API call, no API call failure! 😉 To remember answers within a session check out [memoise](<https://github.com/r-lib/memoise>). To remember answers across sessions, see approaches presented in the R-hub blog post ["Persistent config and data for R packages"](<https://blog.r-hub.io/2020/03/12/user-preferences/>). Caching behavior should be well documented for users, and there should probably be an expiration time for caches that's based on how often data is updated on the remote service.
+0.  If you can, do not request the API every time the user asks for something; cache data instead. No API call, no API call failure! 😉 See the R-hub blog post ["Caching the results of functions of your R package"](https://blog.r-hub.io/2021/07/30/cache/). To remember answers across sessions, see approaches presented in the R-hub blog post ["Persistent config and data for R packages"](<https://blog.r-hub.io/2020/03/12/user-preferences/>). Caching behavior should be well documented for users, and there should probably be an expiration time for caches that's based on how often data is updated on the remote service.
 
 1.  Try to send correct requests by knowing what the API expects and validating user inputs; at the correct rate. 
   * For instance, don't even try interacting with a web API requiring authentication if the user does not provide authentication information. 
@@ -53,7 +53,7 @@ Also, were you to export a function à la `gh::gh()`, you'll help users call any
 
 We're getting closer to the actual topic of this book!
 
-6.  Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. `testthat::skip_on_cran()` will ensure that.
+6.  Read the rest of this book! Your tests should ideally run without needing an actual internet connection nor the API being up. Your tests that do need to interact with the API should be skipped on CRAN. `testthat::skip_on_cran()` (or `skip_if_offline()` that skips if the test is run offline or on CRAN) will ensure that.
 7.  Do not only test "success" behavior! Test for the behavior of your package in case of API errors, which shall also be covered later in the book.
 
 ## Conclusion
