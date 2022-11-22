@@ -108,7 +108,7 @@ Your package is making <em>requests</em> and receives <em>responses</em>.</p>
 <span class="header-section-number">2.1.1</span> HTTP requests<a class="anchor" aria-label="anchor" href="#http-requests"><i class="fas fa-link"></i></a>
 </h3>
 <p>The HTTP request is what your package makes.
-It has a method (are you fetching information via <code>GET</code>? are you sending information via <code>POST</code>?), different parts of a URL (domain, endpoint, query string), and headers (containing e.g. your secret identifiers).
+It has a method (are you fetching information via <code>GET</code>? are you sending information via <code>POST</code>?), different parts of a URL (domain, endpoint, query string), and headers (containing for instance your secret identifiers).
 It can contain a body. For instance, you might be sending data as JSON.
 In that case one of the headers will describe the content.</p>
 <p>How do you know what request to make from your package?
@@ -159,7 +159,7 @@ In any case you’ll find yourself experimenting with different requests to see 
 <p>Do not use RCurl, because it is not actively maintained!</p>
 <p>When writing a package interacting with web resources, you will probably use <a href="https://httr2.r-lib.org">httr2</a>, <a href="https://httr.r-lib.org/">httr</a> or <a href="https://docs.ropensci.org/crul/">crul</a>.</p>
 <ul>
-<li><p><a href="https://httr.r-lib.org/">httr</a> is the most popular and oldest of the two httr packages, and supports OAuth.
+<li><p><a href="https://httr.r-lib.org/">httr</a> is the most popular and oldest of the three packages, and supports OAuth.
 <a href="https://httr.r-lib.org/">httr</a> docs feature a vignette called <a href="https://httr.r-lib.org/articles/api-packages.html">Best practices for API packages</a></p></li>
 <li><p><a href="https://httr2.r-lib.org">httr2</a> <em>“is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)”</em> so it might be a good idea to adopt it rather than <a href="https://httr.r-lib.org/">httr</a> for a new package. It has a vignette about <a href="https://httr2.r-lib.org/articles/wrapping-apis.html">Wrapping APIs</a>.</p></li>
 <li><p><a href="https://docs.ropensci.org/crul/">crul</a> does not support OAuth but it uses an object-oriented interface, which you might like.
@@ -201,7 +201,7 @@ The internet has enough examples for httr.</p>
 ## [1] "Etc/UTC"
 ## 
 ## $page$updated_at
-## [1] "2022-11-17T08:06:18.753Z"
+## [1] "2022-11-22T08:00:27.336Z"
 ## 
 ## 
 ## $status
@@ -232,7 +232,7 @@ The internet has enough examples for httr.</p>
 <span><span class="co"># Parse the content</span></span>
 <span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-11-17T08:06:18.753Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
+<pre><code>## [1] "{\"page\":{\"id\":\"kctbh9vrtdwd\",\"name\":\"GitHub\",\"url\":\"https://www.githubstatus.com\",\"time_zone\":\"Etc/UTC\",\"updated_at\":\"2022-11-22T08:00:27.336Z\"},\"status\":{\"indicator\":\"none\",\"description\":\"All Systems Operational\"}}"</code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
@@ -250,7 +250,7 @@ The internet has enough examples for httr.</p>
 ## [1] "Etc/UTC"
 ## 
 ## $page$updated_at
-## [1] "2022-11-17T08:06:18.753Z"
+## [1] "2022-11-22T08:00:27.336Z"
 ## 
 ## 
 ## $status
@@ -298,7 +298,7 @@ You could switch your package backend from, say, <a href="https://docs.ropensci.
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-17.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2022-11-22.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
