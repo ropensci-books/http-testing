@@ -109,7 +109,7 @@ cyphr::encrypt_file(
 )
 ```
 
-* In tests you have a setup file with code like below.
+* In tests you have a [setup / helper file](https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests) with code like below.
 
 ```r
 key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
