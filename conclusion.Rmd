@@ -3,7 +3,7 @@
 # Conclusion
 
 Once you get here you will have read about basic HTTP (testing) concepts in R,
-discovered four great packages in demos (vcr&webmockr, httptest, webfakes), and 
+discovered five great packages in demos (httptest2, vcr&webmockr, httptest, webfakes), and 
 dived into more advanced topics like security.
 
 What's next? Applying those tools in your package(s), of course!
