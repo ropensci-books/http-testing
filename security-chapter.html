@@ -95,7 +95,7 @@
 <h1>
 <span class="header-section-number">14</span> Security<a class="anchor" aria-label="anchor" href="#security-chapter"><i class="fas fa-link"></i></a>
 </h1>
-<p>When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data),</p>
+<p>When developing a package that uses secrets (API keys, <a href="https://blog.r-hub.io/2021/01/25/oauth-2.0/">OAuth</a> tokens) and produces them (OAuth tokens, sensitive data),</p>
 <ul>
 <li>You want the secrets to be usable by you, collaborators and CI services, without being readable by anyone else;</li>
 <li>You want tests and checks (e.g. vignette building) that use the secrets to be turned off in environments where secrets won’t be available (CRAN, forks of your development repository).</li>
@@ -200,7 +200,7 @@ Read the documentation of the continuous integration service your are using to f
 <span>  dest <span class="op">=</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span><span class="st">"secret.rds"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>In tests you have a setup file with code like below.</li>
+<li>In tests you have a <a href="https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests">setup / helper file</a> with code like below.</li>
 </ul>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">cyphr</span><span class="fu">::</span><span class="fu">key_sodium</span><span class="op">(</span><span class="fu">sodium</span><span class="fu">::</span><span class="fu">hex2bin</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"MEETUPR_PWD"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>

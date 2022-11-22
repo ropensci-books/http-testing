@@ -96,7 +96,7 @@
 <span class="header-section-number">15</span> Faking HTTP errors<a class="anchor" aria-label="anchor" href="#errors-chapter"><i class="fas fa-link"></i></a>
 </h1>
 <p>With HTTP testing you can test the behavior of your package in case of an API error without having to actually trigger an API error.
-This is important for testing your package’s gracefulness (informative error message for the user) and robustness (if you e.g. use retrying in case of API errors).</p>
+This is important for testing your package’s <a href="graceful.html#graceful">gracefulness</a> (informative error message for the user) and robustness (if you e.g. use retrying in case of API errors).</p>
 <div id="how-to-test-for-api-errors-e.g.-503" class="section level2" number="15.1">
 <h2>
 <span class="header-section-number">15.1</span> How to test for API errors (e.g. 503)<a class="anchor" aria-label="anchor" href="#how-to-test-for-api-errors-e.g.-503"><i class="fas fa-link"></i></a>
@@ -121,7 +121,7 @@ This is important for testing your package’s gracefulness (informative error m
 <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html#example-2-test-using-an-edited-cassette-with-a-503-then-a-200-1">Edit a vcr cassette</a>; be careful to skip this test when vcr is off with <code>vcr::skip_if_vcr_is_off()</code>
 </li>
 <li>With httptest, this is <a href="https://github.com/nealrichardson/httptest/issues/49">not easy yet</a> (<a href="https://github.com/nealrichardson/httptest2/issues/18">httptest2 issue</a>)</li>
-<li>With webfakes, follow <a href="https://r-lib.github.io/webfakes/articles/how-to.html#how-do-i-test-a-sequence-of-requests-">the docs</a>. Also have a specific app for the test as this is not the behavior you want in all your tests.</li>
+<li>With webfakes, follow <a href="https://r-lib.github.io/webfakes/articles/how-to.html#how-do-i-test-a-sequence-of-requests-">the docs</a>. Also have a specific app for the test as this is not the behavior you want in all your tests.`</li>
 </ul>
 </div>
 </div>
