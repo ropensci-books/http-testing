@@ -97,7 +97,7 @@
 </h1>
 <p>In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr).</p>
 <div class="alert alert-dismissible alert-info">
-<p><a href="https://github.com/maelle/exemplighratia/pull/2/files">Corresponding pull request to exemplighratia</a>. Feel free to fork the repository to experiment yourself!</p>
+<p><a href="https://github.com/ropensci-books/exemplighratia/pull/2/files">Corresponding pull request to exemplighratia</a>. Feel free to fork the repository to experiment yourself!</p>
 </div>
 <div id="setup" class="section level2" number="6.1">
 <h2>
@@ -302,7 +302,7 @@ However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.</p>
 <p>The vcr package provides various methods to turn vcr use on and off to allow real requests i.e. ignoring mock files.
 See <code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">?vcr::lightswitch</a></code>.</p>
-<p>In the case of exemplighratia, we added a <a href="https://github.com/maelle/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml">GitHub Actions workflow</a> that will run on schedule once a week, for which one of the build has vcr turned off via the <code>VCR_TURN_OFF</code> environment variable.
+<p>In the case of exemplighratia, we added a <a href="https://github.com/ropensci-books/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml">GitHub Actions workflow</a> that will run on schedule once a week, for which one of the build has vcr turned off via the <code>VCR_TURN_OFF</code> environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
 Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a <code>GITHUB_PAT</code> secret environment variable. Furthermore, it is slower.</p>
 <p>One could imagine other strategies:</p>
@@ -327,7 +327,7 @@ Compared to continuous integration builds where vcr is turned on, this one build
 </ul>
 <p>So we now have tests that no longer rely on an internet connection nor on having API credentials.</p>
 <p>We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.</p>
-<p>For the full list of changes applied to exemplighratia in this chapter, see <a href="https://github.com/maelle/exemplighratia/pull/2/files">the pull request diff on GitHub</a>.</p>
+<p>For the full list of changes applied to exemplighratia in this chapter, see <a href="https://github.com/ropensci-books/exemplighratia/pull/2/files">the pull request diff on GitHub</a>.</p>
 <div class="alert alert-dismissible alert-primary">
 <p>How do we get there with other packages? Let’s try httptest in the next chapter!</p>
 </div>

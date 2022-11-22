@@ -101,7 +101,7 @@ For this, we start from the initial state of exemplighratia again. Back to squar
 <p>Note that the <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">httptest::with_mock_dir()</a></code> function is only available in httptest version &gt;= 4.0.0 (released on CRAN on 2021-02-01).</p>
 </div>
 <div class="alert alert-dismissible alert-info">
-<p><a href="https://github.com/maelle/exemplighratia/pull/9/files">Corresponding pull request to exemplighratia</a> Feel free to fork the repository to experiment yourself!</p>
+<p><a href="https://github.com/ropensci-books/exemplighratia/pull/9/files">Corresponding pull request to exemplighratia</a> Feel free to fork the repository to experiment yourself!</p>
 </div>
 <div id="setup-1" class="section level2" number="7.1">
 <h2>
@@ -199,7 +199,7 @@ In the second test there is more to unpack: how do we get a mock file correspond
 Hopefully we’d notice that thanks to following API news.
 However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.</p>
-<p>As with vcr we setup a <a href="https://github.com/maelle/exemplighratia/blob/otherhttptestapproach/.github/workflows/R-CMD-check-schedule.yaml">GitHub Actions workflow</a> that runs once a week with tests against the real web service.
+<p>As with vcr we setup a <a href="https://github.com/ropensci-books/exemplighratia/blob/otherhttptestapproach/.github/workflows/R-CMD-check-schedule.yaml">GitHub Actions workflow</a> that runs once a week with tests against the real web service.
 The difference is what and where these tests are.
 As some tests with custom made mock files can be more specific (e.g. testing for actual values, whereas the latest responses from the API will have different values), instead of turning off mock files usage, we use our old original tests that we put in a folder called <code>real-tests</code>.
 Most of the time <code>real-tests</code> is .Rbuildignored but in the scheduled run, before checking the package we replace the content of <code>tests</code> with <code>real-tests</code>.
@@ -221,7 +221,7 @@ An alternative would be to use <code><a href="https://testthat.r-lib.org/referen
 </ul>
 <p>So we now have tests that no longer rely on an internet connection nor on having API credentials.</p>
 <p>We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.</p>
-<p>For the full list of changes applied to exemplighratia in this chapter, see <a href="https://github.com/maelle/exemplighratia/pull/9/files">the pull request diff on GitHub</a>.</p>
+<p>For the full list of changes applied to exemplighratia in this chapter, see <a href="https://github.com/ropensci-books/exemplighratia/pull/9/files">the pull request diff on GitHub</a>.</p>
 <div class="alert alert-dismissible alert-primary">
 <p>How do we get there with yet another package? We’ll try webfakes but first let’s compare vcr and httptest as they both use mocking.</p>
 </div>
