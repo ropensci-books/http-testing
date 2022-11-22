@@ -25,8 +25,8 @@ testthat
 conclusion-1
 introduction
 our-example-packages
-exemplighratia-httr
 exemplighratia2-httr2
+exemplighratia-httr
 conclusion-2
 vcr
 setup
