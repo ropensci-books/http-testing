@@ -1,6 +1,6 @@
 # Security {#security-chapter}
 
-When developing a package that uses secrets (API keys, OAuth tokens) and produces them (OAuth tokens, sensitive data),
+When developing a package that uses secrets (API keys, [OAuth](https://blog.r-hub.io/2021/01/25/oauth-2.0/) tokens) and produces them (OAuth tokens, sensitive data),
 
 * You want the secrets to be usable by you, collaborators and CI services, without being readable by anyone else;
 * You want tests and checks (e.g. vignette building) that use the secrets to be turned off in environments where secrets won't be available (CRAN, forks of your development repository).
