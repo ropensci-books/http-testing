@@ -271,7 +271,7 @@ Where do we put the `vcr::use_cassette()` call?
 Well, as written in the manual page of that function, _There's a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:_
 What's correct?
 
-* Wrapping the whole `testthat::test_that()` call;
+* Wrapping the whole `testthat::test_that()` call (do not do that if your test contains for instance `skip_on_cran()`);
 
 ```r
 vcr::use_cassette("thing", {
