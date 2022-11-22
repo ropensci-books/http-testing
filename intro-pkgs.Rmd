@@ -43,7 +43,7 @@ You may never use it directly but if you use `{vcr}` it's one of its foundations
 The short version is `{vcr}`, maintained by Scott Chamberlain, helps you stub HTTP requests so you don't have to repeat HTTP requests, mostly in your unit tests.
 It uses the power of `{webmockr}`, with a higher level interface.
 
-When using `{vcr}` in tests, the first time you run a test, the API response is stored in a YAML file.
+When using `{vcr}` in tests, the first time you run a test, the API response is stored in a YAML or JSON file.
 All subsequent runs of the test use that local file instead of really calling the API.
 Therefore tests work independently of an internet connection.
 
@@ -108,7 +108,7 @@ If you use an alternative like `{tinytest}`,
 
 * `{httptest}` won't work as it's specifically designed as a complement to `{testthat}`;
 
-* `{vcr}` might work;
+* `{vcr}` [might](https://github.com/ropensci/vcr/issues/162) work;
 
 * `{webfakes}` can work.
 
