@@ -23,6 +23,7 @@ Imports:
     sessioninfo,
     testthat,
     urltools,
+    usethis,
     vcr,
     webfakes,
     webmockr,
