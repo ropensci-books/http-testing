@@ -8,7 +8,7 @@ Note that the `httptest::with_mock_dir()` function is only available in httptest
 :::
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/9/files) Feel free to fork the repository to experiment yourself!
+[Corresponding pull request to exemplighratia](https://github.com/ropensci-books/exemplighratia/pull/9/files) Feel free to fork the repository to experiment yourself!
 :::
 
 ## Setup
@@ -123,7 +123,7 @@ Hopefully we'd notice that thanks to following API news.
 However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.
 
-As with vcr we setup a [GitHub Actions workflow](https://github.com/maelle/exemplighratia/blob/otherhttptestapproach/.github/workflows/R-CMD-check-schedule.yaml) that runs once a week with tests against the real web service.
+As with vcr we setup a [GitHub Actions workflow](https://github.com/ropensci-books/exemplighratia/blob/otherhttptestapproach/.github/workflows/R-CMD-check-schedule.yaml) that runs once a week with tests against the real web service.
 The difference is what and where these tests are.
 As some tests with custom made mock files can be more specific (e.g. testing for actual values, whereas the latest responses from the API will have different values), instead of turning off mock files usage, we use our old original tests that we put in a folder called `real-tests`.
 Most of the time `real-tests` is .Rbuildignored but in the scheduled run, before checking the package we replace the content of `tests` with `real-tests`.
@@ -145,7 +145,7 @@ So we now have tests that no longer rely on an internet connection nor on having
 
 We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
 
-For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/9/files).
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/ropensci-books/exemplighratia/pull/9/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
 How do we get there with yet another package? We'll try webfakes but first let's compare vcr and httptest as they both use mocking.

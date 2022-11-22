@@ -5,7 +5,7 @@ For this, we start from the initial state of exemplighratia2 again. Back to squa
 
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Corresponding pull request to exemplighratia2](https://github.com/maelle/exemplighratia2/pull/1/files) Feel free to fork the repository to experiment yourself!
+[Corresponding pull request to exemplighratia2](https://github.com/ropensci-books/exemplighratia2/pull/1/files) Feel free to fork the repository to experiment yourself!
 :::
 
 ## Setup
@@ -156,7 +156,7 @@ So we now have tests that no longer rely on an internet connection nor on having
 
 We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
 
-For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/9/files).
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/ropensci-books/exemplighratia/pull/9/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
 How do we get there with yet another package? We'll try webfakes.

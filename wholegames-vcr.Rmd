@@ -3,7 +3,7 @@
 In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (& webmockr).
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Corresponding pull request to exemplighratia](https://github.com/maelle/exemplighratia/pull/2/files). Feel free to fork the repository to experiment yourself!
+[Corresponding pull request to exemplighratia](https://github.com/ropensci-books/exemplighratia/pull/2/files). Feel free to fork the repository to experiment yourself!
 :::
 
 ## Setup
@@ -234,7 +234,7 @@ Therefore it is important to run tests against the real web service once in a wh
 The vcr package provides various methods to turn vcr use on and off to allow real requests i.e. ignoring mock files.
 See `?vcr::lightswitch`.
 
-In the case of exemplighratia, we added a [GitHub Actions workflow](https://github.com/maelle/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml) that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
+In the case of exemplighratia, we added a [GitHub Actions workflow](https://github.com/ropensci-books/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml) that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
 Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a `GITHUB_PAT` secret environment variable. Furthermore, it is slower.
 
@@ -258,7 +258,7 @@ So we now have tests that no longer rely on an internet connection nor on having
 
 We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.
 
-For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/2/files).
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/ropensci-books/exemplighratia/pull/2/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
 How do we get there with other packages? Let's try httptest in the next chapter!

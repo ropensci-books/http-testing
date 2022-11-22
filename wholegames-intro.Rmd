@@ -9,7 +9,7 @@ The next section will then present single topics such as "how to deal with authe
 
 ## Our example packages
 
-Our minimal packages, [`exemplighratia`](https://github.com/maelle/exemplighratia) and [`exemplighratia2`](https://github.com/maelle/exemplighratia2), access the GitHub status API and one endpoint of GitHub V3 REST API.
+Our minimal packages, [`exemplighratia`](https://github.com/maropensci-bookselle/exemplighratia) and [`exemplighratia2`](https://github.com/ropensci-books/exemplighratia2), access the GitHub status API and one endpoint of GitHub V3 REST API.
 They are named after the Latin phrase _exempli gratia_ that means "for instance", with an H for GH.
 If you really need to interact with GitHub V3 API, we recommend the [gh package](https://gh.r-lib.org/).
 We also recommend looking at the source of the gh package, and at the docs of GitHub V3 API, in particular about [authentication](https://developer.github.com/v3/#authentication).

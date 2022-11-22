@@ -186,7 +186,7 @@ Now, how do we make sure this works?
 
 So we now have tests that no longer rely on an internet connection nor on having API credentials.
 
-For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/maelle/exemplighratia/pull/4/files).
+For the full list of changes applied to exemplighratia in this chapter, see [the pull request diff on GitHub](https://github.com/ropensci-books/exemplighratia/pull/4/files).
 
 ::: {.alert .alert-dismissible .alert-primary} 
 In the next chapter, we shall compare the three approaches to HTTP testing we've demo-ed.
