@@ -27,6 +27,7 @@ vcr::check_cassette_names()
 
 When testthat runs tests, [files whose name start with "helper" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). 
 They are also loaded by `devtools::load_all()`, so the vcr setup is loaded when developing and testing interactively. 
+See the table in the R-hub blog post ["Helper code and files for your testthat tests"](https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests).
 
 The helper file created by vcr
 
