@@ -104,7 +104,7 @@
 <span class="header-section-number">6.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup"><i class="fas fa-link"></i></a>
 </h2>
 <p>Before working on all this, we need to install <a href="https://docs.ropensci.org/vcr">vcr</a>.</p>
-<p>First, we need to run <code><a href="https://docs.ropensci.org/vcr/reference/use_vcr.html">vcr::use_vcr()</a></code> (in the exemplighratia directory) which has a few effects:</p>
+<p>First, we need to run <code><a href="https://rdrr.io/pkg/vcr/man/use_vcr.html">vcr::use_vcr()</a></code> (in the exemplighratia directory) which has a few effects:</p>
 <ul>
 <li>Adding vcr as a dependency to <code>DESCRIPTION</code>, under Suggests just like testthat.</li>
 <li>Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.</li>
@@ -114,10 +114,10 @@
 </ul>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name start with “helper” are always run first</a>.
 They are also loaded by <code>devtools::load_all()</code>, so the vcr setup is loaded when developing and testing interactively.
 See the table in the R-hub blog post <a href="https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests">“Helper code and files for your testthat tests”</a>.</p>
@@ -129,7 +129,7 @@ See the table in the R-hub blog post <a href="https://blog.r-hub.io/2020/11/18/t
 </ul>
 <p>We have to tweak the vcr setup a bit for our needs.</p>
 <ul>
-<li><p>We do not want our API token to appear in the mock responses, and we know it’s used in the Authorization header of the requests, so we use the <code>filter_request_headers</code> argument of <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code>. For other secret filtering one can use <code>filter_response_headers</code> and <code>filter_sensitive_data</code> (for a regular expression purging, on the whole saved interactions).</p></li>
+<li><p>We do not want our API token to appear in the mock responses, and we know it’s used in the Authorization header of the requests, so we use the <code>filter_request_headers</code> argument of <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr::vcr_configure()</a></code>. For other secret filtering one can use <code>filter_response_headers</code> and <code>filter_sensitive_data</code> (for a regular expression purging, on the whole saved interactions).</p></li>
 <li><p>We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function <code>gh_organizations()</code> checks for the presence of a token.
 With mock responses around, we don’t need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).</p></li>
@@ -138,7 +138,7 @@ With mock responses around, we don’t need a token but we still need to fool ou
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vcr_dir</span> <span class="op">&lt;-</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
+<span><span class="va">vcr_dir</span> <span class="op">&lt;-</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span><span class="op">(</span><span class="va">vcr_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -151,7 +151,7 @@ With mock responses around, we don’t need a token but we still need to fool ou
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
 <span>  dir <span class="op">=</span> <span class="va">vcr_dir</span>,</span>
 <span>  <span class="co"># Filter the request header where the token is sent, make sure you know</span></span>
 <span>  <span class="co"># how authentication works in your case and read the Security chapter :-)</span></span>
@@ -167,12 +167,12 @@ With mock responses around, we don’t need a token but we still need to fool ou
 <p>Let’s tweak the test for <code>gh_api_status</code>, it now becomes</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span></span>
 <span>    <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">status</span>, <span class="st">"character"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>We only had to wrap the code involving interactions with the API, <code>status &lt;- gh_api_status()</code>, in <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>.</p>
+<p>We only had to wrap the code involving interactions with the API, <code>status &lt;- gh_api_status()</code>, in <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code>.</p>
 <p>If we run this test (in RStudio clicking on “Run test”),</p>
 <ul>
 <li>the first time, vcr creates a cassette (mock file) under <code>tests/testthat/fixtures/gh_api_status.yml</code> where it stores the API response.
@@ -244,7 +244,7 @@ This inspired us to change error behavior a bit with a slightly more specific er
 <p>The test file <code>tests/testthat/test-organizations.R</code> is now:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span></span>
 <span>    <span class="va">orgs</span> <span class="op">&lt;-</span> <span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">orgs</span>, <span class="st">"character"</span><span class="op">)</span></span>
@@ -291,7 +291,7 @@ In the second test there is more to unpack.</p>
 <span id="cb31-9"><a href="vcr.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">Accept</span><span class="kw">:</span><span class="at"> application/json, text/xml, application/xml, */*</span></span>
 <span id="cb31-10"><a href="vcr.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">Content-Type</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
 <span id="cb31-11"><a href="vcr.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">Authorization</span><span class="kw">:</span><span class="at"> My bearer token is safe</span></span></code></pre></div>
-<p>Our API token has been replaced with the string we indicated in <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code>, <code>My bearer token is safe</code>.</p>
+<p>Our API token has been replaced with the string we indicated in <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr::vcr_configure()</a></code>, <code>My bearer token is safe</code>.</p>
 </div>
 <div id="also-testing-for-real-interactions" class="section level2" number="6.3">
 <h2>
@@ -302,7 +302,7 @@ Hopefully we’d notice that thanks to following API news.
 However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.</p>
 <p>The vcr package provides various methods to turn vcr use on and off to allow real requests i.e. ignoring mock files.
-See <code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">?vcr::lightswitch</a></code>.</p>
+See <code><a href="https://rdrr.io/pkg/vcr/man/lightswitch.html">?vcr::lightswitch</a></code>.</p>
 <p>In the case of exemplighratia, we added a <a href="https://github.com/ropensci-books/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml">GitHub Actions workflow</a> that will run on schedule once a week, for which one of the build has vcr turned off via the <code>VCR_TURN_OFF</code> environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
 Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a <code>GITHUB_PAT</code> secret environment variable. Furthermore, it is slower.</p>
@@ -317,8 +317,8 @@ Compared to continuous integration builds where vcr is turned on, this one build
 <span class="header-section-number">6.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
-<li>We set up vcr usage in our package exemplighratia by running <code><a href="https://docs.ropensci.org/vcr/reference/use_vcr.html">use_vcr()</a></code> and tweaking the setup file to protect our secret API key and to fool our own package that needs an API token.</li>
-<li>Inside <code>test_that()</code> blocks, we wrapped parts of the code into <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> and ran the tests a first time to generate mock files that hold all information about the API interactions.</li>
+<li>We set up vcr usage in our package exemplighratia by running <code><a href="https://rdrr.io/pkg/vcr/man/use_vcr.html">use_vcr()</a></code> and tweaking the setup file to protect our secret API key and to fool our own package that needs an API token.</li>
+<li>Inside <code>test_that()</code> blocks, we wrapped parts of the code into <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code> and ran the tests a first time to generate mock files that hold all information about the API interactions.</li>
 <li>In one of the tests, we used webmockr to create an environment where only fake requests are allowed. We defined that the request that <code>gh_organizations()</code> makes should get a 502 status. We were therefore able to test for the error message <code>gh_organizations()</code> returns in such cases.</li>
 </ul>
 <p>Now, how do we make sure this works?</p>
@@ -337,14 +337,14 @@ Compared to continuous integration builds where vcr is turned on, this one build
 <h2>
 <span class="header-section-number">6.5</span> PS: Where to put use_cassette()<a class="anchor" aria-label="anchor" href="#ps-where-to-put-use_cassette"><i class="fas fa-link"></i></a>
 </h2>
-<p>Where do we put the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> call?
+<p>Where do we put the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code> call?
 Well, as written in the manual page of that function, <em>There’s a few ways to get correct line numbers for failed tests and one way to not get correct line numbers:</em>
 What’s correct?</p>
 <ul>
 <li>Wrapping the whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> call (do not do that if your test contains for instance `skip_on_cran()``);</li>
 </ul>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
@@ -356,7 +356,7 @@ What’s correct?</p>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
@@ -364,12 +364,12 @@ What’s correct?</p>
 <p>What’s incorrect?</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>We used the solution of only wrapping the lines containing API calls in <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>, but it is up to you to choose what you prefer.</p>
+<p>We used the solution of only wrapping the lines containing API calls in <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code>, but it is up to you to choose what you prefer.</p>
 
 </div>
 </div>

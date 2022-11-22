@@ -107,7 +107,7 @@ We won’t end up advocating for one package in particular since both have their
 <h2>
 <span class="header-section-number">8.1</span> Setting up the infrastructure<a class="anchor" aria-label="anchor" href="#setting-up-the-infrastructure"><i class="fas fa-link"></i></a>
 </h2>
-<p>To set up the HTTP testing infrastructure, in one case you need to run <code><a href="https://docs.ropensci.org/vcr/reference/use_vcr.html">vcr::use_vcr()</a></code> and in another case you need to run <code><a href="https://enpiar.com/r/httptest/reference/use_httptest.html">httptest::use_httptest()</a></code>. Not too hard to remember.</p>
+<p>To set up the HTTP testing infrastructure, in one case you need to run <code><a href="https://rdrr.io/pkg/vcr/man/use_vcr.html">vcr::use_vcr()</a></code> and in another case you need to run <code><a href="https://enpiar.com/r/httptest/reference/use_httptest.html">httptest::use_httptest()</a></code>. Not too hard to remember.</p>
 </div>
 <div id="calling-mock-files" class="section level2" number="8.2">
 <h2>
@@ -122,8 +122,8 @@ Note that fixtures is not as specific as cassettes and mock files: cassettes and
 <h2>
 <span class="header-section-number">8.3</span> Naming mock files<a class="anchor" aria-label="anchor" href="#naming-mock-files"><i class="fas fa-link"></i></a>
 </h2>
-<p>With vcr the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> call needs to include a name that will be used to create the filename of the mock file.
-The help of <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">?use_cassette</a></code> explains some criteria for naming them, such as the fact that cassette names need to be unique.
+<p>With vcr the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code> call needs to include a name that will be used to create the filename of the mock file.
+The help of <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">?use_cassette</a></code> explains some criteria for naming them, such as the fact that cassette names need to be unique.
 Now if you wrap your whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block in them you might just as well use a name similar to the test name, and you already make those meaningful, right?</p>
 <p>With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body.
 If you use <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">with_mock_dir()</a></code> you need a name for the directory under which the mock files are saved, and you can make it meaningful.</p>
@@ -150,7 +150,7 @@ If the response contains secrets, refer to httptest’s article about <a href="h
 <span class="header-section-number">8.6</span> Recording, playing back<a class="anchor" aria-label="anchor" href="#recording-playing-back"><i class="fas fa-link"></i></a>
 </h2>
 <p>When using mock files for testing, first you need to record responses in mock files; and then you want to use the mock files instead of real HTTP interactions (that’s the whole point).</p>
-<p>With vcr, the recording vs playing back modes happen automatically depending on the existence of the cassette. If you write <code>vcr::use_cassette("blabla", )</code> and there’s no cassette called blabla, vcr will create it. Note that if you change the HTTP interactions in the code block, you’ll have to re-record the cassette which is as simple as deleting it then running the test. <em>Note that you can also change the way vcr behaves by looking into <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">?vcr::vcr_configure</a></code>’s “Cassette Options”.</em></p>
+<p>With vcr, the recording vs playing back modes happen automatically depending on the existence of the cassette. If you write <code>vcr::use_cassette("blabla", )</code> and there’s no cassette called blabla, vcr will create it. Note that if you change the HTTP interactions in the code block, you’ll have to re-record the cassette which is as simple as deleting it then running the test. <em>Note that you can also change the way vcr behaves by looking into <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">?vcr::vcr_configure</a></code>’s “Cassette Options”.</em></p>
 <p>With httptest, there is a lot of flexibility around how to record mock files. It is because httptest doesn’t assume that every API mock came from a real request to a real server; maybe you copy some of the mocks directly from the API docs.</p>
 <p><strong>Note that nothing prevents you from editing vcr cassettes by hand, but you’ll have to be careful not re-recording them by mistake.</strong></p>
 <div class="alert alert-dismissible alert-info">
@@ -187,7 +187,7 @@ Or reading the error message of <code>httptest::with_mock_ap()</code> helps you 
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">disable</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you’d need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>.</li>
+<li>or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you’d need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use <code><a href="https://rdrr.io/pkg/vcr/man/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>.</li>
 </ul>
 </div>
 <div id="conclusion-3" class="section level2" number="8.8">

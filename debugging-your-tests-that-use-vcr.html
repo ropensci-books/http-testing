@@ -125,14 +125,14 @@ in particular, using the same vcr cassette.</p>
 or source the vcr setup file <code>tests/testthat/setup-vcr.R</code> i.e. the file with these lines (and maybe others)</p>
 <div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>,</span>
 <span>  filter_sensitive_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"&lt;&lt;github_api_token&gt;&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">'GITHUB_PAT'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>If instead of <code>vcr::vcr_test_path("fixtures")</code> you see <code>"../fixtures"</code>,
 replace <code>"../fixtures"</code> with <code>vcr::vcr_test_path("fixtures")</code>,
-as <code><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr::vcr_test_path()</a></code> is a function that is meant to help exactly what you will want:
+as <code><a href="https://rdrr.io/pkg/vcr/man/vcr_test_path.html">vcr::vcr_test_path()</a></code> is a function that is meant to help exactly what you will want:
 have the path to <code>tests/fixtures/</code> work from tests and from the root (which is where you will be running the code to debug it).</p>
 <p>So that is one step (loading the vcr helper or sourcing the vcr setup file),
 or maybe two (if you also had to replace <code>"../fixtures"</code> with <code>vcr::vcr_test_path("fixtures")</code>).</p>
@@ -146,7 +146,7 @@ or maybe two (if you also had to replace <code>"../fixtures"</code> with <code>v
 <code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">'https://httpbin.org/get'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"foo works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"testing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"testing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/logical-expectations.html">expect_true</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -154,24 +154,24 @@ or maybe two (if you also had to replace <code>"../fixtures"</code> with <code>v
 <p>If you want to run the code as if you were in the test,</p>
 <div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">'https://httpbin.org/get'</span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/insert_cassette.html">insert_cassette</a></span><span class="op">(</span><span class="st">"testing"</span><span class="op">)</span> <span class="co"># it will be created if needed</span></span>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/insert_cassette.html">insert_cassette</a></span><span class="op">(</span><span class="st">"testing"</span><span class="op">)</span> <span class="co"># it will be created if needed</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co"># further interactive debugging and fixes</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/eject_cassette.html">eject_cassette</a></span><span class="op">(</span><span class="st">"testing"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/eject_cassette.html">eject_cassette</a></span><span class="op">(</span><span class="st">"testing"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="logging-1" class="section level3" number="27.1.4">
 <h3>
 <span class="header-section-number">27.1.4</span> Logging<a class="anchor" aria-label="anchor" href="#logging-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>You can use vcr’s built in logging to help in your debugging process. To configure logging,
-use the <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code> function, and set <code>log=TRUE</code> and set options for logging on the
-<code>log_opts</code> parameter as a named list. See <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">?vcr_configure</a></code> for details.</p>
+use the <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure()</a></code> function, and set <code>log=TRUE</code> and set options for logging on the
+<code>log_opts</code> parameter as a named list. See <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">?vcr_configure</a></code> for details.</p>
 <p>Here, we are setting our log file to be a temporary file that will be cleaned up at the end
 of the R session. Here, the file extension is <code>.log</code>, but the file extension does not matter.</p>
 <div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>,</span>
 <span>  log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  log_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"vcr.log"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -182,7 +182,7 @@ editor or other location; or examine in your shell/terminal.</p>
 <code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">'https://httpbin.org/get'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"foo works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"testing"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"testing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/logical-expectations.html">expect_true</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>

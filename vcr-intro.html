@@ -202,7 +202,7 @@ the default vcr configuration options inside of an R6 class <code>VCRConfig</cod
 see <a href="https://github.com/ropensci/vcr/blob/main/R/onLoad.R" class="uri">https://github.com/ropensci/vcr/blob/main/R/onLoad.R</a>. This
 class is keeps track of default and user specified configuration options.
 You can access <code>vcr_c</code> using triple namespace <code>:::</code>, though it is not
-intended for general use. Whenever you make calls to <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code>
+intended for general use. Whenever you make calls to <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure()</a></code>
 or other configuration functions, <code>vcr_c</code> is affected.</p>
 </div>
 <div id="cassette-class" class="section level4" number="22.3.3.2">
@@ -210,7 +210,7 @@ or other configuration functions, <code>vcr_c</code> is affected.</p>
 <span class="header-section-number">22.3.3.2</span> Cassette class<a class="anchor" aria-label="anchor" href="#cassette-class"><i class="fas fa-link"></i></a>
 </h4>
 <p><code>Cassette</code> is an R6 class that handles internals/state for each cassette.
-Each time you run <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> this class is used. The class has quite
+Each time you run <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code> this class is used. The class has quite
 a few methods in it, so there’s a lot going on in the class. Ideally
 the class would be separated into subclasses to handle similar sets
 of logic, but there’s not an easy way to do that with R6.</p>
@@ -232,12 +232,12 @@ configuration options <code>ignore_hosts</code> and <code>ignore_localhost</code
 </li>
 <li>
 <strong>Stubbed by vcr</strong> This is an HTTP request for which a match is found
-in the cassette defined in the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code>/<code><a href="https://docs.ropensci.org/vcr/reference/insert_cassette.html">insert_cassette()</a></code> call.
+in the cassette defined in the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code>/<code><a href="https://rdrr.io/pkg/vcr/man/insert_cassette.html">insert_cassette()</a></code> call.
 In this case the matching request/response from the cassette is returned
 with no real HTTP request allowed.</li>
 <li>
 <strong>Recordable</strong> This is an HTTP request for which no match is found
-in the cassette defined in the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code>/<code><a href="https://docs.ropensci.org/vcr/reference/insert_cassette.html">insert_cassette()</a></code> call.
+in the cassette defined in the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code>/<code><a href="https://rdrr.io/pkg/vcr/man/insert_cassette.html">insert_cassette()</a></code> call.
 In this case a real HTTP request is allowed, and the request/response is
 recorded to the cassette.</li>
 <li>
@@ -286,7 +286,7 @@ few items, including the current cassette in use, and the last vcr error.</p>
 <span class="header-section-number">22.3.4.3</span> Lightswitch<a class="anchor" aria-label="anchor" href="#lightswitch"><i class="fas fa-link"></i></a>
 </h4>
 <p>Another internal environment (<code>light_switch</code>) is used to keep track of users
-turning on and off <code>vcr</code>. See <code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">?lightswitch</a></code>.</p>
+turning on and off <code>vcr</code>. See <code><a href="https://rdrr.io/pkg/vcr/man/lightswitch.html">?lightswitch</a></code>.</p>
 </div>
 </div>
 </div>
@@ -298,10 +298,10 @@ turning on and off <code>vcr</code>. See <code><a href="https://docs.ropensci.or
 <h3>
 <span class="header-section-number">22.4.1</span> In tests<a class="anchor" aria-label="anchor" href="#in-tests"><i class="fas fa-link"></i></a>
 </h3>
-<p>In your tests, for whichever tests you want to use <code>vcr</code>, wrap them in a <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> call like:</p>
+<p>In your tests, for whichever tests you want to use <code>vcr</code>, wrap them in a <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code> call like:</p>
 <div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span></span>
+<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span></span>
 <span>    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -310,12 +310,12 @@ turning on and off <code>vcr</code>. See <code><a href="https://docs.ropensci.or
 <span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>OR put the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> block on the inside, but put <code>testthat</code> expectations outside of
-the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> block:</p>
+<p>OR put the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code> block on the inside, but put <code>testthat</code> expectations outside of
+the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code> block:</p>
 <div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"my test"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"rl_citation"</span>, <span class="op">{</span></span>
 <span>    <span class="va">aa</span> <span class="op">&lt;-</span> <span class="fu">rl_citation</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span></span>
@@ -323,7 +323,7 @@ the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vc
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"IUCN"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">aa</span>, <span class="st">"www.iucnredlist.org"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Don’t wrap the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block inside your <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block with <code>testthat</code> expectations inside the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block, as you’ll only get the line number that the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> block starts on on failures.</p>
+<p>Don’t wrap the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code> block inside your <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block with <code>testthat</code> expectations inside the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code> block, as you’ll only get the line number that the <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette()</a></code> block starts on on failures.</p>
 <p>The first time you run the tests, a “cassette” i.e. a file with recorded HTTP interactions, is created at <code>tests/fixtures/rl_citation.yml</code>.
 The times after that, the cassette will be used.
 If you change your code and more HTTP interactions are needed in the code wrapped by <code>vcr::use_cassette("rl_citation"</code>, delete <code>tests/fixtures/rl_citation.yml</code> and run the tests again for re-recording the cassette.</p>
@@ -339,14 +339,14 @@ If you change your code and more HTTP interactions are needed in the code wrappe
 <span></span>
 <span><span class="va">cli</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://eu.httpbin.org"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span></span>
 <span>    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The request gets recorded, and all subsequent requests of the same form used the cached HTTP response, and so are much faster</p>
 <div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"helloworld"</span>, <span class="op">{</span></span>
 <span>    <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"get"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>

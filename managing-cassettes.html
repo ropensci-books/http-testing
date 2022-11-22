@@ -115,7 +115,7 @@ For instance:</p>
 </h2>
 <ul>
 <li>If you use a vcr cassette where you replace a 200 code with a 503 code, and vcr is turned off,
-the test will fail because the API will probably not return an error. Use <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>.</li>
+the test will fail because the API will probably not return an error. Use <code><a href="https://rdrr.io/pkg/vcr/man/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>.</li>
 <li>If you edit cassettes by hand you can’t re-record them easily, you’d need to re-record them then re-apply your edits.</li>
 </ul>
 <p>Therefore you’ll need to develop a good workflow.</p>
@@ -177,7 +177,7 @@ something like</li>
 <span id="cb165-11"><a href="managing-cassettes.html#cb165-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">status</span><span class="kw">:</span></span>
 <span id="cb165-12"><a href="managing-cassettes.html#cb165-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">status_code</span><span class="kw">:</span><span class="at"> </span><span class="st">'503'</span></span></code></pre></div>
 <p>And run your test again, it should pass!
-Note the use of <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>: if vcr is turned off, there is a real
+Note the use of <code><a href="https://rdrr.io/pkg/vcr/man/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>: if vcr is turned off, there is a real
 API request and most probably this request won’t get a 503 as a status code.</p>
 <div id="the-same-thing-with-webmockr" class="section level3" number="30.3.1">
 <h3>
@@ -285,7 +285,7 @@ vcr will first use the first interaction, then the second one, when making the s
 <span id="cb169-36"><a href="managing-cassettes.html#cb169-36" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">recorded_at</span><span class="kw">:</span><span class="at"> 2018-04-03 22:55:02 GMT</span></span>
 <span id="cb169-37"><a href="managing-cassettes.html#cb169-37" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">recorded_with</span><span class="kw">:</span><span class="at"> vcr/0.1.0, webmockr/0.2.4, crul/0.5.2</span></span></code></pre></div>
 <p>And run your test again, it should pass!
-Note the use of <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>: if vcr is turned off, there is a real
+Note the use of <code><a href="https://rdrr.io/pkg/vcr/man/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>: if vcr is turned off, there is a real
 API request and most probably this request won’t get a 503 as a status code.</p>
 <div id="the-same-thing-with-webmockr-1" class="section level3" number="30.4.1">
 <h3>
@@ -358,13 +358,13 @@ your vcr enabled tests.</p>
 for example to <a href="cran-preparedness.html#cran-preparedness">reduce the size for package sources</a> or
 to test different functionality of your package functions
 that make the same query under the hood.</p>
-<p>To do so, you can use the same cassette name for multiple <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>
+<p>To do so, you can use the same cassette name for multiple <code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code>
 calls.
-<code><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">vcr::check_cassette_names()</a></code> will complain about duplicate cassette
+<code><a href="https://rdrr.io/pkg/vcr/man/check_cassette_names.html">vcr::check_cassette_names()</a></code> will complain about duplicate cassette
 names, preventing you from accidentally re-using cassettes, however.
 To allow duplicates, you can provide a character vector of the cassette names
 you want to re-use to the <code>allowed_duplicates</code> argument of
-<code><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">vcr::check_cassette_names()</a></code>.
+<code><a href="https://rdrr.io/pkg/vcr/man/check_cassette_names.html">vcr::check_cassette_names()</a></code>.
 That way you can use the same cassette across multiple tests.</p>
 </div>
 <div id="deleting-cassettes" class="section level2" number="30.8">
