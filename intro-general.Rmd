@@ -12,7 +12,7 @@ Your package is making _requests_ and receives _responses_.
 ### HTTP requests
 
 The HTTP request is what your package makes.
-It has a method (are you fetching information via `GET`? are you sending information via `POST`?), different parts of a URL (domain, endpoint, query string), and headers (containing e.g. your secret identifiers).
+It has a method (are you fetching information via `GET`? are you sending information via `POST`?), different parts of a URL (domain, endpoint, query string), and headers (containing for instance your secret identifiers).
 It can contain a body. For instance, you might be sending data as JSON. 
 In that case one of the headers will describe the content.
 
@@ -51,7 +51,7 @@ Do not use RCurl, because it is not actively maintained!
 
 When writing a package interacting with web resources, you will probably use `{httr2}`, `{httr}` or `{crul}`.
 
-* `{httr}` is the most popular and oldest of the two httr packages, and supports OAuth. 
+* `{httr}` is the most popular and oldest of the three packages, and supports OAuth. 
 `{httr}` docs feature a vignette called [Best practices for API packages](https://httr.r-lib.org/articles/api-packages.html)
 
 * `{httr2}` _"is a ground-up rewrite of httr that provides a pipeable API with an explicit request object that solves more problems felt by packages that wrap APIs (e.g. built-in rate-limiting, retries, OAuth, secure secrets, and more)"_ so it might be a good idea to adopt it rather than `{httr}` for a new package. It has a vignette about [Wrapping APIs](https://httr2.r-lib.org/articles/wrapping-apis.html).
