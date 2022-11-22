@@ -119,7 +119,7 @@ tests with <code><a href="https://testthat.r-lib.org/reference/skip.html">testth
 <li>If your tests have cassettes, mock files or recorded responses with sensitive information in them,
 you probably do not want to have those cassettes on the internet, in which case
 you won’t be running vcr enabled tests on CRAN either. In the case of sensitive
-information, you might want to Rbuildignore the cassettes, mock files or recorded responses (and to gitignore them or make your package development repository private).</li>
+information, you might want to <a href="https://blog.r-hub.io/2020/05/20/rbuildignore/">Rbuildignore</a> the cassettes, mock files or recorded responses (and to gitignore them or make your package development repository private).</li>
 <li>There is a maximal size for package sources so you will want your cassettes, mock files or recorded responses to not be too big. There are three ways to limit their size
 <ul>
 <li>Make requests that do not generate a huge response (e.g. tweak the time range);</li>
