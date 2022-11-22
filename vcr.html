@@ -119,7 +119,8 @@
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name start with “helper” are always run first</a>.
-They are also loaded by <code>devtools::load_all()</code>, so the vcr setup is loaded when developing and testing interactively.</p>
+They are also loaded by <code>devtools::load_all()</code>, so the vcr setup is loaded when developing and testing interactively.
+See the table in the R-hub blog post <a href="https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests">“Helper code and files for your testthat tests”</a>.</p>
 <p>The helper file created by vcr</p>
 <ul>
 <li>loads vcr,</li>
