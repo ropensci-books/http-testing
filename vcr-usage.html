@@ -103,17 +103,17 @@
 <span class="header-section-number">23.1</span> Mocking writing to disk<a class="anchor" aria-label="anchor" href="#vcr-disk"><i class="fas fa-link"></i></a>
 </h2>
 <p>If you have http requests for which you write the response to disk, then
-use <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure()</a></code> to set the <code>write_disk_path</code> option. See more about
+use <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code> to set the <code>write_disk_path</code> option. See more about
 the <a href="#write-disk-path">write_disk_path configuration option</a>.</p>
 <p>Here, we create a temporary directory, then set the fixtures</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmpdir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmpdir</span>, <span class="st">"fixtures"</span><span class="op">)</span>,</span>
 <span>  write_disk_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmpdir</span>, <span class="st">"files"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: /tmp/Rtmpf4lLo7/fixtures
+#&gt;   Cassette Dir: /tmp/RtmpsCDa1V/fixtures
 #&gt;   Record: once
 #&gt;   Serialize with: yaml
 #&gt;   URI Parser: crul::url_parse
@@ -122,7 +122,7 @@ the <a href="#write-disk-path">write_disk_path configuration option</a>.</p>
 #&gt;   Logging?: FALSE
 #&gt;   ignored hosts: 
 #&gt;   ignore localhost?: FALSE
-#&gt;   Write disk path: /tmp/Rtmpf4lLo7/files</code></pre>
+#&gt;   Write disk path: /tmp/RtmpsCDa1V/files</code></pre>
 <p>Then pass a file path (that doesn’t exist yet) to crul’s <code>disk</code> parameter.
 <code>vcr</code> will take care of handling writing the response to that file in
 addition to the cassette.</p>
@@ -131,14 +131,14 @@ addition to the cassette.</p>
 <span><span class="co">## make a temp file</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".json"</span><span class="op">)</span></span>
 <span><span class="co">## make a request</span></span>
-<span><span class="va">cas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"test_write_to_disk"</span>, <span class="op">{</span></span>
+<span><span class="va">cas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"test_write_to_disk"</span>, <span class="op">{</span></span>
 <span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://httpbin.org/get"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span>disk <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">content</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/7.68.0 r-curl/4.3.3 crul/1.3\", \n    \"X-Amzn-Trace-Id\": \"Root=1-637cbbc9-5773058c7e0e18674d789faa\"\n  }, \n  \"origin\": \"138.91.140.209\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
+<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/7.68.0 r-curl/4.3.3 crul/1.3\", \n    \"X-Amzn-Trace-Id\": \"Root=1-637cbbef-0367a0df47bc15661dc3f0fa\"\n  }, \n  \"origin\": \"20.253.234.209\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
 <p>This also works with <code>httr</code>. The only difference is that you write to disk
 with a function <code>httr::write_disk(path)</code> rather than a parameter.</p>
 <p>Note that when you write to disk when using <code>vcr</code>, the cassette is slightly

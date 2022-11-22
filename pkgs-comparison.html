@@ -127,7 +127,7 @@ During the writing of this book, issues and pull requests were tackled rather qu
 <li>providing responses from the API.</li>
 </ul>
 <p>The difference between packages, the <em>test writing experience</em> depends on how you can provide responses from the API, both real ones and fake ones.</p>
-<p>With vcr and httptest for tests testing <em>normal behavior</em>, after set up (for which there is a helper function), testing is just a function away (<code><a href="https://rdrr.io/pkg/vcr/man/use_cassette.html">vcr::use_cassette()</a></code>, <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">httptest::with_mock_dir()</a></code>, <code><a href="https://enpiar.com/r/httptest/reference/with_mock_api.html">httptest::with_mock_api()</a></code>).
+<p>With vcr and httptest for tests testing <em>normal behavior</em>, after set up (for which there is a helper function), testing is just a function away (<code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>, <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">httptest::with_mock_dir()</a></code>, <code><a href="https://enpiar.com/r/httptest/reference/with_mock_api.html">httptest::with_mock_api()</a></code>).
 Recording happens automatically during the first run of tests.
 You might also provide fake recorded response or dumb down the existing ones.
 For creating <em>API errors</em>, and API sequence of responses (e.g. 502 then 200), you end up either using webmockr, or amending mock files, see <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html">vcr</a> and httptest related docs.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Sequence of requests are not &lt;a href="https://github.com/nealrichardson/httptest/issues/49"&gt;supported smoothly yet by httptest&lt;/a&gt;.&lt;/p&gt;'><sup>5</sup></a></p>
@@ -143,7 +143,7 @@ The one thing that’s not supported in webfakes yet is a smooth workflow for re
 </h3>
 <p>With webfakes as no authentication is needed at any point, you have less chance of exposing a secret.</p>
 <p>With httptest only the body of responses is saved, so unless it contains secrets, no further effort is needed. If you <em>need</em> to redact mock files, see <a href="https://enpiar.com/r/httptest/articles/redacting.html">the corresponding vignette</a>.</p>
-<p>With vcr as all HTTP interactions, including request URLs and headers, are saved to disk, you will most often have to use the <code>filter_sensitive_data</code>, <code>filter_request_header</code> and/or <code>filter_response_header</code> arguments of <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr::vcr_configure()</a></code>.</p>
+<p>With vcr as all HTTP interactions, including request URLs and headers, are saved to disk, you will most often have to use the <code>filter_sensitive_data</code>, <code>filter_request_header</code> and/or <code>filter_response_header</code> arguments of <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code>.</p>
 </div>
 <div id="how-about-making-real-requests" class="section level3" number="11.3.2">
 <h3>
@@ -166,7 +166,7 @@ See also our chapter about <a href="real-requests-chapter.html#real-requests-cha
 <li>the environment variable connecting your package code to the fake web service is changed.</li>
 </ul>
 <p>Then run your code. To debug <em>webfakes apps</em>, follow the <a href="https://r-lib.github.io/webfakes/dev/articles/how-to.html#how-can-i-debug-an-app-">guidance</a>.</p>
-<p>With vcr, refer to the <a href="https://docs.ropensci.org/vcr/articles/debugging.html">debugging</a> vignette: you’ll have to load the helper file or source the setup file after making sure the paths use in it work both from <code>tests/testthat/</code> and the package root (see <code><a href="https://rdrr.io/pkg/vcr/man/vcr_test_path.html">?vcr::vcr_test_path</a></code>), and then use <code>vcr::inject_cassette()</code>; don’t forget to run <code><a href="https://rdrr.io/pkg/vcr/man/eject_cassette.html">vcr::eject_cassette()</a></code> afterwards.
+<p>With vcr, refer to the <a href="https://docs.ropensci.org/vcr/articles/debugging.html">debugging</a> vignette: you’ll have to load the helper file or source the setup file after making sure the paths use in it work both from <code>tests/testthat/</code> and the package root (see <code><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">?vcr::vcr_test_path</a></code>), and then use <code>vcr::inject_cassette()</code>; don’t forget to run <code><a href="https://docs.ropensci.org/vcr/reference/eject_cassette.html">vcr::eject_cassette()</a></code> afterwards.
 With webmockr debugging is quite natural, run the code that’s in the test, in particular <code><a href="https://docs.ropensci.org/webmockr/reference/enable.html">webmockr::enable()</a></code> and <code><a href="https://docs.ropensci.org/webmockr/reference/enable.html">webmockr::disable()</a></code>.</p>
 <p>With httptest, the process is similar as with vcr except the key functions are</p>
 <ul>

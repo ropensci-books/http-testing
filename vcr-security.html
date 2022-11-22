@@ -100,7 +100,7 @@
 <h2>
 <span class="header-section-number">28.1</span> Keeping secrets safe<a class="anchor" aria-label="anchor" href="#api-keys-security"><i class="fas fa-link"></i></a>
 </h2>
-<p>To keep your secrets safe, you need to use parameters of <code><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr::vcr_configure()</a></code> that tell vcr either where secrets are (and what to put in their place), or what secrets are (and what to put in their place).
+<p>To keep your secrets safe, you need to use parameters of <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code> that tell vcr either where secrets are (and what to put in their place), or what secrets are (and what to put in their place).
 It is best if you know how secrets are used in requests: e.g. is the API key passed as a header or part of the query string?
 Maybe you will need different strategies for the different secrets (e.g. an OAuth2.0 access token will be set as Authorization header but an OAuth2.0 refresh token might be in a query string).</p>
 <p>In all cases, it is crucial to look at your cassettes before putting them on the public web, just to be sure you got the configuration right!</p>
@@ -112,17 +112,17 @@ Maybe you will need different strategies for the different secrets (e.g. an OAu
 <p>There are different ways to use it.</p>
 <div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Remove one header from the cassettes</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
 <span>  filter_request_headers <span class="op">=</span> <span class="st">"Authorization"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Remove two headers from the cassettes</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
 <span>  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Authorization"</span>, <span class="st">"User-Agent"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Replace one header with a given string</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
 <span>  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Authorization <span class="op">=</span> <span class="st">"&lt;&lt;&lt;not-my-bearer-token&gt;&gt;&gt;"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -147,7 +147,7 @@ Have the secret in an environment variable for instance and tell vcr to read it 
 reading from the cassette we do the reverse replacement to get back
 to the real data.</p>
 <div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/vcr/man/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
 <span>  filter_sensitive_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"&lt;&lt;&lt;my_api_key&gt;&gt;&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">'API_KEY'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>You want to make the string that replaces your sensitive string something that

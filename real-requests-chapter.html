@@ -120,7 +120,7 @@ Indeed, the web resource can change.</p>
 </ul>
 <p>Now this means assuming <em>all</em> your tests work with real requests.</p>
 <ul>
-<li>If a few tests won’t work with real requests (say they have a fixture mimicking an <a href="errors-chapter.html#errors-chapter">API error</a>, or specific answer as if today were a given date) then you can skip these tests when mocking/faking the web service is off. With vcr this means using <code><a href="https://rdrr.io/pkg/vcr/man/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>; with httptest and webfakes you’d create your custom skipper.</li>
+<li>If a few tests won’t work with real requests (say they have a fixture mimicking an <a href="errors-chapter.html#errors-chapter">API error</a>, or specific answer as if today were a given date) then you can skip these tests when mocking/faking the web service is off. With vcr this means using <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>; with httptest and webfakes you’d create your custom skipper.</li>
 <li>If most tests won’t work with real requests, then creating a different folder for tests making real requests makes sense. It might be less unit-y as you could view these tests as integration/contract tests. Maybe they could use <a href="https://testthat.r-lib.org/articles/snapshotting.html">testthat’s snapshot testing</a> (so you could view what’s different in the API).</li>
 </ul>
 <div id="when-to-make-real-requests" class="section level3" number="12.2.1">
