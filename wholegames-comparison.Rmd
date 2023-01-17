@@ -79,7 +79,7 @@ With httptest, the process is similar as with vcr except the key functions are
 ## Conclusion
 
 In this chapter we compared the three R packages that make HTTP testing easier.
-If you are still unsure which one to pick, first try packages out without commitment, in branches or so, but then choose one and [commit to your lock-in](http://veekaybee.github.io/2019/02/10/lockin/).
+If you are still unsure which one to pick, first try packages out without commitment, in branches or so, but then choose one and [commit to your lock-in](https://vickiboykis.com/2019/02/10/commit-to-your-lock-in/).
 
 > "Every piece of code written in a given language or framework is a step away from any other language, and five more minutes you’ll have to spend migrating it to something else. That’s fine. You just have to decide what you’re willing to be locked into.
 >
