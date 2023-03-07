@@ -7,7 +7,7 @@
 <title>Chapter 10 Use webfakes | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.  10.1 Setup Before working on all this, we need to install {webfakes}, with...">
-<meta name="generator" content="bookdown 0.31 with bs4_book()">
+<meta name="generator" content="bookdown 0.32 with bs4_book()">
 <meta property="og:title" content="Chapter 10 Use webfakes | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/webfakes.html">
@@ -148,7 +148,7 @@ They become:</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>   <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>   <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>      <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
 <span>        <span class="va">res</span><span class="op">$</span><span class="fu">send_json</span><span class="op">(</span></span>
 <span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> components <span class="op">=</span></span>
@@ -162,7 +162,7 @@ They become:</p>
 <span>          auto_unbox <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">}</span><span class="op">)</span></span>
-<span>    <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="va">web</span><span class="op">$</span><span class="fu">local_env</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>EXEMPLIGHRATIA_GITHUB_STATUS_URL <span class="op">=</span> <span class="st">"{url}"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
@@ -170,8 +170,8 @@ They become:</p>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>So what’s happening here?</p>
 <ul>
-<li>When we’re not asking for requests to the real service to be made (<code>Sys.getenv("REAL_REQUESTS")</code>), we prepare a new app via <code><a href="https://r-lib.github.io/webfakes/reference/new_app.html">webfakes::new_app()</a></code>. It’s a very simple one, that returns, for GET requests, a list corresponding to what we’re used to getting out of the status API, except that a) it’s much smaller and b) the “operational” status is hard-coded.</li>
-<li>When then create a local app process via <code>webfakes::local_app_process(, start = TRUE)</code>. It will start right away thanks to <code>start=TRUE</code> but we could have chosen to start it later via calling e.g. <code>web$url()</code> (see <code><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">?webfakes::local_app_process</a></code>); and most importantly it will be stopped automatically after the test. No mess made!</li>
+<li>When we’re not asking for requests to the real service to be made (<code>Sys.getenv("REAL_REQUESTS")</code>), we prepare a new app via <code><a href="https://webfakes.r-lib.org/reference/new_app.html">webfakes::new_app()</a></code>. It’s a very simple one, that returns, for GET requests, a list corresponding to what we’re used to getting out of the status API, except that a) it’s much smaller and b) the “operational” status is hard-coded.</li>
+<li>When then create a local app process via <code>webfakes::local_app_process(, start = TRUE)</code>. It will start right away thanks to <code>start=TRUE</code> but we could have chosen to start it later via calling e.g. <code>web$url()</code> (see <code><a href="https://webfakes.r-lib.org/reference/local_app_process.html">?webfakes::local_app_process</a></code>); and most importantly it will be stopped automatically after the test. No mess made!</li>
 <li>We set the <code>EXEMPLIGHRATIA_GITHUB_STATUS_URL</code> variable to the URL of the local app process. This is what connects our code to our fake web service.</li>
 </ul>
 <p>It might seem like a lot of overhead code but</p>
@@ -184,11 +184,11 @@ They become:</p>
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr::stop_for_status(response)</code> became <code>httr::stop_for_status(response, task = "get API status, ouch!")</code>.</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() errors when the API does not behave"</span>, <span class="op">{</span></span>
-<span>  <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">res</span><span class="op">$</span><span class="fu">send_status</span><span class="op">(</span><span class="fl">502L</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="va">web</span><span class="op">$</span><span class="fu">local_env</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>EXEMPLIGHRATIA_GITHUB_STATUS_URL <span class="op">=</span> <span class="st">"{url}"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html">expect_error</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"ouch"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
@@ -205,7 +205,7 @@ This inspired us to change error behavior a bit with a slightly more specific er
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
 <span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/organizations"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">res</span><span class="op">$</span><span class="fu">send_json</span><span class="op">(</span></span>
 <span>        <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">read_json</a></span><span class="op">(</span></span>
@@ -216,7 +216,7 @@ This inspired us to change error behavior a bit with a slightly more specific er
 <span>        auto_unbox <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
-<span>    <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/webfakes/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="va">web</span> <span class="op">&lt;-</span>  <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/local_app_process.html">local_app_process</a></span><span class="op">(</span><span class="va">app</span>, start <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="va">web</span><span class="op">$</span><span class="fu">local_env</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>EXEMPLIGHRATIA_GITHUB_API_URL <span class="op">=</span> <span class="st">"{url}"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
@@ -299,7 +299,7 @@ If they are not generic enough, we can use the<a href="httptest.html#httptest-re
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2023-01-17.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2023-03-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
