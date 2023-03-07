@@ -138,7 +138,7 @@ Hopefully we'd notice that thanks to following API news.
 However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.
 
-One could use the same strategy as the one [we demonstrated for httptest](#httptest2-real) i.e. with a different test folder.
+One could use the same strategy as the one [we demonstrated for httptest](#httptest-real) i.e. with a different test folder.
 
 Again, one could imagine other strategies, but in all cases it is important to keep checking the package against the real web service fairly regularly.
 
