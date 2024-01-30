@@ -1,0 +1,27 @@
+{
+    "description": "This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development. Our aim is to develop a useful guide to go with the great recent tools `{vcr}`, `{webmockr}`, `{httptest}`, `{httptest2}` and `{webfakes}`.",
+    "license": {"id":"CC-Zero-4.0"},
+    "title": "rOpenSci Packages: Development, Maintenance, and Peer Review",
+    "version": "0.1.0",
+    "upload_type": "software",
+    "publication_date": "2024-01-30",
+    "publication_type": "book",
+    "creators": [
+        {
+            "name": "Chamberlain, Scott",
+            "affiliation": "Fred Hutch Data Science Lab",
+            "orcid": "0000-0003-1444-9135"
+        },
+        {
+            "name": "Salmon, Ma\u00eblle",
+            "affiliation": "rOpenSci",
+            "orcid": "0000-0002-2815-0399"
+        }
+    ],
+  "access_right": "open",
+  "related_identifiers": [{
+    "identifier": "https://github.com/ropensci-books/http-testing",
+    "relation": "isIdenticalTo",
+    "scheme": "url"
+  }]
+}
