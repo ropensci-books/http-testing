@@ -7,7 +7,7 @@
 <title>Chapter 30 Managing cassettes | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="30.1 Why edit cassettes? By design vcr is very good at recording HTTP interactions that actually took place. Now sometimes when testing/demo-ing your package you will want to use fake HTTP...">
-<meta name="generator" content="bookdown 0.32 with bs4_book()">
+<meta name="generator" content="bookdown 0.37 with bs4_book()">
 <meta property="og:title" content="Chapter 30 Managing cassettes | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/managing-cassettes.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="30.1 Why edit cassettes? By design vcr is very good at recording HTTP interactions that actually took place. Now sometimes when testing/demo-ing your package you will want to use fake HTTP...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.2/transition.js"></script><script src="libs/bs3compat-0.4.2/tabs.js"></script><script src="libs/bs3compat-0.4.2/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -126,12 +126,12 @@ the test will fail because the API will probably not return an error. Use <code>
 </h2>
 <p>First, write your test e.g.</p>
 <div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="managing-cassettes.html#cb163-1" aria-hidden="true" tabindex="-1"></a>vcr<span class="sc">::</span><span class="fu">use_cassette</span>(<span class="st">"api-error"</span>, {</span>
-<span id="cb163-2"><a href="managing-cassettes.html#cb163-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testhat</span>(<span class="st">"Errors are handled well"</span>, {</span>
+<span id="cb163-2"><a href="managing-cassettes.html#cb163-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">test_that</span>(<span class="st">"Errors are handled well"</span>, {</span>
 <span id="cb163-3"><a href="managing-cassettes.html#cb163-3" aria-hidden="true" tabindex="-1"></a>    vcr<span class="sc">::</span><span class="fu">skip_if_vcr_off</span>()</span>
 <span id="cb163-4"><a href="managing-cassettes.html#cb163-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_error</span>(<span class="fu">call_my_api</span>()), <span class="st">"error message"</span><span class="er">)</span></span>
 <span id="cb163-5"><a href="managing-cassettes.html#cb163-5" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb163-6"><a href="managing-cassettes.html#cb163-6" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<p>Then run your tests a first time.</p>
+<p>Then run your tests the first time.</p>
 <ol style="list-style-type: decimal">
 <li>It will fail</li>
 <li>It will have created a cassette under <code>tests/fixtures/api-error.yml</code> that looks
@@ -188,7 +188,7 @@ one thing, which is vcr.
 Now, by using the webmockr directly in your tests, you can also test for the
 behavior of your package in case of errors.
 Below we assume <code>api_url()</code> returns the URL <code>call_my_api()</code> calls.</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="managing-cassettes.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testhat</span>(<span class="st">"Errors are handled well"</span>, {</span>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="managing-cassettes.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"Errors are handled well"</span>, {</span>
 <span id="cb166-2"><a href="managing-cassettes.html#cb166-2" aria-hidden="true" tabindex="-1"></a>  webmockr<span class="sc">::</span><span class="fu">enable</span>()</span>
 <span id="cb166-3"><a href="managing-cassettes.html#cb166-3" aria-hidden="true" tabindex="-1"></a>  stub <span class="ot">&lt;-</span> webmockr<span class="sc">::</span><span class="fu">stub_request</span>(<span class="st">"get"</span>, <span class="fu">api_url</span>())</span>
 <span id="cb166-4"><a href="managing-cassettes.html#cb166-4" aria-hidden="true" tabindex="-1"></a>  webmockr<span class="sc">::</span><span class="fu">to_return</span>(stub, <span class="at">status =</span> <span class="dv">503</span>)</span>
@@ -207,13 +207,13 @@ A con is that it’s quite different from the vcr syntax.</p>
 <p>Here we assume your package contains some sort of <a href="https://blog.r-hub.io/2020/04/07/retry-wheel/">retry</a>.</p>
 <p>First, write your test e.g.</p>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="managing-cassettes.html#cb167-1" aria-hidden="true" tabindex="-1"></a>vcr<span class="sc">::</span><span class="fu">use_cassette</span>(<span class="st">"api-error"</span>, {</span>
-<span id="cb167-2"><a href="managing-cassettes.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">testhat</span>(<span class="st">"Errors are handled well"</span>, {</span>
+<span id="cb167-2"><a href="managing-cassettes.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">test_that</span>(<span class="st">"Errors are handled well"</span>, {</span>
 <span id="cb167-3"><a href="managing-cassettes.html#cb167-3" aria-hidden="true" tabindex="-1"></a>    vcr<span class="sc">::</span><span class="fu">skip_if_vcr_off</span>()</span>
 <span id="cb167-4"><a href="managing-cassettes.html#cb167-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_message</span>(thing <span class="ot">&lt;-</span> <span class="fu">call_my_api</span>()), <span class="st">"retry message"</span><span class="er">)</span></span>
 <span id="cb167-5"><a href="managing-cassettes.html#cb167-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_s4_class</span>(thing, <span class="st">"data.frame"</span>)</span>
 <span id="cb167-6"><a href="managing-cassettes.html#cb167-6" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb167-7"><a href="managing-cassettes.html#cb167-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<p>Then run your tests a first time.</p>
+<p>Then run your tests the first time.</p>
 <ol style="list-style-type: decimal">
 <li>It will fail</li>
 <li>It will have created a cassette under <code>tests/fixtures/api-error.yml</code> that looks
@@ -296,7 +296,7 @@ one thing, which is vcr.
 Now, by using the webmockr directly in your tests, you can also test for the
 behavior of your package in case of errors.
 Below we assume <code>api_url()</code> returns the URL <code>call_my_api()</code> calls.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="managing-cassettes.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testhat</span>(<span class="st">"Errors are handled well"</span>, {</span>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="managing-cassettes.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"Errors are handled well"</span>, {</span>
 <span id="cb170-2"><a href="managing-cassettes.html#cb170-2" aria-hidden="true" tabindex="-1"></a>  webmockr<span class="sc">::</span><span class="fu">enable</span>()</span>
 <span id="cb170-3"><a href="managing-cassettes.html#cb170-3" aria-hidden="true" tabindex="-1"></a>  stub <span class="ot">&lt;-</span> webmockr<span class="sc">::</span><span class="fu">stub_request</span>(<span class="st">"get"</span>, <span class="fu">api_url</span>())</span>
 <span id="cb170-4"><a href="managing-cassettes.html#cb170-4" aria-hidden="true" tabindex="-1"></a>  stub <span class="sc">%&gt;%</span></span>
@@ -428,7 +428,7 @@ so if you use that option, you’d have <code>.json</code> files instead of
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2023-03-07.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-01-30.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
