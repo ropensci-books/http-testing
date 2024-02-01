@@ -3,8 +3,10 @@ message: "If you use this book, please cite it as below."
 authors:
 - family-names: Chamberlain
   given-names: Scott
+  orcid: https://orcid.org/0000-0003-1444-9135
 - family-names: Salmon
   given-names: Maëlle
+  orcid: https://orcid.org/0000-0002-2815-0399
 title: HTTP testing in R
 version: v1.0.0
 date-released: 2024-02-01
