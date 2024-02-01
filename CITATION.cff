@@ -1,4 +1,4 @@
-cff-version: 1.0.2
+cff-version: 1.2.0
 message: "If you use this book, please cite it as below."
 authors:
 - family-names: Chamberlain
@@ -8,6 +8,6 @@ authors:
   given-names: Maëlle
   orcid: https://orcid.org/0000-0002-2815-0399
 title: HTTP testing in R
-version: v1.0.2
+version: 1.0.2
 date-released: 2024-02-01
                                 
