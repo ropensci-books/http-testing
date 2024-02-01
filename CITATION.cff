@@ -1,0 +1,11 @@
+cff-version: 1.0.0
+message: "If you use this book, please cite it as below."
+authors:
+- family-names: Chamberlain
+  given-names: Scott
+- family-names: Salmon
+  given-names: Maëlle
+title: HTTP testing in R
+version: v1.0.0
+date-released: 2024-02-01
+                                
