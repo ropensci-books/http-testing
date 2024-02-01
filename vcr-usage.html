@@ -113,7 +113,7 @@ the <a href="#write-disk-path">write_disk_path configuration option</a>.</p>
 <span>  write_disk_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmpdir</span>, <span class="st">"files"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;vcr configuration&gt;
-#&gt;   Cassette Dir: /tmp/RtmpggI99V/fixtures
+#&gt;   Cassette Dir: /tmp/RtmpEbxhJq/fixtures
 #&gt;   Record: once
 #&gt;   Serialize with: yaml
 #&gt;   URI Parser: crul::url_parse
@@ -122,7 +122,7 @@ the <a href="#write-disk-path">write_disk_path configuration option</a>.</p>
 #&gt;   Logging?: FALSE
 #&gt;   ignored hosts: 
 #&gt;   ignore localhost?: FALSE
-#&gt;   Write disk path: /tmp/RtmpggI99V/files</code></pre>
+#&gt;   Write disk path: /tmp/RtmpEbxhJq/files</code></pre>
 <p>Then pass a file path (that doesn’t exist yet) to crul’s <code>disk</code> parameter.
 <code>vcr</code> will take care of handling writing the response to that file in
 addition to the cassette.</p>
@@ -138,7 +138,7 @@ addition to the cassette.</p>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/7.81.0 r-curl/5.2.0 crul/1.4.0\", \n    \"X-Amzn-Trace-Id\": \"Root=1-65bb6176-4a5edb555d4ffb260377a6d7\"\n  }, \n  \"origin\": \"52.225.77.98\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
+<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/7.81.0 r-curl/5.2.0 crul/1.4.0\", \n    \"X-Amzn-Trace-Id\": \"Root=1-65bb6656-094e1abb53520f0a13168acc\"\n  }, \n  \"origin\": \"172.183.52.213\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
 <p>This also works with <code>httr</code>. The only difference is that you write to disk
 with a function <code>httr::write_disk(path)</code> rather than a parameter.</p>
 <p>Note that when you write to disk when using <code>vcr</code>, the cassette is slightly
