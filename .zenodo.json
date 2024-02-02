@@ -2,9 +2,9 @@
     "description": "This book is meant to be a free, central reference for developers of R packages accessing web resources, to help them have a faster and more robust development. Our aim is to develop a useful guide to go with the great recent tools `{vcr}`, `{webmockr}`, `{httptest}`, `{httptest2}` and `{webfakes}`.",
     "license": {"id":"CC-Zero-4.0"},
     "title": "rOpenSci Packages: Development, Maintenance, and Peer Review",
-    "version": "0.1.0",
+    "version": "1.0.4",
     "upload_type": "software",
-    "publication_date": "2024-01-30",
+    "publication_date": "2024-02-02",
     "publication_type": "book",
     "creators": [
         {
