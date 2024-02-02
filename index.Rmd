@@ -12,6 +12,8 @@ description: "Best practice and tips for testing packages interfacing web resour
 url: 'https\://books.ropensci.org/http-testing/'
 ---
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10608848.svg)](https://doi.org/10.5281/zenodo.10608848)
+
 # Preamble
 
 Are you working on an R package accessing resources on the web, be it a cat facts API, a scientific data source or your system for Customer relationship management?
