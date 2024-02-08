@@ -13,7 +13,7 @@ rmd_files: ["index.Rmd",
            "conclusion.Rmd",
            "03-mocking.Rmd", "04-webmockr-stubs.Rmd", "05-webmockr-testing.Rmd",    
            "06-webmockr-utilities.Rmd", "07-vcr.Rmd", "08-vcr-usage.Rmd", "09-configuration.Rmd",     
-           "10-record-modes.Rmd", "11-request-matching.Rmd", "12-logging.Rmd", "13-security.Rmd",
+           "vcr-workflow.Rmd", "10-record-modes.Rmd", "11-request-matching.Rmd", "12-logging.Rmd", "13-security.Rmd",
            "14-escape-hatches.Rmd", "15-cassettes.Rmd", "16-gotchas.Rmd",
            "18-session-info.Rmd", "404.Rmd"]
 before_chapter_script: "_common.R"

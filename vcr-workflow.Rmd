@@ -1,0 +1,66 @@
+# vcr workflows {#vcr-workflows}
+
+- Re-recording cassettes
+- Making sure vcr is working
+- Make tasks
+
+## Re-recording cassettes {#vcr-re-recording}
+
+There are a number of reasons why you may want to re-record your cassettes:
+
+1. `vcr`/`webmockr` upgrades: you may want to re-record your cassettes if
+you've recently upgraded either of these packages. There should in general
+be no problem if you do not re-record your cassettes when using new versions
+of `vcr`/`webmockr`. Cassettes record the version of `vcr`/`webmockr` they 
+were recorded with.
+2. Code linked to cassette has changed in a way that would lead to different
+request/response. Whenever your code has changed leading to different request
+and/or response you should record a new cassette. 
+3. Remote API has changed leading to a different response. In this case the
+HTTP request is likely identical to the one on the cassette, but since the 
+remote API response has changed, you should record a new cassette. Note that
+matching HTTP requests is not done on HTTP responses, but if your tests 
+check any aspect of the response then you'll likely want to re-record 
+your cassettes.
+
+How do you re-record a cassette?
+
+This can be as simple as deleting existing cassettes and running tests again,
+which should record new cassettes.
+
+Another option is to use the vcr configuration option [re_record_interval][rri].
+With this option you can set a time in seconds after which a new cassette
+will be recorded, deleting the old one first. This will help make sure your
+cassettes have up to date HTTP response bodies from the remote API; helping
+you avoid cases where you're essentially testing old API behavior.
+
+## Making sure vcr is working {#vcr-working}
+
+How do you know vcr is working without internet access?
+
+- Make sure you have recorded cassettes. Then turn WI-FI off. Now run tests again.
+If tests behave the same exact way while WI-FI was on, then your tests are not 
+dependent on an internet connection. Note that this exercise may reveal that 
+you have some tests that do not use vcr that do require an internet connection
+that you weren't aware of, or had forgotten about.
+
+Can my tests run in the absence of my API key?
+
+- After cassettes are recorded, you can temporarily disable your key by replacing
+the real key with an invalid key. Then run tests again, then re-enable your key. While
+you your key was disabled your tests should still pass. 
+
+
+## Make tasks {#vcr-make-tasks}
+
+Make is a build automation tool used across programming languages. You use Make
+through the command `make`, which looks up commands you define in a `Makefile`.
+See [Wikipedia][mf] for a general overview of Make and the Makefile.
+
+(waiting on https://github.com/ropensci/vcr/issues/103)
+
+
+
+
+[rri]: https://docs.ropensci.org/vcr/reference/vcr_configure.html#configurable-settings
+[mf]: https://en.wikipedia.org/wiki/Make_(software)#Makefile
