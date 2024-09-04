@@ -49,6 +49,10 @@ out$parse()
 This also works with `httr`. The only difference is that you write to disk
 with a function `httr::write_disk(path)` rather than a parameter.
 
+::: {.alert .alert-dismissible .alert-info}
+Writing to disk with `{httr2}` does not yet work with `{vcr}` - see <https://github.com/ropensci/vcr/issues/270>
+:::
+
 Note that when you write to disk when using `vcr`, the cassette is slightly
 changed. Instead of holding the http response body itself, the cassette
 has the file path with the response body.

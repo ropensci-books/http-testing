@@ -70,7 +70,7 @@ x$get('get', query = list(a = "b"))
 
 
 There are two ways to deal with mocking writing to disk. First, you can create a file
-with the data you'd like in that file, then tell crul or httr where that file is.
+with the data you'd like in that file, then tell crul, httr, or httr2 where that file is.
 Second, you can simply give webmockr a file path (that doesn't exist yet) and some 
 data, and webmockr can take care of putting the data in the file.
 

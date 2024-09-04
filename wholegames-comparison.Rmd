@@ -7,10 +7,10 @@ Of course, the choice of strategy in the demo is a bit subjective, but we hope i
 A first message that's important to us: if you're learning about HTTP testing and using it in a branch of your own package sounds daunting, create a minimal package for playing!
 :::
 
-## What HTTP client can you use (curl, httr, crul)
+## What HTTP client can you use (curl, httr, httr2, crul)
 
 * httptest only works with httr (the most popular HTTP R client);
-* vcr (& webmockr) works with both httr and crul (the two "high-level" HTTP R clients);
+* vcr (& webmockr) works with httr, httr2, and crul (the three "high-level" HTTP R clients);
 * webfakes works with any R HTTP client, even base R if you wish.
 
 ## Sustainability of the packages

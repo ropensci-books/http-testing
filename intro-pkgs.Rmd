@@ -31,7 +31,7 @@ What are the challenges of HTTP testing?
 * While `{webmockr}` is in use, real HTTP interactions are not allowed. Therefore you need to stub all possible HTTP requests happening via your code. You'll get error messages for HTTP requests not covered by any stub.
 * There is no recording interactions to disk at all, just mocked responses given as the user specifies in the R session.
 
-`{webmockr}` works with both the `{crul}` package and the `{httr}` package.
+`{webmockr}` works with `{crul}`, `{httr}`, and `{httr2}`.
 
 `{webmockr}` is quite low-level and not the first tool you'll use directly in your day-to-day HTTP testing.
 You may never use it directly but if you use `{vcr}` it's one of its foundations.
@@ -49,7 +49,7 @@ Therefore tests work independently of an internet connection.
 
 `{vcr}` was inspired by the [Ruby vcr gem](https://relishapp.com/vcr/vcr/docs).
 
-`{vcr}` works for packages using `{httr}` or `{crul}`.
+`{vcr}` works for packages using `{httr}`, `{httr2}` or `{crul}`.
 
 ::: {.alert .alert-dismissible .alert-info} 
 [Direct link to `{vcr}` (& `{webmockr}`) demo](#vcr)
@@ -99,7 +99,7 @@ Because it runs a fake web service, you can even interact with said web service 
 [Direct link to `{webfakes}` demo](#webfakes)
 :::
 
-## testthat 
+## testthat
 
 `{testthat}`, maintained by Hadley Wickham, is not a package specifically for HTTP testing; it is a package for general-purpose unit testing of R packages.
 In this book we will assume that is what you use, because of its popularity.
