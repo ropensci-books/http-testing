@@ -1,6 +1,7 @@
 dir.create("rmd-fragments")
 
 get_vcr_doc <- function(path) {
+  webmockr::disable()
   fs::dir_create(dirname(file.path("rmd-fragments", path)), recurse = TRUE)
   fragment_api <- gh::gh(
     "/repos/:owner/:repo/contents/:path",
