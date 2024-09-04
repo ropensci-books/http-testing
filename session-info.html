@@ -7,7 +7,7 @@
 <title>Chapter 32 Session info | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content='32.1 Session info library("magrittr") dependencies &lt;- attachment::att_from_rmds(".") dependencies &lt;- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]...'>
-<meta name="generator" content="bookdown 0.37 with bs4_book()">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Chapter 32 Session info | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/session-info.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content='32.1 Session info library("magrittr") dependencies &lt;- attachment::att_from_rmds(".") dependencies &lt;- dependencies[!dependencies %in% c("attachment", "bookdown", "knitr")]...'>
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -131,32 +131,32 @@
 <tr class="odd">
 <td align="left">brio</td>
 <td align="left">brio</td>
-<td align="left">1.1.4</td>
+<td align="left">1.1.5</td>
 </tr>
 <tr class="even">
 <td align="left">callr</td>
 <td align="left">callr</td>
-<td align="left">3.7.3</td>
+<td align="left">3.7.6</td>
 </tr>
 <tr class="odd">
 <td align="left">cli</td>
 <td align="left">cli</td>
-<td align="left">3.6.2</td>
+<td align="left">3.6.3</td>
 </tr>
 <tr class="even">
 <td align="left">crayon</td>
 <td align="left">crayon</td>
-<td align="left">1.5.2</td>
+<td align="left">1.5.3</td>
 </tr>
 <tr class="odd">
 <td align="left">crul</td>
 <td align="left">crul</td>
-<td align="left">1.4.0</td>
+<td align="left">1.5.0</td>
 </tr>
 <tr class="even">
 <td align="left">curl</td>
 <td align="left">curl</td>
-<td align="left">5.2.0</td>
+<td align="left">5.2.2</td>
 </tr>
 <tr class="odd">
 <td align="left">desc</td>
@@ -171,12 +171,12 @@
 <tr class="odd">
 <td align="left">digest</td>
 <td align="left">digest</td>
-<td align="left">0.6.34</td>
+<td align="left">0.6.37</td>
 </tr>
 <tr class="even">
 <td align="left">evaluate</td>
 <td align="left">evaluate</td>
-<td align="left">0.23</td>
+<td align="left">0.24.0</td>
 </tr>
 <tr class="odd">
 <td align="left">fansi</td>
@@ -191,12 +191,12 @@
 <tr class="odd">
 <td align="left">fs</td>
 <td align="left">fs</td>
-<td align="left">1.6.3</td>
+<td align="left">1.6.4</td>
 </tr>
 <tr class="even">
 <td align="left">gh</td>
 <td align="left">gh</td>
-<td align="left">1.4.0</td>
+<td align="left">1.4.1</td>
 </tr>
 <tr class="odd">
 <td align="left">gitcreds</td>
@@ -221,7 +221,7 @@
 <tr class="odd">
 <td align="left">httr2</td>
 <td align="left">httr2</td>
-<td align="left">1.0.0</td>
+<td align="left">1.0.3</td>
 </tr>
 <tr class="even">
 <td align="left">ini</td>
@@ -251,7 +251,7 @@
 <tr class="odd">
 <td align="left">openssl</td>
 <td align="left">openssl</td>
-<td align="left">2.1.1</td>
+<td align="left">2.2.1</td>
 </tr>
 <tr class="even">
 <td align="left">pillar</td>
@@ -261,7 +261,7 @@
 <tr class="odd">
 <td align="left">pkgbuild</td>
 <td align="left">pkgbuild</td>
-<td align="left">1.4.3</td>
+<td align="left">1.4.4</td>
 </tr>
 <tr class="even">
 <td align="left">pkgconfig</td>
@@ -271,7 +271,7 @@
 <tr class="odd">
 <td align="left">pkgload</td>
 <td align="left">pkgload</td>
-<td align="left">1.3.4</td>
+<td align="left">1.4.0</td>
 </tr>
 <tr class="even">
 <td align="left">praise</td>
@@ -281,12 +281,12 @@
 <tr class="odd">
 <td align="left">processx</td>
 <td align="left">processx</td>
-<td align="left">3.8.3</td>
+<td align="left">3.8.4</td>
 </tr>
 <tr class="even">
 <td align="left">ps</td>
 <td align="left">ps</td>
-<td align="left">1.7.6</td>
+<td align="left">1.7.7</td>
 </tr>
 <tr class="odd">
 <td align="left">R6</td>
@@ -301,7 +301,7 @@
 <tr class="odd">
 <td align="left">Rcpp</td>
 <td align="left">Rcpp</td>
-<td align="left">1.0.12</td>
+<td align="left">1.0.13</td>
 </tr>
 <tr class="even">
 <td align="left">rematch2</td>
@@ -311,7 +311,7 @@
 <tr class="odd">
 <td align="left">rlang</td>
 <td align="left">rlang</td>
-<td align="left">1.1.3</td>
+<td align="left">1.1.4</td>
 </tr>
 <tr class="even">
 <td align="left">rprojroot</td>
@@ -331,7 +331,7 @@
 <tr class="odd">
 <td align="left">testthat</td>
 <td align="left">testthat</td>
-<td align="left">3.2.1</td>
+<td align="left">3.2.1.1</td>
 </tr>
 <tr class="even">
 <td align="left">tibble</td>
@@ -356,7 +356,7 @@
 <tr class="even">
 <td align="left">vcr</td>
 <td align="left">vcr</td>
-<td align="left">1.2.2</td>
+<td align="left">1.6.0</td>
 </tr>
 <tr class="odd">
 <td align="left">vctrs</td>
@@ -366,12 +366,12 @@
 <tr class="even">
 <td align="left">waldo</td>
 <td align="left">waldo</td>
-<td align="left">0.5.2</td>
+<td align="left">0.5.3</td>
 </tr>
 <tr class="odd">
 <td align="left">webmockr</td>
 <td align="left">webmockr</td>
-<td align="left">0.9.0</td>
+<td align="left">1.0.0</td>
 </tr>
 <tr class="even">
 <td align="left">whisker</td>
@@ -381,12 +381,12 @@
 <tr class="odd">
 <td align="left">withr</td>
 <td align="left">withr</td>
-<td align="left">3.0.0</td>
+<td align="left">3.0.1</td>
 </tr>
 <tr class="even">
 <td align="left">yaml</td>
 <td align="left">yaml</td>
-<td align="left">2.3.8</td>
+<td align="left">2.3.10</td>
 </tr>
 </tbody>
 </table></div>
@@ -401,78 +401,78 @@
 <code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.3.2 (2023-10-31)
-#&gt;  os       Ubuntu 22.04.3 LTS
+#&gt;  version  R version 4.4.1 (2024-06-14)
+#&gt;  os       Ubuntu 22.04.4 LTS
 #&gt;  system   x86_64, linux-gnu
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  C.UTF-8
 #&gt;  ctype    C.UTF-8
 #&gt;  tz       UTC
-#&gt;  date     2024-02-02
-#&gt;  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)
+#&gt;  date     2024-09-04
+#&gt;  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ───────────────────────────────────────────────────────────────────
 #&gt;  package     * version date (UTC) lib source
-#&gt;  attachment    0.4.1   2024-01-22 [1] RSPM
+#&gt;  attachment    0.4.2   2024-07-01 [1] RSPM
 #&gt;  base64enc     0.1-3   2015-07-28 [1] RSPM
-#&gt;  bookdown      0.37    2023-12-01 [1] RSPM
-#&gt;  brio          1.1.4   2023-12-10 [1] RSPM
-#&gt;  bslib         0.6.1   2023-11-28 [1] RSPM
-#&gt;  cachem        1.0.8   2023-05-01 [1] RSPM
-#&gt;  cli           3.6.2   2023-12-11 [1] RSPM
-#&gt;  crul        * 1.4.0   2023-05-17 [1] RSPM
-#&gt;  curl          5.2.0   2023-12-08 [1] RSPM
+#&gt;  bookdown      0.40    2024-07-02 [1] RSPM
+#&gt;  brio          1.1.5   2024-04-24 [1] RSPM
+#&gt;  bslib         0.8.0   2024-07-29 [1] RSPM
+#&gt;  cachem        1.1.0   2024-05-16 [1] RSPM
+#&gt;  cli           3.6.3   2024-06-21 [1] RSPM
+#&gt;  crul        * 1.5.0   2024-07-19 [1] RSPM
+#&gt;  curl          5.2.2   2024-08-26 [1] RSPM
 #&gt;  desc          1.4.3   2023-12-10 [1] RSPM
-#&gt;  digest        0.6.34  2024-01-11 [1] RSPM
-#&gt;  downlit       0.4.3   2023-06-29 [1] RSPM
-#&gt;  evaluate      0.23    2023-11-01 [1] RSPM
-#&gt;  fastmap       1.1.1   2023-02-24 [1] RSPM
+#&gt;  digest        0.6.37  2024-08-19 [1] RSPM
+#&gt;  downlit       0.4.4   2024-06-10 [1] RSPM
+#&gt;  evaluate      0.24.0  2024-06-10 [1] RSPM
+#&gt;  fastmap       1.2.0   2024-05-15 [1] RSPM
 #&gt;  fauxpas       0.5.2   2023-05-03 [1] RSPM
-#&gt;  fs            1.6.3   2023-07-20 [1] RSPM
-#&gt;  gh            1.4.0   2023-02-22 [1] RSPM
+#&gt;  fs            1.6.4   2024-04-25 [1] RSPM
+#&gt;  gh            1.4.1   2024-03-28 [1] RSPM
 #&gt;  gitcreds      0.1.2   2022-09-08 [1] RSPM
 #&gt;  glue          1.7.0   2024-01-09 [1] RSPM
-#&gt;  highr         0.10    2022-12-22 [1] RSPM
-#&gt;  htmltools     0.5.7   2023-11-03 [1] RSPM
+#&gt;  highr         0.11    2024-05-26 [1] RSPM
+#&gt;  htmltools     0.5.8.1 2024-04-04 [1] RSPM
 #&gt;  httpcode      0.3.0   2020-04-10 [1] RSPM
 #&gt;  httr        * 1.4.7   2023-08-15 [1] RSPM
-#&gt;  httr2         1.0.0   2023-11-14 [1] RSPM
+#&gt;  httr2         1.0.3   2024-08-22 [1] RSPM
 #&gt;  jquerylib     0.1.4   2021-04-26 [1] RSPM
 #&gt;  jsonlite      1.8.8   2023-12-04 [1] RSPM
-#&gt;  knitr         1.45    2023-10-30 [1] RSPM
+#&gt;  knitr         1.48    2024-07-07 [1] RSPM
 #&gt;  lifecycle     1.0.4   2023-11-07 [1] RSPM
 #&gt;  magrittr    * 2.0.3   2022-03-30 [1] RSPM
 #&gt;  memoise       2.0.1   2021-11-26 [1] RSPM
-#&gt;  pkgload       1.3.4   2024-01-16 [1] RSPM
+#&gt;  pkgload       1.4.0   2024-06-28 [1] RSPM
 #&gt;  purrr         1.0.2   2023-08-10 [1] RSPM
 #&gt;  R6            2.5.1   2021-08-19 [1] RSPM
 #&gt;  rappdirs      0.3.3   2021-01-31 [1] RSPM
-#&gt;  Rcpp          1.0.12  2024-01-09 [1] RSPM
-#&gt;  rlang         1.1.3   2024-01-10 [1] RSPM
-#&gt;  rmarkdown     2.25    2023-09-18 [1] RSPM
-#&gt;  roxygen2      7.3.1   2024-01-22 [1] RSPM
+#&gt;  Rcpp          1.0.13  2024-07-17 [1] RSPM
+#&gt;  rlang         1.1.4   2024-06-04 [1] RSPM
+#&gt;  rmarkdown     2.28    2024-08-17 [1] RSPM
+#&gt;  roxygen2      7.3.2   2024-06-28 [1] RSPM
 #&gt;  rprojroot     2.0.4   2023-11-05 [1] RSPM
-#&gt;  rstudioapi    0.15.0  2023-07-07 [1] RSPM
-#&gt;  sass          0.4.8   2023-12-06 [1] RSPM
+#&gt;  rstudioapi    0.16.0  2024-03-24 [1] RSPM
+#&gt;  sass          0.4.9   2024-03-15 [1] RSPM
 #&gt;  sessioninfo   1.2.2   2021-12-06 [1] RSPM
-#&gt;  stringi       1.8.3   2023-12-11 [1] RSPM
+#&gt;  stringi       1.8.4   2024-05-06 [1] RSPM
 #&gt;  stringr       1.5.1   2023-11-14 [1] RSPM
-#&gt;  testthat    * 3.2.1   2023-12-02 [1] RSPM
+#&gt;  testthat    * 3.2.1.1 2024-04-14 [1] RSPM
 #&gt;  triebeard     0.4.1   2023-03-04 [1] RSPM
 #&gt;  urltools      1.7.3   2019-04-14 [1] RSPM
-#&gt;  vcr         * 1.2.2   2023-06-25 [1] RSPM
+#&gt;  vcr         * 1.6.0   2024-07-23 [1] RSPM
 #&gt;  vctrs         0.6.5   2023-12-01 [1] RSPM
-#&gt;  webmockr    * 0.9.0   2023-02-28 [1] RSPM
+#&gt;  webmockr    * 1.0.0   2024-07-23 [1] RSPM
 #&gt;  whisker       0.4.1   2022-12-05 [1] RSPM
-#&gt;  withr         3.0.0   2024-01-16 [1] RSPM
-#&gt;  xfun          0.41    2023-11-01 [1] RSPM
+#&gt;  withr         3.0.1   2024-07-31 [1] RSPM
+#&gt;  xfun          0.47    2024-08-17 [1] RSPM
 #&gt;  xml2          1.3.6   2023-12-04 [1] RSPM
-#&gt;  yaml          2.3.8   2023-12-11 [1] RSPM
+#&gt;  yaml          2.3.10  2024-07-26 [1] RSPM
 #&gt; 
 #&gt;  [1] /home/runner/work/_temp/Library
-#&gt;  [2] /opt/R/4.3.2/lib/R/site-library
-#&gt;  [3] /opt/R/4.3.2/lib/R/library
+#&gt;  [2] /opt/R/4.4.1/lib/R/site-library
+#&gt;  [3] /opt/R/4.4.1/lib/R/library
 #&gt; 
 #&gt; ──────────────────────────────────────────────────────────────────────────────</code></pre>
 
@@ -519,7 +519,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-02-02.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

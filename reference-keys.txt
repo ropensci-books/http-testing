@@ -59,7 +59,7 @@ actual-testing-3
 also-testing-for-real-interactions-1
 summary-3
 pkgs-comparison
-what-http-client-can-you-use-curl-httr-crul
+what-http-client-can-you-use-curl-httr-httr2-crul
 sustainability-of-the-packages
 test-writing-experience
 the-special-case-of-secrets

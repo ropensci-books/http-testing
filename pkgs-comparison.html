@@ -7,7 +7,7 @@
 <title>Chapter 11 vcr (&amp; webmockr), httptest, webfakes | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="We’re now at a nice stage where we have made a demo of usage for each of the HTTP testing packages, in our exemplighratia package. Of course, the choice of strategy in the demo is a bit...">
-<meta name="generator" content="bookdown 0.37 with bs4_book()">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Chapter 11 vcr (&amp; webmockr), httptest, webfakes | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/pkgs-comparison.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="We’re now at a nice stage where we have made a demo of usage for each of the HTTP testing packages, in our exemplighratia package. Of course, the choice of strategy in the demo is a bit...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -100,13 +100,13 @@ Of course, the choice of strategy in the demo is a bit subjective, but we hope i
 <div class="alert alert-dismissible alert-primary">
 <p>A first message that’s important to us: if you’re learning about HTTP testing and using it in a branch of your own package sounds daunting, create a minimal package for playing!</p>
 </div>
-<div id="what-http-client-can-you-use-curl-httr-crul" class="section level2" number="11.1">
+<div id="what-http-client-can-you-use-curl-httr-httr2-crul" class="section level2" number="11.1">
 <h2>
-<span class="header-section-number">11.1</span> What HTTP client can you use (curl, httr, crul)<a class="anchor" aria-label="anchor" href="#what-http-client-can-you-use-curl-httr-crul"><i class="fas fa-link"></i></a>
+<span class="header-section-number">11.1</span> What HTTP client can you use (curl, httr, httr2, crul)<a class="anchor" aria-label="anchor" href="#what-http-client-can-you-use-curl-httr-httr2-crul"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li>httptest only works with httr (the most popular HTTP R client);</li>
-<li>vcr (&amp; webmockr) works with both httr and crul (the two “high-level” HTTP R clients);</li>
+<li>vcr (&amp; webmockr) works with httr, httr2, and crul (the three “high-level” HTTP R clients);</li>
 <li>webfakes works with any R HTTP client, even base R if you wish.</li>
 </ul>
 </div>
@@ -203,7 +203,7 @@ If you are still unsure which one to pick, first try packages out without commit
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#pkgs-comparison"><span class="header-section-number">11</span> vcr (&amp; webmockr), httptest, webfakes</a></li>
-<li><a class="nav-link" href="#what-http-client-can-you-use-curl-httr-crul"><span class="header-section-number">11.1</span> What HTTP client can you use (curl, httr, crul)</a></li>
+<li><a class="nav-link" href="#what-http-client-can-you-use-curl-httr-httr2-crul"><span class="header-section-number">11.1</span> What HTTP client can you use (curl, httr, httr2, crul)</a></li>
 <li><a class="nav-link" href="#sustainability-of-the-packages"><span class="header-section-number">11.2</span> Sustainability of the packages</a></li>
 <li>
 <a class="nav-link" href="#test-writing-experience"><span class="header-section-number">11.3</span> Test writing experience</a><ul class="nav navbar-nav">
@@ -230,7 +230,7 @@ If you are still unsure which one to pick, first try packages out without commit
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-02-02.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
