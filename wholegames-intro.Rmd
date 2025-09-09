@@ -91,7 +91,7 @@ test_that("gh_api_status() works", {
 })
 ```
 
-* `use_r("organizations.R")` to add a second function. Note that an ideal version of this function would have some sort of callback in the retry, to call the `gh_api_status()` function (maybe with `httr2::req_retry()`'s `is_transient` argument).
+* `use_r("organizations.R")` (and `usethis::use_package("cli")`) to add a second function. Note that an ideal version of this function would have some sort of callback in the retry, to call the `gh_api_status()` function (maybe with `httr2::req_retry()`'s `is_transient` argument).
 
 ```r
 gh_v3_url <- function() {
@@ -115,11 +115,11 @@ gh_v3_url <- function() {
 #' }
 gh_organizations <- function(since = 1) {
 
-  token <- Sys.getenv("GITHUB_PAT")
-
-  if (!nchar(token)) {
-    stop("No token provided! Set up the GITHUB_PAT environment variable please.")
+  if (!gh::gh_token_exists()) {
+    cli::cli_abort("No token provided! {.url https://usethis.r-lib.org/articles/git-credentials.html}.")
   }
+
+  token <- gh::gh_token()
 
   response <- httr2::request(gh_v3_url()) %>%
     httr2::req_url_path_append("organizations") %>%
@@ -127,8 +127,6 @@ gh_organizations <- function(since = 1) {
     httr2::req_headers("Authorization" = paste("token", token)) %>%
     httr2::req_retry(max_tries = 3, max_seconds = 120) %>%
     httr2::req_perform()
-
-  httr2::resp_check_status(response)
 
   content <- httr2::resp_body_json(response)
 
