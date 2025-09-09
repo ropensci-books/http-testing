@@ -21,34 +21,25 @@ See the table in the R-hub blog post ["Helper code and files for your testthat t
 
 We have to tweak the vcr setup for our needs.
 
-* We do not want our API token to appear in the mock responses, and we know it's used in the Authorization header of the requests, so we use the `filter_request_headers` argument of `vcr::vcr_configure()`. For other secret filtering one can use `filter_response_headers` and `filter_sensitive_data` (for a regular expression purging, on the whole saved interactions).
-
 * We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function `gh_organizations()` checks for the presence of a token.
 With mock responses around, we don't need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).
+
+* We do not need to tweak the configuration to prevent our API from leaking, because with vcr 2.0.0 and above, the `Authorization` header is never recorded.
 
 Below is the updated setup file saved under `tests/testthat/helper-vcr.R`.
 
 ```r
 vcr_dir <- vcr::vcr_test_path("_vcr")
-
-if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
+if (!gh::gh_token_exists()) {
   if (dir.exists(vcr_dir)) {
     # Fake API token to fool our package
     Sys.setenv("GITHUB_PAT" = "foobar")
   } else {
     # If there's no mock files nor API token, impossible to run tests
-    stop("No API key nor cassettes, tests cannot be run.",
-         call. = FALSE)
+    stop("No API key nor cassettes, tests cannot be run.", call. = FALSE)
   }
 }
-
-invisible(vcr::vcr_configure(
-  dir = vcr_dir,
-  # Filter the request header where the token is sent, make sure you know
-  # how authentication works in your case and read the Security chapter :-)
-  filter_request_headers = list(Authorization = "My bearer token is safe")
-))
 
 ```
 
@@ -189,23 +180,7 @@ Read pros and cons of this approach in the vcr vignette [_Why and how edit your 
 Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
 However, we could resort to [testthat's mocking tools](https://testthat.r-lib.org/dev/reference/index.html#mocking).
 
-Regarding our secret API token, the first time we run the test file, vcr creates a cassette where we notice these lines
-
-```yaml
-http_interactions:
-- request:
-    method: get
-    uri: https://api.github.com/organizations?since=1
-    body:
-      encoding: ''
-      string: ''
-    headers:
-      Accept: application/json, text/xml, application/xml, */*
-      Content-Type: ''
-      Authorization: My bearer token is safe
-```
-
-Our API token has been replaced with the string we indicated in `vcr::vcr_configure()`, `My bearer token is safe`.
+Regarding our secret API token, the first time we run the test file, vcr creates a cassette where we *do not see our token*.
 
 ## Also testing for real interactions
 
@@ -217,7 +192,7 @@ Therefore it is important to run tests against the real web service once in a wh
 The vcr package provides various methods to turn vcr use on and off to allow real requests i.e. ignoring mock files.
 See `?vcr::lightswitch`.
 
-In the case of exemplighratia, we added a [GitHub Actions workflow](https://github.com/ropensci-books/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml) that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
+In the case of exemplighratia2, we added a [GitHub Actions workflow](https://github.com/ropensci-books/exemplighratia2/blob/vcr/.github/workflows/real-requests.yaml) that will run on schedule once a week, for which one of the build has vcr turned off via the `VCR_TURN_OFF` environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
 Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a `GITHUB_PAT` secret environment variable. Furthermore, it is slower.
 
