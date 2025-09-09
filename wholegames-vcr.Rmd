@@ -65,7 +65,7 @@ If you had used `vcr::use_cassette()` instead of the newer `vcr::local_cassette(
 
 If we run this test, for instance through `devtools::test_active_file()`, 
 
-* the first time, vcr creates a cassette (mock file) under `tests/testthat/_vcr_/gh_api_status.yml` where it stores the API response.
+* the first time, vcr creates a cassette (mock file) under `tests/testthat/_vcr/gh_api_status.yml` where it stores the API response.
 It contains all the information related to requests and responses, headers included.
 
 ```yaml
