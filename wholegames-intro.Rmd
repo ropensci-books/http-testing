@@ -3,7 +3,7 @@
 # Introduction
 
 Similar to the [Whole Game chapter in the R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/whole-game.html), we shall go through how to add HTTP tests to a minimal package.
-However, we will do it _three_ times to present alternative approaches: with [vcr](#vcr), [httptest](#httptest), [webfakes](#webfakes).
+However, we will do it _four_ times to present alternative approaches: with [vcr](#vcr), [httptest](#httptest), [httptest2](#httptest2), [webfakes](#webfakes).
 After that exercise, we shall compare approaches: we will compare both packages that involve mocking i.e. [vcr vs. httptest](#mocking-pkgs-comparison); and all three HTTP packages in a [last chapter](#pkgs-comparison).
 The next section will then present single topics such as "how to deal with authentication" in further details.
 

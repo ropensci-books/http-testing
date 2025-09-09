@@ -1,41 +1,25 @@
 # Use vcr (& webmockr) {#vcr}
 
-In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (& webmockr).
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using vcr (& webmockr).
 
 ::: {.alert .alert-dismissible .alert-info} 
-[Corresponding pull request to exemplighratia](https://github.com/ropensci-books/exemplighratia/pull/2/files). Feel free to fork the repository to experiment yourself!
+[Corresponding pull request to exemplighratia2](https://github.com/ropensci-books/exemplighratia2/pull/2/files). Feel free to fork the repository to experiment yourself!
 :::
 
 ## Setup
 
 Before working on all this, we need to install `{vcr}`.
 
-First, we need to run `vcr::use_vcr()` (in the exemplighratia directory) which has a few effects:
+First, we need to run `usethis::use_package("vcr", type = "Suggests")` (in the exemplighratia directory) to add vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
 
-* Adding vcr as a dependency to `DESCRIPTION`, under Suggests just like testthat.
-* Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.
-* Adding a `.gitattributes` file with the line `tests/fixtures/**/* -diff` which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. [^secrets]
-* Creating a setup file under `tests/testthat/helper-vcr.R`,
-
-```r
-library("vcr")
-invisible(vcr::vcr_configure(
-  dir = vcr::vcr_test_path("fixtures")
-))
-vcr::check_cassette_names()
-```
+Then we need to create a helper file using `usethis::use_test_helper("vcr")`.
+A new file is created under `tests/testthat/helper-vcr.R`.
 
 When testthat runs tests, [files whose name start with "helper" are always run first](https://testthat.r-lib.org/reference/test_dir.html#special-files). 
 They are also loaded by `devtools::load_all()`, so the vcr setup is loaded when developing and testing interactively. 
 See the table in the R-hub blog post ["Helper code and files for your testthat tests"](https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests).
 
-The helper file created by vcr
-
-* loads vcr, 
-* indicates where mocked responses are saved (`"../fixtures"` which translates, from the root of the package, to `tests/fixtures`), 
-* and checks that you are not using the same name twice for cassettes (mock files).
-
-We have to tweak the vcr setup a bit for our needs.
+We have to tweak the vcr setup for our needs.
 
 * We do not want our API token to appear in the mock responses, and we know it's used in the Authorization header of the requests, so we use the `filter_request_headers` argument of `vcr::vcr_configure()`. For other secret filtering one can use `filter_response_headers` and `filter_sensitive_data` (for a regular expression purging, on the whole saved interactions).
 
@@ -46,9 +30,7 @@ With mock responses around, we don't need a token but we still need to fool our 
 Below is the updated setup file saved under `tests/testthat/helper-vcr.R`.
 
 ```r
-library("vcr")
-
-vcr_dir <- vcr::vcr_test_path("fixtures")
+vcr_dir <- vcr::vcr_test_path("_vcr")
 
 if (!nzchar(Sys.getenv("GITHUB_PAT"))) {
   if (dir.exists(vcr_dir)) {
@@ -74,89 +56,85 @@ So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-The most important function will be `vcr::use_cassette("cassette-informative-and-unique-name", {code-block})` which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.
-
+The most important function will be `vcr::local_cassette("cassette-informative-and-unique-name")` which tells vcr to create a mock file to store all API responses for API calls occurring in the current test (what's inside`test_that()`).
+The `vcr::local_cassette()` function might remind you of the `withr::local_` functions or of `rlang::local_options()`.
 
 Let's tweak the test for `gh_api_status`, it now becomes
 
 ```r
 test_that("gh_api_status() works", {
-  vcr::use_cassette("gh_api_status", {
-    status <- gh_api_status()
-  })
-  testthat::expect_type(status, "character")
+  vcr::local_cassette("gh_api_status")
+  status <- gh_api_status()
+  expect_type(status, "character")
 })
 
 ```
 
-We only had to wrap the code involving interactions with the API, `status <- gh_api_status()`, in `vcr::use_cassette()`.
+If you had used `vcr::use_cassette()` instead of the newer `vcr::local_cassette()`, you might notice the code feels less nested!
 
-If we run this test (in RStudio clicking on "Run test"), 
+If we run this test, for instance through `devtools::test_active_file()`, 
 
-* the first time, vcr creates a cassette (mock file) under `tests/testthat/fixtures/gh_api_status.yml` where it stores the API response.
+* the first time, vcr creates a cassette (mock file) under `tests/testthat/_vcr_/gh_api_status.yml` where it stores the API response.
 It contains all the information related to requests and responses, headers included.
 
 ```yaml
 http_interactions:
 - request:
-    method: get
+    method: GET
     uri: https://kctbh9vrtdwd.statuspage.io/api/v2/components.json
-    body:
-      encoding: ''
-      string: ''
-    headers:
-      Accept: application/json, text/xml, application/xml, */*
   response:
-    status:
-      status_code: 200
-      category: Success
-      reason: OK
-      message: 'Success: (200) OK'
+    status: 200
     headers:
-      vary: Accept,Accept-Encoding,Fastly-SSL
-      cache-control: max-age=0, private, must-revalidate
-      x-cache: MISS
       content-type: application/json; charset=utf-8
-      content-encoding: gzip
-      strict-transport-security: max-age=259200
-      date: Thu, 15 Oct 2020 11:59:23 GMT
-      x-request-id: d9888435-3f04-4401-be5c-b9d1bfdfa015
+      date: Tue, 09 Sep 2025 10:09:28 GMT
       x-download-options: noopen
-      x-xss-protection: 1; mode=block
-      x-runtime: '0.037254'
       x-permitted-cross-domain-policies: none
+      referrer-policy: strict-origin-when-cross-origin
+      x-statuspage-version: b27f95704d5835d5f1a3ccc341503d3f7f22f502
+      strict-transport-security: max-age=259200
+      x-statuspage-skip-logging: 'true'
       access-control-allow-origin: '*'
+      cache-control: max-age=3, public
+      x-pollinator-metadata-service: status-page-web-pages
+      etag: W/"81603fa0d180d761ce3b3c3c02d68741"
+      x-runtime: '0.049065'
+      server: AtlassianEdge
       accept-ranges: bytes
       x-content-type-options: nosniff
-      etag: W/"gz[a479c9894f51b7db286dc31cd922e7bf]"
-      x-statuspage-skip-logging: 'true'
-      x-statuspage-version: fd137a4bb14c20ce721393e5b6540ea6eebff3a3
-      referrer-policy: strict-origin-when-cross-origin
-      age: '0'
+      x-xss-protection: 1; mode=block
+      atl-traceid: daa0d6503446464e9748ed3a8634ead0
+      atl-request-id: daa0d650-3446-464e-9748-ed3a8634ead0
+      report-to: '{"endpoints": [{"url": "https://dz8aopenkvv6s.cloudfront.net"}],
+        "group": "endpoint-1", "include_subdomains": true, "max_age": 600}'
+      nel: '{"failure_fraction": 0.001, "include_subdomains": true, "max_age": 600,
+        "report_to": "endpoint-1"}'
+      content-encoding: br
+      server-timing: atl-edge;dur=129,atl-edge-internal;dur=5,atl-edge-upstream;dur=125,atl-edge-pop;desc="aws-us-east-1"
+      vary: Accept,Accept-Encoding
+      x-cache: Miss from cloudfront
+      via: 1.1 dd239fa6f06e5b3ae1437460dbc3d6a6.cloudfront.net (CloudFront)
+      x-amz-cf-pop: MRS53-P3
+      x-amz-cf-id: K63D5rR4HMl9WRamA6Yzh8R6SuF2vfDOuh8W-bgc1kUo-xGdrVZp9g==
     body:
-      encoding: UTF-8
-      file: no
-      string: '{"page":{"id":"kctbh9vrtdwd","name":"GitHub","url":"https://www.githubstatus.com","time_zone":"Etc/UTC","updated_at":"2020-10-15T08:57:35.302Z"},"components":[{"id":"8l4ygp009s5s","name":"Git
-        Operations","status":"operational","created_at":"2017-01-31T20:05:05.370Z","updated_at":"2020-09-24T02:32:00.916Z","position":1,"description":"Performance
-        of git clones, pulls, pushes, and associated operations","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"brv1bkgrwx7q","name":"API
-        Requests","status":"operational","created_at":"2017-01-31T20:01:46.621Z","updated_at":"2020-09-30T19:00:29.476Z","position":2,"description":"Requests
-        for GitHub APIs","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"4230lsnqdsld","name":"Webhooks","status":"operational","created_at":"2019-11-13T18:00:24.256Z","updated_at":"2020-10-13T14:51:17.928Z","position":3,"description":"Real
+      string: '{"page":{"id":"kctbh9vrtdwd","name":"GitHub","url":"https://www.githubstatus.com","time_zone":"Etc/UTC","updated_at":"2025-09-09T10:00:59.457Z"},"components":[{"id":"8l4ygp009s5s","name":"Git
+        Operations","status":"operational","created_at":"2017-01-31T20:05:05.370Z","updated_at":"2025-08-21T06:58:30.069Z","position":1,"description":"Performance
+        of git clones, pulls, pushes, and associated operations","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"4230lsnqdsld","name":"Webhooks","status":"operational","created_at":"2019-11-13T18:00:24.256Z","updated_at":"2025-08-05T16:14:01.686Z","position":2,"description":"Real
         time HTTP callbacks of user-generated and system events","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"0l2p9nhqnxpd","name":"Visit
-        www.githubstatus.com for more information","status":"operational","created_at":"2018-12-05T19:39:40.838Z","updated_at":"2020-04-02T21:56:21.954Z","position":4,"description":null,"showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"kr09ddfgbfsf","name":"Issues","status":"operational","created_at":"2017-01-31T20:01:46.638Z","updated_at":"2020-10-10T00:02:16.199Z","position":5,"description":"Requests
+        www.githubstatus.com for more information","status":"operational","created_at":"2018-12-05T19:39:40.838Z","updated_at":"2025-03-19T05:00:21.309Z","position":3,"description":null,"showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"brv1bkgrwx7q","name":"API
+        Requests","status":"operational","created_at":"2017-01-31T20:01:46.621Z","updated_at":"2025-09-04T20:25:47.243Z","position":4,"description":"Requests
+        for GitHub APIs","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"kr09ddfgbfsf","name":"Issues","status":"operational","created_at":"2017-01-31T20:01:46.638Z","updated_at":"2025-08-27T21:27:47.854Z","position":5,"description":"Requests
         for Issues on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"hhtssxt0f5v2","name":"Pull
-        Requests","status":"operational","created_at":"2020-09-02T15:39:06.329Z","updated_at":"2020-10-10T00:02:49.033Z","position":6,"description":"Requests
-        for Pull Requests on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"br0l2tvcx85d","name":"GitHub
-        Actions","status":"operational","created_at":"2019-11-13T18:02:19.432Z","updated_at":"2020-10-13T20:23:36.040Z","position":7,"description":"Workflows,
-        Compute and Orchestration for GitHub Actions","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"st3j38cctv9l","name":"GitHub
-        Packages","status":"operational","created_at":"2019-11-13T18:02:40.064Z","updated_at":"2020-09-08T15:50:32.845Z","position":8,"description":"API
-        requests and webhook delivery for GitHub Packages","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"vg70hn9s2tyj","name":"GitHub
-        Pages","status":"operational","created_at":"2017-01-31T20:04:33.923Z","updated_at":"2020-10-10T00:02:38.220Z","position":9,"description":"Frontend
-        application and API servers for Pages builds","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false}]}'
-  recorded_at: 2020-10-15 11:59:23 GMT
-  recorded_with: vcr/0.5.4, webmockr/0.7.0
+        Requests","status":"operational","created_at":"2020-09-02T15:39:06.329Z","updated_at":"2025-08-12T17:56:13.209Z","position":6,"description":"Requests
+        for Pull Requests on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"br0l2tvcx85d","name":"Actions","status":"operational","created_at":"2019-11-13T18:02:19.432Z","updated_at":"2025-08-21T18:13:02.491Z","position":7,"description":"Workflows,
+        Compute and Orchestration for GitHub Actions","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"st3j38cctv9l","name":"Packages","status":"operational","created_at":"2019-11-13T18:02:40.064Z","updated_at":"2025-08-14T18:37:12.106Z","position":8,"description":"API
+        requests and webhook delivery for GitHub Packages","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"vg70hn9s2tyj","name":"Pages","status":"operational","created_at":"2017-01-31T20:04:33.923Z","updated_at":"2025-06-17T20:03:36.357Z","position":9,"description":"Frontend
+        application and API servers for Pages builds","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"h2ftsgbw7kmk","name":"Codespaces","status":"operational","created_at":"2021-08-11T16:02:09.505Z","updated_at":"2025-07-21T09:47:56.207Z","position":10,"description":"Orchestration
+        and Compute for GitHub Codespaces","showcase":false,"start_date":"2021-08-11","group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"pjmpxvq2cmr2","name":"Copilot","status":"operational","created_at":"2022-06-21T16:04:33.017Z","updated_at":"2025-08-27T21:36:28.924Z","position":11,"description":null,"showcase":false,"start_date":"2022-06-21","group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false}]}'
+  recorded_at: 2025-09-09 10:09:28
+recorded_with: VCR-vcr/2.0.0
 ```
 
-* all the times after that, unless we delete the mock file, vcr simply uses the mock files instead of actually calling the API.
+* all the times after that, unless we delete the cassette (mock file), vcr simply uses the cassette instead of actually calling the API.
 
 Let's tweak our other test, of `gh_organizations()`. 
 Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
@@ -166,19 +144,22 @@ The test file ` tests/testthat/test-organizations.R` is now:
 
 ```r
 test_that("gh_organizations works", {
-  vcr::use_cassette("gh_organizations", {
-    orgs <- gh_organizations()
-  })
+  vcr::local_cassette("gh_organizations")
+  orgs <- gh_organizations()
   testthat::expect_type(orgs, "character")
 })
 
 test_that("gh_organizations errors when the API doesn't behave", {
   webmockr::enable()
-  stub <- webmockr::stub_request("get", "https://api.github.com/organizations?since=1")
+  stub <- webmockr::stub_request(
+    "get",
+    "https://api.github.com/organizations?since=1"
+  )
   webmockr::to_return(stub, status = 502)
-  expect_error(gh_organizations(), "oops")
+  expect_snapshot(error = TRUE, gh_organizations())
   webmockr::disable()
 })
+
 
 ```
 
@@ -193,7 +174,7 @@ In the second test there is more to unpack.
   webmockr::to_return(stub, status = 502)
 ```
 
-* We then test for the error message with `expect_error(gh_organizations(), "oops")`. 
+* We then test for the error message with `expect_snapshot(error = TRUE, gh_organizations())`. 
 * We disable webmockr with `webmockr::disable()`.
 
 ::: {.alert .alert-dismissible .alert-primary}
@@ -206,6 +187,7 @@ Read pros and cons of this approach in the vcr vignette [_Why and how edit your 
 :::
 
 Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
+However, we could resort to [testthat's mocking tools](https://testthat.r-lib.org/dev/reference/index.html#mocking).
 
 Regarding our secret API token, the first time we run the test file, vcr creates a cassette where we notice these lines
 
@@ -246,14 +228,14 @@ One could imagine other strategies:
 
 ## Summary
 
-* We set up vcr usage in our package exemplighratia by running `use_vcr()` and tweaking the setup file to protect our secret API key and to fool our own package that needs an API token.
-* Inside `test_that()` blocks, we wrapped parts of the code into `vcr::use_cassette()` and ran the tests a first time to generate mock files that hold all information about the API interactions.
+* We set up vcr usage in our package exemplighratia2 by registering vcr as a dependency and creating file to protect our secret API key and to fool our own package that needs an API token.
+* Inside `test_that()` blocks, we call `vcr::local_cassette(<cassette-name>)` and ran the tests a first time to generate mock files that hold all information about the API interactions.
 * In one of the tests, we used webmockr to create an environment where only fake requests are allowed. We defined that the request that `gh_organizations()` makes should get a 502 status. We were therefore able to test for the error message `gh_organizations()` returns in such cases.
 
 Now, how do we make sure this works?
 
 * Turn off wifi, run the tests again. It works! Turn on wifi again.
-* Open .Renviron (`usethis::edit_r_environ()`), edit "GITHUB_PAT" into "byeGITHUB_PAT", re-start R, run the tests again. It works! Fix your "GITHUB_PAT" token in .Renviron.
+* Open .Renviron (`usethis::edit_r_environ()`), edit "GITHUB_PAT" into "byeGITHUB_PAT", re-start R, run the tests again. It works! Fix your "GITHUB_PAT" token in .Renviron. (to store your credentials, you should actually use [gitcreds](https://usethis.r-lib.org/articles/git-credentials.html) for Git credentials, and [keyring](https://blog.r-hub.io/2024/02/28/key-advantages-of-using-keyring/) for other credentials).
 
 So we now have tests that no longer rely on an internet connection nor on having API credentials.
 
