@@ -21,7 +21,7 @@ What are the challenges of HTTP testing?
 * Having tests depend on having secrets for authentication at hand is not ideal.
 * Having tests for situations that are hard to trigger (e.g. the failure of a remote server) is tricky.
 
-## webmockr
+## webmockr {#webmockr}
 
 `{webmockr}`, maintained by Scott Chamberlain, is an R package to help you "mock" HTTP requests. What does "mock" mean? Mock refers to the fact that we're faking the response. Here is how it works:
 
