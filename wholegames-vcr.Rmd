@@ -137,7 +137,7 @@ The test file ` tests/testthat/test-organizations.R` is now:
 test_that("gh_organizations works", {
   vcr::local_cassette("gh_organizations")
   orgs <- gh_organizations()
-  testthat::expect_type(orgs, "character")
+  expect_type(orgs, "character")
 })
 
 test_that("gh_organizations errors when the API doesn't behave", {
