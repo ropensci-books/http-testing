@@ -8,9 +8,4 @@ knitr::opts_chunk$set(
 
 # Turning vcr on and off {#lightswitch}
 
-```{r, echo=FALSE}
-get_vcr_doc("man/rmdhunks/lightswitch.Rmd")
-```
-
-```{r child='rmd-fragments/man/rmdhunks/lightswitch.Rmd', eval=TRUE} 
-```
+https://docs.ropensci.org/vcr/reference/lightswitch.html
