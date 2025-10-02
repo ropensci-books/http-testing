@@ -47,7 +47,7 @@ So this was just setup, now on to adapting our tests!
 
 ## Actual testing
 
-The most important function will be `vcr::local_cassette("cassette-informative-and-unique-name")` which tells vcr to create a mock file to store all API responses for API calls occurring in the current test (what's inside`test_that()`).
+The most important function will be `vcr::local_cassette("cassette-informative-and-unique-name")` which tells vcr to create a mock file to store all API responses for API calls occurring in the current test (what's inside `test_that()`).
 The `vcr::local_cassette()` function might remind you of the `withr::local_` functions or of `rlang::local_options()`.
 
 Let's tweak the test for `gh_api_status`, it now becomes
