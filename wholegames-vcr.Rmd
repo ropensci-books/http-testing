@@ -203,7 +203,7 @@ One could imagine other strategies:
 
 ## Summary
 
-* We set up vcr usage in our package exemplighratia2 by registering vcr as a dependency and creating file to protect our secret API key and to fool our own package that needs an API token.
+* We set up vcr usage in our package exemplighratia2 by registering vcr as a dependency and creating a file to protect our secret API key and to fool our own package that needs an API token.
 * Inside `test_that()` blocks, we call `vcr::local_cassette(<cassette-name>)` and ran the tests a first time to generate mock files that hold all information about the API interactions.
 * In one of the tests, we used webmockr to create an environment where only fake requests are allowed. We defined that the request that `gh_organizations()` makes should get a 502 status. We were therefore able to test for the error message `gh_organizations()` returns in such cases.
 
