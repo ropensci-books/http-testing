@@ -9,12 +9,7 @@ knitr::opts_chunk$set(
 
 # Managing cassettes {#managing-cassettes}
 
-```{r, echo=FALSE}
-get_vcr_doc("man/rmdhunks/cassette-editing-vignette.Rmd")
-```
-
-```{r child='rmd-fragments/man/rmdhunks/cassette-editing-vignette.Rmd', eval=TRUE} 
-```
+https://docs.ropensci.org/vcr/articles/vcr.html?q=editing#cassette-files
 
 Be aware when you add your cassettes to either `.gitignore` and/or
 `.Rbuildignore`.

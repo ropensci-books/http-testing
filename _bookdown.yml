@@ -16,4 +16,3 @@ rmd_files: ["index.Rmd",
            "10-record-modes.Rmd", "11-request-matching.Rmd", "12-logging.Rmd", "13-security.Rmd",
            "14-escape-hatches.Rmd", "15-cassettes.Rmd", "16-gotchas.Rmd",
            "18-session-info.Rmd", "404.Rmd"]
-before_chapter_script: "_common.R"

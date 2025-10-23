@@ -8,35 +8,14 @@ Record HTTP calls and replay them
 
 Check out <https://docs.ropensci.org/vcr/> for documentation on `vcr` functions.
 
-## Terminology {#terminology}
-
-```{r, echo=FALSE}
-get_vcr_doc("man/rmdhunks/glossary.Rmd")
-```
-
-```{r child='rmd-fragments/man/rmdhunks/glossary.Rmd', eval=TRUE} 
-```
 
 ## Design {#design}
 
-```{r, echo=FALSE}
-get_vcr_doc("man/rmdhunks/vcr-design.Rmd")
-```
-
-```{r child='rmd-fragments/man/rmdhunks/vcr-design.Rmd', eval=TRUE}
-```
+https://docs.ropensci.org/vcr/articles/design.html
 
 ## Basic usage {#vcr-basic-usage}
 
-```{r, echo=FALSE}
-get_vcr_doc("man/rmdhunks/basic-usage.Rmd")
-```
-
-```{r child='rmd-fragments/man/rmdhunks/basic-usage.Rmd', eval=TRUE} 
-```
-
-All components of both the request and response are preserved, so that the HTTP client (in this case `crul`) can reconstruct its own response just as it would if it wasn't using `vcr`.
-
+https://docs.ropensci.org/vcr/articles/vcr.html
 ## vcr enabled testing {#vcr-enabled-testing}
 
 ### check vs. test {#check-vs-test}

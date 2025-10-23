@@ -9,9 +9,4 @@ knitr::opts_chunk$set(
 
 # Record modes {#record-modes}
 
-```{r, echo=FALSE}
-get_vcr_doc("man/rmdhunks/record-modes.Rmd")
-```
-
-```{r child='rmd-fragments/man/rmdhunks/record-modes.Rmd', eval=TRUE} 
-```
+https://docs.ropensci.org/vcr/articles/debugging.html
