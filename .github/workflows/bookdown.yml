@@ -40,7 +40,7 @@ jobs:
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Build site
-        run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
+        run: Rscript -e 'options(knitr.duplicate.label = "allow");bookdown::render_book("index.Rmd", quiet = TRUE)'
         
       - name: Render book PDF
         run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::pdf_book", output_dir = "pdfbook")'
