@@ -127,7 +127,7 @@ addition to the cassette.</p>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/8.5.0 r-curl/7.0.0 crul/1.6.0\", \n    \"X-Amzn-Trace-Id\": \"Root=1-68fb1e30-3b92f39960a28a4b14b2059c\"\n  }, \n  \"origin\": \"64.236.145.80\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
+<pre><code>#&gt; [1] "&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;503 Service Temporarily Unavailable&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;503 Service Temporarily Unavailable&lt;/h1&gt;&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n"</code></pre>
 <p>This also works with <code>httr</code>. The only difference is that you write to disk
 with a function <code>httr::write_disk(path)</code> rather than a parameter.</p>
 <div class="alert alert-dismissible alert-info">
