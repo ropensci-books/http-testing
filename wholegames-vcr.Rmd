@@ -1,6 +1,6 @@
 # Use vcr (& webmockr) {#vcr}
 
-In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using [vcr(#what-vcr)] (& [webmockr](#webmockr)).
+In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using [vcr](#what-vcr) (& [webmockr](#webmockr)).
 
 ::: {.alert .alert-dismissible .alert-info} 
 [Corresponding pull request to exemplighratia2](https://github.com/ropensci-books/exemplighratia2/pull/2/files). Feel free to fork the repository to experiment yourself!
