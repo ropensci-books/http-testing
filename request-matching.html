@@ -6,18 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 26 Request matching | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
-<meta name="description" content="To match previously recorded requests, vcr has to try to match new HTTP requests to a previously recorded one. By default, we match on HTTP method (e.g., GET) and URI (e.g., http://foo.com),...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="description" content="https://docs.ropensci.org/vcr/articles/debugging.html">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 26 Request matching | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/request-matching.html">
-<meta property="og:description" content="To match previously recorded requests, vcr has to try to match new HTTP requests to a previously recorded one. By default, we match on HTTP method (e.g., GET) and URI (e.g., http://foo.com),...">
+<meta property="og:description" content="https://docs.ropensci.org/vcr/articles/debugging.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 26 Request matching | HTTP testing in R">
-<meta name="twitter:description" content="To match previously recorded requests, vcr has to try to match new HTTP requests to a previously recorded one. By default, we match on HTTP method (e.g., GET) and URI (e.g., http://foo.com),...">
+<meta name="twitter:description" content="https://docs.ropensci.org/vcr/articles/debugging.html">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -95,93 +95,15 @@
 <h1>
 <span class="header-section-number">26</span> Request matching<a class="anchor" aria-label="anchor" href="#request-matching"><i class="fas fa-link"></i></a>
 </h1>
-<p>To match previously recorded requests, <code>vcr</code> has to try to match new
-HTTP requests to a previously recorded one. By default, we match on
-HTTP method (e.g., <code>GET</code>) and URI (e.g., <code>http://foo.com</code>), following
-Ruby’s VCR gem.</p>
-<p>You can customize how we match requests with one or more of the
-following options, some of which are on by default, some of
-which can be used together, and some alone.</p>
-<ul>
-<li>
-<code>method</code>: Use the <strong>method</strong> request matcher to match requests on the HTTP method
-(i.e. GET, POST, PUT, DELETE, etc). You will generally want to use
-this matcher. The <strong>method</strong> matcher is used (along with the <strong>uri</strong> matcher)
-by default if you do not specify how requests should match.</li>
-<li>
-<code>uri</code>: Use the <strong>uri</strong> request matcher to match requests on the request URI. The
-<strong>uri</strong> matcher is used (along with the <strong>method</strong> matcher) by default
-if you do not specify how requests should match.</li>
-<li>
-<code>host</code>: Use the <strong>host</strong> request matcher to match requests on the request host.
-You can use this (alone, or in combination with <strong>path</strong>) as an
-alternative to <strong>uri</strong> so that non-deterministic portions of the URI
-are not considered as part of the request matching.</li>
-<li>
-<code>path</code>: Use the <strong>path</strong> request matcher to match requests on the path portion
-of the request URI. You can use this (alone, or in combination with <strong>host</strong>)
-as an alternative to <strong>uri</strong> so that non-deterministic portions of the URI</li>
-<li>
-<code>query</code>: Use the <strong>query</strong> request matcher to match requests on the query string
-portion of the request URI. You can use this (alone, or in combination with
-others) as an alternative to <strong>uri</strong> so that non-deterministic portions of
-the URI are not considered as part of the request matching.</li>
-<li>
-<code>body</code>: Use the <strong>body</strong> request matcher to match requests on the request body.</li>
-<li>
-<code>headers</code>: Use the <strong>headers</strong> request matcher to match requests on the request headers.</li>
-</ul>
-<p>You can set your own options by tweaking the <code>match_requests_on</code> parameter in
-<code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code>:</p>
-<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"foo_bar"</span>, <span class="op">{</span></span>
-<span>    <span class="va">cli</span><span class="op">$</span><span class="fu">post</span><span class="op">(</span><span class="st">"post"</span>, body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span>, </span>
-<span>  match_requests_on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'method'</span>, <span class="st">'headers'</span>, <span class="st">'body'</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<div id="matching" class="section level2" number="26.1">
-<h2>
-<span class="header-section-number">26.1</span> Matching<a class="anchor" aria-label="anchor" href="#matching"><i class="fas fa-link"></i></a>
-</h2>
-<div id="headers" class="section level3" number="26.1.1">
-<h3>
-<span class="header-section-number">26.1.1</span> headers<a class="anchor" aria-label="anchor" href="#headers"><i class="fas fa-link"></i></a>
-</h3>
-<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/crul/">crul</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/vcr">vcr</a></span><span class="op">)</span></span>
-<span><span class="va">cli</span> <span class="op">&lt;-</span> <span class="fu">crul</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://httpbin.org/get"</span>, </span>
-<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"nothing_new"</span>, <span class="op">{</span></span>
-<span>    <span class="va">one</span> <span class="op">&lt;-</span> <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span>, </span>
-<span>  match_requests_on <span class="op">=</span> <span class="st">'headers'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">cli</span><span class="op">$</span><span class="va">headers</span><span class="op">$</span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="st">"stuff"</span></span>
-<span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"nothing_new"</span>, <span class="op">{</span></span>
-<span>    <span class="va">two</span> <span class="op">&lt;-</span> <span class="va">cli</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span>, </span>
-<span>  match_requests_on <span class="op">=</span> <span class="st">'headers'</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">one</span><span class="op">$</span><span class="va">request_headers</span></span>
-<span><span class="va">two</span><span class="op">$</span><span class="va">request_headers</span></span></code></pre></div>
+<p><a href="https://docs.ropensci.org/vcr/articles/debugging.html" class="uri">https://docs.ropensci.org/vcr/articles/debugging.html</a></p>
 
-</div>
-</div>
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="record-modes.html"><span class="header-section-number">25</span> Record modes</a></div>
 <div class="next"><a href="debugging-your-tests-that-use-vcr.html"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#request-matching"><span class="header-section-number">26</span> Request matching</a></li>
-<li>
-<a class="nav-link" href="#matching"><span class="header-section-number">26.1</span> Matching</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#headers"><span class="header-section-number">26.1.1</span> headers</a></li></ul>
-</li>
-</ul>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#request-matching"><span class="header-section-number">26</span> Request matching</a></li></ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
@@ -198,7 +120,7 @@ the URI are not considered as part of the request matching.</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

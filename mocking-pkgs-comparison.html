@@ -7,7 +7,7 @@
 <title>Chapter 8 vcr and httptest | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia Adding a package as a Suggests dependency; Creating a helper file that in...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 8 vcr and httptest | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/mocking-pkgs-comparison.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="We have just followed very similar processes to add HTTP testing infrastructure involving mock files to exemplighratia Adding a package as a Suggests dependency; Creating a helper file that in...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -122,8 +122,8 @@ Note that fixtures is not as specific as cassettes and mock files: cassettes and
 <h2>
 <span class="header-section-number">8.3</span> Naming mock files<a class="anchor" aria-label="anchor" href="#naming-mock-files"><i class="fas fa-link"></i></a>
 </h2>
-<p>With vcr the <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette()</a></code> call needs to include a name that will be used to create the filename of the mock file.
-The help of <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">?use_cassette</a></code> explains some criteria for naming them, such as the fact that cassette names need to be unique.
+<p>With vcr the <code>use_cassette()</code> call needs to include a name that will be used to create the filename of the mock file.
+The help of <code>?use_cassette</code> explains some criteria for naming them, such as the fact that cassette names need to be unique.
 Now if you wrap your whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> block in them you might just as well use a name similar to the test name, and you already make those meaningful, right?</p>
 <p>With httptest the mock filepaths are translated from requests according to several rules that incorporate the request method, URL, query parameters, and body.
 If you use <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">with_mock_dir()</a></code> you need a name for the directory under which the mock files are saved, and you can make it meaningful.</p>
@@ -178,7 +178,7 @@ Or reading the error message of <code>httptest::with_mock_ap()</code> helps you 
 <ul>
 <li>use webmockr as we showed in our demo. On the one hand it’s more compact than creating a fake mock file, on the other hand it’s a way to test that’s different from the vcr cassette.</li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations errors when the API doesn't behave"</span>, <span class="op">{</span></span>
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">enable</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span></span>
@@ -187,7 +187,7 @@ Or reading the error message of <code>httptest::with_mock_ap()</code> helps you 
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">disable</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you’d need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use <code><a href="https://docs.ropensci.org/vcr/reference/skip_if_vcr_off.html">vcr::skip_if_vcr_off()</a></code>.</li>
+<li>or you edit a cassette by hand which would be similar to testing for API errors with httptest. If you did that, you’d need to skip the test when vcr is off, as when vcr is off real requests are made. For that you can use <code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">vcr::skip_if_vcr_off()</a></code>.</li>
 </ul>
 </div>
 <div id="conclusion-3" class="section level2" number="8.8">
@@ -232,7 +232,7 @@ They are a bit different in their design philosophy and features, which might he
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

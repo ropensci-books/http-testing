@@ -7,7 +7,7 @@
 <title>Chapter 19 stubs | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content='library("webmockr") set return objects stub_request("get", "https://httpbin.org/get") %&gt;%  wi_th(   query = list(hello = "world")) %&gt;%   to_return(status = 418) #&gt; &lt;webmockr stub&gt; #&gt;  method: get...'>
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 19 stubs | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/webmockr-stubs.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content='library("webmockr") set return objects stub_request("get", "https://httpbin.org/get") %&gt;%  wi_th(   query = list(hello = "world")) %&gt;%   to_return(status = 418) #&gt; &lt;webmockr stub&gt; #&gt;  method: get...'>
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -95,10 +95,10 @@
 <h1>
 <span class="header-section-number">19</span> stubs<a class="anchor" aria-label="anchor" href="#webmockr-stubs"><i class="fas fa-link"></i></a>
 </h1>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/webmockr">"webmockr"</a></span><span class="op">)</span></span></code></pre></div>
 <p>set return objects</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://httpbin.org/get"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/wi_th.html">wi_th</a></span><span class="op">(</span></span>
 <span>    query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hello <span class="op">=</span> <span class="st">"world"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -110,24 +110,25 @@
 #&gt;     query: hello=world
 #&gt;     body: 
 #&gt;     request_headers: 
+#&gt;     auth: 
 #&gt;   to_return: 
 #&gt;   - status: 418
 #&gt;     body: 
 #&gt;     response_headers: 
 #&gt;     should_timeout: FALSE
 #&gt;     should_raise: FALSE</code></pre>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'get'</span>, query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hello <span class="op">=</span> <span class="st">"world"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;crul response&gt; 
 #&gt;   url: https://httpbin.org/get
 #&gt;   request_headers: 
-#&gt;     User-Agent: libcurl/7.81.0 r-curl/5.2.2 crul/1.5.0
+#&gt;     User-Agent: libcurl/8.5.0 r-curl/7.0.0 crul/1.6.0
 #&gt;     Accept-Encoding: gzip, deflate
 #&gt;     Accept: application/json, text/xml, application/xml, */*
 #&gt;   response_headers: 
 #&gt;   status: 418</code></pre>
 <p><strong>Stubbing requests based on method, uri and query params</strong></p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://httpbin.org/get"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/wi_th.html">wi_th</a></span><span class="op">(</span>query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hello <span class="op">=</span> <span class="st">"world"</span><span class="op">)</span>, </span>
 <span>        headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">'User-Agent'</span> <span class="op">=</span> <span class="st">'libcurl/7.51.0 r-curl/2.6 crul/0.3.6'</span>, </span>
@@ -139,27 +140,28 @@
 #&gt;     query: hello=world
 #&gt;     body: 
 #&gt;     request_headers: User-Agent=libcurl/7.51.0 r-cur..., Accept-Encoding=gzip, deflate
+#&gt;     auth: 
 #&gt;   to_return:</code></pre>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_registry.html">stub_registry</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;webmockr stub registry&gt; 
 #&gt;  Registered Stubs
-#&gt;    GET: https://httpbin.org/get 
-#&gt;    GET: https://httpbin.org/get?hello=world   | to_return:    with status 418 
-#&gt;    GET: https://httpbin.org/get?hello=world   with headers {"User-Agent":"libcurl/7.51.0 r-curl/2.6 crul/0.3.6","Accept-Encoding":"gzip, deflate"}</code></pre>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+#&gt;   GET: https://httpbin.org/get
+#&gt;   GET: https://httpbin.org/get  with query params hello=world   | to_return:    with status 418
+#&gt;   GET: https://httpbin.org/get  with query params hello=world   with headers {"User-Agent":"libcurl/7.51.0 r-curl/2.6 crul/0.3.6","Accept-Encoding":"gzip, deflate"}</code></pre>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://httpbin.org"</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'get'</span>, query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hello <span class="op">=</span> <span class="st">"world"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt; &lt;crul response&gt; 
 #&gt;   url: https://httpbin.org/get
 #&gt;   request_headers: 
-#&gt;     User-Agent: libcurl/7.81.0 r-curl/5.2.2 crul/1.5.0
+#&gt;     User-Agent: libcurl/8.5.0 r-curl/7.0.0 crul/1.6.0
 #&gt;     Accept-Encoding: gzip, deflate
 #&gt;     Accept: application/json, text/xml, application/xml, */*
 #&gt;   response_headers: 
 #&gt;   status: 418</code></pre>
 <p><strong>Stubbing requests and set expectation of a timeout</strong></p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"post"</span>, <span class="st">"https://httpbin.org/post"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_timeout.html">to_timeout</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://httpbin.org"</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">post</span><span class="op">(</span><span class="st">'post'</span><span class="op">)</span></span>
@@ -167,7 +169,7 @@
 <span><span class="co">#&gt;  - The client did not produce a request within the time that the server was prepared</span></span>
 <span><span class="co">#&gt;    to wait. The client MAY repeat the request without modifications at any later time.</span></span></code></pre></div>
 <p><strong>Stubbing requests and set HTTP error expectation</strong></p>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sckott.github.io/fauxpas/">fauxpas</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://httpbin.org/get?a=b"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_raise.html">to_raise</a></span><span class="op">(</span><span class="va">HTTPBadRequest</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="https://docs.ropensci.org/crul/reference/HttpClient.html">HttpClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://httpbin.org"</span><span class="op">)</span></span>
@@ -185,7 +187,7 @@ Second, you can simply give webmockr a file path (that doesn’t exist yet) and 
 data, and webmockr can take care of putting the data in the file.</p>
 <p>Here’s the first method, where you put data in a file as your mock, then pass the
 file as a connection (with <code>file(&lt;file path&gt;)</code>) to <code><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return()</a></code>.</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## make a temp file</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".json"</span><span class="op">)</span></span>
 <span><span class="co">## write something to the file</span></span>
@@ -200,7 +202,7 @@ file as a connection (with <code>file(&lt;file path&gt;)</code>) to <code><a hre
 <pre><code>#&gt; [1] "{\"hello\":\"world\"}"</code></pre>
 <p>With the second method, use <code><a href="https://docs.ropensci.org/webmockr/reference/mock_file.html">webmockr::mock_file()</a></code> to have <code>webmockr</code> handle file
 and contents.</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".json"</span><span class="op">)</span></span>
 <span><span class="co">## make the stub</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://httpbin.org/get?a=b"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -212,7 +214,7 @@ and contents.</p>
 <pre><code>#&gt; [1] "{\"hello\":\"mars\"}" ""</code></pre>
 <p><code>webmockr</code> also supports <code><a href="https://httr.r-lib.org/reference/write_disk.html">httr::write_disk()</a></code>, here letting <code>webmockr</code> handle the
 mock file creation:</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/httr_mock.html">httr_mock</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## make a temp file</span></span>
@@ -256,7 +258,7 @@ mock file creation:</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

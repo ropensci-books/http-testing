@@ -6,18 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 6 Use vcr (&amp; webmockr) | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
-<meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr). Corresponding pull request to exemplighratia. Feel free to fork the repository to experiment...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using [vcr(#what-vcr)] (&amp; webmockr). Corresponding pull request to exemplighratia2. Feel free to fork the repository...">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 6 Use vcr (&amp; webmockr) | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/vcr.html">
-<meta property="og:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr). Corresponding pull request to exemplighratia. Feel free to fork the repository to experiment...">
+<meta property="og:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using [vcr(#what-vcr)] (&amp; webmockr). Corresponding pull request to exemplighratia2. Feel free to fork the repository...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 6 Use vcr (&amp; webmockr) | HTTP testing in R">
-<meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr). Corresponding pull request to exemplighratia. Feel free to fork the repository to experiment...">
+<meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using [vcr(#what-vcr)] (&amp; webmockr). Corresponding pull request to exemplighratia2. Feel free to fork the repository...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -95,166 +95,137 @@
 <h1>
 <span class="header-section-number">6</span> Use vcr (&amp; webmockr)<a class="anchor" aria-label="anchor" href="#vcr"><i class="fas fa-link"></i></a>
 </h1>
-<p>In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using vcr (&amp; webmockr).</p>
+<p>In this chapter we aim at adding HTTP testing infrastructure to exemplighratia2 using [vcr(#what-vcr)] (&amp; <a href="pkgs-testing-chapter.html#webmockr">webmockr</a>).</p>
 <div class="alert alert-dismissible alert-info">
-<p><a href="https://github.com/ropensci-books/exemplighratia/pull/2/files">Corresponding pull request to exemplighratia</a>. Feel free to fork the repository to experiment yourself!</p>
+<p><a href="https://github.com/ropensci-books/exemplighratia2/pull/2/files">Corresponding pull request to exemplighratia2</a>. Feel free to fork the repository to experiment yourself!</p>
 </div>
 <div id="setup" class="section level2" number="6.1">
 <h2>
 <span class="header-section-number">6.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup"><i class="fas fa-link"></i></a>
 </h2>
 <p>Before working on all this, we need to install <a href="https://docs.ropensci.org/vcr">vcr</a>.</p>
-<p>First, we need to run <code><a href="https://docs.ropensci.org/vcr/reference/use_vcr.html">vcr::use_vcr()</a></code> (in the exemplighratia directory) which has a few effects:</p>
-<ul>
-<li>Adding vcr as a dependency to <code>DESCRIPTION</code>, under Suggests just like testthat.</li>
-<li>Creating an example test file for us to look at. This is useful the first few times you setup vcr in another package, after a while you might even delete it without reading it.</li>
-<li>Adding a <code>.gitattributes</code> file with the line <code>tests/fixtures/**/* -diff</code> which will hide the changes in your cassettes from the git diff. It makes your git diff easier to deal with. <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;However, if you change something related to handling secrets in your code or tests, please check again your new cassettes do not include secrets.&lt;/p&gt;"><sup>3</sup></a>
-</li>
-<li>Creating a setup file under <code>tests/testthat/helper-vcr.R</code>,</li>
-</ul>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>First, we need to run <code>usethis::use_package("vcr", type = "Suggests")</code> (in the exemplighratia directory) to add vcr as a dependency to <code>DESCRIPTION</code>, under Suggests just like testthat.</p>
+<p>Then we need to create a helper file using <code>usethis::use_test_helper("vcr")</code>.
+A new file is created under <code>tests/testthat/helper-vcr.R</code>.</p>
 <p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name start with “helper” are always run first</a>.
 They are also loaded by <code>devtools::load_all()</code>, so the vcr setup is loaded when developing and testing interactively.
 See the table in the R-hub blog post <a href="https://blog.r-hub.io/2020/11/18/testthat-utility-belt/#code-called-in-your-tests">“Helper code and files for your testthat tests”</a>.</p>
-<p>The helper file created by vcr</p>
+<p>We have to tweak the vcr setup for our needs.</p>
 <ul>
-<li>loads vcr,</li>
-<li>indicates where mocked responses are saved (<code>"../fixtures"</code> which translates, from the root of the package, to <code>tests/fixtures</code>),</li>
-<li>and checks that you are not using the same name twice for cassettes (mock files).</li>
-</ul>
-<p>We have to tweak the vcr setup a bit for our needs.</p>
-<ul>
-<li><p>We do not want our API token to appear in the mock responses, and we know it’s used in the Authorization header of the requests, so we use the <code>filter_request_headers</code> argument of <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code>. For other secret filtering one can use <code>filter_response_headers</code> and <code>filter_sensitive_data</code> (for a regular expression purging, on the whole saved interactions).</p></li>
 <li><p>We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function <code>gh_organizations()</code> checks for the presence of a token.
 With mock responses around, we don’t need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).</p></li>
+<li><p>We do not need to tweak the configuration to prevent our API from leaking, because with vcr 2.0.0 and above, the <code>Authorization</code> header is never recorded.</p></li>
 </ul>
 <p>Below is the updated setup file saved under <code>tests/testthat/helper-vcr.R</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">vcr_dir</span> <span class="op">&lt;-</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">vcr_dir</span> <span class="op">&lt;-</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"_vcr"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">gh</span><span class="fu">::</span><span class="fu"><a href="https://gh.r-lib.org/reference/gh_token.html">gh_token_exists</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span><span class="op">(</span><span class="va">vcr_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co"># Fake API token to fool our package</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span> <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>    <span class="co"># If there's no mock files nor API token, impossible to run tests</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No API key nor cassettes, tests cannot be run."</span>,</span>
-<span>         call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No API key nor cassettes, tests cannot be run."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="va">vcr_dir</span>,</span>
-<span>  <span class="co"># Filter the request header where the token is sent, make sure you know</span></span>
-<span>  <span class="co"># how authentication works in your case and read the Security chapter :-)</span></span>
-<span>  filter_request_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Authorization <span class="op">=</span> <span class="st">"My bearer token is safe"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">}</span></span></code></pre></div>
 <p>So this was just setup, now on to adapting our tests!</p>
 </div>
 <div id="actual-testing" class="section level2" number="6.2">
 <h2>
 <span class="header-section-number">6.2</span> Actual testing<a class="anchor" aria-label="anchor" href="#actual-testing"><i class="fas fa-link"></i></a>
 </h2>
-<p>The most important function will be <code>vcr::use_cassette("cassette-informative-and-unique-name", {code-block})</code> which tells vcr to create a mock file to store all API responses for API calls occurring in the code block.</p>
+<p>The most important function will be <code>vcr::local_cassette("cassette-informative-and-unique-name")</code> which tells vcr to create a mock file to store all API responses for API calls occurring in the current test (what’s inside <code>test_that()</code>).
+The <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::local_cassette()</a></code> function might remind you of the <code><a href="https://withr.r-lib.org/reference/with_.html">withr::local_</a></code> functions or of <code><a href="https://rlang.r-lib.org/reference/local_options.html">rlang::local_options()</a></code>.</p>
 <p>Let’s tweak the test for <code>gh_api_status</code>, it now becomes</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span></span>
-<span>    <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">status</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">local_cassette</a></span><span class="op">(</span><span class="st">"gh_api_status"</span><span class="op">)</span></span>
+<span>  <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_type</span><span class="op">(</span><span class="va">status</span>, <span class="st">"character"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>We only had to wrap the code involving interactions with the API, <code>status &lt;- gh_api_status()</code>, in <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>.</p>
-<p>If we run this test (in RStudio clicking on “Run test”),</p>
+<p>If you had used <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> instead of the newer <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::local_cassette()</a></code>, you might notice the code feels less nested!</p>
+<p>If we run this test, for instance through <code>devtools::test_active_file()</code>,</p>
 <ul>
-<li>the first time, vcr creates a cassette (mock file) under <code>tests/testthat/fixtures/gh_api_status.yml</code> where it stores the API response.
+<li>the first time, vcr creates a cassette (mock file) under <code>tests/testthat/_vcr/gh_api_status.yml</code> where it stores the API response
 It contains all the information related to requests and responses, headers included.</li>
 </ul>
-<div class="sourceCode" id="cb28"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb28-1"><a href="vcr.html#cb28-1" tabindex="-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>
-<span id="cb28-2"><a href="vcr.html#cb28-2" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">request</span><span class="kw">:</span></span>
-<span id="cb28-3"><a href="vcr.html#cb28-3" tabindex="-1"></a><span class="at">    </span><span class="fu">method</span><span class="kw">:</span><span class="at"> get</span></span>
-<span id="cb28-4"><a href="vcr.html#cb28-4" tabindex="-1"></a><span class="at">    </span><span class="fu">uri</span><span class="kw">:</span><span class="at"> https://kctbh9vrtdwd.statuspage.io/api/v2/components.json</span></span>
-<span id="cb28-5"><a href="vcr.html#cb28-5" tabindex="-1"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
-<span id="cb28-6"><a href="vcr.html#cb28-6" tabindex="-1"></a><span class="at">      </span><span class="fu">encoding</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
-<span id="cb28-7"><a href="vcr.html#cb28-7" tabindex="-1"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
-<span id="cb28-8"><a href="vcr.html#cb28-8" tabindex="-1"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
-<span id="cb28-9"><a href="vcr.html#cb28-9" tabindex="-1"></a><span class="at">      </span><span class="fu">Accept</span><span class="kw">:</span><span class="at"> application/json, text/xml, application/xml, */*</span></span>
-<span id="cb28-10"><a href="vcr.html#cb28-10" tabindex="-1"></a><span class="at">  </span><span class="fu">response</span><span class="kw">:</span></span>
-<span id="cb28-11"><a href="vcr.html#cb28-11" tabindex="-1"></a><span class="at">    </span><span class="fu">status</span><span class="kw">:</span></span>
-<span id="cb28-12"><a href="vcr.html#cb28-12" tabindex="-1"></a><span class="at">      </span><span class="fu">status_code</span><span class="kw">:</span><span class="at"> </span><span class="dv">200</span></span>
-<span id="cb28-13"><a href="vcr.html#cb28-13" tabindex="-1"></a><span class="at">      </span><span class="fu">category</span><span class="kw">:</span><span class="at"> Success</span></span>
-<span id="cb28-14"><a href="vcr.html#cb28-14" tabindex="-1"></a><span class="at">      </span><span class="fu">reason</span><span class="kw">:</span><span class="at"> OK</span></span>
-<span id="cb28-15"><a href="vcr.html#cb28-15" tabindex="-1"></a><span class="at">      </span><span class="fu">message</span><span class="kw">:</span><span class="at"> </span><span class="st">'Success: (200) OK'</span></span>
-<span id="cb28-16"><a href="vcr.html#cb28-16" tabindex="-1"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
-<span id="cb28-17"><a href="vcr.html#cb28-17" tabindex="-1"></a><span class="at">      </span><span class="fu">vary</span><span class="kw">:</span><span class="at"> Accept,Accept-Encoding,Fastly-SSL</span></span>
-<span id="cb28-18"><a href="vcr.html#cb28-18" tabindex="-1"></a><span class="at">      </span><span class="fu">cache-control</span><span class="kw">:</span><span class="at"> max-age=0, private, must-revalidate</span></span>
-<span id="cb28-19"><a href="vcr.html#cb28-19" tabindex="-1"></a><span class="at">      </span><span class="fu">x-cache</span><span class="kw">:</span><span class="at"> MISS</span></span>
-<span id="cb28-20"><a href="vcr.html#cb28-20" tabindex="-1"></a><span class="at">      </span><span class="fu">content-type</span><span class="kw">:</span><span class="at"> application/json; charset=utf-8</span></span>
-<span id="cb28-21"><a href="vcr.html#cb28-21" tabindex="-1"></a><span class="at">      </span><span class="fu">content-encoding</span><span class="kw">:</span><span class="at"> gzip</span></span>
-<span id="cb28-22"><a href="vcr.html#cb28-22" tabindex="-1"></a><span class="at">      </span><span class="fu">strict-transport-security</span><span class="kw">:</span><span class="at"> max-age=259200</span></span>
-<span id="cb28-23"><a href="vcr.html#cb28-23" tabindex="-1"></a><span class="at">      </span><span class="fu">date</span><span class="kw">:</span><span class="at"> Thu, 15 Oct 2020 11:59:23 GMT</span></span>
-<span id="cb28-24"><a href="vcr.html#cb28-24" tabindex="-1"></a><span class="at">      </span><span class="fu">x-request-id</span><span class="kw">:</span><span class="at"> d9888435-3f04-4401-be5c-b9d1bfdfa015</span></span>
-<span id="cb28-25"><a href="vcr.html#cb28-25" tabindex="-1"></a><span class="at">      </span><span class="fu">x-download-options</span><span class="kw">:</span><span class="at"> noopen</span></span>
-<span id="cb28-26"><a href="vcr.html#cb28-26" tabindex="-1"></a><span class="at">      </span><span class="fu">x-xss-protection</span><span class="kw">:</span><span class="at"> 1; mode=block</span></span>
-<span id="cb28-27"><a href="vcr.html#cb28-27" tabindex="-1"></a><span class="at">      </span><span class="fu">x-runtime</span><span class="kw">:</span><span class="at"> </span><span class="st">'0.037254'</span></span>
-<span id="cb28-28"><a href="vcr.html#cb28-28" tabindex="-1"></a><span class="at">      </span><span class="fu">x-permitted-cross-domain-policies</span><span class="kw">:</span><span class="at"> none</span></span>
-<span id="cb28-29"><a href="vcr.html#cb28-29" tabindex="-1"></a><span class="at">      </span><span class="fu">access-control-allow-origin</span><span class="kw">:</span><span class="at"> </span><span class="st">'*'</span></span>
-<span id="cb28-30"><a href="vcr.html#cb28-30" tabindex="-1"></a><span class="at">      </span><span class="fu">accept-ranges</span><span class="kw">:</span><span class="at"> bytes</span></span>
-<span id="cb28-31"><a href="vcr.html#cb28-31" tabindex="-1"></a><span class="at">      </span><span class="fu">x-content-type-options</span><span class="kw">:</span><span class="at"> nosniff</span></span>
-<span id="cb28-32"><a href="vcr.html#cb28-32" tabindex="-1"></a><span class="at">      </span><span class="fu">etag</span><span class="kw">:</span><span class="at"> W/"gz[a479c9894f51b7db286dc31cd922e7bf]"</span></span>
-<span id="cb28-33"><a href="vcr.html#cb28-33" tabindex="-1"></a><span class="at">      </span><span class="fu">x-statuspage-skip-logging</span><span class="kw">:</span><span class="at"> </span><span class="st">'true'</span></span>
-<span id="cb28-34"><a href="vcr.html#cb28-34" tabindex="-1"></a><span class="at">      </span><span class="fu">x-statuspage-version</span><span class="kw">:</span><span class="at"> fd137a4bb14c20ce721393e5b6540ea6eebff3a3</span></span>
-<span id="cb28-35"><a href="vcr.html#cb28-35" tabindex="-1"></a><span class="at">      </span><span class="fu">referrer-policy</span><span class="kw">:</span><span class="at"> strict-origin-when-cross-origin</span></span>
-<span id="cb28-36"><a href="vcr.html#cb28-36" tabindex="-1"></a><span class="at">      </span><span class="fu">age</span><span class="kw">:</span><span class="at"> </span><span class="st">'0'</span></span>
-<span id="cb28-37"><a href="vcr.html#cb28-37" tabindex="-1"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
-<span id="cb28-38"><a href="vcr.html#cb28-38" tabindex="-1"></a><span class="at">      </span><span class="fu">encoding</span><span class="kw">:</span><span class="at"> UTF-8</span></span>
-<span id="cb28-39"><a href="vcr.html#cb28-39" tabindex="-1"></a><span class="at">      </span><span class="fu">file</span><span class="kw">:</span><span class="at"> </span><span class="ch">no</span></span>
-<span id="cb28-40"><a href="vcr.html#cb28-40" tabindex="-1"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> </span><span class="st">'{"page":{"id":"kctbh9vrtdwd","name":"GitHub","url":"https://www.githubstatus.com","time_zone":"Etc/UTC","updated_at":"2020-10-15T08:57:35.302Z"},"components":[{"id":"8l4ygp009s5s","name":"Git</span></span>
-<span id="cb28-41"><a href="vcr.html#cb28-41" tabindex="-1"></a><span class="st">        Operations","status":"operational","created_at":"2017-01-31T20:05:05.370Z","updated_at":"2020-09-24T02:32:00.916Z","position":1,"description":"Performance</span></span>
-<span id="cb28-42"><a href="vcr.html#cb28-42" tabindex="-1"></a><span class="st">        of git clones, pulls, pushes, and associated operations","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"brv1bkgrwx7q","name":"API</span></span>
-<span id="cb28-43"><a href="vcr.html#cb28-43" tabindex="-1"></a><span class="st">        Requests","status":"operational","created_at":"2017-01-31T20:01:46.621Z","updated_at":"2020-09-30T19:00:29.476Z","position":2,"description":"Requests</span></span>
-<span id="cb28-44"><a href="vcr.html#cb28-44" tabindex="-1"></a><span class="st">        for GitHub APIs","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"4230lsnqdsld","name":"Webhooks","status":"operational","created_at":"2019-11-13T18:00:24.256Z","updated_at":"2020-10-13T14:51:17.928Z","position":3,"description":"Real</span></span>
-<span id="cb28-45"><a href="vcr.html#cb28-45" tabindex="-1"></a><span class="st">        time HTTP callbacks of user-generated and system events","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"0l2p9nhqnxpd","name":"Visit</span></span>
-<span id="cb28-46"><a href="vcr.html#cb28-46" tabindex="-1"></a><span class="st">        www.githubstatus.com for more information","status":"operational","created_at":"2018-12-05T19:39:40.838Z","updated_at":"2020-04-02T21:56:21.954Z","position":4,"description":null,"showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"kr09ddfgbfsf","name":"Issues","status":"operational","created_at":"2017-01-31T20:01:46.638Z","updated_at":"2020-10-10T00:02:16.199Z","position":5,"description":"Requests</span></span>
-<span id="cb28-47"><a href="vcr.html#cb28-47" tabindex="-1"></a><span class="st">        for Issues on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"hhtssxt0f5v2","name":"Pull</span></span>
-<span id="cb28-48"><a href="vcr.html#cb28-48" tabindex="-1"></a><span class="st">        Requests","status":"operational","created_at":"2020-09-02T15:39:06.329Z","updated_at":"2020-10-10T00:02:49.033Z","position":6,"description":"Requests</span></span>
-<span id="cb28-49"><a href="vcr.html#cb28-49" tabindex="-1"></a><span class="st">        for Pull Requests on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"br0l2tvcx85d","name":"GitHub</span></span>
-<span id="cb28-50"><a href="vcr.html#cb28-50" tabindex="-1"></a><span class="st">        Actions","status":"operational","created_at":"2019-11-13T18:02:19.432Z","updated_at":"2020-10-13T20:23:36.040Z","position":7,"description":"Workflows,</span></span>
-<span id="cb28-51"><a href="vcr.html#cb28-51" tabindex="-1"></a><span class="st">        Compute and Orchestration for GitHub Actions","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"st3j38cctv9l","name":"GitHub</span></span>
-<span id="cb28-52"><a href="vcr.html#cb28-52" tabindex="-1"></a><span class="st">        Packages","status":"operational","created_at":"2019-11-13T18:02:40.064Z","updated_at":"2020-09-08T15:50:32.845Z","position":8,"description":"API</span></span>
-<span id="cb28-53"><a href="vcr.html#cb28-53" tabindex="-1"></a><span class="st">        requests and webhook delivery for GitHub Packages","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"vg70hn9s2tyj","name":"GitHub</span></span>
-<span id="cb28-54"><a href="vcr.html#cb28-54" tabindex="-1"></a><span class="st">        Pages","status":"operational","created_at":"2017-01-31T20:04:33.923Z","updated_at":"2020-10-10T00:02:38.220Z","position":9,"description":"Frontend</span></span>
-<span id="cb28-55"><a href="vcr.html#cb28-55" tabindex="-1"></a><span class="st">        application and API servers for Pages builds","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false}]}'</span></span>
-<span id="cb28-56"><a href="vcr.html#cb28-56" tabindex="-1"></a><span class="at">  </span><span class="fu">recorded_at</span><span class="kw">:</span><span class="at"> 2020-10-15 11:59:23 GMT</span></span>
-<span id="cb28-57"><a href="vcr.html#cb28-57" tabindex="-1"></a><span class="at">  </span><span class="fu">recorded_with</span><span class="kw">:</span><span class="at"> vcr/0.5.4, webmockr/0.7.0</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb27-1"><a href="vcr.html#cb27-1" tabindex="-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>
+<span id="cb27-2"><a href="vcr.html#cb27-2" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">request</span><span class="kw">:</span></span>
+<span id="cb27-3"><a href="vcr.html#cb27-3" tabindex="-1"></a><span class="at">    </span><span class="fu">method</span><span class="kw">:</span><span class="at"> GET</span></span>
+<span id="cb27-4"><a href="vcr.html#cb27-4" tabindex="-1"></a><span class="at">    </span><span class="fu">uri</span><span class="kw">:</span><span class="at"> https://kctbh9vrtdwd.statuspage.io/api/v2/components.json</span></span>
+<span id="cb27-5"><a href="vcr.html#cb27-5" tabindex="-1"></a><span class="at">  </span><span class="fu">response</span><span class="kw">:</span></span>
+<span id="cb27-6"><a href="vcr.html#cb27-6" tabindex="-1"></a><span class="at">    </span><span class="fu">status</span><span class="kw">:</span><span class="at"> </span><span class="dv">200</span></span>
+<span id="cb27-7"><a href="vcr.html#cb27-7" tabindex="-1"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
+<span id="cb27-8"><a href="vcr.html#cb27-8" tabindex="-1"></a><span class="at">      </span><span class="fu">content-type</span><span class="kw">:</span><span class="at"> application/json; charset=utf-8</span></span>
+<span id="cb27-9"><a href="vcr.html#cb27-9" tabindex="-1"></a><span class="at">      </span><span class="fu">date</span><span class="kw">:</span><span class="at"> Tue, 09 Sep 2025 10:09:28 GMT</span></span>
+<span id="cb27-10"><a href="vcr.html#cb27-10" tabindex="-1"></a><span class="at">      </span><span class="fu">x-download-options</span><span class="kw">:</span><span class="at"> noopen</span></span>
+<span id="cb27-11"><a href="vcr.html#cb27-11" tabindex="-1"></a><span class="at">      </span><span class="fu">x-permitted-cross-domain-policies</span><span class="kw">:</span><span class="at"> none</span></span>
+<span id="cb27-12"><a href="vcr.html#cb27-12" tabindex="-1"></a><span class="at">      </span><span class="fu">referrer-policy</span><span class="kw">:</span><span class="at"> strict-origin-when-cross-origin</span></span>
+<span id="cb27-13"><a href="vcr.html#cb27-13" tabindex="-1"></a><span class="at">      </span><span class="fu">x-statuspage-version</span><span class="kw">:</span><span class="at"> b27f95704d5835d5f1a3ccc341503d3f7f22f502</span></span>
+<span id="cb27-14"><a href="vcr.html#cb27-14" tabindex="-1"></a><span class="at">      </span><span class="fu">strict-transport-security</span><span class="kw">:</span><span class="at"> max-age=259200</span></span>
+<span id="cb27-15"><a href="vcr.html#cb27-15" tabindex="-1"></a><span class="at">      </span><span class="fu">x-statuspage-skip-logging</span><span class="kw">:</span><span class="at"> </span><span class="st">'true'</span></span>
+<span id="cb27-16"><a href="vcr.html#cb27-16" tabindex="-1"></a><span class="at">      </span><span class="fu">access-control-allow-origin</span><span class="kw">:</span><span class="at"> </span><span class="st">'*'</span></span>
+<span id="cb27-17"><a href="vcr.html#cb27-17" tabindex="-1"></a><span class="at">      </span><span class="fu">cache-control</span><span class="kw">:</span><span class="at"> max-age=3, public</span></span>
+<span id="cb27-18"><a href="vcr.html#cb27-18" tabindex="-1"></a><span class="at">      </span><span class="fu">x-pollinator-metadata-service</span><span class="kw">:</span><span class="at"> status-page-web-pages</span></span>
+<span id="cb27-19"><a href="vcr.html#cb27-19" tabindex="-1"></a><span class="at">      </span><span class="fu">etag</span><span class="kw">:</span><span class="at"> W/"81603fa0d180d761ce3b3c3c02d68741"</span></span>
+<span id="cb27-20"><a href="vcr.html#cb27-20" tabindex="-1"></a><span class="at">      </span><span class="fu">x-runtime</span><span class="kw">:</span><span class="at"> </span><span class="st">'0.049065'</span></span>
+<span id="cb27-21"><a href="vcr.html#cb27-21" tabindex="-1"></a><span class="at">      </span><span class="fu">server</span><span class="kw">:</span><span class="at"> AtlassianEdge</span></span>
+<span id="cb27-22"><a href="vcr.html#cb27-22" tabindex="-1"></a><span class="at">      </span><span class="fu">accept-ranges</span><span class="kw">:</span><span class="at"> bytes</span></span>
+<span id="cb27-23"><a href="vcr.html#cb27-23" tabindex="-1"></a><span class="at">      </span><span class="fu">x-content-type-options</span><span class="kw">:</span><span class="at"> nosniff</span></span>
+<span id="cb27-24"><a href="vcr.html#cb27-24" tabindex="-1"></a><span class="at">      </span><span class="fu">x-xss-protection</span><span class="kw">:</span><span class="at"> 1; mode=block</span></span>
+<span id="cb27-25"><a href="vcr.html#cb27-25" tabindex="-1"></a><span class="at">      </span><span class="fu">atl-traceid</span><span class="kw">:</span><span class="at"> daa0d6503446464e9748ed3a8634ead0</span></span>
+<span id="cb27-26"><a href="vcr.html#cb27-26" tabindex="-1"></a><span class="at">      </span><span class="fu">atl-request-id</span><span class="kw">:</span><span class="at"> daa0d650-3446-464e-9748-ed3a8634ead0</span></span>
+<span id="cb27-27"><a href="vcr.html#cb27-27" tabindex="-1"></a><span class="at">      </span><span class="fu">report-to</span><span class="kw">:</span><span class="at"> </span><span class="st">'{"endpoints": [{"url": "https://dz8aopenkvv6s.cloudfront.net"}],</span></span>
+<span id="cb27-28"><a href="vcr.html#cb27-28" tabindex="-1"></a><span class="st">        "group": "endpoint-1", "include_subdomains": true, "max_age": 600}'</span></span>
+<span id="cb27-29"><a href="vcr.html#cb27-29" tabindex="-1"></a><span class="at">      </span><span class="fu">nel</span><span class="kw">:</span><span class="at"> </span><span class="st">'{"failure_fraction": 0.001, "include_subdomains": true, "max_age": 600,</span></span>
+<span id="cb27-30"><a href="vcr.html#cb27-30" tabindex="-1"></a><span class="st">        "report_to": "endpoint-1"}'</span></span>
+<span id="cb27-31"><a href="vcr.html#cb27-31" tabindex="-1"></a><span class="at">      </span><span class="fu">content-encoding</span><span class="kw">:</span><span class="at"> br</span></span>
+<span id="cb27-32"><a href="vcr.html#cb27-32" tabindex="-1"></a><span class="at">      </span><span class="fu">server-timing</span><span class="kw">:</span><span class="at"> atl-edge;dur=129,atl-edge-internal;dur=5,atl-edge-upstream;dur=125,atl-edge-pop;desc="aws-us-east-1"</span></span>
+<span id="cb27-33"><a href="vcr.html#cb27-33" tabindex="-1"></a><span class="at">      </span><span class="fu">vary</span><span class="kw">:</span><span class="at"> Accept,Accept-Encoding</span></span>
+<span id="cb27-34"><a href="vcr.html#cb27-34" tabindex="-1"></a><span class="at">      </span><span class="fu">x-cache</span><span class="kw">:</span><span class="at"> Miss from cloudfront</span></span>
+<span id="cb27-35"><a href="vcr.html#cb27-35" tabindex="-1"></a><span class="at">      </span><span class="fu">via</span><span class="kw">:</span><span class="at"> 1.1 dd239fa6f06e5b3ae1437460dbc3d6a6.cloudfront.net (CloudFront)</span></span>
+<span id="cb27-36"><a href="vcr.html#cb27-36" tabindex="-1"></a><span class="at">      </span><span class="fu">x-amz-cf-pop</span><span class="kw">:</span><span class="at"> MRS53-P3</span></span>
+<span id="cb27-37"><a href="vcr.html#cb27-37" tabindex="-1"></a><span class="at">      </span><span class="fu">x-amz-cf-id</span><span class="kw">:</span><span class="at"> K63D5rR4HMl9WRamA6Yzh8R6SuF2vfDOuh8W-bgc1kUo-xGdrVZp9g==</span></span>
+<span id="cb27-38"><a href="vcr.html#cb27-38" tabindex="-1"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
+<span id="cb27-39"><a href="vcr.html#cb27-39" tabindex="-1"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> </span><span class="st">'{"page":{"id":"kctbh9vrtdwd","name":"GitHub","url":"https://www.githubstatus.com","time_zone":"Etc/UTC","updated_at":"2025-09-09T10:00:59.457Z"},"components":[{"id":"8l4ygp009s5s","name":"Git</span></span>
+<span id="cb27-40"><a href="vcr.html#cb27-40" tabindex="-1"></a><span class="st">        Operations","status":"operational","created_at":"2017-01-31T20:05:05.370Z","updated_at":"2025-08-21T06:58:30.069Z","position":1,"description":"Performance</span></span>
+<span id="cb27-41"><a href="vcr.html#cb27-41" tabindex="-1"></a><span class="st">        of git clones, pulls, pushes, and associated operations","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"4230lsnqdsld","name":"Webhooks","status":"operational","created_at":"2019-11-13T18:00:24.256Z","updated_at":"2025-08-05T16:14:01.686Z","position":2,"description":"Real</span></span>
+<span id="cb27-42"><a href="vcr.html#cb27-42" tabindex="-1"></a><span class="st">        time HTTP callbacks of user-generated and system events","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"0l2p9nhqnxpd","name":"Visit</span></span>
+<span id="cb27-43"><a href="vcr.html#cb27-43" tabindex="-1"></a><span class="st">        www.githubstatus.com for more information","status":"operational","created_at":"2018-12-05T19:39:40.838Z","updated_at":"2025-03-19T05:00:21.309Z","position":3,"description":null,"showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"brv1bkgrwx7q","name":"API</span></span>
+<span id="cb27-44"><a href="vcr.html#cb27-44" tabindex="-1"></a><span class="st">        Requests","status":"operational","created_at":"2017-01-31T20:01:46.621Z","updated_at":"2025-09-04T20:25:47.243Z","position":4,"description":"Requests</span></span>
+<span id="cb27-45"><a href="vcr.html#cb27-45" tabindex="-1"></a><span class="st">        for GitHub APIs","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"kr09ddfgbfsf","name":"Issues","status":"operational","created_at":"2017-01-31T20:01:46.638Z","updated_at":"2025-08-27T21:27:47.854Z","position":5,"description":"Requests</span></span>
+<span id="cb27-46"><a href="vcr.html#cb27-46" tabindex="-1"></a><span class="st">        for Issues on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"hhtssxt0f5v2","name":"Pull</span></span>
+<span id="cb27-47"><a href="vcr.html#cb27-47" tabindex="-1"></a><span class="st">        Requests","status":"operational","created_at":"2020-09-02T15:39:06.329Z","updated_at":"2025-08-12T17:56:13.209Z","position":6,"description":"Requests</span></span>
+<span id="cb27-48"><a href="vcr.html#cb27-48" tabindex="-1"></a><span class="st">        for Pull Requests on GitHub.com","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"br0l2tvcx85d","name":"Actions","status":"operational","created_at":"2019-11-13T18:02:19.432Z","updated_at":"2025-08-21T18:13:02.491Z","position":7,"description":"Workflows,</span></span>
+<span id="cb27-49"><a href="vcr.html#cb27-49" tabindex="-1"></a><span class="st">        Compute and Orchestration for GitHub Actions","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"st3j38cctv9l","name":"Packages","status":"operational","created_at":"2019-11-13T18:02:40.064Z","updated_at":"2025-08-14T18:37:12.106Z","position":8,"description":"API</span></span>
+<span id="cb27-50"><a href="vcr.html#cb27-50" tabindex="-1"></a><span class="st">        requests and webhook delivery for GitHub Packages","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"vg70hn9s2tyj","name":"Pages","status":"operational","created_at":"2017-01-31T20:04:33.923Z","updated_at":"2025-06-17T20:03:36.357Z","position":9,"description":"Frontend</span></span>
+<span id="cb27-51"><a href="vcr.html#cb27-51" tabindex="-1"></a><span class="st">        application and API servers for Pages builds","showcase":false,"start_date":null,"group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"h2ftsgbw7kmk","name":"Codespaces","status":"operational","created_at":"2021-08-11T16:02:09.505Z","updated_at":"2025-07-21T09:47:56.207Z","position":10,"description":"Orchestration</span></span>
+<span id="cb27-52"><a href="vcr.html#cb27-52" tabindex="-1"></a><span class="st">        and Compute for GitHub Codespaces","showcase":false,"start_date":"2021-08-11","group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false},{"id":"pjmpxvq2cmr2","name":"Copilot","status":"operational","created_at":"2022-06-21T16:04:33.017Z","updated_at":"2025-08-27T21:36:28.924Z","position":11,"description":null,"showcase":false,"start_date":"2022-06-21","group_id":null,"page_id":"kctbh9vrtdwd","group":false,"only_show_if_degraded":false}]}'</span></span>
+<span id="cb27-53"><a href="vcr.html#cb27-53" tabindex="-1"></a><span class="at">  </span><span class="fu">recorded_at</span><span class="kw">:</span><span class="at"> 2025-09-09 10:09:28</span></span>
+<span id="cb27-54"><a href="vcr.html#cb27-54" tabindex="-1"></a><span class="fu">recorded_with</span><span class="kw">:</span><span class="at"> VCR-vcr/2.0.0</span></span></code></pre></div>
 <ul>
-<li>all the times after that, unless we delete the mock file, vcr simply uses the mock files instead of actually calling the API.</li>
+<li>all the times after that, unless we delete the cassette (mock file), vcr simply uses the cassette instead of actually calling the API.</li>
 </ul>
 <p>Let’s tweak our other test, of <code>gh_organizations()</code>.
 Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr::stop_for_status(response)</code> became <code>httr::stop_for_status(response, task = "get data from the API, oops")</code>.</p>
 <p>The test file <code>tests/testthat/test-organizations.R</code> is now:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span></span>
-<span>    <span class="va">orgs</span> <span class="op">&lt;-</span> <span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="va">orgs</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">local_cassette</a></span><span class="op">(</span><span class="st">"gh_organizations"</span><span class="op">)</span></span>
+<span>  <span class="va">orgs</span> <span class="op">&lt;-</span> <span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_type</span><span class="op">(</span><span class="va">orgs</span>, <span class="st">"character"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">test_that</span><span class="op">(</span><span class="st">"gh_organizations errors when the API doesn't behave"</span>, <span class="op">{</span></span>
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">enable</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span></span>
+<span>  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span></span>
+<span>    <span class="st">"get"</span>,</span>
+<span>    <span class="st">"https://api.github.com/organizations?since=1"</span></span>
+<span>  <span class="op">)</span></span>
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span></span>
-<span>  <span class="fu">expect_error</span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"oops"</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_snapshot</span><span class="op">(</span>error <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/enable.html">disable</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>The first test is similar to what we did for <code>gh_api_status()</code>.
@@ -263,11 +234,11 @@ In the second test there is more to unpack.</p>
 <li>We enable the use of <a href="https://docs.ropensci.org/webmockr">webmockr</a> at the beginning with <code><a href="https://docs.ropensci.org/webmockr/reference/enable.html">webmockr::enable()</a></code>. Why webmockr? Because it can help mock a failure scenario.</li>
 <li>We explicitly write that a request to <code>https://api.github.com/organizations?since=1</code> should return a status of 502.</li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="va">stub</span> <span class="op">&lt;-</span> <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/stub_request.html">stub_request</a></span><span class="op">(</span><span class="st">"get"</span>, <span class="st">"https://api.github.com/organizations?since=1"</span><span class="op">)</span></span>
 <span>  <span class="fu">webmockr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/webmockr/reference/to_return.html">to_return</a></span><span class="op">(</span><span class="va">stub</span>, status <span class="op">=</span> <span class="fl">502</span><span class="op">)</span></span></code></pre></div>
 <ul>
-<li>We then test for the error message with <code>expect_error(gh_organizations(), "oops")</code>.</li>
+<li>We then test for the error message with <code>expect_snapshot(error = TRUE, gh_organizations())</code>.</li>
 <li>We disable webmockr with <code><a href="https://docs.ropensci.org/webmockr/reference/enable.html">webmockr::disable()</a></code>.</li>
 </ul>
 <div class="alert alert-dismissible alert-primary">
@@ -278,20 +249,9 @@ In the second test there is more to unpack.</p>
 </ul>
 <p>Read pros and cons of this approach in the vcr vignette <a href="https://docs.ropensci.org/vcr/articles/cassette-manual-editing.html"><em>Why and how edit your vcr cassettes?</em></a>, especially if you don’t find the webmockr approach enjoyable.</p>
 </div>
-<p>Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.</p>
-<p>Regarding our secret API token, the first time we run the test file, vcr creates a cassette where we notice these lines</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb31-1"><a href="vcr.html#cb31-1" tabindex="-1"></a><span class="fu">http_interactions</span><span class="kw">:</span></span>
-<span id="cb31-2"><a href="vcr.html#cb31-2" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">request</span><span class="kw">:</span></span>
-<span id="cb31-3"><a href="vcr.html#cb31-3" tabindex="-1"></a><span class="at">    </span><span class="fu">method</span><span class="kw">:</span><span class="at"> get</span></span>
-<span id="cb31-4"><a href="vcr.html#cb31-4" tabindex="-1"></a><span class="at">    </span><span class="fu">uri</span><span class="kw">:</span><span class="at"> https://api.github.com/organizations?since=1</span></span>
-<span id="cb31-5"><a href="vcr.html#cb31-5" tabindex="-1"></a><span class="at">    </span><span class="fu">body</span><span class="kw">:</span></span>
-<span id="cb31-6"><a href="vcr.html#cb31-6" tabindex="-1"></a><span class="at">      </span><span class="fu">encoding</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
-<span id="cb31-7"><a href="vcr.html#cb31-7" tabindex="-1"></a><span class="at">      </span><span class="fu">string</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
-<span id="cb31-8"><a href="vcr.html#cb31-8" tabindex="-1"></a><span class="at">    </span><span class="fu">headers</span><span class="kw">:</span></span>
-<span id="cb31-9"><a href="vcr.html#cb31-9" tabindex="-1"></a><span class="at">      </span><span class="fu">Accept</span><span class="kw">:</span><span class="at"> application/json, text/xml, application/xml, */*</span></span>
-<span id="cb31-10"><a href="vcr.html#cb31-10" tabindex="-1"></a><span class="at">      </span><span class="fu">Content-Type</span><span class="kw">:</span><span class="at"> </span><span class="st">''</span></span>
-<span id="cb31-11"><a href="vcr.html#cb31-11" tabindex="-1"></a><span class="at">      </span><span class="fu">Authorization</span><span class="kw">:</span><span class="at"> My bearer token is safe</span></span></code></pre></div>
-<p>Our API token has been replaced with the string we indicated in <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr::vcr_configure()</a></code>, <code>My bearer token is safe</code>.</p>
+<p>Without the HTTP testing infrastructure, testing for behavior of the package in case of API errors would be more difficult.
+However, we could resort to <a href="https://testthat.r-lib.org/dev/reference/index.html#mocking">testthat’s mocking tools</a>.</p>
+<p>Regarding our secret API token, the first time we run the test file, vcr creates a cassette where we <em>do not see our token</em>.</p>
 </div>
 <div id="also-testing-for-real-interactions" class="section level2" number="6.3">
 <h2>
@@ -303,7 +263,7 @@ However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.</p>
 <p>The vcr package provides various methods to turn vcr use on and off to allow real requests i.e. ignoring mock files.
 See <code><a href="https://docs.ropensci.org/vcr/reference/lightswitch.html">?vcr::lightswitch</a></code>.</p>
-<p>In the case of exemplighratia, we added a <a href="https://github.com/ropensci-books/exemplighratia/blob/vcrtest/.github/workflows/R-CMD-check-real-requests.yaml">GitHub Actions workflow</a> that will run on schedule once a week, for which one of the build has vcr turned off via the <code>VCR_TURN_OFF</code> environment variable.
+<p>In the case of exemplighratia2, we added a <a href="https://github.com/ropensci-books/exemplighratia2/blob/vcr/.github/workflows/real-requests.yaml">GitHub Actions workflow</a> that will run on schedule once a week, for which one of the build has vcr turned off via the <code>VCR_TURN_OFF</code> environment variable.
 We chose to have one build with vcr turned on and otherwise the same configuration to make it easier to assess what broke in case of failure (if both builds fail, the web API is probably not the culprit).
 Compared to continuous integration builds where vcr is turned on, this one build needs to have access to a <code>GITHUB_PAT</code> secret environment variable. Furthermore, it is slower.</p>
 <p>One could imagine other strategies:</p>
@@ -317,14 +277,14 @@ Compared to continuous integration builds where vcr is turned on, this one build
 <span class="header-section-number">6.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
-<li>We set up vcr usage in our package exemplighratia by running <code><a href="https://docs.ropensci.org/vcr/reference/use_vcr.html">use_vcr()</a></code> and tweaking the setup file to protect our secret API key and to fool our own package that needs an API token.</li>
-<li>Inside <code>test_that()</code> blocks, we wrapped parts of the code into <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code> and ran the tests a first time to generate mock files that hold all information about the API interactions.</li>
+<li>We set up vcr usage in our package exemplighratia2 by registering vcr as a dependency and creating a file to protect our secret API key and to fool our own package that needs an API token.</li>
+<li>Inside <code>test_that()</code> blocks, we call <code>vcr::local_cassette(&lt;cassette-name&gt;)</code> and ran the tests a first time to generate mock files that hold all information about the API interactions.</li>
 <li>In one of the tests, we used webmockr to create an environment where only fake requests are allowed. We defined that the request that <code>gh_organizations()</code> makes should get a 502 status. We were therefore able to test for the error message <code>gh_organizations()</code> returns in such cases.</li>
 </ul>
 <p>Now, how do we make sure this works?</p>
 <ul>
 <li>Turn off wifi, run the tests again. It works! Turn on wifi again.</li>
-<li>Open .Renviron (<code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>), edit “GITHUB_PAT” into “byeGITHUB_PAT”, re-start R, run the tests again. It works! Fix your “GITHUB_PAT” token in .Renviron.</li>
+<li>Open .Renviron (<code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>), edit “GITHUB_PAT” into “byeGITHUB_PAT”, re-start R, run the tests again. It works! Fix your “GITHUB_PAT” token in .Renviron. (to store your credentials, you should actually use <a href="https://usethis.r-lib.org/articles/git-credentials.html">gitcreds</a> for Git credentials, and <a href="https://blog.r-hub.io/2024/02/28/key-advantages-of-using-keyring/">keyring</a> for other credentials).</li>
 </ul>
 <p>So we now have tests that no longer rely on an internet connection nor on having API credentials.</p>
 <p>We also added a continuous integration workflow for having a build using real interactions once every week, as it is important to regularly make sure the package still works against the latest API responses.</p>
@@ -343,7 +303,7 @@ What’s correct?</p>
 <ul>
 <li>Wrapping the whole <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> call (do not do that if your test contains for instance `skip_on_cran()``);</li>
 </ul>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
@@ -354,7 +314,7 @@ What’s correct?</p>
 <li>Wrapping a few lines inside <code><a href="https://testthat.r-lib.org/reference/test_that.html">testthat::test_that()</a></code> <strong>excluding the expectations <code>expect_blabla()</code></strong>
 </li>
 </ul>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
@@ -362,7 +322,7 @@ What’s correct?</p>
 <span>    <span class="fu">expect_true</span><span class="op">(</span><span class="va">lala</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>What’s incorrect?</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"thing"</span>, <span class="op">{</span></span>
 <span>    <span class="va">lala</span> <span class="op">&lt;-</span> <span class="fu">get_foo</span><span class="op">(</span><span class="op">)</span></span>
@@ -373,7 +333,6 @@ What’s correct?</p>
 
 </div>
 </div>
-
   <div class="chapter-nav">
 <div class="prev"><a href="introduction.html"><span class="header-section-number">5</span> Introduction</a></div>
 <div class="next"><a href="httptest.html"><span class="header-section-number">7</span> Use httptest</a></div>
@@ -403,7 +362,7 @@ What’s correct?</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

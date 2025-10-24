@@ -6,18 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 27 Debugging your tests that use vcr | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
-<meta name="description" content="Sometimes your tests using a vcr cassette will fail and you will want to debug them.  27.1 An HTTP request has been made that vcr does not know how to handle If you get an error starting with “An...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="description" content="https://docs.ropensci.org/vcr/articles/debugging.html">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 27 Debugging your tests that use vcr | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/debugging-your-tests-that-use-vcr.html">
-<meta property="og:description" content="Sometimes your tests using a vcr cassette will fail and you will want to debug them.  27.1 An HTTP request has been made that vcr does not know how to handle If you get an error starting with “An...">
+<meta property="og:description" content="https://docs.ropensci.org/vcr/articles/debugging.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 27 Debugging your tests that use vcr | HTTP testing in R">
-<meta name="twitter:description" content="Sometimes your tests using a vcr cassette will fail and you will want to debug them.  27.1 An HTTP request has been made that vcr does not know how to handle If you get an error starting with “An...">
+<meta name="twitter:description" content="https://docs.ropensci.org/vcr/articles/debugging.html">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -95,136 +95,15 @@
 <h1>
 <span class="header-section-number">27</span> Debugging your tests that use vcr<a class="anchor" aria-label="anchor" href="#debugging-your-tests-that-use-vcr"><i class="fas fa-link"></i></a>
 </h1>
-<p>Sometimes your tests using a vcr cassette will fail and you will want to debug them.</p>
-<div id="an-http-request-has-been-made-that-vcr-does-not-know-how-to-handle" class="section level2" number="27.1">
-<h2>
-<span class="header-section-number">27.1</span> An HTTP request has been made that vcr does not know how to handle<a class="anchor" aria-label="anchor" href="#an-http-request-has-been-made-that-vcr-does-not-know-how-to-handle"><i class="fas fa-link"></i></a>
-</h2>
-<p>If you get an error starting with “An HTTP request has been made that vcr does not know how to handle:” when running your tests,
-it means that the code in your test makes an HTTP request
-for which there is no matching information in the cassette you are using.
-You might have added a request, or changed one slightly.</p>
-<p>The easy fix is: delete the cassette and re-run the test to re-record the cassette.
-Run the test a second time to ensure all is well.
-If not, escalate to the next paragraph.</p>
-<p>Maybe you didn’t actually want to change the request you are making.
-Make sure the requests do not contain something random, or something related to e.g. what time it is now, in the URI (<code>http://foo.com?time=13</code>).
-To make sure things are not varying, you might want to use mocking (of e.g. a function returning the current time), setting a random seed, using <a href="https://withr.r-lib.org/"><code>withr</code></a> (for e.g. setting an option to a certain value in your test).</p>
-<div id="actual-debugging" class="section level3" number="27.1.1">
-<h3>
-<span class="header-section-number">27.1.1</span> Actual debugging<a class="anchor" aria-label="anchor" href="#actual-debugging"><i class="fas fa-link"></i></a>
-</h3>
-<p>Ideally you will want to run the code of the tests as if it were run inside tests,
-in particular, using the same vcr cassette.</p>
-</div>
-<div id="prepare-your-debugging-environment" class="section level3" number="27.1.2">
-<h3>
-<span class="header-section-number">27.1.2</span> Prepare your debugging environment<a class="anchor" aria-label="anchor" href="#prepare-your-debugging-environment"><i class="fas fa-link"></i></a>
-</h3>
-<p>You will first need to load either the vcr helper <code>tests/testthat/helper-vcr.R</code> (e.g. via <code>devtools::load_all()</code>)
-or source the vcr setup file <code>tests/testthat/setup-vcr.R</code> i.e. the file with these lines (and maybe others)</p>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://docs.ropensci.org/vcr">"vcr"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>,</span>
-<span>  filter_sensitive_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"&lt;&lt;github_api_token&gt;&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">'GITHUB_PAT'</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">check_cassette_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>If instead of <code>vcr::vcr_test_path("fixtures")</code> you see <code>"../fixtures"</code>,
-replace <code>"../fixtures"</code> with <code>vcr::vcr_test_path("fixtures")</code>,
-as <code><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr::vcr_test_path()</a></code> is a function that is meant to help exactly what you will want:
-have the path to <code>tests/fixtures/</code> work from tests and from the root (which is where you will be running the code to debug it).</p>
-<p>So that is one step (loading the vcr helper or sourcing the vcr setup file),
-or maybe two (if you also had to replace <code>"../fixtures"</code> with <code>vcr::vcr_test_path("fixtures")</code>).</p>
-</div>
-<div id="debugging-itself" class="section level3" number="27.1.3">
-<h3>
-<span class="header-section-number">27.1.3</span> Debugging itself<a class="anchor" aria-label="anchor" href="#debugging-itself"><i class="fas fa-link"></i></a>
-</h3>
-<p>Now look at the test whose code you are trying to debug e.g.</p>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">'https://httpbin.org/get'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"foo works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"testing"</span>, <span class="op">{</span></span>
-<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/logical-expectations.html">expect_true</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>If you want to run the code as if you were in the test,</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">'https://httpbin.org/get'</span><span class="op">)</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/insert_cassette.html">insert_cassette</a></span><span class="op">(</span><span class="st">"testing"</span><span class="op">)</span> <span class="co"># it will be created if needed</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">x</span></span>
-<span><span class="co"># further interactive debugging and fixes</span></span>
-<span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/eject_cassette.html">eject_cassette</a></span><span class="op">(</span><span class="st">"testing"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div id="logging-1" class="section level3" number="27.1.4">
-<h3>
-<span class="header-section-number">27.1.4</span> Logging<a class="anchor" aria-label="anchor" href="#logging-1"><i class="fas fa-link"></i></a>
-</h3>
-<p>You can use vcr’s built in logging to help in your debugging process. To configure logging,
-use the <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure()</a></code> function, and set <code>log=TRUE</code> and set options for logging on the
-<code>log_opts</code> parameter as a named list. See <code><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">?vcr_configure</a></code> for details.</p>
-<p>Here, we are setting our log file to be a temporary file that will be cleaned up at the end
-of the R session. Here, the file extension is <code>.log</code>, but the file extension does not matter.</p>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_configure.html">vcr_configure</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/vcr_test_path.html">vcr_test_path</a></span><span class="op">(</span><span class="st">"fixtures"</span><span class="op">)</span>,</span>
-<span>  log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  log_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"vcr.log"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>With <code>log=TRUE</code> you can continue with debugging. Open the log file you set in a text
-editor or other location; or examine in your shell/terminal.</p>
-<p>As an example, after running the block above</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">crul</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/crul/reference/ok.html">ok</a></span><span class="op">(</span><span class="st">'https://httpbin.org/get'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"foo works"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">vcr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">use_cassette</a></span><span class="op">(</span><span class="st">"testing"</span>, <span class="op">{</span></span>
-<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/logical-expectations.html">expect_true</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>If we open the log file we’ll see the logs for each step vcr takes in handling an HTTP request.
-The logs have information on what cassette was used, what exact time it was recorded, what
-matchers were in use, the cassette options, and how a request is handled.</p>
-<pre><code>[Cassette: 'testing'] - 2020-11-24 16:05:17 - Init. HTTPInteractionList w/ request matchers [method, uri] &amp; 0 interaction(s): {  }
-[Cassette: 'testing'] - 2020-11-24 16:05:17 - Initialized with options: {name: testing, record: once, serialize_with: yaml, persist_with: FileSystem, match_requests_on: c("method", "uri"), update_content_length_header: FALSE, allow_playback_repeats: FALSE, preserve_exact_body_bytes: FALSE}
-[Cassette: 'testing'] - 2020-11-24 16:05:17 - Handling request: head https://httpbin.org/get (disabled: FALSE)
-[Cassette: 'testing'] - 2020-11-24 16:05:17 - Identified request type: (recordable) for head https://httpbin.org/get
-[Cassette: 'testing'] - 2020-11-24 16:05:17 -    Recorded HTTP interaction: head https://httpbin.org/get =&gt; 200 </code></pre>
-<p>Logging isn’t meant to be turned on all the time - rather only for debugging/informational purposes.</p>
-</div>
-<div id="return-to-normal-development" class="section level3" number="27.1.5">
-<h3>
-<span class="header-section-number">27.1.5</span> Return to normal development<a class="anchor" aria-label="anchor" href="#return-to-normal-development"><i class="fas fa-link"></i></a>
-</h3>
-<p>Make sure you ejected the cassette you were using!</p>
-<p>Unless your vcr helper/setup file tweaked more things than you would like,
-you do not even need to re-start R, but you could, just to be on the safe side.</p>
+<p><a href="https://docs.ropensci.org/vcr/articles/debugging.html" class="uri">https://docs.ropensci.org/vcr/articles/debugging.html</a></p>
 
-</div>
-</div>
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="request-matching.html"><span class="header-section-number">26</span> Request matching</a></div>
 <div class="next"><a href="vcr-security.html"><span class="header-section-number">28</span> Security with vcr</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#debugging-your-tests-that-use-vcr"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li>
-<li>
-<a class="nav-link" href="#an-http-request-has-been-made-that-vcr-does-not-know-how-to-handle"><span class="header-section-number">27.1</span> An HTTP request has been made that vcr does not know how to handle</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#actual-debugging"><span class="header-section-number">27.1.1</span> Actual debugging</a></li>
-<li><a class="nav-link" href="#prepare-your-debugging-environment"><span class="header-section-number">27.1.2</span> Prepare your debugging environment</a></li>
-<li><a class="nav-link" href="#debugging-itself"><span class="header-section-number">27.1.3</span> Debugging itself</a></li>
-<li><a class="nav-link" href="#logging-1"><span class="header-section-number">27.1.4</span> Logging</a></li>
-<li><a class="nav-link" href="#return-to-normal-development"><span class="header-section-number">27.1.5</span> Return to normal development</a></li>
-</ul>
-</li>
-</ul>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#debugging-your-tests-that-use-vcr"><span class="header-section-number">27</span> Debugging your tests that use vcr</a></li></ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
@@ -241,7 +120,7 @@ you do not even need to re-start R, but you could, just to be on the safe side.<
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -7,7 +7,7 @@
 <title>Chapter 7 Use httptest | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using httptest. For this, we start from the initial state of exemplighratia again. Back to square one! Note that the...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 7 Use httptest | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/httptest.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using httptest. For this, we start from the initial state of exemplighratia again. Back to square one! Note that the...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -96,12 +96,14 @@
 <span class="header-section-number">7</span> Use httptest<a class="anchor" aria-label="anchor" href="#httptest"><i class="fas fa-link"></i></a>
 </h1>
 <p>In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using httptest.
-For this, we start from the initial state of exemplighratia again. Back to square one!</p>
+For this, we start from the initial state of exemplighratia again.
+Back to square one!</p>
 <div class="alert alert-dismissible alert-warning">
 <p>Note that the <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">httptest::with_mock_dir()</a></code> function is only available in httptest version &gt;= 4.0.0 (released on CRAN on 2021-02-01).</p>
 </div>
 <div class="alert alert-dismissible alert-info">
-<p><a href="https://github.com/ropensci-books/exemplighratia/pull/9/files">Corresponding pull request to exemplighratia</a> Feel free to fork the repository to experiment yourself!</p>
+<p><a href="https://github.com/ropensci-books/exemplighratia/pull/9/files">Corresponding pull request to exemplighratia</a>.
+Feel free to fork the repository to experiment yourself!</p>
 </div>
 <div id="setup-1" class="section level2" number="7.1">
 <h2>
@@ -113,12 +115,13 @@ For this, we start from the initial state of exemplighratia again. Back to squar
 <li>Adding httptest as a dependency to <code>DESCRIPTION</code>, under Suggests just like testthat.</li>
 <li>Creating a setup file under <code>tests/testthat/setup</code>,</li>
 </ul>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/r/httptest/">httptest</a></span><span class="op">)</span></span></code></pre></div>
 <p>When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir.html#special-files">files whose name starts with “setup” are always run first</a>.
 The setup file added by httptest loads httptest.</p>
-<p>We shall tweak it a bit to fool our package into believing there is an API token around in contexts where there is not. Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need <code>gh_organizations()</code> to not stop because <code>Sys.getenv("GITHUB_PAT")</code> returns nothing.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<p>We will tweak it a bit to fool our package into believing there is an API token around in contexts where there is not.
+Since tests will use recorded responses when we are not recording, we do not need an actual API token when not recording, but we need <code>gh_organizations()</code> to not stop because <code>Sys.getenv("GITHUB_PAT")</code> returns nothing.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://enpiar.com/r/httptest/">httptest</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># for contexts where the package needs to be fooled</span></span>
@@ -137,11 +140,11 @@ The setup file added by httptest loads httptest.</p>
 <p>The key function will be <code>httptest::with_mock_dir("dir", {code-block})</code> which tells httptest to create mock files under <code>tests/testthat/dir</code> to store all API responses for API calls occurring in the code block.
 We are allowed to tweak the mock files by hand, and we will do that in some cases.</p>
 <p>Let’s tweak the test file for <code>gh_status_api</code>, it becomes</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_api_status"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
-<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"operational"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">gh_api_status</span><span class="op">(</span><span class="op">)</span>, <span class="st">"operational"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>We only had to wrap the whole test in <code><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">httptest::with_mock_dir()</a></code>.</p>
@@ -150,7 +153,7 @@ We are allowed to tweak the mock files by hand, and we will do that in some case
 <li>the first time, httptest creates a mock file under <code>tests/testthat/gh_api_status/kctbh9vrtdwd.statuspage.io/api/v2/components.json.json</code> where it stores the API response.
 We however dumbed it down by hand, to</li>
 </ul>
-<div class="sourceCode" id="cb38"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb38-1"><a href="httptest.html#cb38-1" tabindex="-1"></a><span class="fu">{</span><span class="dt">"components"</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span><span class="st">"API Requests"</span><span class="fu">,</span><span class="dt">"status"</span><span class="fu">:</span><span class="st">"operational"</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb36-1"><a href="httptest.html#cb36-1" tabindex="-1"></a><span class="fu">{</span><span class="dt">"components"</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span><span class="st">"API Requests"</span><span class="fu">,</span><span class="dt">"status"</span><span class="fu">:</span><span class="st">"operational"</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
 <ul>
 <li>all the times after that, httptest simply uses the mock file instead of actually calling the API.</li>
 </ul>
@@ -158,16 +161,16 @@ We however dumbed it down by hand, to</li>
 <p>Here things get more exciting or complicated, as we also set out to adding a test of the error behavior.
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr::stop_for_status(response)</code> became <code>httr::stop_for_status(response, task = "get data from the API, oops")</code>.</p>
 <p>The test file <code>tests/testthat/test-organizations.R</code> is now:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span>, <span class="st">"character"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://enpiar.com/r/httptest/reference/with_mock_dir.html">with_mock_dir</a></span><span class="op">(</span><span class="st">"gh_organizations_error"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations errors if the API doesn't behave"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html">expect_error</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html">expect_error</a></span><span class="op">(</span><span class="fu">gh_organizations</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span>,</span>
 <span>simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -178,9 +181,12 @@ In the second test there is more to unpack: how do we get a mock file correspond
 <li>We replaced <code>200L</code> with <code>502L</code> and removed the body, to end up with a very simple mock file under <code>tests/testthat/gh_organizations_error/api.github.com/organizations-5377e8.R</code>
 </li>
 </ul>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://api.github.com/organizations?since=1"</span>,</span>
-<span>    status_code <span class="op">=</span> <span class="fl">502L</span>, headers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    url <span class="op">=</span> <span class="st">"https://api.github.com/organizations?since=1"</span>,</span>
+<span>    status_code <span class="op">=</span> <span class="fl">502L</span>, </span>
+<span>    headers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>, </span>
+<span>  class <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>We re-run the tests. We got the expected error message.</li>
 </ul>
@@ -256,7 +262,7 @@ An alternative would be to use <code><a href="https://testthat.r-lib.org/referen
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

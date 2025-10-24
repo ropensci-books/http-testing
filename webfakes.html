@@ -7,7 +7,7 @@
 <title>Chapter 10 Use webfakes | HTTP testing in R</title>
 <meta name="author" content="Scott Chamberlain, Maëlle Salmon">
 <meta name="description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.  10.1 Setup Before working on all this, we need to install {webfakes}, with...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.45 with bs4_book()">
 <meta property="og:title" content="Chapter 10 Use webfakes | HTTP testing in R">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://books.ropensci.org/http-testing/webfakes.html">
@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="In this chapter we aim at adding HTTP testing infrastructure to exemplighratia using webfakes.  10.1 Setup Before working on all this, we need to install {webfakes}, with...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><!-- Matomo --><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script><script src="https://ropensci.org/scripts/matomo.js"></script><noscript><div class="inline-figure"><img src="https://ropensci.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt=""></div></noscript>
 <!-- End Matomo Code --><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
@@ -107,7 +107,7 @@ When testthat runs tests, <a href="https://testthat.r-lib.org/reference/test_dir
 We need to ensure that we set up a fake API key when there is no API token around.
 Why? Because if you remember well, the code of our function <code>gh_organizations()</code> checks for the presence of a token.
 When using our own fake web service, we obviously don’t really need a token but we still need to fool our own package in contexts where there is no token (e.g. in continuous integration checks for a fork of a GitHub repository).</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span><span class="st">"GITHUB_PAT"</span> <span class="op">=</span> <span class="st">"foobar"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
@@ -120,7 +120,7 @@ When using our own fake web service, we obviously don’t really need a token bu
 <p>With webfakes we will be spinning local fake web services that we will want our package to interact with instead of the real APIs.
 Therefore, we first need to amend the code of functions returning URLs to services to be able to change them via an environment variable.
 They become:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">status_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
 <span>  <span class="va">env_url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"EXEMPLIGHRATIA_GITHUB_STATUS_URL"</span><span class="op">)</span></span>
@@ -132,7 +132,7 @@ They become:</p>
 <span>  <span class="st">"https://kctbh9vrtdwd.statuspage.io/api/v2/components.json"</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>and</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gh_v3_url</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
 <span>  <span class="va">api_url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"EXEMPLIGHRATIA_GITHUB_API_URL"</span><span class="op">)</span></span>
@@ -145,7 +145,7 @@ They become:</p>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Having these two switches is crucial.</p>
 <p>Then, let’s tweak our test of <code>gh_api_status()</code>.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() works"</span>, <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>   <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -182,7 +182,7 @@ They become:</p>
 </ul>
 <p>Now, let’s add a test for error behavior.
 This inspired us to change error behavior a bit with a slightly more specific error message i.e. <code>httr::stop_for_status(response)</code> became <code>httr::stop_for_status(response, task = "get API status, ouch!")</code>.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_api_status() errors when the API does not behave"</span>, <span class="op">{</span></span>
 <span>  <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
@@ -201,14 +201,14 @@ This inspired us to change error behavior a bit with a slightly more specific er
 <li>test.</li>
 </ul>
 <p>Last but not least let’s convert our test of <code>gh_organizations()</code>,</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span><span class="st">"gh_organizations works"</span>, <span class="op">{</span></span>
 <span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"REAL_REQUESTS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">webfakes</span><span class="fu">::</span><span class="fu"><a href="https://webfakes.r-lib.org/reference/new_app.html">new_app</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="va">app</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"/organizations"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">res</span><span class="op">$</span><span class="fu">send_json</span><span class="op">(</span></span>
-<span>        <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">read_json</a></span><span class="op">(</span></span>
+<span>        <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/read_json.html">read_json</a></span><span class="op">(</span></span>
 <span>          <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_path.html">test_path</a></span><span class="op">(</span></span>
 <span>            <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"responses"</span>, <span class="st">"organizations.json"</span><span class="op">)</span></span>
 <span>          <span class="op">)</span></span>
@@ -240,7 +240,7 @@ Hopefully we’d notice that thanks to following API news.
 However, sometimes web APIs change without any notice.
 Therefore it is important to run tests against the real web service once in a while.</p>
 <p>In our tests we have used the condition</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="webfakes.html#cb54-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">nzchar</span>(<span class="fu">Sys.getenv</span>(<span class="st">"REAL_REQUESTS"</span>))) {</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="webfakes.html#cb52-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">nzchar</span>(<span class="fu">Sys.getenv</span>(<span class="st">"REAL_REQUESTS"</span>))) {</span></code></pre></div>
 <p>before launching the app and using its URL as URL for the service.
 So if our tests are generic enough, we can add a CI build where the environment variable <code>REAL_REQUESTS</code> is set to true.
 If they are not generic enough, we can use the<a href="httptest.html#httptest-real">approach exemplified in the chapter about httptest</a>.</p>
@@ -299,7 +299,7 @@ If they are not generic enough, we can use the<a href="httptest.html#httptest-re
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2024-09-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
