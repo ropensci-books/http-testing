@@ -43,10 +43,10 @@ jobs:
         run: Rscript -e 'options(knitr.duplicate.label = "allow");bookdown::render_book("index.Rmd", quiet = TRUE)'
         
       - name: Render book PDF
-        run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::pdf_book", output_dir = "pdfbook")'
+        run: Rscript -e 'options(knitr.duplicate.label = "allow");bookdown::render_book("index.Rmd", "bookdown::pdf_book", output_dir = "pdfbook")'
 
       - name: Render book EPUB
-        run: Rscript -e 'bookdown::render_book("index.Rmd", "bookdown::epub_book", output_dir = "epubbook")'
+        run: Rscript -e 'options(knitr.duplicate.label = "allow");bookdown::render_book("index.Rmd", "bookdown::epub_book", output_dir = "epubbook")'
 
       - name: Move files around
         run: Rscript -e 'file.copy(from = "pdfbook/_main.pdf", to = "docs/main.pdf")' -e 'file.copy(from = "epubbook/_main.epub", to = "docs/main.epub")'
