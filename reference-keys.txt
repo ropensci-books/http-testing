@@ -134,7 +134,6 @@ gitignore-cassettes
 rbuildignore-cassettes
 sharing-cassettes
 deleting-cassettes
-cassette-file-types
 gotchas
 line-identification
 session-info

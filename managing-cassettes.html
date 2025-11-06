@@ -107,7 +107,7 @@ ignore - those files are not tracked by git and if you share the git
 repository to the public web, those files in the <code>.gitignore</code> file
 won’t be shared in the public version.</p>
 <p>When using <code>vcr</code> you may want to include your cassettes in the
-<code>.gitignore</code> file. You may wan to when your cassettes contain sensitive
+<code>.gitignore</code> file. You may want to when your cassettes contain sensitive
 data that you don’t want to have on the internet &amp; dont want to hide
 with <a href="vcr-security.html#api-keys-security">filter_sensitive_data</a>.</p>
 <p>You may want to have your cassettes included in your GitHub repo, both
@@ -137,11 +137,6 @@ to test different functionality of your package functions
 that make the same query under the hood.</p>
 <p>To do so, you can use the same cassette name for multiple <code><a href="https://docs.ropensci.org/vcr/reference/use_cassette.html">vcr::use_cassette()</a></code>
 calls.
-<code><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">vcr::check_cassette_names()</a></code> will complain about duplicate cassette
-names, preventing you from accidentally re-using cassettes, however.
-To allow duplicates, you can provide a character vector of the cassette names
-you want to re-use to the <code>allowed_duplicates</code> argument of
-<code><a href="https://docs.ropensci.org/vcr/reference/check_cassette_names.html">vcr::check_cassette_names()</a></code>.
 That way you can use the same cassette across multiple tests.</p>
 </div>
 <div id="deleting-cassettes" class="section level2" number="30.4">
@@ -149,22 +144,11 @@ That way you can use the same cassette across multiple tests.</p>
 <span class="header-section-number">30.4</span> deleting cassettes<a class="anchor" aria-label="anchor" href="#deleting-cassettes"><i class="fas fa-link"></i></a>
 </h2>
 <p>Removing a cassette is as easy as deleting in your file finder,
-or from the command line, or from within a text editor or RStudio.</p>
+or from the command line, or from within a text editor or an IDE (RStudio, Positron, etc).</p>
 <p>If you delete a cassette, on the next test run the cassette will
 be recorded again.</p>
 <p>If you do want to re-record a test to a cassette, instead of
 deleting the file you can toggle <a href="record-modes.html#record-modes">record modes</a>.</p>
-</div>
-<div id="cassette-file-types" class="section level2" number="30.5">
-<h2>
-<span class="header-section-number">30.5</span> cassette file types<a class="anchor" aria-label="anchor" href="#cassette-file-types"><i class="fas fa-link"></i></a>
-</h2>
-<p>For right now the only persistence option is yaml. So all files
-have a <code>.yml</code> extension.</p>
-<p>When other persister options are added, additional file types
-may be found. The next persister type is likely to be JSON,
-so if you use that option, you’d have <code>.json</code> files instead of
-<code>.yml</code> files.</p>
 
 </div>
 </div>
@@ -179,7 +163,6 @@ so if you use that option, you’d have <code>.json</code> files instead of
 <li><a class="nav-link" href="#rbuildignore-cassettes"><span class="header-section-number">30.2</span> Rbuildignore cassettes</a></li>
 <li><a class="nav-link" href="#sharing-cassettes"><span class="header-section-number">30.3</span> sharing cassettes</a></li>
 <li><a class="nav-link" href="#deleting-cassettes"><span class="header-section-number">30.4</span> deleting cassettes</a></li>
-<li><a class="nav-link" href="#cassette-file-types"><span class="header-section-number">30.5</span> cassette file types</a></li>
 </ul>
 
       <div class="book-extra">
@@ -197,7 +180,7 @@ so if you use that option, you’d have <code>.json</code> files instead of
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-10-24.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-11-06.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
