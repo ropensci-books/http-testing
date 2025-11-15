@@ -127,7 +127,7 @@ addition to the cassette.</p>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="fu">parse</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code>#&gt; [1] "&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;503 Service Temporarily Unavailable&lt;/title&gt;&lt;/head&gt;\r\n&lt;body&gt;\r\n&lt;center&gt;&lt;h1&gt;503 Service Temporarily Unavailable&lt;/h1&gt;&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n"</code></pre>
+<pre><code>#&gt; [1] "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"application/json, text/xml, application/xml, */*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"libcurl/8.5.0 r-curl/7.0.0 crul/1.6.0\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6917c429-74a0a68a68c9ac5b7e0c0bdd\"\n  }, \n  \"origin\": \"64.236.133.176\", \n  \"url\": \"https://httpbin.org/get\"\n}\n"</code></pre>
 <p>This also works with <code>httr</code>. The only difference is that you write to disk
 with a function <code>httr::write_disk(path)</code> rather than a parameter.</p>
 <div class="alert alert-dismissible alert-info">
@@ -189,7 +189,7 @@ yaml field above:</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-11-06.</p>
+    <p>"<strong>HTTP testing in R</strong>" was written by Scott Chamberlain, Maëlle Salmon. It was last built on 2025-11-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
